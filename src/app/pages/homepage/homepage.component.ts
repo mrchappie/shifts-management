@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { FirebaseConfigI, firebaseConfig } from 'firebase.config';
 import { Subscription } from 'rxjs';
 import { PieData } from 'src/app/components/chart/chart.component';
 import { Shift, State } from 'src/app/utils/Interfaces';
@@ -22,6 +23,9 @@ export class HomepageComponent {
   loggedUserID!: string;
   userShifts: Shift[] = [];
 
+  // DB Config
+  fbConfig: FirebaseConfigI = firebaseConfig;
+
   private stateSubscription: Subscription | undefined;
 
   constructor(private state: StateService, private DB: HandleDBService) {}
@@ -32,7 +36,7 @@ export class HomepageComponent {
 
     (async () => {
       this.userShifts = await this.DB.getFirestoreDocsByQuery(
-        'shiftAppShifts',
+        this.fbConfig.dev.shiftsDB,
         ['2023', 'december'],
         this.loggedUserID
       );

@@ -6,6 +6,7 @@ import { Subscription } from 'rxjs';
 import { HandleDBService } from 'src/app/utils/services/handleDB/handle-db.service';
 import { StateService } from 'src/app/utils/services/state/state.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { FirebaseConfigI, firebaseConfig } from 'firebase.config';
 
 @Component({
   selector: 'app-user-profile',
@@ -18,6 +19,9 @@ export class UserProfileComponent {
   userSettings!: UserSettings;
   userIDFromURL!: string;
   userProfileForm!: FormGroup;
+
+  // DB Config
+  fbConfig: FirebaseConfigI = firebaseConfig;
 
   private stateSubscription: Subscription | undefined;
 
@@ -63,9 +67,10 @@ export class UserProfileComponent {
   }
 
   async getUserData(userID: string) {
-    this.userSettings = (await this.DB.getFirestoreDoc('shiftAppUsers', [
-      userID,
-    ])) as UserSettings;
+    this.userSettings = (await this.DB.getFirestoreDoc(
+      this.fbConfig.dev.usersDB,
+      [userID]
+    )) as UserSettings;
 
     if (!this.userSettings) {
       this.router.navigate(['404']);
@@ -88,14 +93,14 @@ export class UserProfileComponent {
   async onSubmit() {
     if (!this.userIDFromURL) {
       await this.DB.updateFirestoreDoc(
-        'shiftAppUsers',
+        this.fbConfig.dev.usersDB,
         [this.currentState.currentLoggedFireUser!.id],
         this.userProfileForm.value
       );
       this.state.setState(this.userProfileForm.value);
     } else {
       await this.DB.updateFirestoreDoc(
-        'shiftAppUsers',
+        this.fbConfig.dev.usersDB,
         [this.userIDFromURL],
         this.userProfileForm.value
       );

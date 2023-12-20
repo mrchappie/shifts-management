@@ -21,18 +21,21 @@ import {
   where,
 } from '@angular/fire/firestore';
 import { StateService, initialState } from '../state/state.service';
-import { Router } from '@angular/router';
 import { RegisterFormData } from 'src/app/pages/register/register.component';
 import { userProfile } from '../../userProfile';
 import { State } from '../../Interfaces';
 import { calculateAge } from '../../functions';
 import { ToastService } from 'angular-toastify';
+import { FirebaseConfigI, firebaseConfig } from 'firebase.config';
 
 @Injectable({
   providedIn: 'root',
 })
 export class HandleDBService {
   currentState!: State;
+
+  // DB Config
+  fbConfig: FirebaseConfigI = firebaseConfig;
 
   constructor(
     private auth: Auth,
@@ -75,22 +78,27 @@ export class HandleDBService {
 
       // add user information to firesote
       if (userCredential) {
-        this.setFirestoreDoc('shiftAppUsers', [userCredential.user.uid], {
-          firstName,
-          lastName,
-          email,
-          dob,
-          age: calculateAge(dob),
-          termsAndConditions,
-          id: userCredential.user.uid,
-          ...userProfile,
-        });
+        this.setFirestoreDoc(
+          this.fbConfig.dev.usersDB,
+          [userCredential.user.uid],
+          {
+            firstName,
+            lastName,
+            email,
+            dob,
+            age: calculateAge(dob),
+            termsAndConditions,
+            id: userCredential.user.uid,
+            ...userProfile,
+          }
+        );
 
         // add user information to state
         this.state.setState({
-          currentLoggedFireUser: this.getFirestoreDoc('shiftAppUsers', [
-            userCredential.user.uid,
-          ]),
+          currentLoggedFireUser: this.getFirestoreDoc(
+            this.fbConfig.dev.usersDB,
+            [userCredential.user.uid]
+          ),
           currentUserCred: userCredential,
           isLoggedIn: true,
           loggedUserID: userCredential.user.uid,
@@ -122,9 +130,10 @@ export class HandleDBService {
       console.log('UserCred', userCredential);
       // add user information to state
       this.state.setState({
-        currentLoggedFireUser: await this.getFirestoreDoc('shiftAppUsers', [
-          userCredential.user.uid,
-        ]),
+        currentLoggedFireUser: await this.getFirestoreDoc(
+          this.fbConfig.dev.usersDB,
+          [userCredential.user.uid]
+        ),
         currentUserCred: userCredential,
         isLoggedIn: true,
         loggedUserID: userCredential.user.uid,
@@ -164,9 +173,10 @@ export class HandleDBService {
         if (user) {
           // User is signed in
           this.state.setState({
-            currentLoggedFireUser: await this.getFirestoreDoc('shiftAppUsers', [
-              user.uid,
-            ]),
+            currentLoggedFireUser: await this.getFirestoreDoc(
+              this.fbConfig.dev.usersDB,
+              [user.uid]
+            ),
             currentUserCred: user,
             isLoggedIn: true,
           });

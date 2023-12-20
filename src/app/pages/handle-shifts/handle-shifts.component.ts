@@ -7,6 +7,8 @@ import { Subscription } from 'rxjs';
 import { v4 as uuidv4 } from 'uuid';
 import { Router } from '@angular/router';
 import { State } from 'src/app/utils/Interfaces';
+import { FirebaseConfigI, firebaseConfig } from 'firebase.config';
+import { getCurrentYearMonth } from 'src/app/utils/functions';
 
 @Component({
   selector: 'app-handle-shifts',
@@ -21,9 +23,8 @@ export class HandleShiftsComponent implements OnInit {
   userWorkplaces: string[] | undefined = [];
   isEditing: boolean = false;
 
-  // prettier-ignore
-  private months: string[]=["january","february","march","april","may","june","july",
-  "august","september","october","november","december"];
+  // DB Config
+  fbConfig: FirebaseConfigI = firebaseConfig;
 
   private stateSubscription: Subscription | undefined;
 
@@ -124,12 +125,11 @@ export class HandleShiftsComponent implements OnInit {
   async onSubmit() {
     try {
       const shiftID = this.shiftForm.value.shiftID;
-      const currentYear = new Date().getFullYear().toString();
-      const currentMonth = new Date().getMonth();
+      const [currentYear, currentMonth] = getCurrentYearMonth();
 
       this.DB.setFirestoreDoc(
-        'shiftAppShifts',
-        [currentYear, this.months[currentMonth], shiftID],
+        this.fbConfig.dev.shiftsDB,
+        [currentYear, currentMonth, shiftID],
         {
           ...this.shiftForm.value,
           shiftID,

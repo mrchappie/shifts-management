@@ -3,6 +3,7 @@ import { PipeFilter, State, UserSettings } from 'src/app/utils/Interfaces';
 import { Subscription } from 'rxjs';
 import { StateService } from 'src/app/utils/services/state/state.service';
 import { HandleDBService } from 'src/app/utils/services/handleDB/handle-db.service';
+import { FirebaseConfigI, firebaseConfig } from 'firebase.config';
 
 @Component({
   selector: 'app-all-users',
@@ -19,6 +20,9 @@ export class AllUsersComponent implements OnInit, OnDestroy {
     sortByQuery: '',
     orderByQuery: '',
   };
+
+  // DB Config
+  fbConfig: FirebaseConfigI = firebaseConfig;
 
   // component data
   allUsers: UserSettings[] = [];
@@ -46,7 +50,10 @@ export class AllUsersComponent implements OnInit, OnDestroy {
   }
 
   async getAllUsers() {
-    this.allUsers = await this.DB.getFirestoreDocs('shiftAppUsers', []);
+    this.allUsers = await this.DB.getFirestoreDocs(
+      this.fbConfig.dev.usersDB,
+      []
+    );
     console.log(this.allUsers);
   }
 }

@@ -4,6 +4,8 @@ import { HandleDBService } from 'src/app/utils/services/handleDB/handle-db.servi
 import { StateService } from 'src/app/utils/services/state/state.service';
 import { Router } from '@angular/router';
 import { PipeFilter, Shift, State } from 'src/app/utils/Interfaces';
+import { getCurrentYearMonth } from 'src/app/utils/functions';
+import { FirebaseConfigI, firebaseConfig } from 'firebase.config';
 
 @Component({
   selector: 'app-my-shifts',
@@ -22,14 +24,13 @@ export class MyShiftsComponent implements OnInit, OnDestroy {
     orderByQuery: '',
   };
 
+  // DB Config
+  fbConfig: FirebaseConfigI = firebaseConfig;
+
   // component data
   currentState!: State;
   myShifts: Shift[] = [];
   shiftsCount: number = 0;
-
-  // prettier-ignore
-  private months: string[]=["january","february","march","april","may","june","july",
-  "august","september","october","november","december"];
 
   private stateSubscription: Subscription | undefined;
 
@@ -64,11 +65,9 @@ export class MyShiftsComponent implements OnInit, OnDestroy {
   }
 
   async getShifts(userID: string) {
-    const currentYear = new Date().getFullYear().toString();
-    const currentMonth = this.months[new Date().getMonth()];
-
+    const [currentYear, currentMonth] = getCurrentYearMonth();
     this.myShifts = await this.DB.getFirestoreDocsByQuery(
-      'shiftAppShifts',
+      this.fbConfig.dev.shiftsDB,
       [currentYear, currentMonth],
       userID
     );
@@ -80,11 +79,10 @@ export class MyShiftsComponent implements OnInit, OnDestroy {
   }
 
   async editShift(shiftID: string) {
-    const currentYear = new Date().getFullYear().toString();
-    const currentMonth = this.months[new Date().getMonth()];
+    const [currentYear, currentMonth] = getCurrentYearMonth();
 
     this.currentState.shiftToEdit = (await this.DB.getFirestoreDoc(
-      'shiftAppShifts',
+      this.fbConfig.dev.shiftsDB,
       [currentYear, currentMonth, shiftID]
     )) as Shift;
 
@@ -92,10 +90,9 @@ export class MyShiftsComponent implements OnInit, OnDestroy {
   }
 
   deleteShift(shiftID: string) {
-    const currentYear = new Date().getFullYear().toString();
-    const currentMonth = this.months[new Date().getMonth()];
+    const [currentYear, currentMonth] = getCurrentYearMonth();
 
-    this.DB.deleteFirestoreDoc('shiftAppShifts', [
+    this.DB.deleteFirestoreDoc(this.fbConfig.dev.shiftsDB, [
       currentYear,
       currentMonth,
       shiftID,

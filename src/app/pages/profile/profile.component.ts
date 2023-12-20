@@ -8,6 +8,7 @@ import { HandleDBService } from 'src/app/utils/services/handleDB/handle-db.servi
 import { Subscription } from 'rxjs';
 import { State, UserSettings } from 'src/app/utils/Interfaces';
 import { arrayRemove, arrayUnion } from '@angular/fire/firestore';
+import { FirebaseConfigI, firebaseConfig } from 'firebase.config';
 
 @Component({
   selector: 'app-profile',
@@ -18,6 +19,9 @@ export class ProfileComponent implements OnInit, OnDestroy {
   currentState!: State;
   settingsFormInputs: SettingsForm[] = settingsFormData;
   userSettings!: UserSettings;
+
+  // DB Config
+  fbConfig: FirebaseConfigI = firebaseConfig;
 
   private stateSubscription: Subscription | undefined;
 
@@ -39,9 +43,10 @@ export class ProfileComponent implements OnInit, OnDestroy {
   }
 
   async updateState() {
-    this.userSettings = (await this.DB.getFirestoreDoc('shiftAppUsers', [
-      this.currentState.currentLoggedFireUser!.id,
-    ])) as UserSettings;
+    this.userSettings = (await this.DB.getFirestoreDoc(
+      this.fbConfig.dev.usersDB,
+      [this.currentState.currentLoggedFireUser!.id]
+    )) as UserSettings;
 
     this.state.setState({
       currentLoggedFireUser: this.userSettings,
@@ -50,7 +55,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
   addWorkplace(workplace: string) {
     this.DB.updateFirestoreDoc(
-      'shiftAppUsers',
+      this.fbConfig.dev.usersDB,
       [this.currentState.currentLoggedFireUser!.id],
       { userWorkplaces: arrayUnion(workplace) }
     );
@@ -59,7 +64,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
   removeWorkplace(workplace: string) {
     this.DB.updateFirestoreDoc(
-      'shiftAppUsers',
+      this.fbConfig.dev.usersDB,
       [this.currentState.currentLoggedFireUser!.id],
       { userWorkplaces: arrayRemove(workplace) }
     );

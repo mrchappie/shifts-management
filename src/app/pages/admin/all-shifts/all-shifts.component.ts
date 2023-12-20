@@ -3,12 +3,9 @@ import { Subscription } from 'rxjs';
 import { PipeFilter, Shift, State } from 'src/app/utils/Interfaces';
 import { HandleDBService } from 'src/app/utils/services/handleDB/handle-db.service';
 import { StateService } from 'src/app/utils/services/state/state.service';
-import {
-  Filter,
-  orderBy,
-  sorterBy,
-  tableHeadInfo,
-} from '../../my-shifts/formData';
+
+import { getCurrentYearMonth } from 'src/app/utils/functions';
+import { FirebaseConfigI, firebaseConfig } from 'firebase.config';
 
 @Component({
   selector: 'app-all-shifts',
@@ -24,10 +21,11 @@ export class AllShiftsComponent {
     orderByQuery: '',
   };
 
-  // state
-  currentState!: State;
+  // DB Config
+  fbConfig: FirebaseConfigI = firebaseConfig;
 
   // component data
+  currentState!: State;
   allShifts: Shift[] = [];
   shiftsCount: number = 0;
 
@@ -52,10 +50,11 @@ export class AllShiftsComponent {
   }
 
   async getAllShifts() {
-    this.allShifts = await this.DB.getFirestoreDocs('shiftAppShifts', [
-      '2023',
-      'december',
-    ]);
+    const [currentYear, currentMonth] = getCurrentYearMonth();
+    this.allShifts = await this.DB.getFirestoreDocs(
+      this.fbConfig.dev.shiftsDB,
+      [currentYear, currentMonth]
+    );
   }
 
   resetFilters() {}
