@@ -52,7 +52,7 @@ export class AllShiftsComponent {
   async getAllShifts() {
     const [currentYear, currentMonth] = getCurrentYearMonth();
     this.allShifts = await this.DB.getFirestoreDocs(
-      this.fbConfig.dev.shiftsDB,
+      this.fbConfig.deploy.shiftsDB,
       [currentYear, currentMonth]
     );
   }

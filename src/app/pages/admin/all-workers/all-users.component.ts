@@ -50,7 +50,7 @@ export class AllUsersComponent implements OnInit, OnDestroy {
 
   async getAllUsers() {
     this.allUsers = await this.DB.getFirestoreDocs(
-      this.fbConfig.dev.usersDB,
+      this.fbConfig.deploy.usersDB,
       []
     );
   }

@@ -79,7 +79,7 @@ export class HandleDBService {
       // add user information to firesote
       if (userCredential) {
         this.setFirestoreDoc(
-          this.fbConfig.dev.usersDB,
+          this.fbConfig.deploy.usersDB,
           [userCredential.user.uid],
           {
             firstName,
@@ -96,7 +96,7 @@ export class HandleDBService {
         // add user information to state
         this.state.setState({
           currentLoggedFireUser: this.getFirestoreDoc(
-            this.fbConfig.dev.usersDB,
+            this.fbConfig.deploy.usersDB,
             [userCredential.user.uid]
           ),
           currentUserCred: userCredential,
@@ -128,7 +128,7 @@ export class HandleDBService {
       // add user information to state
       this.state.setState({
         currentLoggedFireUser: await this.getFirestoreDoc(
-          this.fbConfig.dev.usersDB,
+          this.fbConfig.deploy.usersDB,
           [userCredential.user.uid]
         ),
         currentUserCred: userCredential,
@@ -169,7 +169,7 @@ export class HandleDBService {
           // User is signed in
           this.state.setState({
             currentLoggedFireUser: await this.getFirestoreDoc(
-              this.fbConfig.dev.usersDB,
+              this.fbConfig.deploy.usersDB,
               [user.uid]
             ),
             currentUserCred: user,

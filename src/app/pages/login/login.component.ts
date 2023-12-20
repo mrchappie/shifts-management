@@ -23,7 +23,7 @@ export class LoginComponent implements OnInit {
     this.currentUser = this.db.getLocalStorage('userCredentials');
 
     this.loginForm = this.fb.group({
-      email: ['alex@mail.com'],
+      email: ['deploy@mail.com'],
       password: ['Alex2023!'],
     });
   }

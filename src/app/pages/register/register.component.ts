@@ -25,10 +25,10 @@ export class RegisterComponent {
   ngOnInit(): void {
     this.registerForm = this.fb.group({
       firstName: ['', [Validators.required, Validators.minLength(3)]],
-      lastName: ['Boscu'],
-      password: ['Alex2023!'],
-      confPass: ['Alex2023!'],
-      email: ['alex@mail.com'],
+      lastName: [''],
+      password: [''],
+      confPass: [''],
+      email: [''],
       dob: [''],
       termsAndConditions: [false],
     });

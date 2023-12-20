@@ -67,7 +67,7 @@ export class MyShiftsComponent implements OnInit, OnDestroy {
   async getShifts(userID: string) {
     const [currentYear, currentMonth] = getCurrentYearMonth();
     this.myShifts = await this.DB.getFirestoreDocsByQuery(
-      this.fbConfig.dev.shiftsDB,
+      this.fbConfig.deploy.shiftsDB,
       [currentYear, currentMonth],
       userID
     );
@@ -82,7 +82,7 @@ export class MyShiftsComponent implements OnInit, OnDestroy {
     const [currentYear, currentMonth] = getCurrentYearMonth();
 
     this.currentState.shiftToEdit = (await this.DB.getFirestoreDoc(
-      this.fbConfig.dev.shiftsDB,
+      this.fbConfig.deploy.shiftsDB,
       [currentYear, currentMonth, shiftID]
     )) as Shift;
 
@@ -92,7 +92,7 @@ export class MyShiftsComponent implements OnInit, OnDestroy {
   deleteShift(shiftID: string) {
     const [currentYear, currentMonth] = getCurrentYearMonth();
 
-    this.DB.deleteFirestoreDoc(this.fbConfig.dev.shiftsDB, [
+    this.DB.deleteFirestoreDoc(this.fbConfig.deploy.shiftsDB, [
       currentYear,
       currentMonth,
       shiftID,
