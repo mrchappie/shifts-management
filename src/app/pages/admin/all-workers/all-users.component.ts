@@ -39,7 +39,6 @@ export class AllUsersComponent implements OnInit, OnDestroy {
     this.stateSubscription = this.state.stateChanged.subscribe((newState) => {
       this.currentState = newState;
       this.filters = this.currentState.searchForm;
-      console.log(this.filters);
     });
   }
 
@@ -54,6 +53,5 @@ export class AllUsersComponent implements OnInit, OnDestroy {
       this.fbConfig.dev.usersDB,
       []
     );
-    console.log(this.allUsers);
   }
 }

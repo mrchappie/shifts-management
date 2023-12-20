@@ -29,7 +29,6 @@ export class LoginComponent implements OnInit {
   }
 
   async onSubmit() {
-    console.log(this.loginForm.value);
     await this.db.login(
       this.loginForm.value.email,
       this.loginForm.value.password

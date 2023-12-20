@@ -10,8 +10,6 @@ export class CustomFilterPipe implements PipeTransform {
 
     const [filterName, filterStartDate, filterEndDate, type] = args;
 
-    console.log(args);
-
     if (args.length === 0) return value;
 
     if (type === 'shifts') {

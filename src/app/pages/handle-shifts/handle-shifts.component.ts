@@ -46,8 +46,6 @@ export class HandleShiftsComponent implements OnInit {
       shiftRevenue: [''],
     });
 
-    console.log(this.shiftForm.value);
-
     this.calculateRevenue();
 
     this.currentState = this.state.getState();
@@ -89,8 +87,6 @@ export class HandleShiftsComponent implements OnInit {
 
         const endTimeMinutes: number =
           +endHours * MINUTES_PER_HOUR + +endMinutes;
-
-        console.log(startTimeMinutes, endTimeMinutes);
 
         if (startTimeMinutes > endTimeMinutes) {
           this.shiftForm.patchValue({

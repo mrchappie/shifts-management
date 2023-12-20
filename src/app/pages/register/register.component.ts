@@ -35,7 +35,6 @@ export class RegisterComponent {
   }
 
   async onSubmit() {
-    console.log(this.registerForm.value);
     await this.auth.register(this.registerForm.value);
 
     this.router.navigate(['/']);

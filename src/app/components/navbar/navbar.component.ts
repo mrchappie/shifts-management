@@ -45,6 +45,5 @@ export class NavbarComponent implements OnInit, OnDestroy {
   async onSubmit() {
     await this.DB.logout();
     this.router.navigate(['/login']);
-    console.log('clicked from navbar comp');
   }
 }

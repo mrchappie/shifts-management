@@ -111,8 +111,6 @@ export class HandleDBService {
           this.currentState.currentLoggedFireUser
         );
       }
-
-      console.log(this.currentState);
     } catch (error) {
       console.log(error);
     }
@@ -127,7 +125,6 @@ export class HandleDBService {
         password
       );
 
-      console.log('UserCred', userCredential);
       // add user information to state
       this.state.setState({
         currentLoggedFireUser: await this.getFirestoreDoc(
@@ -139,7 +136,6 @@ export class HandleDBService {
         loggedUserID: userCredential.user.uid,
       });
       this.currentState = this.state.getState();
-      console.log(this.currentState);
 
       // add user information to localStorage
       this.setLocalStorage(
@@ -162,7 +158,6 @@ export class HandleDBService {
     this.removeLocalStorage('currentLoggedFireUser');
     this.removeLocalStorage('loggedUserShifts');
 
-    console.log('clicked from DB service');
     return;
   }
 
@@ -215,7 +210,6 @@ export class HandleDBService {
         ...documentPath
       );
 
-      // console.log(docRef);
       const docsData = await getDocs(docRef);
       const docs: any = [];
       if (!docsData.empty) {
@@ -244,13 +238,7 @@ export class HandleDBService {
       );
 
       const q = query(docRef, where('userID', '==', userID));
-
-      console.log(docRef);
-      console.log(q);
-
       const querySnapshot = await getDocs(q);
-
-      console.log(querySnapshot);
       const docs: any = [];
 
       if (!querySnapshot.empty) {
