@@ -1,0 +1,57 @@
+<div class="center justify-evenly gap-4 m-4 shadow-all-sides rounded-md">
+  <form
+    [formGroup]="shiftForm"
+    (ngSubmit)="onSubmit()"
+    class="center-col gap-4 p-12"
+  >
+    <h1 class="text-2xl font-bold mb-4">Add New Shift</h1>
+
+    <ng-container *ngFor="let shift of shiftInputs">
+      <ng-container *ngIf="shift.inputType === 'input'">
+        <label class="custom-label">
+          <input
+            type="{{ shift.type }}"
+            placeholder="{{ shift.placeholder }}"
+            formControlName="{{ shift.formControl }}"
+            class="custom-input w-[400px]"
+          />
+        </label>
+      </ng-container>
+      <ng-container *ngIf="shift.inputType === 'select'">
+        <label class="custom-label">
+          <select
+            name="{{ shift.type }}"
+            id="{{ shift.inputType }}"
+            formControlName="{{ shift.formControl }}"
+            class="custom-input"
+          >
+            <option value="" *ngIf="userWorkplaces!.length === 0">
+              -- go to profile to set workplaces --
+            </option>
+            <option value="" *ngIf="userWorkplaces!.length != 0">
+              -- select --
+            </option>
+            <option
+              *ngFor="let workplace of userWorkplaces"
+              value="{{ workplace }}"
+            >
+              {{ workplace }}
+            </option>
+          </select>
+        </label>
+      </ng-container>
+    </ng-container>
+
+    <button type="submit" class="bg-baseColor py-3 px-6">
+      <span *ngIf="!isEditing">Add</span
+      ><span *ngIf="isEditing">Edit</span> shift
+    </button>
+  </form>
+  <div class="w-[400px]">
+    <img
+      src="assets/illustrations/add_shift.jpg"
+      alt="add shift form illustration"
+      class="object-cover"
+    />
+  </div>
+</div>

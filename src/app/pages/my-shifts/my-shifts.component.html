@@ -1,0 +1,29 @@
+<section class="shadow-all-sides rounded-md m-4 p-4 bg-white">
+  <app-search [parent]="'shifts'"></app-search>
+  <div class="w-full p-4">
+    <ul #childCount class="custom-grid gap-4 w-full">
+      <li
+        *ngFor="
+          let shift of myShifts
+            | customFilter
+              : filters.nameQuery
+              : filters.startDateQuery
+              : filters.endDateQuery
+              : 'shifts'
+            | customSorter : filters.sortByQuery : filters.orderByQuery;
+          let index = index
+        "
+        (click)="editShift(shift.shiftID)"
+        class="relative cursor-pointer"
+      >
+        <app-shift-card [shift]="shift"></app-shift-card>
+        <div
+          class="absolute top-[-5px] right-[-5px] center bg-red-500 text-white text-bold w-[30px] h-[30px] rounded-[50%] cursor-pointer"
+          (click)="deleteShift(shift.shiftID)"
+        >
+          X
+        </div>
+      </li>
+    </ul>
+  </div>
+</section>

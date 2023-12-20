@@ -1,0 +1,9 @@
+<section class="flex flex-col shadow-all-sides m-4 p-4 rounded-lg">
+  <app-user-profile></app-user-profile>
+  <button (click)="loadShifts = !loadShifts" class="p-2 bg-slate-200">
+    Load user shifts
+  </button>
+</section>
+<section *ngIf="loadShifts">
+  <app-my-shifts [userIDFromURL]="userIDFromURL" class="w-full"></app-my-shifts>
+</section>

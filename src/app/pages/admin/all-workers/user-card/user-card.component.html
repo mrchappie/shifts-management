@@ -1,0 +1,40 @@
+<div class="center flex-col gap-4 shadow-all-sides rounded-r-md p-4">
+  <div class="w-[100px] h-[100px] rounded-[50%] overflow-hidden shadow-2xl">
+    <img
+      src="{{
+        userInfo?.profileImage
+          ? userInfo?.profileImage
+          : 'https://picsum.photos/200'
+      }}"
+      alt="{{ userInfo?.firstName }} photo"
+      class="object-cover"
+    />
+  </div>
+  <div class="center flex-col gap-2">
+    <div class="font-bold">
+      {{ userInfo?.firstName }} {{ userInfo?.lastName }}
+    </div>
+    <span class="font-semibold italic text-sm text-black/50">{{
+      userInfo?.email ? userInfo?.email : "Undefined"
+    }}</span>
+  </div>
+  <div class="center flex-col gap-2">
+    <div class="center flex-col gap-2 text-sm">
+      <span>{{ userInfo?.dob ? userInfo?.dob : "Undefined" }}</span
+      ><span class="italic">{{
+        userInfo?.phoneNumber ? userInfo?.phoneNumber : "Undefined"
+      }}</span>
+    </div>
+    <div class="flex flex-col gap-2">
+      <button
+        [routerLink]="['/admin', 'edit-user', userInfo?.id]"
+        class="bg-baseColor text-white font-bold px-6 py-2 rounded-md"
+      >
+        Edit User
+      </button>
+      <button class="bg-red-500 text-white font-bold px-6 py-2 rounded-md">
+        Remove User
+      </button>
+    </div>
+  </div>
+</div>

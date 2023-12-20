@@ -1,0 +1,63 @@
+<section class="flex flex-col shadow-xl m-4 p-4 rounded-lg mb-[500px]">
+  <div class="text-2xl font-bold py-2">User profile</div>
+  <app-user-profile></app-user-profile>
+  <hr />
+  <div class="my-[50px]">
+    <div class="text-2xl font-bold py-2">Change password</div>
+    <form class="flex">
+      <label class="flex">
+        <div>Old password</div>
+        <input
+          type="text"
+          class="flex-2 border-2 border-black/50 w-[200px] p-2 rounded-[8px]"
+        />
+      </label>
+      <label class="flex">
+        <div>New password</div>
+        <input
+          type="text"
+          class="flex-2 border-2 border-black/50 w-[200px] p-2 rounded-[8px]"
+        />
+      </label>
+      <label class="flex">
+        <div>Confimrm password</div>
+        <input
+          type="text"
+          class="flex-2 border-2 border-black/50 w-[200px] p-2 rounded-[8px]"
+        />
+      </label>
+    </form>
+  </div>
+  <hr />
+  <div class="flex flex-col gap-2 my-[50px]">
+    <div class="text-2xl font-bold py-2">Add Workplace</div>
+    <form class="flex gap-2">
+      <input
+        type="text"
+        class="flex-2 border-2 border-black/50 w-[200px] p-2 rounded-[8px]"
+        #newWorkplace
+      />
+      <button
+        (click)="addWorkplace(newWorkplace.value)"
+        class="p-2 bg-slate-500 text-white text-2xl"
+      >
+        +
+      </button>
+    </form>
+    <div class="flex gap-2">
+      <span
+        *ngFor="
+          let workplace of currentState.currentLoggedFireUser!.userWorkplaces
+        "
+        class="px-4 py-2 bg-slate-300 rounded-lg relative"
+        >{{ workplace }}
+        <button
+          (click)="removeWorkplace(workplace)"
+          class="flex items-center justify-center absolute top-[-5px] right-[-5px] w-[25px] h-[25px] bg-red-500 text-white rounded-[50%]"
+        >
+          X
+        </button></span
+      >
+    </div>
+  </div>
+</section>

@@ -1,0 +1,29 @@
+<section class="shadow-xl rounded-md m-4 p-4 bg-white">
+  <app-search [parent]="'shifts'"></app-search>
+  <div class="">
+    <ul class="grid grid-cols-4 gap-4 w-full">
+      <li
+        *ngFor="
+          let shift of allShifts
+            | customFilter
+              : filters.nameQuery
+              : filters.startDateQuery
+              : filters.endDateQuery
+              : 'shifts'
+            | customSorter : filters.sortByQuery : filters.orderByQuery;
+          let index = index
+        "
+        (click)="editShift()"
+        class="relative cursor-pointer"
+      >
+        <app-shift-card [shift]="shift" [parentName]="'admin'"></app-shift-card>
+        <div
+          class="absolute top-[-5px] right-[-5px] center bg-red-500 text-white text-bold w-[30px] h-[30px] rounded-[50%] cursor-pointer"
+          (click)="deleteShift()"
+        >
+          X
+        </div>
+      </li>
+    </ul>
+  </div>
+</section>

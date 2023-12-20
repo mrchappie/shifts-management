@@ -1,0 +1,35 @@
+<div
+  class="flex flex-col gap-4 items-start justify-center shadow-all-sides p-4 rounded-lg"
+>
+  <div class="flex gap-2">
+    <span class="font-bold">{{ parentName != "admin" ? "ID:" : "Name:" }}</span>
+    <span *ngIf="parentName != 'admin'"
+      >{{ shift?.shiftID | slice : 0 : 19 }}...</span
+    >
+    <span *ngIf="parentName === 'admin'"
+      >{{ shift?.userInfo?.firstName }} {{ shift?.userInfo?.lastName }}</span
+    >
+  </div>
+  <div>
+    <span class="font-bold">Date: </span><span>{{ shift?.shiftDate }}</span>
+  </div>
+  <div>
+    <div>
+      <span class="font-bold">Interval: </span
+      ><span>{{ shift?.startTime }}</span
+      >&nbsp;-&nbsp;<span>{{ shift?.endTime }} </span>
+    </div>
+  </div>
+  <div>
+    <span class="font-bold">Workplace: </span
+    ><span>{{ shift?.workplace }}</span>
+  </div>
+  <div>
+    <span class="font-bold">Wage / hour: </span
+    ><span>{{ shift?.wagePerHour | currency }}</span>
+  </div>
+  <div>
+    <span class="font-bold">Revenue / shift: </span
+    ><span>{{ shift?.shiftRevenue | currency }}</span>
+  </div>
+</div>

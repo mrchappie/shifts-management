@@ -1,0 +1,76 @@
+<div class="flex gap-4 mb-4">
+  <form
+    class="flex-1 flex items-center justify-between p-2 shadow-all-sides rounded-md"
+    [formGroup]="searchForm"
+  >
+    <label>
+      <div>Workplace / Name:</div>
+      <input
+        type="text"
+        name="workplace"
+        placeholder="Search..."
+        formControlName="nameQuery"
+        class="border-2 p-1 rounded-md"
+      />
+    </label>
+    <label>
+      <div>From:</div>
+      <input
+        type="date"
+        name="startDate"
+        formControlName="startDateQuery"
+        class="border-2 p-1 rounded-md"
+      />
+    </label>
+    <label>
+      <div>To:</div>
+      <input
+        type="date"
+        name="endDate"
+        formControlName="endDateQuery"
+        class="border-2 p-1 rounded-md"
+      />
+    </label>
+    <div class="w-[0.5px] h-full bg-slate-300"></div>
+    <label>
+      <div>Sorter by:</div>
+      <select
+        name="sorterBy"
+        id="sorterBy"
+        class="border-2 p-1 rounded-md"
+        formControlName="sortByQuery"
+      >
+        <option *ngFor="let filter of sorterBy" value="{{ filter.value }}">
+          {{ filter.name }}
+        </option>
+      </select>
+    </label>
+    <label
+      ><div>Asc / Dsc:</div>
+      <select
+        name="orderBy"
+        id="orderBy"
+        class="border-2 p-1 rounded-md"
+        formControlName="orderByQuery"
+      >
+        <option *ngFor="let filter of orderBy" value="{{ filter.value }}">
+          {{ filter.name }}
+        </option>
+      </select></label
+    >
+    <div class="w-[0.5px] h-full bg-slate-300"></div>
+    <button
+      type="button"
+      (click)="resetFilters()"
+      class="p-4 shadow-all-sides rounded-md border-2 border-transparent hover:border-baseColor"
+    >
+      Reset
+    </button>
+  </form>
+  <div
+    class="flex flex-col items-center justify-center px-8 shadow-all-sides rounded-md"
+  >
+    <div>Shifts:</div>
+    <span class="font-bold text-[24px]">{{ shiftsCount }}</span>
+  </div>
+</div>

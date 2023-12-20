@@ -1,0 +1,52 @@
+<section class="center h-full">
+  <div
+    class="center w-[900px] h-[700px] bg-white shadow-all-sides p-8 rounded-2xl"
+  >
+    <div class="flex-1 center flex-col gap-4">
+      <img
+        src="../../../assets/illustrations/register.jpg"
+        alt="register illustration"
+      />
+      <a routerLink="/login" class="underline">Already have an account?</a>
+    </div>
+    <div class="flex items-start flex-col gap-10 flex-1 p-12">
+      <form
+        [formGroup]="registerForm"
+        (ngSubmit)="onSubmit()"
+        class="flex flex-col items-start gap-4 w-full"
+      >
+        <h1 class="text-3xl font-extrabold">Register</h1>
+        <ng-container *ngFor="let input of formData">
+          <label
+            *ngIf="input.type != 'checkbox'"
+            class="flex w-full border-b-2 border-black/50"
+          >
+            <div class="w-8 center">X</div>
+            <input
+              type="{{ input.type }}"
+              placeholder="{{ input.name }}"
+              formControlName="{{ input.formControl }}"
+              class="flex-1 p-3 outline-none"
+            />
+          </label>
+
+          <label *ngIf="input.type === 'checkbox'">
+            <input
+              type="{{ input.type }}"
+              name="{{ input.formControl }}"
+              formControlName="{{ input.formControl }}"
+            />
+            {{ input.name }}
+          </label>
+        </ng-container>
+        <button
+          type="submit"
+          [disabled]="!registerForm.valid"
+          class="bg-baseColor py-3 px-8 rounded-[8px] text-white font-bold"
+        >
+          Create Account
+        </button>
+      </form>
+    </div>
+  </div>
+</section>

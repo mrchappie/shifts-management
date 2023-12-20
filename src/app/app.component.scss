@@ -1,0 +1,7 @@
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.custom-grid-rows {
+  grid-template-rows: 100px 1fr;
+}

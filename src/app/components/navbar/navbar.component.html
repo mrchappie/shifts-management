@@ -1,0 +1,37 @@
+<nav
+  class="bg-white shadow-lg rounded-xl flex flex-col justify-between h-full overflow-hidden"
+>
+  <ul class="flex flex-col gap-4">
+    <ng-container *ngFor="let route of navbarUserRoutes">
+      <li
+        routerLink="{{ route.path }}"
+        routerLinkActive="activeNavLink"
+        [routerLinkActiveOptions]="{ exact: true }"
+        class="flex gap-4 uppercase text-lg font-bold text-black text-left w-full cursor-pointer px-4 py-3 hover:bg-baseColor/50"
+      >
+        <div>X</div>
+        {{ route.name }}
+      </li>
+    </ng-container>
+    <ng-container *ngIf="isAdmin">
+      <hr />
+      <li
+        *ngFor="let route of navbarAdminRoutes"
+        routerLink="{{ route.path }}"
+        routerLinkActive="activeNavLink"
+        [routerLinkActiveOptions]="{ exact: true }"
+        class="flex gap-4 uppercase text-md font-bold text-black text-left w-full cursor-pointer px-4 py-3 hover:bg-baseColor/50"
+      >
+        <div>X</div>
+        {{ route.name }}
+      </li>
+    </ng-container>
+  </ul>
+  <button
+    class="flex gap-4 uppercase text-lg font-bold text-black text-left w-full cursor-pointer px-4 py-3 hover:bg-baseColor/50"
+    (click)="onSubmit()"
+  >
+    <div>X</div>
+    LOG OUT
+  </button>
+</nav>

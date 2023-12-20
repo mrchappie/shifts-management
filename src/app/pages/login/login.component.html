@@ -1,0 +1,52 @@
+<section class="center h-full">
+  <div
+    class="center w-[900px] h-[700px] bg-white shadow-all-sides p-8 rounded-2xl"
+  >
+    <div class="flex-1 center flex-col gap-4">
+      <img
+        src="../../../assets/illustrations/login.jpg"
+        alt="login illustration"
+      />
+      <a routerLink="/register" class="underline">Create an account</a>
+    </div>
+    <div class="flex items-start flex-col gap-10 flex-1 p-12">
+      <form
+        [formGroup]="loginForm"
+        (ngSubmit)="onSubmit()"
+        class="flex flex-col items-start gap-4 w-full"
+      >
+        <h1 class="text-3xl font-extrabold">Sign up</h1>
+        <label class="custom-label">
+          <div class="w-8 center">X</div>
+          <input
+            type="email"
+            placeholder="Username / Email"
+            formControlName="email"
+            class="custom-input"
+          />
+        </label>
+        <label class="custom-label">
+          <div class="w-8 center">X</div>
+          <input
+            type="password"
+            placeholder="Password"
+            formControlName="password"
+            class="custom-input"
+          />
+        </label>
+        <button
+          type="submit"
+          class="bg-baseColor py-3 px-8 rounded-[8px] text-white font-bold"
+          [disabled]="!loginForm.valid"
+        >
+          Log in
+        </button>
+      </form>
+      <div class="flex gap-8">
+        <p>Or login with</p>
+        <span>G</span>
+        <span>G</span>
+      </div>
+    </div>
+  </div>
+</section>
