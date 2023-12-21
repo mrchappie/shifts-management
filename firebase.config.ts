@@ -1,7 +1,7 @@
 export const firebaseConfig: FirebaseConfigI = {
   prod: { usersDB: 'shiftAppUsers', shiftsDB: 'shiftAppShifts' },
-  deploy: { usersDB: 'shiftAppUsers', shiftsDB: 'shiftAppShifts' },
-  dev: {
+  dev: { usersDB: 'shiftAppUsers', shiftsDB: 'shiftAppShifts' },
+  deploy: {
     usersDB: 'shiftAppUsers-deploy',
     shiftsDB: 'shiftAppShifts-deploy',
   },
