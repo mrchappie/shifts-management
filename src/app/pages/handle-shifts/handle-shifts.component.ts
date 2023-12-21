@@ -126,7 +126,7 @@ export class HandleShiftsComponent implements OnInit {
       this.DB.setFirestoreDoc(
         this.fbConfig.dev.shiftsDB,
         // [currentYear, currentMonth, shiftID],
-        [currentYear, 'november', shiftID],
+        [currentYear, currentMonth, shiftID],
         {
           ...this.shiftForm.value,
           shiftID,
