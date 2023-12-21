@@ -1,7 +1,14 @@
 <section class="shadow-xl rounded-md m-4 p-4 bg-white">
-  <app-search [parent]="'shifts'"></app-search>
+  <app-search [parent]="'all-shifts'"></app-search>
   <div class="">
-    <ul class="grid grid-cols-4 gap-4 w-full">
+    <p *ngIf="allShifts.length === 0" class="text-center text-xl font-semibold">
+      For current filters selection there are no shifts, please go to
+      <a routerLink="/add-shift" class="underline hover:text-blue-400"
+        >Add Shift</a
+      >
+      page and add your first shift!
+    </p>
+    <ul *ngIf="allShifts.length != 0" class="grid grid-cols-4 gap-4 w-full">
       <li
         *ngFor="
           let shift of allShifts
