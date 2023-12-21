@@ -129,8 +129,6 @@ export class HandleShiftsComponent implements OnInit {
       const currentYear = shiftDate.getFullYear().toString();
       const currentMonth = months[shiftDate.getMonth()];
 
-      console.log(currentYear, currentMonth);
-
       this.DB.setFirestoreDoc(
         this.fbConfig.dev.shiftsDB,
         [currentYear, currentMonth, shiftID],
