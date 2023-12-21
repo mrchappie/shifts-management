@@ -311,7 +311,7 @@ export class HandleDBService {
     const [currentYear, currentMonth] = this.customFN.getCurrentYearMonth();
 
     const shiftsFromDB = await this.getFirestoreDocsByQuery(
-      this.fbConfig.dev.shiftsDB,
+      this.fbConfig.deploy.shiftsDB,
       [currentYear, currentMonth],
       userID
     );
@@ -326,10 +326,10 @@ export class HandleDBService {
   async handleGetAllShifts() {
     const [currentYear, currentMonth] = this.customFN.getCurrentYearMonth();
 
-    const allShifts = await this.getFirestoreDocs(this.fbConfig.dev.shiftsDB, [
-      currentYear,
-      currentMonth,
-    ]);
+    const allShifts = await this.getFirestoreDocs(
+      this.fbConfig.deploy.shiftsDB,
+      [currentYear, currentMonth]
+    );
 
     if (allShifts) {
       this.state.setState({ currentUserShifts: allShifts });
