@@ -3,6 +3,7 @@ import {
   Auth,
   User,
   createUserWithEmailAndPassword,
+  getAuth,
   onAuthStateChanged,
   signInWithEmailAndPassword,
   signOut,
@@ -27,6 +28,7 @@ import { State } from '../../Interfaces';
 import { calculateAge } from '../../functions';
 import { ToastService } from 'angular-toastify';
 import { FirebaseConfigI, firebaseConfig } from 'firebase.config';
+import { CustomFnService } from '../customFn/custom-fn.service';
 
 @Injectable({
   providedIn: 'root',
@@ -41,7 +43,8 @@ export class HandleDBService {
     private auth: Auth,
     private state: StateService,
     private firestore: Firestore,
-    private _toastService: ToastService
+    private _toastService: ToastService,
+    private customFN: CustomFnService
   ) {
     this.currentState = this.state.getState();
   }
@@ -161,6 +164,8 @@ export class HandleDBService {
     return;
   }
 
+  //! DELETE USER
+
   //! firebase getLoggedUser
   async getUserState(): Promise<User | null> {
     return new Promise(async (resolve) => {
@@ -212,6 +217,7 @@ export class HandleDBService {
 
       const docsData = await getDocs(docRef);
       const docs: any = [];
+
       if (!docsData.empty) {
         docsData.forEach((doc) => {
           docs.push(doc.data());
@@ -247,10 +253,10 @@ export class HandleDBService {
         });
         return docs;
       } else {
-        throw new Error('No shifts for this user!');
+        return [];
       }
     } catch (error) {
-      console.log(error);
+      this._toastService.error(`${error}`);
     }
   }
 
@@ -296,6 +302,37 @@ export class HandleDBService {
       await deleteDoc(doc(this.firestore, collectionName, ...documentPath));
     } catch (error) {
       console.log(error);
+    }
+  }
+
+  //! GET SHIFTS
+  async handleGetShifts(userID: string) {
+    const [currentYear, currentMonth] = this.customFN.getCurrentYearMonth();
+
+    const shiftsFromDB = await this.getFirestoreDocsByQuery(
+      this.fbConfig.dev.shiftsDB,
+      [currentYear, currentMonth],
+      userID
+    );
+
+    if (shiftsFromDB) {
+      this.state.setState({ currentUserShifts: shiftsFromDB });
+      this.setLocalStorage('loggedUserShifts', shiftsFromDB);
+    }
+  }
+
+  //! GET ALL SHIFTS
+  async handleGetAllShifts() {
+    const [currentYear, currentMonth] = this.customFN.getCurrentYearMonth();
+
+    const allShifts = await this.getFirestoreDocs(this.fbConfig.dev.shiftsDB, [
+      currentYear,
+      currentMonth,
+    ]);
+
+    if (allShifts) {
+      this.state.setState({ currentUserShifts: allShifts });
+      this.setLocalStorage('loggedUserShifts', allShifts);
     }
   }
 }

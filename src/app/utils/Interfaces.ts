@@ -3,14 +3,14 @@ import { UserCredential } from '@angular/fire/auth';
 export interface State {
   currentUserCred?: UserCredential;
   currentLoggedFireUser?: UserSettings;
-  currentUserShifts?: string;
+  currentUserShifts?: Shift[];
   isEditing: boolean;
   isLoggedIn: boolean;
   isAdmin: boolean;
   activeComponent: string;
   shiftToEdit: Shift | undefined;
   shiftsCount: number;
-  searchForm: PipeFilter;
+  searchForm: SearchFilters;
 }
 
 export interface UserSettings {
@@ -45,10 +45,11 @@ export interface Shift {
   };
 }
 
-export interface PipeFilter {
+export interface SearchFilters {
   nameQuery: string;
   startDateQuery: string;
   endDateQuery: string;
   sortByQuery: string;
   orderByQuery: string;
+  yearMonthQuery: string;
 }

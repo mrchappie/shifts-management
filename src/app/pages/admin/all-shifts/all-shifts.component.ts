@@ -1,6 +1,6 @@
-import { Component, Input } from '@angular/core';
+import { Component } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { PipeFilter, Shift, State } from 'src/app/utils/Interfaces';
+import { SearchFilters, Shift, State } from 'src/app/utils/Interfaces';
 import { HandleDBService } from 'src/app/utils/services/handleDB/handle-db.service';
 import { StateService } from 'src/app/utils/services/state/state.service';
 
@@ -13,12 +13,13 @@ import { FirebaseConfigI, firebaseConfig } from 'firebase.config';
   styleUrls: ['./all-shifts.component.scss'],
 })
 export class AllShiftsComponent {
-  filters: PipeFilter = {
+  filters: SearchFilters = {
     nameQuery: '',
     startDateQuery: '',
     endDateQuery: '',
     sortByQuery: '',
     orderByQuery: '',
+    yearMonthQuery: '',
   };
 
   // DB Config
@@ -40,6 +41,10 @@ export class AllShiftsComponent {
     this.stateSubscription = this.state.stateChanged.subscribe((newState) => {
       this.currentState = newState;
       this.filters = this.currentState.searchForm;
+
+      if (this.currentState.currentUserShifts) {
+        this.allShifts = this.currentState.currentUserShifts;
+      }
     });
   }
 
@@ -50,11 +55,7 @@ export class AllShiftsComponent {
   }
 
   async getAllShifts() {
-    const [currentYear, currentMonth] = getCurrentYearMonth();
-    this.allShifts = await this.DB.getFirestoreDocs(
-      this.fbConfig.dev.shiftsDB,
-      [currentYear, currentMonth]
-    );
+    this.DB.handleGetAllShifts();
   }
 
   resetFilters() {}

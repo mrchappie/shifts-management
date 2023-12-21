@@ -1,5 +1,5 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { PipeFilter, State, UserSettings } from 'src/app/utils/Interfaces';
+import { SearchFilters, State, UserSettings } from 'src/app/utils/Interfaces';
 import { Subscription } from 'rxjs';
 import { StateService } from 'src/app/utils/services/state/state.service';
 import { HandleDBService } from 'src/app/utils/services/handleDB/handle-db.service';
@@ -13,12 +13,13 @@ import { FirebaseConfigI, firebaseConfig } from 'firebase.config';
 export class AllUsersComponent implements OnInit, OnDestroy {
   // state
   currentState!: State;
-  filters: PipeFilter = {
+  filters: SearchFilters = {
     nameQuery: '',
     startDateQuery: '',
     endDateQuery: '',
     sortByQuery: '',
     orderByQuery: '',
+    yearMonthQuery: '',
   };
 
   // DB Config
