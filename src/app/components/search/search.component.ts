@@ -1,11 +1,10 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { SearchFilters, Shift, State } from 'src/app/utils/Interfaces';
-import { Filter, orderBy, sorterBy } from './formData';
+import { Filter, orderBy, sortShiftsBy, sortUsersBy } from './formData';
 import { StateService } from 'src/app/utils/services/state/state.service';
 import { Subscription } from 'rxjs';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { HandleDBService } from 'src/app/utils/services/handleDB/handle-db.service';
-import { CustomFnService } from 'src/app/utils/services/customFn/custom-fn.service';
 
 @Component({
   selector: 'app-search',
@@ -16,7 +15,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   @Input() parent: string = '';
 
   // html data
-  sorterBy: Filter[] = sorterBy;
+  sortBy: Filter[] = sortShiftsBy;
   orderBy: Filter[] = orderBy;
 
   // component data
@@ -36,6 +35,8 @@ export class SearchComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
+    this.sortBy = this.parent != 'all-users' ? sortShiftsBy : sortUsersBy;
+
     this.searchForm = this.fb.group({
       nameQuery: [''],
       startDateQuery: [''],

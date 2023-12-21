@@ -194,7 +194,6 @@ export class HandleDBService {
   async getFirestoreDoc(collectionName: string, documentPath: string[]) {
     try {
       const docRef = doc(this.firestore, collectionName, ...documentPath);
-
       const docSnap = await getDoc(docRef);
 
       if (docSnap.exists()) {
@@ -224,6 +223,8 @@ export class HandleDBService {
         });
 
         return docs;
+      } else {
+        return [];
       }
     } catch (error) {
       console.log(error);

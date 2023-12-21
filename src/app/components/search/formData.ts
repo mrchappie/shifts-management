@@ -1,4 +1,4 @@
-export const sorterBy = [
+export const sortShiftsBy: Filter[] = [
   { value: '', name: '--select--' },
   { value: 'workplace', name: 'By workplace' },
   { value: 'shiftDate', name: 'By date' },
@@ -8,10 +8,16 @@ export const sorterBy = [
   { value: 'shiftRevenue', name: 'By revenue' },
 ];
 
-export const orderBy = [
+export const orderBy: Filter[] = [
   { value: '', name: '--select--' },
   { value: 'asc', name: 'Ascending' },
   { value: 'dsc', name: 'Descending' },
+];
+
+export const sortUsersBy: Filter[] = [
+  { value: '', name: '--select--' },
+  { value: 'name', name: 'By name' },
+  { value: 'age', name: 'By age' },
 ];
 
 export interface Filter {

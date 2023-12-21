@@ -4,7 +4,8 @@
     [formGroup]="searchForm"
   >
     <label>
-      <div>Workplace / Name:</div>
+      <div *ngIf="parent != 'all-users'">Workplace:</div>
+      <div *ngIf="parent === 'all-users'">Name:</div>
       <input
         type="text"
         name="workplace"
@@ -33,31 +34,24 @@
     </label>
     <div class="w-[0.5px] h-full bg-slate-300"></div>
     <label>
-      <div>Sorter by:</div>
-      <select
-        name="sorterBy"
-        id="sorterBy"
-        class="border-2 p-1 rounded-md"
-        formControlName="sortByQuery"
-      >
-        <option *ngFor="let filter of sorterBy" value="{{ filter.value }}">
-          {{ filter.name }}
-        </option>
-      </select>
+      <div>Sort by:</div>
+      <div class="center">
+        <select
+          name="sorterBy"
+          id="sorterBy"
+          class="border-2 p-1 rounded-md"
+          formControlName="sortByQuery"
+        >
+          <option *ngFor="let filter of sortBy" value="{{ filter.value }}">
+            {{ filter.name }}
+          </option>
+        </select>
+        <div class="border-2 p-1 rounded-md w-[40px] cursor-pointer">
+          <img src="assets/icons/sort.svg" alt="" class="object-cover" />
+        </div>
+      </div>
     </label>
-    <!-- <label
-      ><div>Asc / Dsc:</div>
-      <select
-        name="orderBy"
-        id="orderBy"
-        class="border-2 p-1 rounded-md"
-        formControlName="orderByQuery"
-      >
-        <option *ngFor="let filter of orderBy" value="{{ filter.value }}">
-          {{ filter.name }}
-        </option>
-      </select></label 
-    >-->
+
     <label
       ><div>Year / Month:</div>
       <input
