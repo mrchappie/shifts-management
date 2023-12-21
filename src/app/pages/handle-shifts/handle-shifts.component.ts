@@ -38,11 +38,11 @@ export class HandleShiftsComponent implements OnInit {
   ngOnInit(): void {
     this.shiftForm = this.fb.group({
       shiftID: [uuidv4()],
-      shiftDate: [''],
+      shiftDate: ['', [Validators.required]],
       startTime: ['08:00'],
       endTime: ['20:00'],
       workplace: [''],
-      wagePerHour: ['20'],
+      wagePerHour: [''],
       shiftRevenue: [''],
     });
 
@@ -119,14 +119,21 @@ export class HandleShiftsComponent implements OnInit {
   }
 
   async onSubmit() {
+    // prettier-ignore
+    const months: string[]=["january","february","march","april","may","june","july",
+      "august", "september", "october", "november", "december"];
+
     try {
       const shiftID = this.shiftForm.value.shiftID;
-      const [currentYear, currentMonth] = getCurrentYearMonth();
+      const shiftDate = new Date(this.shiftForm.value.shiftDate);
+      const currentYear = shiftDate.getFullYear().toString();
+      const currentMonth = months[shiftDate.getMonth()];
+
+      console.log(currentYear, currentMonth);
 
       this.DB.setFirestoreDoc(
         this.fbConfig.dev.shiftsDB,
-        // [currentYear, currentMonth, shiftID],
-        [currentYear, 'november', shiftID],
+        [currentYear, currentMonth, shiftID],
         {
           ...this.shiftForm.value,
           shiftID,
