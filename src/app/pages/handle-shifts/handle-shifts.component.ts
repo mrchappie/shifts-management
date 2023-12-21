@@ -130,7 +130,7 @@ export class HandleShiftsComponent implements OnInit {
       const currentMonth = months[shiftDate.getMonth()];
 
       this.DB.setFirestoreDoc(
-        this.fbConfig.dev.shiftsDB,
+        this.fbConfig.deploy.shiftsDB,
         [currentYear, currentMonth, shiftID],
         {
           ...this.shiftForm.value,
