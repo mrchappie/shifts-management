@@ -58,3 +58,11 @@ export interface SearchFilters {
   orderByQuery: string;
   yearMonthQuery: string;
 }
+
+export interface ObjectSI {
+  [key: string]: string;
+}
+
+export interface ObjectNI {
+  [key: string]: string;
+}

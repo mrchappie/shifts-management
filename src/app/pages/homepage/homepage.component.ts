@@ -13,14 +13,14 @@ import { CountI } from '../admin/dashboard/dashboard.component';
   styleUrls: ['./homepage.component.scss'],
 })
 export class HomepageComponent {
-  shiftsCountLabels: string[] = [
-    'Total shifts',
-    'Shifts this month',
-    'Shifts last week',
-    'Shifts this week',
-    'Shifts next week',
+  shiftsCountData: CountI[] = [
+    { label: 'Total shifts', value: 0 },
+    { label: 'Shifts this month', value: 0 },
+    { label: 'Shifts last week', value: 0 },
+    { label: 'Shifts this week', value: 0 },
+    { label: 'Shifts next week', value: 0 },
   ];
-  shiftsCountValue: CountI[] = [];
+
   pieChartLabels: string[] = ['Test 0', 'Test 1', 'Test 2', 'Test 3'];
   pieChartDatasets: PieData[] = [
     {
@@ -43,6 +43,11 @@ export class HomepageComponent {
     this.currentState = this.state.getState();
     this.loggedUserID = this.currentState.currentLoggedFireUser!.id;
     const data = this.currentState.currentLoggedFireUser!.shiftsCount;
+
+    this.shiftsCountData[0].value = data.totalShifts;
+    this.shiftsCountData[2].value = data.lastWeek;
+    this.shiftsCountData[3].value = data.thisWeek;
+    this.shiftsCountData[4].value = data.nextWeek;
 
     //
     (async () => {

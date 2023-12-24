@@ -8,10 +8,10 @@ import { PieData } from 'src/app/components/chart/chart.component';
 })
 export class DashboardComponent {
   usersShiftsCountData: CountI[] = [
-    { name: 'Total users', value: 10 },
-    { name: 'Users this month', value: 10 },
-    { name: 'Total shifts', value: 10 },
-    { name: 'Shifts this month', value: 10 },
+    { label: 'Total users', value: 10 },
+    { label: 'Users this month', value: 10 },
+    { label: 'Total shifts', value: 10 },
+    { label: 'Shifts this month', value: 10 },
   ];
   pieChartLabels: string[] = ['Test 0', 'Test 1', 'Test 2', 'Test 3'];
   pieChartDatasets: PieData[] = [
@@ -22,6 +22,6 @@ export class DashboardComponent {
 }
 
 export interface CountI {
-  name: string;
+  label: string;
   value: number;
 }

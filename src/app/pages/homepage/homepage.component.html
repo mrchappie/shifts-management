@@ -1,7 +1,7 @@
 <p class="font-semibold text-2xl">Statistics about your shifts</p>
 <section class="center justify-evenly gap-4 p-4">
   <!-- STATISTICS -->
-  <ng-container *ngFor="let item of shiftsCountValue"
+  <ng-container *ngFor="let item of shiftsCountData"
     ><app-count-card [item]="item"></app-count-card
   ></ng-container>
 </section>
