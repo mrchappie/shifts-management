@@ -17,7 +17,9 @@
       >
         <h1 class="text-3xl font-extrabold">Sign up</h1>
         <label class="custom-label">
-          <div class="w-8 center">X</div>
+          <div class="center">
+            <mat-icon fontIcon="mail"></mat-icon>
+          </div>
           <input
             type="email"
             placeholder="Username / Email"
@@ -26,7 +28,9 @@
           />
         </label>
         <label class="custom-label">
-          <div class="w-8 center">X</div>
+          <div class="center">
+            <mat-icon fontIcon="password"></mat-icon>
+          </div>
           <input
             type="password"
             placeholder="Password"
@@ -36,10 +40,13 @@
         </label>
         <button
           type="submit"
-          class="bg-baseColor py-3 px-8 rounded-[8px] text-white font-bold"
+          class="center gap-2 bg-baseColor py-3 px-8 rounded-[8px] text-white font-bold"
           [disabled]="!loginForm.valid"
         >
-          Log in
+          <div>Log in</div>
+          <div class="center">
+            <mat-icon fontIcon="login"></mat-icon>
+          </div>
         </button>
       </form>
       <div class="flex gap-8">

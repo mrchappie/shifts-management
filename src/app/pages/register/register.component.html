@@ -21,7 +21,9 @@
             *ngIf="input.type != 'checkbox'"
             class="flex w-full border-b-2 border-black/50"
           >
-            <div class="w-8 center">X</div>
+            <div class="center">
+              <mat-icon fontIcon="{{ input.icon }}"></mat-icon>
+            </div>
             <input
               type="{{ input.type }}"
               placeholder="{{ input.name }}"

@@ -4,6 +4,7 @@ export interface InputType {
   formControl: string;
   placeholder?: string;
   defaultValue?: string;
+  icon: string;
 }
 
 export const formData = [
@@ -13,6 +14,7 @@ export const formData = [
     formControl: 'shiftID',
     placeholder: 'Shift ID',
     defaultValue: '',
+    icon: 'fingerprint',
   },
   {
     type: 'date',
@@ -20,6 +22,7 @@ export const formData = [
     formControl: 'shiftDate',
     placeholder: '',
     defaultValue: '',
+    icon: 'calendar_month',
   },
   {
     type: 'time',
@@ -27,6 +30,7 @@ export const formData = [
     formControl: 'startTime',
     placeholder: '',
     defaultValue: '',
+    icon: 'schedule',
   },
   {
     type: 'time',
@@ -34,6 +38,7 @@ export const formData = [
     formControl: 'endTime',
     placeholder: '',
     defaultValue: '',
+    icon: 'schedule',
   },
   {
     type: 'text',
@@ -41,6 +46,7 @@ export const formData = [
     formControl: 'workplace',
     placeholder: 'Workplace',
     defaultValue: '',
+    icon: 'apartment',
   },
   {
     type: 'number',
@@ -48,6 +54,7 @@ export const formData = [
     formControl: 'wagePerHour',
     placeholder: 'Wage per hour',
     defaultValue: '',
+    icon: 'attach_money',
   },
   {
     type: 'text',
@@ -55,5 +62,6 @@ export const formData = [
     formControl: 'shiftRevenue',
     placeholder: 'Revenue',
     defaultValue: '',
+    icon: 'price_check',
   },
 ];

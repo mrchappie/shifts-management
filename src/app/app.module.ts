@@ -39,6 +39,9 @@ import { NgChartsModule } from 'ng2-charts';
 import { ChartComponent } from './components/chart/chart.component';
 import { CountCardComponent } from './components/count-card/count-card.component';
 
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -90,6 +93,8 @@ import { CountCardComponent } from './components/count-card/count-card.component
     BrowserAnimationsModule,
     AngularToastifyModule,
     NgChartsModule,
+    MatIconModule,
+    MatButtonModule,
   ],
   providers: [ToastService],
   bootstrap: [AppComponent],

@@ -19,11 +19,16 @@
 
 @layer components {
   .center {
-    @apply flex items-center justify-center;
+    @apply flex items-center justify-center gap-2;
   }
 
   .center-col {
-    @apply flex flex-col items-center justify-center;
+    @apply flex flex-col items-center justify-center gap-2;
+  }
+
+  .custom-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(250px, 100%), 1fr));
   }
 
   .custom-input {
@@ -33,4 +38,9 @@
   .custom-label {
     @apply flex w-full border-b-2 border-black/50;
   }
+}
+
+body {
+  margin: 0;
+  font-family: sans-serif;
 }

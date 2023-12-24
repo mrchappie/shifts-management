@@ -7,9 +7,11 @@
         routerLink="{{ route.path }}"
         routerLinkActive="activeNavLink"
         [routerLinkActiveOptions]="{ exact: true }"
-        class="flex gap-4 uppercase text-lg font-bold text-black text-left w-full cursor-pointer px-4 py-3 hover:bg-baseColor/50"
+        class="flex gap-4 uppercase text-lg font-semibold text-black text-left w-full cursor-pointer px-4 py-3 hover:bg-baseColor/50"
       >
-        <div>X</div>
+        <div class="center">
+          <mat-icon fontIcon="{{ route.icon }}"></mat-icon>
+        </div>
         {{ route.name }}
       </li>
     </ng-container>
@@ -20,9 +22,11 @@
         routerLink="{{ route.path }}"
         routerLinkActive="activeNavLink"
         [routerLinkActiveOptions]="{ exact: true }"
-        class="flex gap-4 uppercase text-md font-bold text-black text-left w-full cursor-pointer px-4 py-3 hover:bg-baseColor/50"
+        class="flex gap-4 uppercase text-md font-semibold text-black text-left w-full cursor-pointer px-4 py-3 hover:bg-baseColor/50"
       >
-        <div>X</div>
+        <div class="center">
+          <mat-icon fontIcon="{{ route.icon }}"></mat-icon>
+        </div>
         {{ route.name }}
       </li>
     </ng-container>
@@ -31,7 +35,7 @@
     class="flex gap-4 uppercase text-lg font-bold text-black text-left w-full cursor-pointer px-4 py-3 hover:bg-baseColor/50"
     (click)="onSubmit()"
   >
-    <div>X</div>
+    <div class="center"><mat-icon fontIcon="logout"></mat-icon></div>
     LOG OUT
   </button>
 </nav>
