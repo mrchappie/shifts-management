@@ -5,6 +5,7 @@ import { PieData } from 'src/app/components/chart/chart.component';
 import { Shift, State } from 'src/app/utils/Interfaces';
 import { HandleDBService } from 'src/app/utils/services/handleDB/handle-db.service';
 import { StateService } from 'src/app/utils/services/state/state.service';
+import { CountI } from '../admin/dashboard/dashboard.component';
 
 @Component({
   selector: 'app-homepage',
@@ -12,6 +13,14 @@ import { StateService } from 'src/app/utils/services/state/state.service';
   styleUrls: ['./homepage.component.scss'],
 })
 export class HomepageComponent {
+  shiftsCountLabels: string[] = [
+    'Total shifts',
+    'Shifts this month',
+    'Shifts last week',
+    'Shifts this week',
+    'Shifts next week',
+  ];
+  shiftsCountValue: CountI[] = [];
   pieChartLabels: string[] = ['Test 0', 'Test 1', 'Test 2', 'Test 3'];
   pieChartDatasets: PieData[] = [
     {
@@ -33,7 +42,9 @@ export class HomepageComponent {
   ngOnInit(): void {
     this.currentState = this.state.getState();
     this.loggedUserID = this.currentState.currentLoggedFireUser!.id;
+    const data = this.currentState.currentLoggedFireUser!.shiftsCount;
 
+    //
     (async () => {
       this.userShifts = await this.DB.getFirestoreDocsByQuery(
         this.fbConfig.dev.shiftsDB,

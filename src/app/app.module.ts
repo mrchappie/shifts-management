@@ -37,6 +37,7 @@ import { AddWorkplaceComponent } from './components/add-workplace/add-workplace.
 import { ToastService, AngularToastifyModule } from 'angular-toastify';
 import { NgChartsModule } from 'ng2-charts';
 import { ChartComponent } from './components/chart/chart.component';
+import { CountCardComponent } from './components/count-card/count-card.component';
 
 @NgModule({
   declarations: [
@@ -66,6 +67,7 @@ import { ChartComponent } from './components/chart/chart.component';
     UserProfileComponent,
     AddWorkplaceComponent,
     ChartComponent,
+    CountCardComponent,
   ],
   imports: [
     BrowserModule,

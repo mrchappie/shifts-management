@@ -9,9 +9,9 @@ export const userProfile = {
 
   userWorkplaces: [],
   shiftsCount: {
-    shiftsLastWeek: 0,
-    shiftsThisWeek: 0,
-    shiftsNextWeek: 0,
+    lastWeek: 0,
+    thisWeek: 0,
+    nextWeek: 0,
     totalShifts: 0,
   },
 };

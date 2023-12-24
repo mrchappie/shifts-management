@@ -44,7 +44,6 @@ export class MyShiftsComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.currentState = this.state.getState();
-    this.shiftsCount = this.currentState.shiftsCount;
     this.getShifts(this.currentState.currentLoggedFireUser!.id);
 
     if (this.currentState.currentUserShifts) {
@@ -53,7 +52,6 @@ export class MyShiftsComponent implements OnInit, OnDestroy {
 
     this.stateSubscription = this.state.stateChanged.subscribe((newState) => {
       this.currentState = newState;
-      this.shiftsCount = this.currentState.shiftsCount;
       this.filters = this.currentState.searchForm;
 
       if (this.currentState.currentUserShifts) {
