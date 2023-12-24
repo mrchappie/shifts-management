@@ -17,7 +17,7 @@ export class StateService {
     isAdmin: false,
     activeComponent: 'Dashboard',
     shiftToEdit: undefined,
-    shiftsCount: 0,
+
     searchForm: {
       nameQuery: '',
       startDateQuery: '',
@@ -54,7 +54,7 @@ export const initialState = {
   isAdmin: false,
   activeComponent: 'Dashboard',
   shiftToEdit: undefined,
-  shiftsCount: 0,
+
   searchForm: {
     nameQuery: '',
     startDateQuery: '',

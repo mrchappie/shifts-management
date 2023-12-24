@@ -8,7 +8,7 @@
       >
       page and add your first shift!
     </p>
-    <ul *ngIf="allShifts.length != 0" class="grid grid-cols-4 gap-4 w-full">
+    <ul *ngIf="allShifts.length != 0" class="custom-grid gap-4 w-full">
       <li
         *ngFor="
           let shift of allShifts
@@ -28,7 +28,7 @@
           class="absolute top-[-5px] right-[-5px] center bg-red-500 text-white text-bold w-[30px] h-[30px] rounded-[50%] cursor-pointer"
           (click)="deleteShift()"
         >
-          X
+          <div class="center"><mat-icon fontIcon="delete"></mat-icon></div>
         </div>
       </li>
     </ul>

@@ -1,4 +1,4 @@
-<div class="center flex-col gap-4 shadow-all-sides rounded-r-md p-4">
+<div class="center-col gap-4 shadow-all-sides rounded-r-md p-4">
   <div class="w-[100px] h-[100px] rounded-[50%] overflow-hidden shadow-2xl">
     <img
       src="{{
@@ -10,31 +10,38 @@
       class="object-cover"
     />
   </div>
-  <div class="center flex-col gap-2">
-    <div class="font-bold">
+  <div class="center-col">
+    <div class="center font-bold">
+      <div class="center"><mat-icon fontIcon="person"></mat-icon></div>
       {{ userInfo?.firstName }} {{ userInfo?.lastName }}
     </div>
-    <span class="font-semibold italic text-sm text-black/50">{{
-      userInfo?.email ? userInfo?.email : "Undefined"
-    }}</span>
+    <span class="center font-semibold italic text-sm text-black/50"
+      ><div class="center"><mat-icon fontIcon="mail"></mat-icon></div>
+      {{ userInfo?.email ? userInfo?.email : "Undefined" }}</span
+    >
   </div>
-  <div class="center flex-col gap-2">
-    <div class="center flex-col gap-2 text-sm">
-      <span>{{ userInfo?.dob ? userInfo?.dob : "Undefined" }}</span
-      ><span class="italic">{{
-        userInfo?.phoneNumber ? userInfo?.phoneNumber : "Undefined"
-      }}</span>
-    </div>
-    <div class="flex flex-col gap-2">
-      <button
-        [routerLink]="['/admin', 'edit-user', userInfo?.id]"
-        class="bg-baseColor text-white font-bold px-6 py-2 rounded-md"
-      >
-        Edit User
-      </button>
-      <button class="bg-red-500 text-white font-bold px-6 py-2 rounded-md">
-        Remove User
-      </button>
-    </div>
+  <div class="center-col gap-2 text-sm">
+    <span class="center"
+      ><div>
+        <mat-icon fontIcon="calendar_month"></mat-icon>
+      </div>
+      {{ userInfo?.dob ? userInfo?.dob : "Undefined" }}</span
+    ><span class="italic center"
+      ><div><mat-icon fontIcon="phone"></mat-icon></div>
+      {{ userInfo?.phoneNumber ? userInfo?.phoneNumber : "Undefined" }}</span
+    >
+  </div>
+  <div class="center gap-2">
+    <button
+      [routerLink]="['/admin', 'edit-user', userInfo?.id]"
+      class="center gap-1 bg-baseColor text-white font-bold px-6 py-2 rounded-md"
+    >
+      <div class="center"><mat-icon fontIcon="edit"></mat-icon></div>
+    </button>
+    <button
+      class="center gap-1 bg-red-500 text-white font-bold px-6 py-2 rounded-md"
+    >
+      <div class="center"><mat-icon fontIcon="delete"></mat-icon></div>
+    </button>
   </div>
 </div>

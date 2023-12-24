@@ -10,3 +10,5 @@
 
 1. Sort shifts by timestamp at load
 2. Toast notificatins - implement from scratch
+3. Admin dashboard statistics about users, shifts, etc. like numbers this month and per total.
+4. Dark Mode

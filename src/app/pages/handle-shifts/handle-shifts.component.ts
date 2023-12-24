@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
 import { State } from 'src/app/utils/Interfaces';
 import { FirebaseConfigI, firebaseConfig } from 'firebase.config';
 import { getCurrentYearMonth } from 'src/app/utils/functions';
+import { CustomFnService } from 'src/app/utils/services/customFn/custom-fn.service';
 
 @Component({
   selector: 'app-handle-shifts',
@@ -32,7 +33,8 @@ export class HandleShiftsComponent implements OnInit {
     private fb: FormBuilder,
     private state: StateService,
     private DB: HandleDBService,
-    private router: Router
+    private router: Router,
+    private customFN: CustomFnService
   ) {}
 
   ngOnInit(): void {

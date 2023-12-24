@@ -59,12 +59,10 @@ export class SearchComponent implements OnInit, OnDestroy {
       }`,
     });
 
-    this.shiftsCount = this.currentState.shiftsCount;
     this.filters = this.currentState.searchForm;
 
     this.stateSubscription = this.state.stateChanged.subscribe((newState) => {
       this.currentState = newState;
-      this.shiftsCount = this.currentState.shiftsCount;
       this.filters = this.currentState.searchForm;
     });
   }

@@ -9,7 +9,6 @@ export interface State {
   isAdmin: boolean;
   activeComponent: string;
   shiftToEdit: Shift | undefined;
-  shiftsCount: number;
   searchForm: SearchFilters;
 }
 
@@ -27,6 +26,12 @@ export interface UserSettings {
     isAdmin: boolean;
   };
   userWorkplaces: string[];
+  shiftsCount: {
+    lastWeek: number;
+    thisWeek: number;
+    nextWeek: number;
+    totalShifts: number;
+  };
 }
 
 export interface Shift {
@@ -52,4 +57,12 @@ export interface SearchFilters {
   sortByQuery: string;
   orderByQuery: string;
   yearMonthQuery: string;
+}
+
+export interface ObjectSI {
+  [key: string]: string;
+}
+
+export interface ObjectNI {
+  [key: string]: string;
 }

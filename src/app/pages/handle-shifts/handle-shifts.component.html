@@ -9,6 +9,9 @@
     <ng-container *ngFor="let shift of shiftInputs">
       <ng-container *ngIf="shift.inputType === 'input'">
         <label class="custom-label">
+          <div class="center">
+            <mat-icon fontIcon="{{ shift.icon }}"></mat-icon>
+          </div>
           <input
             type="{{ shift.type }}"
             placeholder="{{ shift.placeholder }}"
@@ -19,6 +22,9 @@
       </ng-container>
       <ng-container *ngIf="shift.inputType === 'select'">
         <label class="custom-label">
+          <div class="center">
+            <mat-icon fontIcon="{{ shift.icon }}"></mat-icon>
+          </div>
           <select
             name="{{ shift.type }}"
             id="{{ shift.inputType }}"

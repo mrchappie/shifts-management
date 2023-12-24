@@ -37,6 +37,10 @@ import { AddWorkplaceComponent } from './components/add-workplace/add-workplace.
 import { ToastService, AngularToastifyModule } from 'angular-toastify';
 import { NgChartsModule } from 'ng2-charts';
 import { ChartComponent } from './components/chart/chart.component';
+import { CountCardComponent } from './components/count-card/count-card.component';
+
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
 
 @NgModule({
   declarations: [
@@ -66,6 +70,7 @@ import { ChartComponent } from './components/chart/chart.component';
     UserProfileComponent,
     AddWorkplaceComponent,
     ChartComponent,
+    CountCardComponent,
   ],
   imports: [
     BrowserModule,
@@ -88,6 +93,8 @@ import { ChartComponent } from './components/chart/chart.component';
     BrowserAnimationsModule,
     AngularToastifyModule,
     NgChartsModule,
+    MatIconModule,
+    MatButtonModule,
   ],
   providers: [ToastService],
   bootstrap: [AppComponent],
