@@ -149,7 +149,7 @@ export class HandleDBService {
       this._toastService.success('Login successfully!');
       return userCredential;
     } catch (error) {
-      this._toastService.error('Error on login!');
+      this._toastService.error('Invalid credentials, please try again!');
     }
     return null;
   }
