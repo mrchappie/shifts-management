@@ -17,6 +17,7 @@ export class UserProfileComponent {
   currentState!: State;
   settingsFormInputs: SettingsForm[] = settingsFormData;
   userSettings!: UserSettings;
+  profileImage: string = '';
   userIDFromURL!: string;
   userProfileForm!: FormGroup;
 
@@ -84,8 +85,9 @@ export class UserProfileComponent {
       });
     }
 
-    // update form is user info exists
+    // update form if user info exists
     if (this.userSettings) {
+      this.profileImage = this.userSettings.profileImage;
       this.userProfileForm.patchValue(this.userSettings);
     }
   }

@@ -29,13 +29,13 @@
         ><input type="file" id="changeProfilePicture" class="hidden" />
       </div>
       <div
-        class="w-[350px] aspect-square rounded-[50%] overflow-hidden border-[3px] border-baseColor shadow-2xl"
+        class="center w-[350px] aspect-square rounded-[50%] overflow-hidden border-[3px] border-baseColor shadow-2xl"
       >
         <img
           [src]="
-            currentState.currentLoggedFireUser!.profileImage
-              ? currentState.currentLoggedFireUser!.profileImage
-              : 'https://picsum.photos/250'
+            profileImage
+              ? profileImage
+              : 'assets/illustrations/no_image_user.jpg'
           "
           alt=""
           class="object-cover"
