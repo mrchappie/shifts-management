@@ -51,9 +51,7 @@ export class HomepageComponent {
 
     //
     (async () => {
-      this.userShifts = await this.DB.getFirestoreDocsByQuery(
-        this.fbConfig.dev.shiftsDB,
-        ['2023', 'december'],
+      this.userShifts = await this.DB.handleGetShiftsByUserID(
         this.loggedUserID
       );
 

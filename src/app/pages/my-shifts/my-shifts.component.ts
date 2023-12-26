@@ -23,6 +23,7 @@ export class MyShiftsComponent implements OnInit, OnDestroy {
     sortByQuery: '',
     orderByQuery: '',
     yearMonthQuery: '',
+    queryLimit: 10,
   };
 
   // DB Config
@@ -74,7 +75,7 @@ export class MyShiftsComponent implements OnInit, OnDestroy {
   }
 
   async getShifts(userID: string) {
-    this.DB.handleGetShifts(userID);
+    this.DB.handleGetShiftsByUserID(userID);
   }
 
   async editShift(shiftID: string) {

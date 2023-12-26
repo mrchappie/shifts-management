@@ -60,8 +60,24 @@
         id="yearMonth"
         class="border-2 p-1 rounded-md"
         formControlName="yearMonthQuery"
-        (change)="getShiftsByDate()"
+        (change)="getShiftsByDate(filters!.queryLimit)"
       />
+    </label>
+    <label
+      ><div>Limit:</div>
+      <select
+        type="number"
+        name="queryLimit"
+        id="queryLimit"
+        class="border-2 p-1 rounded-md"
+        formControlName="queryLimit"
+      >
+        <option value="10">10</option>
+        <option value="20">20</option>
+        <option value="30">30</option>
+        <option value="40">40</option>
+        <option value="all">All</option>
+      </select>
     </label>
     <div class="w-[0.5px] h-full bg-slate-300"></div>
     <button

@@ -11,11 +11,13 @@ import {
 
 import {
   Firestore,
+  Query,
   collection,
   deleteDoc,
   doc,
   getDoc,
   getDocs,
+  limit,
   query,
   setDoc,
   updateDoc,
@@ -232,19 +234,15 @@ export class HandleDBService {
   }
 
   //! GET DOCS BY QUERY
-  async getFirestoreDocsByQuery(
-    collectionName: string,
-    documentPath: string[],
-    userID: string
-  ) {
+  async getFirestoreDocsByQuery(q: Query) {
     try {
-      const docRef = collection(
-        this.firestore,
-        collectionName,
-        ...documentPath
-      );
+      // const docRef = collection(
+      //   this.firestore,
+      //   collectionName,
+      //   ...documentPath
+      // );
 
-      const q = query(docRef, where('userID', '==', userID));
+      // const q = query(docRef, where('userID', '==', userID));
       const querySnapshot = await getDocs(q);
       const docs: any = [];
 
@@ -307,29 +305,40 @@ export class HandleDBService {
   }
 
   //! GET SHIFTS
-  async handleGetShifts(userID: string) {
+  async handleGetShiftsByUserID(userID: string) {
     const [currentYear, currentMonth] = this.customFN.getCurrentYearMonth();
 
-    const shiftsFromDB = await this.getFirestoreDocsByQuery(
+    const docRef = collection(
+      this.firestore,
       this.fbConfig.dev.shiftsDB,
-      [currentYear, currentMonth],
-      userID
+      ...[currentYear, currentMonth]
     );
+
+    const q = query(docRef, where('userID', '==', userID));
+
+    const shiftsFromDB = await this.getFirestoreDocsByQuery(q);
 
     if (shiftsFromDB) {
       this.state.setState({ currentUserShifts: shiftsFromDB });
       this.setLocalStorage('loggedUserShifts', shiftsFromDB);
     }
+
+    return shiftsFromDB;
   }
 
   //! GET ALL SHIFTS
-  async handleGetAllShifts() {
+  async handleGetAllShifts(queryLimit: number) {
     const [currentYear, currentMonth] = this.customFN.getCurrentYearMonth();
 
-    const allShifts = await this.getFirestoreDocs(this.fbConfig.dev.shiftsDB, [
-      currentYear,
-      currentMonth,
-    ]);
+    const docRef = collection(
+      this.firestore,
+      this.fbConfig.dev.shiftsDB,
+      ...[currentYear, currentMonth]
+    );
+
+    const q = query(docRef, limit(queryLimit));
+
+    const allShifts = await this.getFirestoreDocsByQuery(q);
 
     if (allShifts) {
       this.state.setState({ currentUserShifts: allShifts });

@@ -8,7 +8,11 @@
       >
       page and add your first shift!
     </p>
-    <ul *ngIf="allShifts.length != 0" class="custom-grid gap-4 w-full">
+    <ul
+      #shiftsList
+      *ngIf="allShifts.length != 0"
+      class="custom-grid gap-4 w-full"
+    >
       <li
         *ngFor="
           let shift of allShifts

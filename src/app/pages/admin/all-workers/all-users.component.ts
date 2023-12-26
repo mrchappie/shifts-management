@@ -22,6 +22,7 @@ export class AllUsersComponent implements OnInit, OnDestroy {
     sortByQuery: '',
     orderByQuery: '',
     yearMonthQuery: '',
+    queryLimit: 10,
   };
 
   // DB Config
