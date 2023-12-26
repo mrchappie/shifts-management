@@ -38,6 +38,10 @@
   .custom-label {
     @apply flex w-full border-b-2 border-black/50;
   }
+
+  .hidden {
+    display: none;
+  }
 }
 
 body {

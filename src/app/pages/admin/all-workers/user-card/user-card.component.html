@@ -39,6 +39,7 @@
       <div class="center"><mat-icon fontIcon="edit"></mat-icon></div>
     </button>
     <button
+      (click)="openModal(userInfo!.id)"
       class="center gap-1 bg-red-500 text-white font-bold px-6 py-2 rounded-md"
     >
       <div class="center"><mat-icon fontIcon="delete"></mat-icon></div>

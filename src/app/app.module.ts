@@ -41,6 +41,7 @@ import { CountCardComponent } from './components/count-card/count-card.component
 
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import { ConfirmationModalComponent } from './components/confirmation-modal/confirmation-modal.component';
 
 @NgModule({
   declarations: [
@@ -71,6 +72,7 @@ import { MatButtonModule } from '@angular/material/button';
     AddWorkplaceComponent,
     ChartComponent,
     CountCardComponent,
+    ConfirmationModalComponent,
   ],
   imports: [
     BrowserModule,
