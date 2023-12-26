@@ -27,6 +27,7 @@
               type="{{ input.type }}"
               placeholder="{{ input.name }}"
               formControlName="{{ input.formControl }}"
+              [disabled]="input.disabled"
               class="custom-input"
             />
             <div
@@ -48,7 +49,7 @@
         </ng-container>
         <button
           type="submit"
-          [disabled]="!registerForm.valid"
+          [disabled]="registerForm.invalid"
           class="bg-baseColor py-3 px-8 rounded-[8px] text-white font-bold"
         >
           Create Account

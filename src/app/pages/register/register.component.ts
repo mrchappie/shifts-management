@@ -29,6 +29,7 @@ export class RegisterComponent {
       {
         firstName: ['', [Validators.required, Validators.minLength(3)]],
         lastName: ['', [Validators.required, Validators.minLength(3)]],
+        //! BUG PASS CONFIRM
         password: [
           '',
           [
@@ -49,7 +50,7 @@ export class RegisterComponent {
         ],
         email: ['first name + last name@shift.app'],
         dob: ['', [Validators.required]],
-        termsAndConditions: ['', [Validators.required]],
+        termsAndConditions: [false],
       },
       {
         validators: [
@@ -94,7 +95,6 @@ export class RegisterComponent {
   }
 
   getErrorMessage(control: string) {
-    console.log(this.registerForm?.errors);
     if (this.registerForm.get(control)?.hasError('required')) {
       return 'This field is required';
     }
@@ -140,7 +140,6 @@ export class RegisterComponent {
 
   async onSubmit() {
     await this.auth.register(this.registerForm.value);
-
     this.router.navigate(['/']);
   }
 }
