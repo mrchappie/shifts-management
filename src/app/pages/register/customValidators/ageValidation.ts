@@ -10,12 +10,9 @@ export function AgeValidation(dob: string = 'dob') {
     console.log(age);
     console.log(control.get(dob)!.value);
     console.log(age >= MIN_WORK_AGE && age <= MAX_WORK_AGE);
-    if (age) {
-      if (age >= MIN_WORK_AGE && age <= MAX_WORK_AGE) {
-        return null;
-      } else {
-        return { ageIsNotLegal: true };
-      }
+
+    if (age && age >= MIN_WORK_AGE && age <= MAX_WORK_AGE) {
+      return null;
     } else {
       return { ageIsNotLegal: true };
     }

@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { HandleDBService } from 'src/app/utils/services/handleDB/handle-db.service';
 import { RegisterFormDataI, registerFormData } from './formData';
 import { PasswordValidator } from './customValidators/confirmPassword';
-import { AgeValidation } from './customValidators/agevalidation';
+import { AgeValidation } from './customValidators/ageValidation';
 
 @Component({
   selector: 'app-register',
@@ -48,11 +48,14 @@ export class RegisterComponent {
           ],
         ],
         email: ['first name + last name@shift.app'],
-        dob: ['', [Validators.required, AgeValidation]],
+        dob: ['', [Validators.required]],
         termsAndConditions: ['', [Validators.required]],
       },
       {
-        validators: PasswordValidator('password', 'confPass'),
+        validators: [
+          PasswordValidator('password', 'confPass'),
+          AgeValidation('dob'),
+        ],
       }
     );
 
@@ -74,15 +77,24 @@ export class RegisterComponent {
   }
 
   formStatus(control: string) {
-    return (
-      this.registerForm.get(control)?.invalid &&
-      (this.registerForm.get(control)?.dirty ||
-        this.registerForm.get(control)?.touched)
-    );
+    if (control != 'dob') {
+      return (
+        this.registerForm.get(control)?.invalid &&
+        (this.registerForm.get(control)?.dirty ||
+          this.registerForm.get(control)?.touched)
+      );
+    } else {
+      return (
+        (this.registerForm.get(control)?.pristine &&
+          this.registerForm.get(control)?.touched) ||
+        (this.registerForm.get(control)?.touched &&
+          this.registerForm.get(control)?.dirty)
+      );
+    }
   }
 
   getErrorMessage(control: string) {
-    console.log(this.registerForm.get(control)?.errors);
+    console.log(this.registerForm?.errors);
     if (this.registerForm.get(control)?.hasError('required')) {
       return 'This field is required';
     }
@@ -118,7 +130,7 @@ export class RegisterComponent {
     }
 
     if (control === 'dob') {
-      if (this.registerForm.get(control)?.hasError('ageIsNotLegal')) {
+      if (this.registerForm.hasError('ageIsNotLegal')) {
         return 'Your age must be between 18 and 65 years';
       }
     }

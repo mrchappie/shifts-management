@@ -19,10 +19,7 @@
           Join us! Create your account today.
         </h1>
         <ng-container *ngFor="let input of formData">
-          <label
-            *ngIf="input.type != 'checkbox'"
-            class="flex w-full border-b-2 border-black/50 relative"
-          >
+          <label *ngIf="input.type != 'checkbox'" class="custom-label relative">
             <div class="center">
               <mat-icon fontIcon="{{ input.icon }}"></mat-icon>
             </div>
@@ -30,7 +27,7 @@
               type="{{ input.type }}"
               placeholder="{{ input.name }}"
               formControlName="{{ input.formControl }}"
-              class="flex-1 p-3 outline-none"
+              class="custom-input"
             />
             <div
               *ngIf="formStatus(input.formControl)"
