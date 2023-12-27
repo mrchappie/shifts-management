@@ -13,21 +13,29 @@
       <form
         [formGroup]="loginForm"
         (ngSubmit)="onSubmit()"
-        class="flex flex-col items-start gap-4 w-full"
+        class="flex flex-col items-start gap-8 w-full"
       >
-        <h1 class="text-3xl font-extrabold">Sign up</h1>
-        <label class="custom-label">
+        <h1 class="text-3xl font-extrabold">
+          Welcome back! Let's get started.
+        </h1>
+        <label class="custom-label relative">
           <div class="center">
             <mat-icon fontIcon="mail"></mat-icon>
           </div>
           <input
             type="email"
-            placeholder="Username / Email"
+            placeholder="Email"
             formControlName="email"
             class="custom-input"
           />
+          <div
+            *ngIf="formStatus('email')"
+            class="absolute bottom-[-25px] left-0 text-red-500"
+          >
+            {{ getErrorMessage("email") }}
+          </div>
         </label>
-        <label class="custom-label">
+        <label class="custom-label relative">
           <div class="center">
             <mat-icon fontIcon="password"></mat-icon>
           </div>
@@ -37,11 +45,17 @@
             formControlName="password"
             class="custom-input"
           />
+          <div
+            *ngIf="formStatus('password')"
+            class="absolute bottom-[-25px] left-0 text-red-500"
+          >
+            {{ getErrorMessage("password") }}
+          </div>
         </label>
         <button
           type="submit"
           class="center gap-2 bg-baseColor py-3 px-8 rounded-[8px] text-white font-bold"
-          [disabled]="!loginForm.valid"
+          [disabled]="loginForm.invalid"
         >
           <div>Log in</div>
           <div class="center">

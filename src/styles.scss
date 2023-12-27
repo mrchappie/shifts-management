@@ -60,3 +60,12 @@ body {
   margin: 0;
   font-family: sans-serif;
 }
+
+label:has(input.ng-touched),
+label:has(input.ng-dirty) {
+  border-color: red;
+}
+
+label:has(input.ng-valid) {
+  border-color: initial;
+}

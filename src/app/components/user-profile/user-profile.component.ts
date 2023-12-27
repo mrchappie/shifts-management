@@ -1,12 +1,13 @@
 import { Component } from '@angular/core';
 import { State, UserSettings } from 'src/app/utils/Interfaces';
 import { SettingsForm, settingsFormData } from './formData';
-import { FormGroup, FormBuilder } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { HandleDBService } from 'src/app/utils/services/handleDB/handle-db.service';
 import { StateService } from 'src/app/utils/services/state/state.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FirebaseConfigI, firebaseConfig } from 'firebase.config';
+import { AgeValidation } from 'src/app/pages/register/customValidators/ageValidation';
 
 @Component({
   selector: 'app-user-profile',
@@ -39,14 +40,23 @@ export class UserProfileComponent {
       (param) => (this.userIDFromURL = param['userID'])
     );
 
-    this.userProfileForm = this.fb.group({
-      userName: [''],
-      firstName: [''],
-      lastName: [''],
-      email: [{ value: '', disabled: this.userIDFromURL ? false : true }],
-      dob: [''],
-      phoneNumber: [''],
-    });
+    this.userProfileForm = this.fb.group(
+      {
+        userName: [''],
+        firstName: ['', [Validators.required]],
+        lastName: ['', [Validators.required]],
+        email: [
+          { value: '', disabled: this.userIDFromURL ? false : true },
+          [Validators.required, Validators.email],
+        ],
+        dob: ['', [Validators.required]],
+        phoneNumber: [
+          '',
+          [Validators.required, Validators.pattern(/[0-9]{10}/)],
+        ],
+      },
+      { validators: AgeValidation }
+    );
 
     this.currentState = this.state.getState();
 
@@ -90,6 +100,67 @@ export class UserProfileComponent {
       this.profileImage = this.userSettings.profileImage;
       this.userProfileForm.patchValue(this.userSettings);
     }
+  }
+
+  formStatus(control: string) {
+    if (control != 'dob') {
+      return (
+        this.userProfileForm.get(control)?.invalid &&
+        (this.userProfileForm.get(control)?.dirty ||
+          this.userProfileForm.get(control)?.touched)
+      );
+    } else {
+      return (
+        (this.userProfileForm.get(control)?.pristine &&
+          this.userProfileForm.get(control)?.touched) ||
+        (this.userProfileForm.get(control)?.touched &&
+          this.userProfileForm.get(control)?.dirty)
+      );
+    }
+  }
+
+  getErrorMessage(control: string) {
+    if (this.userProfileForm.get(control)?.hasError('required')) {
+      return 'This field is required';
+    }
+
+    if (control === 'userName') {
+      if (this.userProfileForm.get(control)?.hasError('pattern')) {
+        return 'Provide a valid username';
+      }
+    }
+
+    if (control === 'firstName') {
+      if (this.userProfileForm.get(control)?.hasError('minlength')) {
+        return 'First name must be longer than 2 chars';
+      }
+    }
+
+    if (control === 'lastName') {
+      if (this.userProfileForm.get(control)?.hasError('minlength')) {
+        return 'Last name must be longer than 2 chars';
+      }
+    }
+
+    if (control === 'email') {
+      if (this.userProfileForm.get(control)?.hasError('email')) {
+        return 'Provide a valid email adress';
+      }
+    }
+
+    if (control === 'dob') {
+      if (this.userProfileForm.hasError('ageIsNotLegal')) {
+        return 'Your age must be between 18 and 65 years';
+      }
+    }
+
+    if (control === 'phoneNumber') {
+      if (this.userProfileForm.get(control)?.hasError('pattern')) {
+        return 'Provide a valid phone number';
+      }
+    }
+
+    return '';
   }
 
   async onSubmit() {
