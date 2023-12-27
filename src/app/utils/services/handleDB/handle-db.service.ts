@@ -298,7 +298,7 @@ export class HandleDBService {
   }
 
   //! GET SHIFTS
-  async handleGetShiftsByUserID(userID: string) {
+  async handleGetShiftsByUserID(userID: string, queryLimit?: number) {
     const [currentYear, currentMonth] = this.customFN.getCurrentYearMonth();
 
     const docRef = collection(
@@ -307,16 +307,20 @@ export class HandleDBService {
       ...[currentYear, currentMonth]
     );
 
-    const q = query(docRef, where('userID', '==', userID));
+    const q = query(
+      docRef,
+      where('userID', '==', userID),
+      limit(queryLimit as number)
+    );
 
-    const shiftsFromDB = await this.getFirestoreDocsByQuery(q);
+    const shifts = await this.getFirestoreDocsByQuery(q);
 
-    if (shiftsFromDB) {
-      this.state.setState({ currentUserShifts: shiftsFromDB });
-      this.setLocalStorage('loggedUserShifts', shiftsFromDB);
+    if (shifts) {
+      this.state.setState({ shifts: shifts });
+      this.setLocalStorage('loggedUserShifts', shifts);
     }
 
-    return shiftsFromDB;
+    return shifts;
   }
 
   //! GET ALL SHIFTS
@@ -331,11 +335,13 @@ export class HandleDBService {
 
     const q = query(docRef, limit(queryLimit));
 
-    const allShifts = await this.getFirestoreDocsByQuery(q);
+    const shifts = await this.getFirestoreDocsByQuery(q);
 
-    if (allShifts) {
-      this.state.setState({ currentUserShifts: allShifts });
-      this.setLocalStorage('loggedUserShifts', allShifts);
+    if (shifts) {
+      this.state.setState({ shifts: shifts });
+      this.setLocalStorage('loggedUserShifts', shifts);
     }
+
+    return shifts;
   }
 }
