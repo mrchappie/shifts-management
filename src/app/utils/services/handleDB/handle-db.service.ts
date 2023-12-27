@@ -236,13 +236,6 @@ export class HandleDBService {
   //! GET DOCS BY QUERY
   async getFirestoreDocsByQuery(q: Query) {
     try {
-      // const docRef = collection(
-      //   this.firestore,
-      //   collectionName,
-      //   ...documentPath
-      // );
-
-      // const q = query(docRef, where('userID', '==', userID));
       const querySnapshot = await getDocs(q);
       const docs: any = [];
 
@@ -310,7 +303,7 @@ export class HandleDBService {
 
     const docRef = collection(
       this.firestore,
-      this.fbConfig.dev.shiftsDB,
+      this.fbConfig.deploy.shiftsDB,
       ...[currentYear, currentMonth]
     );
 
@@ -332,7 +325,7 @@ export class HandleDBService {
 
     const docRef = collection(
       this.firestore,
-      this.fbConfig.dev.shiftsDB,
+      this.fbConfig.deploy.shiftsDB,
       ...[currentYear, currentMonth]
     );
 
