@@ -17,6 +17,7 @@ export class StateService {
     isAdmin: false,
     activeComponent: 'Dashboard',
     shiftToEdit: undefined,
+    shiftsCount: 0,
 
     searchForm: {
       nameQuery: '',
@@ -28,6 +29,7 @@ export class StateService {
       yearMonthQuery: `${new Date().getFullYear()}-${
         new Date().getMonth() + 1
       }`,
+      queryLimit: 10,
     },
   };
 
@@ -54,6 +56,7 @@ export const initialState = {
   isAdmin: false,
   activeComponent: 'Dashboard',
   shiftToEdit: undefined,
+  shiftsCount: 0,
 
   searchForm: {
     nameQuery: '',
@@ -62,5 +65,6 @@ export const initialState = {
     sortByQuery: '',
     orderByQuery: '',
     yearMonthQuery: '',
+    queryLimit: 10,
   },
 };

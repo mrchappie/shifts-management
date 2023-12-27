@@ -1,5 +1,5 @@
 export const sortShiftsBy: Filter[] = [
-  { value: '', name: '--select--' },
+  { value: '', name: 'Sort by' },
   { value: 'workplace', name: 'By workplace' },
   { value: 'shiftDate', name: 'By date' },
   { value: 'startTime', name: 'By start time' },
@@ -15,7 +15,7 @@ export const orderBy: Filter[] = [
 ];
 
 export const sortUsersBy: Filter[] = [
-  { value: '', name: '--select--' },
+  { value: '', name: 'Sort by' },
   { value: 'name', name: 'By name' },
   { value: 'age', name: 'By age' },
 ];

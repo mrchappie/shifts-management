@@ -4,6 +4,8 @@ import { Subscription } from 'rxjs';
 import { StateService } from 'src/app/utils/services/state/state.service';
 import { HandleDBService } from 'src/app/utils/services/handleDB/handle-db.service';
 import { FirebaseConfigI, firebaseConfig } from 'firebase.config';
+import { ToastService } from 'angular-toastify';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-all-users',
@@ -20,6 +22,7 @@ export class AllUsersComponent implements OnInit, OnDestroy {
     sortByQuery: '',
     orderByQuery: '',
     yearMonthQuery: '',
+    queryLimit: 10,
   };
 
   // DB Config
@@ -27,10 +30,17 @@ export class AllUsersComponent implements OnInit, OnDestroy {
 
   // component data
   allUsers: UserSettings[] = [];
+  showModal: boolean = false;
+  userID: string = '';
 
   private stateSubscription: Subscription | undefined;
 
-  constructor(private state: StateService, private DB: HandleDBService) {}
+  constructor(
+    private state: StateService,
+    private DB: HandleDBService,
+    private router: Router,
+    private _toastService: ToastService
+  ) {}
 
   ngOnInit(): void {
     this.getAllUsers();
@@ -54,5 +64,24 @@ export class AllUsersComponent implements OnInit, OnDestroy {
       this.fbConfig.deploy.usersDB,
       []
     );
+  }
+
+  toggleModal(event?: string) {
+    this.userID = event as string;
+    this.showModal = !this.showModal;
+  }
+
+  confirmModal(event: Event) {
+    event.stopPropagation();
+    try {
+      this.DB.deleteFirestoreDoc(firebaseConfig.dev.usersDB, [this.userID]);
+      this.showModal = !this.showModal;
+      this._toastService.success('User deleted successfully!');
+      setTimeout(() => {
+        location.reload();
+      }, 500);
+    } catch (error) {
+      this._toastService.error('Error deleting the user, please try again!');
+    }
   }
 }

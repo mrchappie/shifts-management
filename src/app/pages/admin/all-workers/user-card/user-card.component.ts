@@ -1,4 +1,5 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { user } from '@angular/fire/auth';
 import { UserSettings } from 'src/app/utils/Interfaces';
 
 @Component({
@@ -8,4 +9,10 @@ import { UserSettings } from 'src/app/utils/Interfaces';
 })
 export class UserCardComponent {
   @Input() userInfo?: UserSettings;
+
+  @Output() openModalEvent = new EventEmitter<string>();
+
+  openModal(userID: string) {
+    this.openModalEvent.emit(userID);
+  }
 }

@@ -2,11 +2,13 @@
   <form
     [formGroup]="userProfileForm"
     (ngSubmit)="onSubmit()"
-    class="flex-1 center-col gap-3 w-[600px]"
+    class="flex-1 center-col gap-8 items-start ml-8"
   >
     <div *ngFor="let input of settingsFormInputs" class="center items-start">
-      <div class="py-4 w-[200px]">{{ input.name }}:</div>
       <label class="custom-label">
+        <div class="center">
+          <mat-icon fontIcon="{{ input.icon }}"></mat-icon>
+        </div>
         <input
           formControlName="{{ input.formControl }}"
           type="{{ input.type }}"
@@ -14,27 +16,31 @@
         />
       </label>
     </div>
-    <button type="submit" class="p-2 bg-baseColor text-white">
+    <button type="submit" class="py-2 px-4 bg-baseColor text-white rounded-sm">
       Update information
     </button>
   </form>
   <div class="flex-1 flex items-center justify-center">
-    <label class="flex flex-col">
-      <div>Upload profile picture</div>
-      <input type="file"
-    /></label>
-    <div
-      class="w-[250px] aspect-square rounded-[50%] overflow-hidden border-[3px] border-baseColor shadow-2xl"
-    >
-      <img
-        [src]="
-          currentState.currentLoggedFireUser!.profileImage
-            ? currentState.currentLoggedFireUser!.profileImage
-            : 'https://picsum.photos/250'
-        "
-        alt=""
-        class="object-cover"
-      />
-    </div>
+    <label for="changeProfilePicture" class="center relative"
+      ><div
+        class="center absolute bottom-[5%] right-[15%] p-2 bg-white rounded-[50%] shadow-all-sides cursor-pointer"
+      >
+        <mat-icon fontIcon="add_a_photo"></mat-icon
+        ><input type="file" id="changeProfilePicture" class="hidden" />
+      </div>
+      <div
+        class="center w-[350px] aspect-square rounded-[50%] overflow-hidden border-[3px] border-baseColor shadow-2xl"
+      >
+        <img
+          [src]="
+            profileImage
+              ? profileImage
+              : 'assets/illustrations/no_image_user.jpg'
+          "
+          alt=""
+          class="object-cover"
+        />
+      </div>
+    </label>
   </div>
 </div>

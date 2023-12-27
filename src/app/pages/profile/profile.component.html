@@ -1,4 +1,4 @@
-<section class="flex flex-col shadow-xl m-4 p-4 rounded-lg mb-[500px]">
+<section class="flex flex-col">
   <div class="text-2xl font-bold py-2">User profile</div>
   <app-user-profile></app-user-profile>
   <hr />
@@ -39,9 +39,9 @@
       />
       <button
         (click)="addWorkplace(newWorkplace.value)"
-        class="p-2 bg-slate-500 text-white text-2xl"
+        class="bg-slate-500 text-white text-2xl"
       >
-        +
+        <mat-icon fontIcon="add"></mat-icon>
       </button>
     </form>
     <div class="flex gap-2">
@@ -53,11 +53,10 @@
         >{{ workplace }}
         <button
           (click)="removeWorkplace(workplace)"
-          class="flex items-center justify-center absolute top-[-5px] right-[-5px] w-[25px] h-[25px] bg-red-500 text-white rounded-[50%]"
+          class="center absolute top-[-5px] right-[-5px] bg-red-500 text-white rounded-[50%]"
         >
-          X
-        </button></span
-      >
+          <mat-icon fontIcon="delete" class="text-[14px]"></mat-icon></button
+      ></span>
     </div>
   </div>
 </section>

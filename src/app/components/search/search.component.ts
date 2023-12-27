@@ -44,11 +44,18 @@ export class SearchComponent implements OnInit, OnDestroy {
       sortByQuery: [''],
       orderByQuery: [''],
       yearMonthQuery: [''],
+      queryLimit: [10],
     });
 
     this.searchForm.valueChanges.subscribe((value) => {
       this.state.setState({ searchForm: value });
     });
+
+    this.searchForm
+      .get('queryLimit')
+      ?.valueChanges.subscribe((value: number) => {
+        this.getShiftsByDate(value);
+      });
 
     this.currentState = this.state.getState();
 
@@ -73,11 +80,13 @@ export class SearchComponent implements OnInit, OnDestroy {
     }
   }
 
-  getShiftsByDate() {
+  getShiftsByDate(limit: number) {
     if (this.parent === 'my-shifts') {
-      this.DB.handleGetShifts(this.currentState.currentLoggedFireUser!.id);
+      this.DB.handleGetShiftsByUserID(
+        this.currentState.currentLoggedFireUser!.id
+      );
     } else if (this.parent === 'all-shifts') {
-      this.DB.handleGetAllShifts();
+      this.DB.handleGetAllShifts(limit as number);
     }
   }
 
@@ -88,7 +97,7 @@ export class SearchComponent implements OnInit, OnDestroy {
       searchForm: defaultFormValues,
     });
 
-    this.getShiftsByDate();
+    this.getShiftsByDate(10);
   }
 }
 
@@ -99,4 +108,5 @@ export const defaultFormValues = {
   sortByQuery: '',
   orderByQuery: '',
   yearMonthQuery: `${new Date().getFullYear()}-${new Date().getMonth() + 1}`,
+  queryLimit: 10,
 };

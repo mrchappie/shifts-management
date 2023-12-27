@@ -1,10 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, QueryList, ViewChildren } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { SearchFilters, Shift, State } from 'src/app/utils/Interfaces';
 import { HandleDBService } from 'src/app/utils/services/handleDB/handle-db.service';
 import { StateService } from 'src/app/utils/services/state/state.service';
 
-import { getCurrentYearMonth } from 'src/app/utils/functions';
 import { FirebaseConfigI, firebaseConfig } from 'firebase.config';
 
 @Component({
@@ -20,6 +19,7 @@ export class AllShiftsComponent {
     sortByQuery: '',
     orderByQuery: '',
     yearMonthQuery: '',
+    queryLimit: 10,
   };
 
   // DB Config
@@ -28,7 +28,6 @@ export class AllShiftsComponent {
   // component data
   currentState!: State;
   allShifts: Shift[] = [];
-  shiftsCount: number = 0;
 
   private stateSubscription: Subscription | undefined;
 
@@ -55,7 +54,7 @@ export class AllShiftsComponent {
   }
 
   async getAllShifts() {
-    this.DB.handleGetAllShifts();
+    this.DB.handleGetAllShifts(this.filters.queryLimit);
   }
 
   resetFilters() {}
