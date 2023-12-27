@@ -1,97 +1,118 @@
-<div class="flex gap-4 mb-4">
+<div class="center gap-4 mb-4">
   <form
-    class="flex-1 flex items-center justify-between p-2 shadow-all-sides rounded-md"
+    class="flex-1 grid grid-cols-7 gap-6 p-2 shadow-all-sides rounded-md bg-slate-600"
     [formGroup]="searchForm"
   >
-    <label>
-      <div *ngIf="parent != 'all-users'">Workplace:</div>
-      <div *ngIf="parent === 'all-users'">Name:</div>
-      <input
-        type="text"
-        name="workplace"
-        placeholder="Search..."
-        formControlName="nameQuery"
-        class="border-2 p-1 rounded-md"
-      />
-    </label>
-    <label>
-      <div>From:</div>
-      <input
-        type="date"
-        name="startDate"
-        formControlName="startDateQuery"
-        class="border-2 p-1 rounded-md"
-      />
-    </label>
-    <label>
-      <div>To:</div>
-      <input
-        type="date"
-        name="endDate"
-        formControlName="endDateQuery"
-        class="border-2 p-1 rounded-md"
-      />
-    </label>
-    <div class="w-[0.5px] h-full bg-slate-300"></div>
-    <label>
-      <div>Sort by:</div>
-      <div class="center">
+    <!-- ITEMS COUNTS -->
+    <div
+      class="col-span-1 col-start-2 row-start-2 center shadow-all-sides rounded-md bg-white"
+    >
+      <div>{{ parent === "all-users" ? "Users:" : "Shifts:" }}</div>
+      <span class="font-bold text-[16px]">{{ shiftsCount }}</span>
+    </div>
+    <!-- FIRST ROW -->
+    <div class="center gap-4 col-span-3 col-start-3">
+      <label class="flex-1 custom-search-label">
+        <input
+          type="text"
+          name="workplace"
+          [placeholder]="
+            parent === 'all-users' ? 'Search by name' : 'Search by workplace'
+          "
+          formControlName="nameQuery"
+          class="w-full custom-search-input"
+        />
+      </label>
+      <label
+        *ngIf="parent === 'my-shifts' || parent === 'all-shifts'"
+        class="flex-1 custom-search-label"
+      >
+        <input
+          type="month"
+          name="yearMonth"
+          id="yearMonth"
+          formControlName="yearMonthQuery"
+          (change)="getShiftsByDate(filters!.queryLimit)"
+          class="custom-search-input"
+        />
+      </label>
+      <label class="center flex-1 custom-search-label">
         <select
           name="sorterBy"
           id="sorterBy"
-          class="border-2 p-1 rounded-md"
           formControlName="sortByQuery"
+          class="custom-search-input"
         >
           <option *ngFor="let filter of sortBy" value="{{ filter.value }}">
             {{ filter.name }}
           </option>
         </select>
-        <div class="border-2 p-1 rounded-md w-[40px] cursor-pointer">
-          <div class="center"><mat-icon fontIcon="swap_vert"></mat-icon></div>
+        <div class="w-[30px] cursor-pointer">
+          <div class="center">
+            <mat-icon fontIcon="swap_vert"></mat-icon>
+          </div>
         </div>
-      </div>
-    </label>
+      </label>
+    </div>
 
-    <label
-      ><div>Year / Month:</div>
-      <input
-        type="month"
-        name="yearMonth"
-        id="yearMonth"
-        class="border-2 p-1 rounded-md"
-        formControlName="yearMonthQuery"
-        (change)="getShiftsByDate(filters!.queryLimit)"
-      />
-    </label>
-    <label
-      ><div>Limit:</div>
-      <select
-        type="number"
-        name="queryLimit"
-        id="queryLimit"
-        class="border-2 p-1 rounded-md"
-        formControlName="queryLimit"
+    <!-- SECOND ROW -->
+
+    <div class="center gap-4 col-span-3 col-start-3">
+      <label
+        *ngIf="parent === 'my-shifts' || parent === 'all-shifts'"
+        class="center flex-1 custom-search-label"
       >
-        <option value="10">10</option>
-        <option value="20">20</option>
-        <option value="30">30</option>
-        <option value="40">40</option>
-        <option value="all">All</option>
-      </select>
-    </label>
-    <div class="w-[0.5px] h-full bg-slate-300"></div>
-    <button
-      type="button"
-      (click)="resetFilters()"
-      class="p-4 shadow-all-sides rounded-md border-2 border-transparent hover:border-baseColor"
-    >
-      Reset
-    </button>
+        <div class="custom-label-text">Start date</div>
+        <input
+          type="date"
+          name="startDate"
+          formControlName="startDateQuery"
+          class="custom-search-input"
+        />
+      </label>
+      <label
+        *ngIf="parent === 'my-shifts' || parent === 'all-shifts'"
+        class="center flex-1 custom-search-label"
+      >
+        <div class="custom-label-text">End date</div>
+        <input
+          type="date"
+          name="endDate"
+          formControlName="endDateQuery"
+          class="custom-search-input"
+        />
+      </label>
+
+      <!-- <div class="w-[0.5px] h-full bg-slate-300"></div> -->
+
+      <label class="center flex-1 custom-search-label">
+        <div class="custom-label-text">Results</div>
+        <select
+          type="number"
+          name="queryLimit"
+          id="queryLimit"
+          formControlName="queryLimit"
+          class="custom-search-input"
+        >
+          <option value="10">10</option>
+          <option value="20">20</option>
+          <option value="30">30</option>
+          <option value="40">40</option>
+          <option value="all">All</option>
+        </select>
+      </label>
+    </div>
+
+    <!-- RESET BUTTON -->
+
+    <div class="center col-span-1 col-start-6 w-full">
+      <button
+        type="button"
+        (click)="resetFilters()"
+        class="p-2 shadow-all-sides rounded-md border-2 border-transparent bg-white hover:border-baseColor w-full"
+      >
+        Reset
+      </button>
+    </div>
   </form>
-  <div
-    class="flex flex-col items-center justify-center px-8 shadow-all-sides rounded-md"
-  >
-    <div>Shifts:</div>
-    <span class="font-bold text-[24px]">{{ shiftsCount }}</span>
-  </div>
 </div>
