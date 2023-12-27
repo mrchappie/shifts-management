@@ -32,19 +32,19 @@
   }
 
   .custom-input {
-    @apply flex-1 p-3 outline-none;
+    @apply flex-1 p-3 outline-none bg-transparent;
   }
 
   .custom-label {
-    @apply flex w-full border-b-2 border-black/50;
+    @apply flex w-full border-b-2 border-black/50 bg-white px-2;
   }
 
   .custom-search-label {
-    @apply bg-white border-none p-2 rounded-md justify-between relative h-full cursor-text;
+    @apply bg-white border-none p-2 rounded-md justify-between relative h-full cursor-text shadow-all-sides;
   }
 
   .custom-search-input {
-    @apply outline-none  text-black min-w-[50%] border-b-[1px] border-black/25 cursor-text;
+    @apply outline-none  text-black min-w-[50%] border-b-[1px] border-accentColor/75 cursor-text;
   }
 
   .custom-label-text {
@@ -53,6 +53,10 @@
 
   .hidden {
     display: none;
+  }
+
+  .activeNavLink {
+    @apply text-accentColor;
   }
 }
 
