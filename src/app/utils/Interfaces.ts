@@ -10,6 +10,9 @@ export interface State {
   activeComponent: string;
   shiftToEdit: Shift | undefined;
   shiftsCount: number;
+  // fetched shifts
+  shifts: Shift[];
+
   searchForm: SearchFilters;
 }
 

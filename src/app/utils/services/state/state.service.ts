@@ -11,13 +11,14 @@ export class StateService {
   private state: State = {
     currentUserCred: undefined,
     currentLoggedFireUser: undefined,
-    currentUserShifts: undefined,
     isEditing: false,
     isLoggedIn: false,
     isAdmin: false,
     activeComponent: 'Dashboard',
     shiftToEdit: undefined,
     shiftsCount: 0,
+    // fetched shifts
+    shifts: [],
 
     searchForm: {
       nameQuery: '',
@@ -57,6 +58,8 @@ export const initialState = {
   activeComponent: 'Dashboard',
   shiftToEdit: undefined,
   shiftsCount: 0,
+  // fetched shifts
+  shifts: [],
 
   searchForm: {
     nameQuery: '',

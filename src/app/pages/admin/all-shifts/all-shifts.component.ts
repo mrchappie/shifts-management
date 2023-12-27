@@ -41,8 +41,8 @@ export class AllShiftsComponent {
       this.currentState = newState;
       this.filters = this.currentState.searchForm;
 
-      if (this.currentState.currentUserShifts) {
-        this.allShifts = this.currentState.currentUserShifts;
+      if (this.currentState.shifts) {
+        this.allShifts = this.currentState.shifts;
       }
     });
   }

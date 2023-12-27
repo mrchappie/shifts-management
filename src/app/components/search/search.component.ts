@@ -83,7 +83,8 @@ export class SearchComponent implements OnInit, OnDestroy {
   getShiftsByDate(limit: number) {
     if (this.parent === 'my-shifts') {
       this.DB.handleGetShiftsByUserID(
-        this.currentState.currentLoggedFireUser!.id
+        this.currentState.currentLoggedFireUser!.id,
+        limit
       );
     } else if (this.parent === 'all-shifts') {
       this.DB.handleGetAllShifts(limit as number);

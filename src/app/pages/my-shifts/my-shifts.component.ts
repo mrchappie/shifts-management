@@ -47,16 +47,16 @@ export class MyShiftsComponent implements OnInit, OnDestroy {
     this.currentState = this.state.getState();
     this.getShifts(this.currentState.currentLoggedFireUser!.id);
 
-    if (this.currentState.currentUserShifts) {
-      this.myShifts = this.currentState.currentUserShifts;
+    if (this.currentState.shifts) {
+      this.myShifts = this.currentState.shifts;
     }
 
     this.stateSubscription = this.state.stateChanged.subscribe((newState) => {
       this.currentState = newState;
       this.filters = this.currentState.searchForm;
 
-      if (this.currentState.currentUserShifts) {
-        this.myShifts = this.currentState.currentUserShifts;
+      if (this.currentState.shifts) {
+        this.myShifts = this.currentState.shifts;
       }
     });
 
@@ -75,7 +75,7 @@ export class MyShiftsComponent implements OnInit, OnDestroy {
   }
 
   async getShifts(userID: string) {
-    this.DB.handleGetShiftsByUserID(userID);
+    this.DB.handleGetShiftsByUserID(userID, this.filters.queryLimit);
   }
 
   async editShift(shiftID: string) {
