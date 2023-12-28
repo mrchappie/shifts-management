@@ -198,7 +198,6 @@ export class HandleDBService {
       const credentials = EmailAuthProvider.credential(oldEmail, password);
       await reauthenticateWithCredential(user, credentials);
       // this.verifyUserEmail();
-      console.log(await fetchSignInMethodsForEmail(this.auth, newEmail));
       await updateEmail(user, newEmail);
 
       this.updateFirestoreDoc(firebaseConfig.dev.usersDB, [user.uid], {
@@ -230,7 +229,6 @@ export class HandleDBService {
       const unsubscribe = onAuthStateChanged(this.auth, async (user) => {
         if (user) {
           // User is signed in
-          console.log(user);
           this.state.setState({
             currentLoggedFireUser: await this.getFirestoreDoc(
               this.fbConfig.dev.usersDB,

@@ -1,38 +1,10 @@
 <section class="flex flex-col">
-  <div class="text-2xl font-bold py-2">User profile</div>
+  <div class="text-2xl font-bold py-2">User profile information</div>
   <app-user-profile></app-user-profile>
   <hr />
   <div class="text-2xl font-bold py-2">Update your credentials</div>
   <app-change-credentials></app-change-credentials>
   <hr />
-  <div class="flex flex-col gap-2 my-[50px]">
-    <div class="text-2xl font-bold py-2">Add Workplace</div>
-    <form class="flex gap-2">
-      <input
-        type="text"
-        class="flex-2 border-2 border-black/50 w-[200px] p-2 rounded-[8px]"
-        #newWorkplace
-      />
-      <button
-        (click)="addWorkplace(newWorkplace.value)"
-        class="bg-slate-500 text-white text-2xl"
-      >
-        <mat-icon fontIcon="add"></mat-icon>
-      </button>
-    </form>
-    <div class="flex gap-2">
-      <span
-        *ngFor="
-          let workplace of currentState.currentLoggedFireUser!.userWorkplaces
-        "
-        class="px-4 py-2 bg-slate-300 rounded-lg relative"
-        >{{ workplace }}
-        <button
-          (click)="removeWorkplace(workplace)"
-          class="center absolute top-[-5px] right-[-5px] bg-red-500 text-white rounded-[50%]"
-        >
-          <mat-icon fontIcon="delete" class="text-[14px]"></mat-icon></button
-      ></span>
-    </div>
-  </div>
+  <div class="text-2xl font-bold py-2">Add a new workplace</div>
+  <app-add-workplace></app-add-workplace>
 </section>
