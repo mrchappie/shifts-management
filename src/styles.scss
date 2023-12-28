@@ -32,7 +32,7 @@
   }
 
   .custom-input {
-    @apply flex-1 p-3 outline-none bg-transparent;
+    @apply flex-1 p-3 outline-none bg-transparent cursor-text;
   }
 
   .custom-label {

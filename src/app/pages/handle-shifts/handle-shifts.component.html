@@ -12,12 +12,23 @@
           <div class="center">
             <mat-icon fontIcon="{{ shift.icon }}"></mat-icon>
           </div>
-          <input
-            type="{{ shift.type }}"
-            placeholder="{{ shift.placeholder }}"
-            formControlName="{{ shift.formControl }}"
-            class="custom-input w-[400px]"
-          />
+          <ng-container *ngIf="!shift.disabled">
+            <input
+              type="{{ shift.type }}"
+              placeholder="{{ shift.placeholder }}"
+              formControlName="{{ shift.formControl }}"
+              class="custom-input w-[400px]"
+            />
+          </ng-container>
+          <ng-container *ngIf="shift.disabled">
+            <div class="custom-input cursor-not-allowed opacity-25">
+              {{
+                shiftForm.get(shift.formControl)?.value
+                  ? shiftForm.get(shift.formControl)?.value
+                  : shift.placeholder
+              }}
+            </div></ng-container
+          >
         </label>
       </ng-container>
       <ng-container *ngIf="shift.inputType === 'select'">
