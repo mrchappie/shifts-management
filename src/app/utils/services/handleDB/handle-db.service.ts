@@ -240,7 +240,7 @@ export class HandleDBService {
           });
           resolve(user);
 
-          this.updateFirestoreDoc(firebaseConfig.dev.usersDB, [user.uid], {
+          this.updateFirestoreDoc(firebaseConfig.deploy.usersDB, [user.uid], {
             emailVerified: user.emailVerified,
           });
         } else {
