@@ -9,9 +9,12 @@ module.exports = {
     extend: {
       // colors
       colors: {
-        baseColor: "#22BBAC",
-        secColor: "#4C4C4C",
-        accentColor: "",
+        baseColor: "#009FB7",
+        secColor: "#FED766",
+        thirdColor: "#696773",
+        accentColor: "#fe4a49",
+        bgColor: "#eff1f3",
+        blackColor: "#272727",
       },
       // shadows
       boxShadow: {
