@@ -200,7 +200,7 @@ export class HandleDBService {
       // this.verifyUserEmail();
       await updateEmail(user, newEmail);
 
-      this.updateFirestoreDoc(firebaseConfig.dev.usersDB, [user.uid], {
+      this.updateFirestoreDoc(firebaseConfig.deploy.usersDB, [user.uid], {
         email: newEmail,
       });
 
