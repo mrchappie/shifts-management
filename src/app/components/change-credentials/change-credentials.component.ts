@@ -27,6 +27,7 @@ export class ChangeCredentialsComponent implements OnInit {
     this.changeEmailForm = this.fb.group({
       oldEmail: ['', [Validators.required]],
       newEmail: ['', [Validators.required]],
+      password: ['', [Validators.required]],
     });
   }
 
@@ -57,7 +58,15 @@ export class ChangeCredentialsComponent implements OnInit {
     }
 
     if (type === 'email') {
-      this.DB.setUserEmail(this.changeEmailForm.value.newEmail);
+      this.DB.setUserEmail(
+        this.changeEmailForm.value.oldEmail,
+        this.changeEmailForm.value.newEmail,
+        this.changeEmailForm.value.password
+      );
     }
+  }
+
+  verifyEmail() {
+    this.DB.verifyUserEmail();
   }
 }

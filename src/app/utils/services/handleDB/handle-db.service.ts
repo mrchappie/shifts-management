@@ -7,6 +7,7 @@ import {
   getAuth,
   onAuthStateChanged,
   reauthenticateWithCredential,
+  sendEmailVerification,
   signInWithEmailAndPassword,
   signOut,
   updateEmail,
@@ -87,7 +88,7 @@ export class HandleDBService {
         password
       );
 
-      // add user information to firesote
+      // add user information to firestore
       if (userCredential) {
         this.setFirestoreDoc(
           this.fbConfig.dev.usersDB,
@@ -178,9 +179,7 @@ export class HandleDBService {
   async setUserPassword(email: string, oldPass: string, newPass: string) {
     try {
       const user = this.auth.currentUser as User;
-
       const credentials = EmailAuthProvider.credential(email, oldPass);
-
       await reauthenticateWithCredential(user, credentials);
 
       await updatePassword(user, newPass);
@@ -191,12 +190,27 @@ export class HandleDBService {
   }
 
   //! NEW EMAIL
-  async setUserEmail(email: string) {
+  async setUserEmail(oldEmail: string, newEmail: string, password: string) {
     try {
       const user = this.auth.currentUser as User;
+      await sendEmailVerification(user);
 
-      await updateEmail(user, email);
+      const credentials = EmailAuthProvider.credential(oldEmail, password);
+      await reauthenticateWithCredential(user, credentials);
+      await updateEmail(user, newEmail);
+
       this.logout();
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  //! VERIFY EMAIL
+  async verifyUserEmail() {
+    try {
+      const user = this.auth.currentUser as User;
+      await sendEmailVerification(user);
+      this._toastService.warn('Email verification sent!');
     } catch (error) {
       console.log(error);
     }
@@ -215,6 +229,7 @@ export class HandleDBService {
               this.fbConfig.dev.usersDB,
               [user.uid]
             ),
+            emailVerified: user.emailVerified,
             currentUserCred: user,
             isLoggedIn: true,
           });

@@ -7,6 +7,13 @@
   </div>
   <div class="text-3xl">
     Hy,
-    <span class="text-accentColor font-bold">{{ currentUserName }}</span>
+    <span class="text-accentColor font-bold"
+      >{{ currentUserName
+      }}<mat-icon
+        *ngIf="currentState.emailVerified"
+        fontIcon="check_circle"
+        class="text-baseColor"
+      ></mat-icon
+    ></span>
   </div>
 </header>
