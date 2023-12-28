@@ -4,6 +4,7 @@ import {
   EmailAuthProvider,
   User,
   createUserWithEmailAndPassword,
+  fetchSignInMethodsForEmail,
   getAuth,
   onAuthStateChanged,
   reauthenticateWithCredential,
@@ -193,11 +194,16 @@ export class HandleDBService {
   async setUserEmail(oldEmail: string, newEmail: string, password: string) {
     try {
       const user = this.auth.currentUser as User;
-      await sendEmailVerification(user);
 
       const credentials = EmailAuthProvider.credential(oldEmail, password);
       await reauthenticateWithCredential(user, credentials);
+      // this.verifyUserEmail();
+      console.log(await fetchSignInMethodsForEmail(this.auth, newEmail));
       await updateEmail(user, newEmail);
+
+      this.updateFirestoreDoc(firebaseConfig.dev.usersDB, [user.uid], {
+        email: newEmail,
+      });
 
       this.logout();
     } catch (error) {
@@ -224,6 +230,7 @@ export class HandleDBService {
       const unsubscribe = onAuthStateChanged(this.auth, async (user) => {
         if (user) {
           // User is signed in
+          console.log(user);
           this.state.setState({
             currentLoggedFireUser: await this.getFirestoreDoc(
               this.fbConfig.dev.usersDB,
@@ -234,6 +241,10 @@ export class HandleDBService {
             isLoggedIn: true,
           });
           resolve(user);
+
+          this.updateFirestoreDoc(firebaseConfig.dev.usersDB, [user.uid], {
+            emailVerified: user.emailVerified,
+          });
         } else {
           // User is signed out
           resolve(null);

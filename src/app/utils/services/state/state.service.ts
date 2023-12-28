@@ -50,6 +50,7 @@ export class StateService {
 }
 
 export const initialState = {
+  emailVerified: false,
   currentUserCred: undefined,
   currentLoggedFireUser: undefined,
   currentUserShifts: undefined,
