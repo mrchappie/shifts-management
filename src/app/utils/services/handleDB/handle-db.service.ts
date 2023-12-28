@@ -1,12 +1,16 @@
 import { Injectable } from '@angular/core';
 import {
   Auth,
+  EmailAuthProvider,
   User,
   createUserWithEmailAndPassword,
   getAuth,
   onAuthStateChanged,
+  reauthenticateWithCredential,
   signInWithEmailAndPassword,
   signOut,
+  updateEmail,
+  updatePassword,
 } from '@angular/fire/auth';
 
 import {
@@ -31,6 +35,7 @@ import { calculateAge } from '../../functions';
 import { ToastService } from 'angular-toastify';
 import { FirebaseConfigI, firebaseConfig } from 'firebase.config';
 import { CustomFnService } from '../customFn/custom-fn.service';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
@@ -46,7 +51,8 @@ export class HandleDBService {
     private state: StateService,
     private firestore: Firestore,
     private _toastService: ToastService,
-    private customFN: CustomFnService
+    private customFN: CustomFnService,
+    private router: Router
   ) {
     this.currentState = this.state.getState();
   }
@@ -163,7 +169,37 @@ export class HandleDBService {
     this.removeLocalStorage('currentLoggedFireUser');
     this.removeLocalStorage('loggedUserShifts');
 
+    this.router.navigate(['/login']);
+
     return;
+  }
+
+  //! RESET PASSWORD
+  async setUserPassword(email: string, oldPass: string, newPass: string) {
+    try {
+      const user = this.auth.currentUser as User;
+
+      const credentials = EmailAuthProvider.credential(email, oldPass);
+
+      await reauthenticateWithCredential(user, credentials);
+
+      await updatePassword(user, newPass);
+      this.logout();
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  //! NEW EMAIL
+  async setUserEmail(email: string) {
+    try {
+      const user = this.auth.currentUser as User;
+
+      await updateEmail(user, email);
+      this.logout();
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   //! DELETE USER

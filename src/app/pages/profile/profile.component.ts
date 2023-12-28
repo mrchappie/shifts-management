@@ -9,6 +9,7 @@ import { Subscription } from 'rxjs';
 import { State, UserSettings } from 'src/app/utils/Interfaces';
 import { arrayRemove, arrayUnion } from '@angular/fire/firestore';
 import { FirebaseConfigI, firebaseConfig } from 'firebase.config';
+import { FormBuilder, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-profile',
