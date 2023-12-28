@@ -9,6 +9,7 @@ export class StateService {
   constructor() {}
 
   private state: State = {
+    emailVerified: false,
     currentUserCred: undefined,
     currentLoggedFireUser: undefined,
     isEditing: false,
@@ -49,6 +50,7 @@ export class StateService {
 }
 
 export const initialState = {
+  emailVerified: false,
   currentUserCred: undefined,
   currentLoggedFireUser: undefined,
   currentUserShifts: undefined,

@@ -1,6 +1,7 @@
 import { UserCredential } from '@angular/fire/auth';
 
 export interface State {
+  emailVerified: boolean;
   currentUserCred?: UserCredential;
   currentLoggedFireUser?: UserSettings;
   currentUserShifts?: Shift[];

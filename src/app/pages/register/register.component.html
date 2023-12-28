@@ -19,23 +19,27 @@
           Join us! Create your account today.
         </h1>
         <ng-container *ngFor="let input of formData">
-          <label *ngIf="input.type != 'checkbox'" class="custom-label relative">
+          <label *ngIf="input.type != 'checkbox'" class="custom-label">
             <div class="center">
               <mat-icon fontIcon="{{ input.icon }}"></mat-icon>
             </div>
-            <input
-              type="{{ input.type }}"
-              placeholder="{{ input.name }}"
-              formControlName="{{ input.formControl }}"
-              [disabled]="input.disabled"
-              class="custom-input"
-            />
-            <div
-              *ngIf="formStatus(input.formControl)"
-              class="absolute bottom-[-25px] left-0 text-red-500"
+            <ng-container *ngIf="!input.disabled">
+              <input
+                type="{{ input.type }}"
+                placeholder="{{ input.placeholder }}"
+                formControlName="{{ input.formControl }}"
+                class="custom-input"
+              />
+            </ng-container>
+            <ng-container *ngIf="input.disabled"
+              ><div class="custom-input cursor-not-allowed opacity-25">
+                {{
+                  registerForm.get(input.formControl)?.value
+                    ? registerForm.get(input.formControl)?.value
+                    : input.placeholder
+                }}
+              </div></ng-container
             >
-              {{ getErrorMessage(input.formControl) }}
-            </div>
           </label>
 
           <label *ngIf="input.type === 'checkbox'">
@@ -44,7 +48,7 @@
               name="{{ input.formControl }}"
               formControlName="{{ input.formControl }}"
             />
-            {{ input.name }}
+            {{ input.placeholder }}
           </label>
         </ng-container>
         <button

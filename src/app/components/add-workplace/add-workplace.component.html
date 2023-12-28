@@ -1,1 +1,32 @@
-<p>add-workplace works!</p>
+<section class="min-h-[150px] my-[50px] center-col gap-4 items-start">
+  <form class="center">
+    <label class="custom-label">
+      <input
+        type="text"
+        placeholder="Workplace"
+        class="custom-input"
+        #newWorkplace
+      />
+      <button
+        (click)="addWorkplace(newWorkplace.value)"
+        class="center text-black text-3xl"
+      >
+        <mat-icon fontIcon="add"></mat-icon>
+      </button>
+    </label>
+  </form>
+  <div class="center justify-start flex-wrap w-[50%]">
+    <span
+      *ngFor="
+        let workplace of currentState.currentLoggedFireUser!.userWorkplaces
+      "
+      class="center min-w-max px-4 py-2 bg-slate-300 rounded-md"
+      >{{ workplace }}
+      <button
+        (click)="removeWorkplace(workplace)"
+        class="center hover:text-red-500"
+      >
+        <mat-icon fontIcon="delete"></mat-icon></button
+    ></span>
+  </div>
+</section>

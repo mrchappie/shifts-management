@@ -32,7 +32,7 @@
   }
 
   .custom-input {
-    @apply flex-1 p-3 outline-none bg-transparent;
+    @apply flex-1 p-3 outline-none bg-transparent cursor-text;
   }
 
   .custom-label {
@@ -47,8 +47,12 @@
     @apply outline-none  text-black min-w-[50%] border-b-[1px] border-accentColor/75 cursor-text;
   }
 
-  .custom-label-text {
-    @apply absolute top-[-15px] right-2 px-2 bg-white rounded-md shadow-sm shadow-black/25;
+  .custom-label-text-r {
+    @apply absolute top-[-15px] right-2 px-2 bg-white  rounded-md shadow-sm shadow-black/25;
+  }
+
+  .custom-label-text-l {
+    @apply absolute top-[-15px] left-2 px-2 bg-white  rounded-md shadow-sm shadow-black/25;
   }
 
   .hidden {
@@ -57,6 +61,17 @@
 
   .activeNavLink {
     @apply text-accentColor;
+  }
+
+  .cta-btn {
+  }
+
+  .submit-btn {
+    @apply outline-none text-white bg-baseColor rounded-md py-2 px-4 shadow-sm hover:shadow-lg transition-all;
+  }
+
+  .modal {
+    @apply center absolute top-0 left-0 w-full h-full bg-black/50 z-10;
   }
 }
 

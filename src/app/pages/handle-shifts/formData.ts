@@ -5,6 +5,7 @@ export interface InputType {
   placeholder?: string;
   defaultValue?: string;
   icon: string;
+  disabled: boolean;
 }
 
 export const formData = [
@@ -15,6 +16,7 @@ export const formData = [
     placeholder: 'Shift ID',
     defaultValue: '',
     icon: 'fingerprint',
+    disabled: true,
   },
   {
     type: 'date',
@@ -23,6 +25,7 @@ export const formData = [
     placeholder: '',
     defaultValue: '',
     icon: 'calendar_month',
+    disabled: false,
   },
   {
     type: 'time',
@@ -31,6 +34,7 @@ export const formData = [
     placeholder: '',
     defaultValue: '',
     icon: 'schedule',
+    disabled: false,
   },
   {
     type: 'time',
@@ -39,6 +43,7 @@ export const formData = [
     placeholder: '',
     defaultValue: '',
     icon: 'schedule',
+    disabled: false,
   },
   {
     type: 'text',
@@ -47,6 +52,7 @@ export const formData = [
     placeholder: 'Workplace',
     defaultValue: '',
     icon: 'apartment',
+    disabled: false,
   },
   {
     type: 'number',
@@ -55,6 +61,7 @@ export const formData = [
     placeholder: 'Wage per hour',
     defaultValue: '',
     icon: 'attach_money',
+    disabled: false,
   },
   {
     type: 'text',
@@ -63,5 +70,6 @@ export const formData = [
     placeholder: 'Revenue',
     defaultValue: '',
     icon: 'price_check',
+    disabled: true,
   },
 ];

@@ -1,12 +1,18 @@
 import { Injectable } from '@angular/core';
 import {
   Auth,
+  EmailAuthProvider,
   User,
   createUserWithEmailAndPassword,
+  fetchSignInMethodsForEmail,
   getAuth,
   onAuthStateChanged,
+  reauthenticateWithCredential,
+  sendEmailVerification,
   signInWithEmailAndPassword,
   signOut,
+  updateEmail,
+  updatePassword,
 } from '@angular/fire/auth';
 
 import {
@@ -31,6 +37,7 @@ import { calculateAge } from '../../functions';
 import { ToastService } from 'angular-toastify';
 import { FirebaseConfigI, firebaseConfig } from 'firebase.config';
 import { CustomFnService } from '../customFn/custom-fn.service';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
@@ -46,7 +53,8 @@ export class HandleDBService {
     private state: StateService,
     private firestore: Firestore,
     private _toastService: ToastService,
-    private customFN: CustomFnService
+    private customFN: CustomFnService,
+    private router: Router
   ) {
     this.currentState = this.state.getState();
   }
@@ -81,7 +89,7 @@ export class HandleDBService {
         password
       );
 
-      // add user information to firesote
+      // add user information to firestore
       if (userCredential) {
         this.setFirestoreDoc(
           this.fbConfig.deploy.usersDB,
@@ -163,7 +171,54 @@ export class HandleDBService {
     this.removeLocalStorage('currentLoggedFireUser');
     this.removeLocalStorage('loggedUserShifts');
 
+    this.router.navigate(['/login']);
+
     return;
+  }
+
+  //! RESET PASSWORD
+  async setUserPassword(email: string, oldPass: string, newPass: string) {
+    try {
+      const user = this.auth.currentUser as User;
+      const credentials = EmailAuthProvider.credential(email, oldPass);
+      await reauthenticateWithCredential(user, credentials);
+
+      await updatePassword(user, newPass);
+      this.logout();
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  //! NEW EMAIL
+  async setUserEmail(oldEmail: string, newEmail: string, password: string) {
+    try {
+      const user = this.auth.currentUser as User;
+
+      const credentials = EmailAuthProvider.credential(oldEmail, password);
+      await reauthenticateWithCredential(user, credentials);
+      // this.verifyUserEmail();
+      await updateEmail(user, newEmail);
+
+      this.updateFirestoreDoc(firebaseConfig.dev.usersDB, [user.uid], {
+        email: newEmail,
+      });
+
+      this.logout();
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  //! VERIFY EMAIL
+  async verifyUserEmail() {
+    try {
+      const user = this.auth.currentUser as User;
+      await sendEmailVerification(user);
+      this._toastService.warn('Email verification sent!');
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   //! DELETE USER
@@ -179,10 +234,15 @@ export class HandleDBService {
               this.fbConfig.deploy.usersDB,
               [user.uid]
             ),
+            emailVerified: user.emailVerified,
             currentUserCred: user,
             isLoggedIn: true,
           });
           resolve(user);
+
+          this.updateFirestoreDoc(firebaseConfig.dev.usersDB, [user.uid], {
+            emailVerified: user.emailVerified,
+          });
         } else {
           // User is signed out
           resolve(null);
