@@ -12,15 +12,16 @@ import { HandleDBService } from 'src/app/utils/services/handleDB/handle-db.servi
 export class LoginComponent implements OnInit {
   loginForm!: FormGroup;
   currentUser!: UserCredential;
+  showResetModal: boolean = false;
 
   constructor(
     private fb: FormBuilder,
-    private db: HandleDBService,
+    private DB: HandleDBService,
     private router: Router
   ) {}
 
   ngOnInit(): void {
-    this.currentUser = this.db.getLocalStorage('userCredentials');
+    this.currentUser = this.DB.getLocalStorage('userCredentials');
 
     this.loginForm = this.fb.group({
       email: [
@@ -63,10 +64,35 @@ export class LoginComponent implements OnInit {
   }
 
   async onSubmit() {
-    await this.db.login(
+    await this.DB.login(
       this.loginForm.value.email,
       this.loginForm.value.password
     );
     this.router.navigate(['/']);
+  }
+
+  openModal(event: Event) {
+    event.preventDefault();
+    this.toggleModal();
+  }
+
+  closeModal(event: Event) {
+    event.preventDefault();
+    if (event.target === event.currentTarget) {
+      this.toggleModal();
+    }
+  }
+
+  async sendResetEmail(email: string) {
+    try {
+      await this.DB.resetPasswordEmail(email);
+      this.toggleModal();
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  toggleModal() {
+    this.showResetModal = !this.showResetModal;
   }
 }

@@ -9,6 +9,7 @@ import {
   onAuthStateChanged,
   reauthenticateWithCredential,
   sendEmailVerification,
+  sendPasswordResetEmail,
   signInWithEmailAndPassword,
   signOut,
   updateEmail,
@@ -176,7 +177,7 @@ export class HandleDBService {
     return;
   }
 
-  //! RESET PASSWORD
+  //! SET PASSWORD
   async setUserPassword(email: string, oldPass: string, newPass: string) {
     try {
       const user = this.auth.currentUser as User;
@@ -190,7 +191,18 @@ export class HandleDBService {
     }
   }
 
-  //! NEW EMAIL
+  //! RESET PASSWORD
+  async resetPasswordEmail(email: string) {
+    try {
+      await sendPasswordResetEmail(this.auth, email);
+      this._toastService.success('Reset password email was sent.');
+    } catch (error) {
+      this._toastService.error('Invalid email, please try again.');
+      console.log(error);
+    }
+  }
+
+  //! SET EMAIL
   async setUserEmail(oldEmail: string, newEmail: string, password: string) {
     try {
       const user = this.auth.currentUser as User;

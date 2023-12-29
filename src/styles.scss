@@ -55,6 +55,10 @@
     @apply absolute top-[-15px] left-2 px-2 bg-white  rounded-md shadow-sm shadow-black/25;
   }
 
+  .custom-link {
+    @apply underline hover:text-accentColor cursor-pointer;
+  }
+
   .hidden {
     display: none;
   }

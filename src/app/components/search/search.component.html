@@ -47,9 +47,14 @@
             {{ filter.name }}
           </option>
         </select>
-        <div class="w-[30px] cursor-pointer">
-          <div class="center">
-            <mat-icon fontIcon="swap_vert"></mat-icon>
+        <div (click)="changeSortOrder()" class="w-[30px] cursor-pointer">
+          <div
+            class="center"
+            [style.transform]="
+              orderBy === 'dsc' ? 'rotate(0deg)' : 'rotate(180deg)'
+            "
+          >
+            <mat-icon fontIcon="filter_list"></mat-icon>
           </div>
         </div>
       </label>

@@ -5,38 +5,74 @@ import { Shift } from '../../Interfaces';
   name: 'customSorter',
 })
 export class CustomSorterPipe implements PipeTransform {
+  convertToMiliseconds(time: string) {
+    const hours = time.split(':')[0];
+    const minutes = time.split(':')[1];
+    return (Number(hours) * 3600 + Number(minutes) * 60) * 1000;
+  }
+
   transform(value: Shift[], ...args: string[]): Shift[] {
-    // const shiftsToSort: Shift[] = JSON.parse(JSON.stringify(value));
-    // const sorterByQuery: string = args[0];
-    // const orderByQuery: string = args[1];
+    const shiftsToSort: Shift[] = JSON.parse(JSON.stringify(value));
+    const sortByQuery: string = args[0];
+    const orderByQuery: string = args[1];
 
-    // console.log(sorterByQuery, orderByQuery);
-    // console.log(args);
+    switch (sortByQuery) {
+      //! CASE FOR SORTING SHIFTS BY TIMESTAMP AT LOAD
+      // case '':
+      //   shiftsToSort.sort((a: Shift, b: Shift) => {
+      //     const { seconds: secondsA } = a['timeStamp'] as any;
+      //     const { seconds: secondsB } = b['timeStamp'] as any;
+      //     console.log(
+      //       new Date(secondsA).getDate(),
+      //       new Date(secondsB).getDate()
+      //     );
+      //     return new Date(secondsA).getTime() - new Date(secondsB).getTime();
+      //   });
+      //   break;
+      case 'workplace':
+        shiftsToSort.sort((a: Shift, b: Shift) => {
+          return a['workplace'].localeCompare(b['workplace']);
+        });
+        break;
+      case 'shiftDate':
+        shiftsToSort.sort((a: Shift, b: Shift) => {
+          return (
+            new Date(a['shiftDate']).getTime() -
+            new Date(b['shiftDate']).getTime()
+          );
+        });
+        break;
+      case 'startTime':
+        shiftsToSort.sort((a: Shift, b: Shift) => {
+          return (
+            this.convertToMiliseconds(a['startTime']) -
+            this.convertToMiliseconds(b['startTime'])
+          );
+        });
+        break;
+      case 'endTime':
+        shiftsToSort.sort((a: Shift, b: Shift) => {
+          return (
+            this.convertToMiliseconds(a['endTime']) -
+            this.convertToMiliseconds(b['endTime'])
+          );
+        });
+        break;
+      case 'wagePerHour':
+        shiftsToSort.sort((a: Shift, b: Shift) => {
+          return Number(a['wagePerHour']) - Number(b['wagePerHour']);
+        });
+        break;
+      case 'shiftRevenue':
+        shiftsToSort.sort((a: Shift, b: Shift) => {
+          return Number(a['shiftRevenue']) - Number(b['shiftRevenue']);
+        });
+        break;
 
-    // if (orderByQuery === 'asc') {
-    //   const sortedShifts = shiftsToSort.sort((a, b) => {
-    //     console.log(sorterByQuery);
-    //     console.log(a, b);
+      default:
+        break;
+    }
 
-    //     type ObjectKey = keyof typeof a;
-
-    //     const propA = a[sorterByQuery as ObjectKey];
-    //     const propB = b[sorterByQuery as ObjectKey];
-    //     console.log(a[propA], b[propB]);
-
-    //     return a[propA] - b[propB];
-    //   });
-    //   console.log(sortedShifts);
-    //   return sortedShifts;
-    // } else if (orderByQuery === 'dsc') {
-    //   shiftsToSort.sort((a, b) => {
-    //     return b[sorterByQuery] - a[sorterByQuery];
-    //   });
-    //   console.log(shiftsToSort);
-    //   return shiftsToSort;
-    // } else {
-    //   return value;
-    // }
-    return value;
+    return orderByQuery === 'asc' ? shiftsToSort : [...shiftsToSort].reverse();
   }
 }
