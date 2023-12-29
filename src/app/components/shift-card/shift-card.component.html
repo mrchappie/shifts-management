@@ -10,25 +10,28 @@
       >{{ shift?.userInfo?.firstName }} {{ shift?.userInfo?.lastName }}</span
     >
   </div>
-  <div>
+  <div [ngClass]="sortQuery === 'shiftDate' ? 'active-query' : ''">
     <span class="font-bold">Date: </span><span>{{ shift?.shiftDate }}</span>
   </div>
   <div>
-    <div>
-      <span class="font-bold">Interval: </span
-      ><span>{{ shift?.startTime }}</span
-      >&nbsp;-&nbsp;<span>{{ shift?.endTime }} </span>
-    </div>
+    <span class="font-bold">Interval: </span
+    ><span [ngClass]="sortQuery === 'startTime' ? 'active-query' : ''">{{
+      shift?.startTime
+    }}</span
+    >&nbsp;-&nbsp;<span
+      [ngClass]="sortQuery === 'endTime' ? 'active-query' : ''"
+      >{{ shift?.endTime }}
+    </span>
   </div>
-  <div>
+  <div [ngClass]="sortQuery === 'workplace' ? 'active-query' : ''">
     <span class="font-bold">Workplace: </span
     ><span>{{ shift?.workplace }}</span>
   </div>
-  <div>
+  <div [ngClass]="sortQuery === 'wagePerHour' ? 'active-query' : ''">
     <span class="font-bold">Wage / hour: </span
     ><span>{{ shift?.wagePerHour | currency }}</span>
   </div>
-  <div>
+  <div [ngClass]="sortQuery === 'shiftRevenue' ? 'active-query' : ''">
     <span class="font-bold">Revenue / shift: </span
     ><span>{{ shift?.shiftRevenue | currency }}</span>
   </div>

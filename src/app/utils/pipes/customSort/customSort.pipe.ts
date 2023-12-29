@@ -2,9 +2,9 @@ import { Pipe, PipeTransform } from '@angular/core';
 import { Shift } from '../../Interfaces';
 
 @Pipe({
-  name: 'customSorter',
+  name: 'customSort',
 })
-export class CustomSorterPipe implements PipeTransform {
+export class CustomSortPipe implements PipeTransform {
   convertToMiliseconds(time: string) {
     const hours = time.split(':')[0];
     const minutes = time.split(':')[1];
@@ -12,7 +12,7 @@ export class CustomSorterPipe implements PipeTransform {
   }
 
   transform(value: Shift[], ...args: string[]): Shift[] {
-    const shiftsToSort: Shift[] = JSON.parse(JSON.stringify(value));
+    const shiftsToSort: Shift[] = structuredClone(value);
     const sortByQuery: string = args[0];
     const orderByQuery: string = args[1];
 

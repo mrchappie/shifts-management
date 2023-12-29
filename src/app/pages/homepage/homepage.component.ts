@@ -71,7 +71,7 @@ export class HomepageComponent {
   }
 
   handleShiftsData() {
-    const shiftsToFilter = JSON.parse(JSON.stringify(this.userShifts));
+    const shiftsToFilter = structuredClone(this.userShifts);
 
     const dataForChart: { [key: string]: number } = {};
 
