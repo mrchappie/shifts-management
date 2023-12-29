@@ -1,6 +1,6 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { SearchFilters, Shift, State } from 'src/app/utils/Interfaces';
-import { Filter, orderBy, sortShiftsBy, sortUsersBy } from './formData';
+import { Filter, sortShiftsBy, sortUsersBy } from './formData';
 import { StateService } from 'src/app/utils/services/state/state.service';
 import { Subscription } from 'rxjs';
 import { FormBuilder, FormGroup } from '@angular/forms';
@@ -16,7 +16,7 @@ export class SearchComponent implements OnInit, OnDestroy {
 
   // html data
   sortBy: Filter[] = sortShiftsBy;
-  orderBy: Filter[] = orderBy;
+  orderBy: string = 'asc';
 
   // component data
   allShifts: Shift[] = [];
@@ -42,7 +42,7 @@ export class SearchComponent implements OnInit, OnDestroy {
       startDateQuery: [''],
       endDateQuery: [''],
       sortByQuery: [''],
-      orderByQuery: [''],
+      orderByQuery: ['asc'],
       yearMonthQuery: [''],
       queryLimit: [10],
     });
@@ -99,6 +99,16 @@ export class SearchComponent implements OnInit, OnDestroy {
     });
 
     this.getShiftsByDate(10);
+  }
+
+  changeSortOrder() {
+    if (this.orderBy === 'asc') {
+      this.orderBy = 'dsc';
+      this.searchForm.patchValue({ orderByQuery: 'dsc' });
+    } else {
+      this.orderBy = 'asc';
+      this.searchForm.patchValue({ orderByQuery: 'asc' });
+    }
   }
 }
 

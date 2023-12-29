@@ -8,11 +8,11 @@ export const sortShiftsBy: Filter[] = [
   { value: 'shiftRevenue', name: 'By revenue' },
 ];
 
-export const orderBy: Filter[] = [
-  { value: '', name: '--select--' },
-  { value: 'asc', name: 'Ascending' },
-  { value: 'dsc', name: 'Descending' },
-];
+// export const orderBy: Filter[] = [
+//   { value: '', name: '--select--' },
+//   { value: 'asc', name: 'Ascending' },
+//   { value: 'dsc', name: 'Descending' },
+// ];
 
 export const sortUsersBy: Filter[] = [
   { value: '', name: 'Sort by' },
