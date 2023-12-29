@@ -36,7 +36,7 @@ export class AddWorkplaceComponent {
 
   addWorkplace(workplace: string) {
     this.DB.updateFirestoreDoc(
-      this.fbConfig.dev.usersDB,
+      this.fbConfig.deploy.usersDB,
       [this.currentState.currentLoggedFireUser!.id],
       { userWorkplaces: arrayUnion(workplace) }
     );
@@ -45,7 +45,7 @@ export class AddWorkplaceComponent {
 
   removeWorkplace(workplace: string) {
     this.DB.updateFirestoreDoc(
-      this.fbConfig.dev.usersDB,
+      this.fbConfig.deploy.usersDB,
       [this.currentState.currentLoggedFireUser!.id],
       { userWorkplaces: arrayRemove(workplace) }
     );
@@ -54,7 +54,7 @@ export class AddWorkplaceComponent {
 
   async updateState() {
     const userSettings = await this.DB.getFirestoreDoc(
-      this.fbConfig.dev.usersDB,
+      this.fbConfig.deploy.usersDB,
       [this.currentState.currentLoggedFireUser!.id]
     );
 
