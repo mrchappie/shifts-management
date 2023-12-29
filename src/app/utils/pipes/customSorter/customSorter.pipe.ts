@@ -16,18 +16,17 @@ export class CustomSorterPipe implements PipeTransform {
     const sortByQuery: string = args[0];
     const orderByQuery: string = args[1];
 
-    console.log(sortByQuery);
-    console.log(shiftsToSort);
-
     switch (sortByQuery) {
       //! CASE FOR SORTING SHIFTS BY TIMESTAMP AT LOAD
       // case '':
       //   shiftsToSort.sort((a: Shift, b: Shift) => {
-      //     console.log({ ...a['timeStamp'] });
-      //     return (
-      //       new Date(a['timeStamp']).getTime() -
-      //       new Date(b['timeStamp']).getTime()
+      //     const { seconds: secondsA } = a['timeStamp'] as any;
+      //     const { seconds: secondsB } = b['timeStamp'] as any;
+      //     console.log(
+      //       new Date(secondsA).getDate(),
+      //       new Date(secondsB).getDate()
       //     );
+      //     return new Date(secondsA).getTime() - new Date(secondsB).getTime();
       //   });
       //   break;
       case 'workplace':
