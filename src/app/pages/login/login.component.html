@@ -7,9 +7,10 @@
         src="../../../assets/illustrations/login.jpg"
         alt="login illustration"
       />
-      <a routerLink="/register" class="underline">Create an account</a>
+      <a routerLink="/register" class="custom-link">Create an account</a>
     </div>
     <div class="flex items-start flex-col gap-10 flex-1 p-12">
+      <!-- LOG IN WITH EMAIL AND PASSWORD -->
       <form
         [formGroup]="loginForm"
         (ngSubmit)="onSubmit()"
@@ -38,6 +39,9 @@
             class="custom-input"
           />
         </label>
+        <a (click)="openModal($event)" class="custom-link text-sm"
+          >Reset password</a
+        >
         <button
           type="submit"
           class="center gap-2 bg-baseColor py-3 px-8 rounded-[8px] text-white font-bold"
@@ -49,6 +53,42 @@
           </div>
         </button>
       </form>
+      <!-- RESET PASSWORD -->
+      <div *ngIf="showResetModal" (click)="closeModal($event)" class="modal">
+        <div class="center-col bg-white rounded-md p-4">
+          <h1 class="text-2xl p-4 font-bold">Recover Password</h1>
+          <p class="text-xl text-center p-4 max-w-[500px]">
+            Enter the email associated with your account and we we'll send a
+            link to reset your password.
+          </p>
+          <div class="center-col gap-8 w-full">
+            <label class="custom-label"
+              ><input
+                type="text"
+                name="emailReset"
+                placeholder="Email"
+                #emailReset
+                class="custom-input"
+            /></label>
+            <div class="center w-full">
+              <button
+                (click)="sendResetEmail(emailReset.value)"
+                [disabled]="emailReset.value === ''"
+                class="flex-1 shadow-all-sides px-6 py-3 rounded-md cursor-pointer"
+              >
+                Send reset link
+              </button>
+              <button
+                (click)="closeModal($event)"
+                class="flex-1 shadow-all-sides px-6 py-3 rounded-md cursor-pointer"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- ALTERNATIVE LOG IN PROVIDERS -->
       <div class="center-col w-full">
         <p>Or continue with</p>
         <div class="center w-full">
