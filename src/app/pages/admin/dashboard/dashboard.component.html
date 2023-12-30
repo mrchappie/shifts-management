@@ -6,16 +6,34 @@
   ></ng-container>
 </section>
 
-<section class="grid grid-cols-4 gap-4 p-4">
+<section class="grid grid-cols-6 grid-rows-12 gap-4 p-4 w-full h-full">
   <!-- CHARTS -->
   <app-chart
-    [pieChartLabels]="pieChartLabels"
-    [pieChartDatasets]="pieChartDatasets"
-    class="col-span-2"
+    #pieChart
+    [pieChartData]="pieChartData"
+    [pieChartOptions]="pieChartOptions"
+    [chartType]="'pie'"
+    class="col-span-2 row-span-6"
   ></app-chart>
   <app-chart
-    [pieChartLabels]="pieChartLabels"
-    [pieChartDatasets]="pieChartDatasets"
-    class="col-span-2"
+    #barChart
+    [barChartData]="barChartData"
+    [barChartOptions]="barChartOptions"
+    [chartType]="'bar'"
+    class="col-span-4 row-span-6"
+  ></app-chart>
+  <app-chart
+    #lineChart
+    [lineChartData]="lineChartData"
+    [lineChartOptions]="lineChartOptions"
+    [chartType]="'line'"
+    class="col-span-4 row-span-6"
+  ></app-chart>
+  <app-chart
+    #polarArea
+    [polarAreaChartData]="polarAreaChartData"
+    [polarAreaChartOptions]="polarAreaChartOptions"
+    [chartType]="'polarArea'"
+    class="col-span-2 row-span-6"
   ></app-chart>
 </section>
