@@ -93,7 +93,7 @@ export class DashboardComponent {
       },
       title: {
         display: true,
-        text: 'Shifts per month',
+        text: 'Revenue per month',
       },
     },
   };
