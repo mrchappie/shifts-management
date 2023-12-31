@@ -157,6 +157,13 @@ export class HomepageComponent {
     this.currentState = this.state.getState();
     this.loggedUserID = this.currentState.currentLoggedFireUser!.id;
 
+    (async () => {
+      const data = await this.DB.getFirebaseAverage(this.loggedUserID);
+      const count = await this.DB.getFirebaseCount(this.loggedUserID);
+      console.log(data);
+      console.log(count);
+    })();
+
     // above charts stats
     const data = this.currentState.currentLoggedFireUser!.shiftsCount;
     this.shiftsCountData[0].value = data.totalShifts;
@@ -185,6 +192,7 @@ export class HomepageComponent {
     }
   }
 
+  //? HANDLE PIE CHART DATA
   handlePieChartData() {
     const shiftsToFilter = structuredClone(this.userShifts);
 
@@ -201,5 +209,15 @@ export class HomepageComponent {
     this.pieChartData.labels = Object.keys(dataForChart);
     this.pieChartData.datasets[0].data = Object.values(dataForChart);
     this.pieChart.updateChart();
+  }
+
+  //? HANDLE BAR CHART DATA
+  handleBarChartData() {
+    const dataForChart: { [key: string]: number } = {};
+    const shiftsToFilter = structuredClone(this.userShifts);
+
+    this.barChartData.labels = Object.keys(dataForChart);
+    this.barChartData.datasets[0].data = Object.values(dataForChart);
+    this.barChart.updateChart();
   }
 }

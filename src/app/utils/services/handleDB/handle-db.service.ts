@@ -19,14 +19,18 @@ import {
 import {
   Firestore,
   Query,
+  average,
   collection,
   deleteDoc,
   doc,
+  getAggregateFromServer,
+  getCountFromServer,
   getDoc,
   getDocs,
   limit,
   query,
   setDoc,
+  sum,
   updateDoc,
   where,
 } from '@angular/fire/firestore';
@@ -391,7 +395,6 @@ export class HandleDBService {
       this.state.setState({ shifts: shifts });
       this.setLocalStorage('loggedUserShifts', shifts);
     }
-
     return shifts;
   }
 
@@ -415,5 +418,48 @@ export class HandleDBService {
     }
 
     return shifts;
+  }
+
+  //! SUM
+  async getFirebaseSum(userID: string) {
+    const coll = collection(
+      this.firestore,
+      'shiftAppShifts',
+      ...['2023', 'december']
+    );
+    const q = query(coll, where('userID', '==', userID));
+    const snapshot = await getAggregateFromServer(q, {
+      sum: sum('shiftRevenue'),
+    });
+
+    return snapshot.data();
+  }
+
+  //! AVERAGE
+  async getFirebaseAverage(userID: string) {
+    const coll = collection(
+      this.firestore,
+      'shiftAppShifts',
+      ...['2023', 'december']
+    );
+    const q = query(coll, where('userID', '==', userID));
+    const snapshot = await getAggregateFromServer(q, {
+      average: average('shiftRevenue'),
+    });
+
+    return snapshot.data();
+  }
+
+  //! COUNT
+  async getFirebaseCount(userID: string) {
+    const coll = collection(
+      this.firestore,
+      'shiftAppShifts',
+      ...['2023', 'december']
+    );
+    const q = query(coll, where('userID', '==', userID));
+    const snapshot = await getCountFromServer(q);
+
+    return snapshot.data();
   }
 }
