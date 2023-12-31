@@ -6,7 +6,7 @@ import { Shift } from '../../Interfaces';
 })
 export class CustomFilterPipe implements PipeTransform {
   transform(value: any[], ...args: string[]): any[] {
-    const shiftsToFilter: any[] = JSON.parse(JSON.stringify(value));
+    const shiftsToFilter: any[] = structuredClone(value);
 
     const [filterName, filterStartDate, filterEndDate, type] = args;
 

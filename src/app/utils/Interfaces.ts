@@ -45,8 +45,8 @@ export interface Shift {
   startTime: string;
   endTime: string;
   workplace: string;
-  wagePerHour: string;
-  shiftRevenue: string;
+  wagePerHour: number;
+  shiftRevenue: number;
   timeStamp: Date;
   [key: string]: any;
   userInfo: {

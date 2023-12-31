@@ -23,7 +23,6 @@ import { getAuth, provideAuth } from '@angular/fire/auth';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { HeaderComponent } from './components/header/header.component';
 import { CustomFilterPipe } from './utils/pipes/customFilter/customFilter.pipe';
-import { CustomSorterPipe } from './utils/pipes/customSorter/customSorter.pipe';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DashboardComponent } from './pages/admin/dashboard/dashboard.component';
 import { ShiftCardComponent } from './components/shift-card/shift-card.component';
@@ -43,6 +42,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { ConfirmationModalComponent } from './components/confirmation-modal/confirmation-modal.component';
 import { ChangeCredentialsComponent } from './components/change-credentials/change-credentials.component';
+import { CustomSortPipe } from './utils/pipes/customSort/customSort.pipe';
 
 @NgModule({
   declarations: [
@@ -62,7 +62,7 @@ import { ChangeCredentialsComponent } from './components/change-credentials/chan
     ButtonComponent,
     HeaderComponent,
     CustomFilterPipe,
-    CustomSorterPipe,
+    CustomSortPipe,
     DashboardComponent,
     ShiftCardComponent,
     UserCardComponent,

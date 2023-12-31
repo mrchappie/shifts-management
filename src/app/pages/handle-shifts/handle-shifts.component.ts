@@ -6,7 +6,7 @@ import { HandleDBService } from 'src/app/utils/services/handleDB/handle-db.servi
 import { Subscription } from 'rxjs';
 import { v4 as uuidv4 } from 'uuid';
 import { Router } from '@angular/router';
-import { State } from 'src/app/utils/Interfaces';
+import { Shift, State } from 'src/app/utils/Interfaces';
 import { FirebaseConfigI, firebaseConfig } from 'firebase.config';
 import { getCurrentYearMonth } from 'src/app/utils/functions';
 import { CustomFnService } from 'src/app/utils/services/customFn/custom-fn.service';
@@ -33,8 +33,7 @@ export class HandleShiftsComponent implements OnInit {
     private fb: FormBuilder,
     private state: StateService,
     private DB: HandleDBService,
-    private router: Router,
-    private customFN: CustomFnService
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -74,40 +73,36 @@ export class HandleShiftsComponent implements OnInit {
   }
 
   calculateRevenue() {
-    ['wagePerHour'].forEach((field) => {
-      this.shiftForm.get(field)?.valueChanges.subscribe((wage) => {
-        const MINUTES_PER_HOUR: number = 60;
-        const HOURS_IN_DAY: number = 24;
-        const startHours: string = this.shiftForm.value.startTime.split(':')[0];
-        const startMinutes: string =
-          this.shiftForm.value.startTime.split(':')[1];
-        const endHours: string = this.shiftForm.value.endTime.split(':')[0];
-        const endMinutes: string = this.shiftForm.value.endTime.split(':')[1];
+    this.shiftForm.get('wagePerHour')?.valueChanges.subscribe((wage) => {
+      const MINUTES_PER_HOUR: number = 60;
+      const HOURS_IN_DAY: number = 24;
+      const startHours: string = this.shiftForm.value.startTime.split(':')[0];
+      const startMinutes: string = this.shiftForm.value.startTime.split(':')[1];
+      const endHours: string = this.shiftForm.value.endTime.split(':')[0];
+      const endMinutes: string = this.shiftForm.value.endTime.split(':')[1];
 
-        const startTimeMinutes: number =
-          +startHours * MINUTES_PER_HOUR + +startMinutes;
+      const startTimeMinutes: number =
+        +startHours * MINUTES_PER_HOUR + +startMinutes;
 
-        const endTimeMinutes: number =
-          +endHours * MINUTES_PER_HOUR + +endMinutes;
+      const endTimeMinutes: number = +endHours * MINUTES_PER_HOUR + +endMinutes;
 
-        if (startTimeMinutes > endTimeMinutes) {
-          this.shiftForm.patchValue({
-            shiftRevenue: Math.round(
-              ((endTimeMinutes +
-                HOURS_IN_DAY * MINUTES_PER_HOUR -
-                startTimeMinutes) /
-                60) *
-                wage
-            ).toString(),
-          });
-        } else {
-          this.shiftForm.patchValue({
-            shiftRevenue: Math.round(
-              ((endTimeMinutes - startTimeMinutes) / 60) * wage
-            ).toString(),
-          });
-        }
-      });
+      if (startTimeMinutes > endTimeMinutes) {
+        this.shiftForm.patchValue({
+          shiftRevenue: Math.round(
+            ((endTimeMinutes +
+              HOURS_IN_DAY * MINUTES_PER_HOUR -
+              startTimeMinutes) /
+              60) *
+              wage
+          ).toString(),
+        });
+      } else {
+        this.shiftForm.patchValue({
+          shiftRevenue: Math.round(
+            ((endTimeMinutes - startTimeMinutes) / 60) * wage
+          ).toString(),
+        });
+      }
     });
   }
 
@@ -131,19 +126,26 @@ export class HandleShiftsComponent implements OnInit {
       const currentYear = shiftDate.getFullYear().toString();
       const currentMonth = months[shiftDate.getMonth()];
 
+      const shiftData: Shift = {
+        shiftID: this.shiftForm.value.shiftID,
+        shiftDate: this.shiftForm.value.shiftDate,
+        startTime: this.shiftForm.value.startTime,
+        endTime: this.shiftForm.value.endTime,
+        workplace: this.shiftForm.value.workplace,
+        wagePerHour: Number(this.shiftForm.value.wagePerHour),
+        shiftRevenue: Number(this.shiftForm.value.shiftRevenue),
+        timeStamp: new Date(),
+        userID: this.currentState.currentLoggedFireUser!.id,
+        userInfo: {
+          firstName: this.currentState.currentLoggedFireUser!.firstName,
+          lastName: this.currentState.currentLoggedFireUser!.lastName,
+        },
+      };
+
       this.DB.setFirestoreDoc(
         this.fbConfig.deploy.shiftsDB,
         [currentYear, currentMonth, shiftID],
-        {
-          ...this.shiftForm.value,
-          shiftID,
-          timeStamp: new Date(),
-          userID: this.currentState.currentLoggedFireUser?.id,
-          userInfo: {
-            firstName: this.currentState.currentLoggedFireUser?.firstName,
-            lastName: this.currentState.currentLoggedFireUser?.lastName,
-          },
-        }
+        shiftData
       );
 
       this.router.navigate(['my-shifts']);

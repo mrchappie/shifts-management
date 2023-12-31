@@ -9,4 +9,5 @@ import { Shift } from 'src/app/utils/Interfaces';
 export class ShiftCardComponent {
   @Input() shift?: Shift;
   @Input() parentName!: string;
+  @Input() sortQuery!: string;
 }

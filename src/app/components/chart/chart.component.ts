@@ -1,5 +1,6 @@
-import { Component, Input } from '@angular/core';
-import { ChartOptions } from 'chart.js';
+import { Component, Input, ViewChild } from '@angular/core';
+import { ChartType } from 'chart.js';
+import { BaseChartDirective } from 'ng2-charts';
 
 @Component({
   selector: 'app-chart',
@@ -7,26 +8,32 @@ import { ChartOptions } from 'chart.js';
   styleUrls: ['./chart.component.scss'],
 })
 export class ChartComponent {
-  @Input() pieChartLabels: string[] = [];
-  // check type
-  @Input() pieChartDatasets: any[] = [];
+  // GLOBAL CHART VARIABLES
+  @Input() chartType!: ChartType;
   @Input() chartName: string = '';
+  @ViewChild(BaseChartDirective) chart: BaseChartDirective | undefined;
 
-  // Pie
-  public pieChartOptions: ChartOptions<'pie'> = {
-    responsive: false,
-    plugins: {
-      title: {
-        display: true,
-        text: 'Workplaces by Revenue',
-      },
-    },
-  };
+  //! PIE CHART
+  @Input() pieChartData!: any;
+  @Input() pieChartOptions!: any;
 
-  public pieChartLegend = true;
-  public pieChartPlugins = [];
+  //! BAR CHART
+  @Input() barChartData!: any;
+  @Input() barChartOptions!: any;
+
+  //! LINE CHART
+  @Input() lineChartData!: any;
+  @Input() lineChartOptions!: any;
+
+  //! POLAR AREA CHART
+  @Input() polarAreaChartData!: any;
+  @Input() polarAreaChartOptions!: any;
 
   constructor() {}
+
+  updateChart() {
+    this.chart?.update();
+  }
 }
 
 export interface PieData {

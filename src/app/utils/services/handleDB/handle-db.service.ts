@@ -19,14 +19,18 @@ import {
 import {
   Firestore,
   Query,
+  average,
   collection,
   deleteDoc,
   doc,
+  getAggregateFromServer,
+  getCountFromServer,
   getDoc,
   getDocs,
   limit,
   query,
   setDoc,
+  sum,
   updateDoc,
   where,
 } from '@angular/fire/firestore';
@@ -391,7 +395,6 @@ export class HandleDBService {
       this.state.setState({ shifts: shifts });
       this.setLocalStorage('loggedUserShifts', shifts);
     }
-
     return shifts;
   }
 
@@ -415,5 +418,91 @@ export class HandleDBService {
     }
 
     return shifts;
+  }
+
+  //! AGGREGATION QUERIES
+
+  //! SUM
+  async getFirebaseSum(queryOptions: { [key: string]: any }) {
+    try {
+      const {
+        month,
+        year,
+        collectionName,
+        collectionPath,
+        queryName,
+        queryValue,
+        itemToQuery,
+      } = queryOptions;
+
+      const coll = collection(
+        this.firestore,
+        collectionName,
+        ...collectionPath
+      );
+      const q = query(coll, where(queryName, '==', queryValue));
+
+      const snapshot = await getAggregateFromServer(q, {
+        sum: sum(itemToQuery),
+      });
+
+      if (snapshot.data().sum) {
+        return snapshot.data().sum;
+      } else {
+        return 0;
+      }
+    } catch (error) {
+      console.log(error);
+    }
+
+    return null;
+  }
+
+  //! AVERAGE
+  async getFirebaseAverage(queryOptions: { [key: string]: string }) {
+    const {
+      month,
+      year,
+      collectionName,
+      collectionPath,
+      queryName,
+      queryValue,
+      itemToQuery,
+    } = queryOptions;
+
+    const coll = collection(this.firestore, collectionName, ...collectionPath);
+    const q = query(coll, where(queryName, '==', queryValue));
+    const snapshot = await getAggregateFromServer(q, {
+      average: average(itemToQuery),
+    });
+
+    if (snapshot.data().average) {
+      return snapshot.data().average;
+    } else {
+      return 0;
+    }
+  }
+
+  //! COUNT
+  async getFirebaseCount(queryOptions: { [key: string]: any }) {
+    const {
+      month,
+      year,
+      collectionName,
+      collectionPath,
+      queryName,
+      queryValue,
+      itemToQuery,
+    } = queryOptions;
+
+    const coll = collection(this.firestore, collectionName, ...collectionPath);
+    const q = query(coll, where(queryName, '==', queryValue));
+    const snapshot = await getCountFromServer(q);
+
+    if (snapshot.data().count) {
+      return snapshot.data().count;
+    } else {
+      return 0;
+    }
   }
 }
