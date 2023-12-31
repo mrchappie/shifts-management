@@ -18,9 +18,9 @@ export class HomepageComponent {
   shiftsCountData: CountI[] = [
     { label: 'Total shifts', value: 0 },
     { label: 'Shifts this month', value: 0 },
-    { label: 'Shifts last week', value: 0 },
-    { label: 'Shifts this week', value: 0 },
-    { label: 'Shifts next week', value: 0 },
+    // { label: 'Shifts last week', value: 0 },
+    // { label: 'Shifts this week', value: 0 },
+    // { label: 'Shifts next week', value: 0 },
   ];
 
   chartBorder: any = { borderColor: 'black', borderWidth: 0.5 };
@@ -29,7 +29,7 @@ export class HomepageComponent {
   @ViewChild('pieChart') pieChart!: ChartComponent;
   public pieChartData: ChartData<ChartType, number[], string | string[]> = {
     labels: [],
-    datasets: [{ ...this.chartBorder, data: [] }],
+    datasets: [{ ...this.chartBorder, data: [], label: 'Revenue' }],
   };
 
   public pieChartOptions: ChartConfiguration['options'] = {
@@ -62,7 +62,7 @@ export class HomepageComponent {
       },
       title: {
         display: true,
-        text: 'Top 3 months by revenue',
+        text: 'Last 6 months by revenue',
       },
     },
   };
@@ -70,19 +70,15 @@ export class HomepageComponent {
   //! LINE CHART
   @ViewChild('lineChart') lineChart!: ChartComponent;
   public lineChartData: ChartData<ChartType, number[], string | string[]> = {
+    // prettier-ignore
     labels: [
-      'June',
-      'July',
-      'August',
-      'September',
-      'Octomber',
-      'November',
-      'December',
+      "january","february","march","april","may","june","july",
+    "august", "september", "october", "november", "december"
     ],
     datasets: [
       {
         ...this.chartBorder,
-        data: [20, 25, 14, 18, 22, 30, 10],
+        data: [20, 25, 14, 18, 22, 30, 15, 14, 18, 22, 30, 10],
         label: 'Shifts',
       },
     ],
@@ -157,19 +153,12 @@ export class HomepageComponent {
     this.currentState = this.state.getState();
     this.loggedUserID = this.currentState.currentLoggedFireUser!.id;
 
-    (async () => {
-      const data = await this.DB.getFirebaseAverage(this.loggedUserID);
-      const count = await this.DB.getFirebaseCount(this.loggedUserID);
-      console.log(data);
-      console.log(count);
-    })();
-
     // above charts stats
     const data = this.currentState.currentLoggedFireUser!.shiftsCount;
-    this.shiftsCountData[0].value = data.totalShifts;
-    this.shiftsCountData[2].value = data.lastWeek;
-    this.shiftsCountData[3].value = data.thisWeek;
-    this.shiftsCountData[4].value = data.nextWeek;
+    // this.shiftsCountData[0].value = data.totalShifts;
+    // this.shiftsCountData[2].value = data.lastWeek;
+    // this.shiftsCountData[3].value = data.thisWeek;
+    // this.shiftsCountData[4].value = data.nextWeek;
 
     // Charts
     (async () => {
@@ -184,6 +173,9 @@ export class HomepageComponent {
       this.currentState = newState;
       this.loggedUserID = this.currentState.currentLoggedFireUser!.id;
     });
+
+    this.handleBarChartData();
+    this.handleLineChartData();
   }
 
   ngOnDestroy(): void {
@@ -213,11 +205,63 @@ export class HomepageComponent {
 
   //? HANDLE BAR CHART DATA
   handleBarChartData() {
-    const dataForChart: { [key: string]: number } = {};
-    const shiftsToFilter = structuredClone(this.userShifts);
+    const arr: number[] = [];
+    //prettier-ignore
+    const months = [
+      "january","february","march","april","may","june","july",
+      "august", "september", "october", "november", "december"
+    ];
 
-    this.barChartData.labels = Object.keys(dataForChart);
-    this.barChartData.datasets[0].data = Object.values(dataForChart);
-    this.barChart.updateChart();
+    const fetchData = async (month: string) => {
+      try {
+        const data = await this.DB.getFirebaseSum(this.loggedUserID, month);
+        if (data) {
+          arr.push(Math.trunc(data));
+        }
+      } catch (error) {
+        console.log(error);
+      } finally {
+        this.barChartData.labels = months.map(
+          (month) => month.charAt(0).toUpperCase() + month.slice(1)
+        );
+        this.barChartData.datasets[0].data = arr;
+        this.barChart.updateChart();
+      }
+    };
+
+    months.forEach((month) => fetchData(month));
+  }
+
+  //? HANDLE LINE CHART DATA
+  handleLineChartData() {
+    const arr: number[] = [];
+    //prettier-ignore
+    const months = [
+      "january","february","march","april","may","june","july",
+      "august", "september", "october", "november", "december"
+    ];
+
+    const fetchData = async (month: string) => {
+      try {
+        const data = await this.DB.getFirebaseCount(this.loggedUserID, month);
+        if (data) {
+          arr.push(data);
+        }
+      } catch (error) {
+        console.log(error);
+      } finally {
+        this.lineChartData.labels = months.map(
+          (month) => month.charAt(0).toUpperCase() + month.slice(1)
+        );
+        this.lineChartData.datasets[0].data = arr;
+
+        this.shiftsCountData[0].value = arr.reduce((a, b) => a + b, 0);
+        this.shiftsCountData[1].value = arr[arr.length - 1];
+
+        this.lineChart.updateChart();
+      }
+    };
+
+    months.forEach((month) => fetchData(month));
   }
 }

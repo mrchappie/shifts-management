@@ -421,45 +421,57 @@ export class HandleDBService {
   }
 
   //! SUM
-  async getFirebaseSum(userID: string) {
+  async getFirebaseSum(userID: string, month: string) {
     const coll = collection(
       this.firestore,
       'shiftAppShifts',
-      ...['2023', 'december']
+      ...['2023', month]
     );
     const q = query(coll, where('userID', '==', userID));
     const snapshot = await getAggregateFromServer(q, {
       sum: sum('shiftRevenue'),
     });
 
-    return snapshot.data();
+    if (snapshot.data().sum) {
+      return snapshot.data().sum;
+    } else {
+      return 0;
+    }
   }
 
   //! AVERAGE
-  async getFirebaseAverage(userID: string) {
+  async getFirebaseAverage(userID: string, month: string) {
     const coll = collection(
       this.firestore,
       'shiftAppShifts',
-      ...['2023', 'december']
+      ...['2023', month]
     );
     const q = query(coll, where('userID', '==', userID));
     const snapshot = await getAggregateFromServer(q, {
       average: average('shiftRevenue'),
     });
 
-    return snapshot.data();
+    if (snapshot.data().average) {
+      return snapshot.data().average;
+    } else {
+      return 0;
+    }
   }
 
   //! COUNT
-  async getFirebaseCount(userID: string) {
+  async getFirebaseCount(userID: string, month: string) {
     const coll = collection(
       this.firestore,
       'shiftAppShifts',
-      ...['2023', 'december']
+      ...['2023', month]
     );
     const q = query(coll, where('userID', '==', userID));
     const snapshot = await getCountFromServer(q);
 
-    return snapshot.data();
+    if (snapshot.data().count) {
+      return snapshot.data().count;
+    } else {
+      return 0;
+    }
   }
 }
