@@ -40,7 +40,7 @@ export class HomepageComponent {
       },
       title: {
         display: true,
-        text: 'Workplaces by Revenue',
+        text: 'Workplaces by revenue - Top 5 this month',
       },
     },
   };
@@ -132,7 +132,7 @@ export class HomepageComponent {
       },
       title: {
         display: true,
-        text: 'Worked hours per month',
+        text: 'Worked hours by workplace - Top 5 this month',
       },
     },
   };
@@ -167,6 +167,7 @@ export class HomepageComponent {
       );
 
       this.handlePieChartData();
+      this.handlePolarAreaChartData();
     })();
 
     this.stateSubscription = this.state.stateChanged.subscribe((newState) => {
@@ -198,8 +199,12 @@ export class HomepageComponent {
       }
     });
 
-    this.pieChartData.labels = Object.keys(dataForChart);
-    this.pieChartData.datasets[0].data = Object.values(dataForChart);
+    const sortedData = Object.entries(dataForChart)
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 5);
+
+    this.pieChartData.labels = sortedData.map((item) => item[0]);
+    this.pieChartData.datasets[0].data = sortedData.map((item) => item[1]);
     this.pieChart.updateChart();
   }
 
@@ -228,8 +233,6 @@ export class HomepageComponent {
         if (data) {
           arr.push(Math.trunc(data));
         }
-
-        console.log('here');
       } catch (error) {
         console.log(error);
       } finally {
@@ -285,5 +288,44 @@ export class HomepageComponent {
     };
 
     months.forEach((month) => fetchData(month));
+  }
+
+  //? HANDLE POLAR AREA CHART DATA
+  handlePolarAreaChartData() {
+    const shiftsToFilter = structuredClone(this.userShifts);
+    const reducedShifts: { [key: string]: number | string }[] = [];
+    const dataForChart: { [key: string]: number } = {};
+
+    // extracting wage, revenue and workplace from each shift
+    shiftsToFilter.map((shift: Shift) => {
+      reducedShifts.push({
+        wage: shift.wagePerHour,
+        revenue: shift.shiftRevenue,
+        workplace: shift.workplace,
+      });
+    });
+
+    // calculationg worked hours per workplace
+    reducedShifts.map((shift) => {
+      const hours: number = Math.trunc(
+        Number(shift.revenue) / Number(shift.wage)
+      );
+      if (dataForChart[shift.workplace]) {
+        dataForChart[shift.workplace] += hours;
+      } else {
+        dataForChart[shift.workplace] = hours;
+      }
+    });
+
+    const sortedData = Object.entries(dataForChart)
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 5);
+
+    this.polarAreaChartData.labels = sortedData.map((item) => item[0]);
+    this.polarAreaChartData.datasets[0].data = sortedData.map(
+      (item) => item[1]
+    );
+
+    this.polarArea.updateChart();
   }
 }

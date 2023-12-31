@@ -5,6 +5,7 @@
     - save current shifts to localStorage
 3.  Revenue logic - revenue is only calculated when wage input is chnaged but it needs calculation when start and end time inputs are chnaged also
 4.  If I manually redirect to 404 page, and the page is refreshed, user info are lost because no active component makes a DB call
+5.  Charts do not update correctly on load
 
 ## FEATURES
 
