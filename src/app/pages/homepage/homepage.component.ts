@@ -62,7 +62,7 @@ export class HomepageComponent {
       },
       title: {
         display: true,
-        text: 'Last 6 months by revenue',
+        text: 'Revenue per month',
       },
     },
   };
@@ -214,10 +214,22 @@ export class HomepageComponent {
 
     const fetchData = async (month: string) => {
       try {
-        const data = await this.DB.getFirebaseSum(this.loggedUserID, month);
+        const queryOptions = {
+          month: '',
+          year: '',
+          collectionName: firebaseConfig.dev.shiftsDB,
+          collectionPath: [new Date().getFullYear().toString(), month],
+          queryName: 'userID',
+          queryValue: this.loggedUserID,
+          itemToQuery: 'shiftRevenue',
+        };
+
+        const data = await this.DB.getFirebaseSum(queryOptions);
         if (data) {
           arr.push(Math.trunc(data));
         }
+
+        console.log('here');
       } catch (error) {
         console.log(error);
       } finally {
@@ -243,7 +255,17 @@ export class HomepageComponent {
 
     const fetchData = async (month: string) => {
       try {
-        const data = await this.DB.getFirebaseCount(this.loggedUserID, month);
+        const queryOptions = {
+          month: '',
+          year: '',
+          collectionName: 'shiftAppShifts',
+          collectionPath: [new Date().getFullYear().toString(), month],
+          queryName: 'userID',
+          queryValue: this.loggedUserID,
+          itemToQuery: '',
+        };
+
+        const data = await this.DB.getFirebaseCount(queryOptions);
         if (data) {
           arr.push(data);
         }

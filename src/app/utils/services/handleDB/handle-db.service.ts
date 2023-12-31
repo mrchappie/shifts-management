@@ -420,35 +420,60 @@ export class HandleDBService {
     return shifts;
   }
 
-  //! SUM
-  async getFirebaseSum(userID: string, month: string) {
-    const coll = collection(
-      this.firestore,
-      'shiftAppShifts',
-      ...['2023', month]
-    );
-    const q = query(coll, where('userID', '==', userID));
-    const snapshot = await getAggregateFromServer(q, {
-      sum: sum('shiftRevenue'),
-    });
+  //! AGGREGATION QUERIES
 
-    if (snapshot.data().sum) {
-      return snapshot.data().sum;
-    } else {
-      return 0;
+  //! SUM
+  async getFirebaseSum(queryOptions: { [key: string]: any }) {
+    try {
+      const {
+        month,
+        year,
+        collectionName,
+        collectionPath,
+        queryName,
+        queryValue,
+        itemToQuery,
+      } = queryOptions;
+
+      const coll = collection(
+        this.firestore,
+        collectionName,
+        ...collectionPath
+      );
+      const q = query(coll, where(queryName, '==', queryValue));
+
+      const snapshot = await getAggregateFromServer(q, {
+        sum: sum(itemToQuery),
+      });
+
+      if (snapshot.data().sum) {
+        return snapshot.data().sum;
+      } else {
+        return 0;
+      }
+    } catch (error) {
+      console.log(error);
     }
+
+    return null;
   }
 
   //! AVERAGE
-  async getFirebaseAverage(userID: string, month: string) {
-    const coll = collection(
-      this.firestore,
-      'shiftAppShifts',
-      ...['2023', month]
-    );
-    const q = query(coll, where('userID', '==', userID));
+  async getFirebaseAverage(queryOptions: { [key: string]: string }) {
+    const {
+      month,
+      year,
+      collectionName,
+      collectionPath,
+      queryName,
+      queryValue,
+      itemToQuery,
+    } = queryOptions;
+
+    const coll = collection(this.firestore, collectionName, ...collectionPath);
+    const q = query(coll, where(queryName, '==', queryValue));
     const snapshot = await getAggregateFromServer(q, {
-      average: average('shiftRevenue'),
+      average: average(itemToQuery),
     });
 
     if (snapshot.data().average) {
@@ -459,13 +484,19 @@ export class HandleDBService {
   }
 
   //! COUNT
-  async getFirebaseCount(userID: string, month: string) {
-    const coll = collection(
-      this.firestore,
-      'shiftAppShifts',
-      ...['2023', month]
-    );
-    const q = query(coll, where('userID', '==', userID));
+  async getFirebaseCount(queryOptions: { [key: string]: any }) {
+    const {
+      month,
+      year,
+      collectionName,
+      collectionPath,
+      queryName,
+      queryValue,
+      itemToQuery,
+    } = queryOptions;
+
+    const coll = collection(this.firestore, collectionName, ...collectionPath);
+    const q = query(coll, where(queryName, '==', queryValue));
     const snapshot = await getCountFromServer(q);
 
     if (snapshot.data().count) {
