@@ -222,7 +222,7 @@ export class HomepageComponent {
         const queryOptions = {
           month: '',
           year: '',
-          collectionName: firebaseConfig.dev.shiftsDB,
+          collectionName: firebaseConfig.deploy.shiftsDB,
           collectionPath: [new Date().getFullYear().toString(), month],
           queryName: 'userID',
           queryValue: this.loggedUserID,
@@ -232,6 +232,8 @@ export class HomepageComponent {
         const data = await this.DB.getFirebaseSum(queryOptions);
         if (data) {
           arr.push(Math.trunc(data));
+        } else {
+          arr.push(0);
         }
       } catch (error) {
         console.log(error);
@@ -261,7 +263,7 @@ export class HomepageComponent {
         const queryOptions = {
           month: '',
           year: '',
-          collectionName: 'shiftAppShifts',
+          collectionName: firebaseConfig.deploy.shiftsDB,
           collectionPath: [new Date().getFullYear().toString(), month],
           queryName: 'userID',
           queryValue: this.loggedUserID,
@@ -271,6 +273,8 @@ export class HomepageComponent {
         const data = await this.DB.getFirebaseCount(queryOptions);
         if (data) {
           arr.push(data);
+        } else {
+          arr.push(0);
         }
       } catch (error) {
         console.log(error);
