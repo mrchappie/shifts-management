@@ -279,7 +279,7 @@ export class HomepageComponent {
         const data = await this.DB.getFirebaseCount(queryOptions);
         const indexOfMonth = months.indexOf(month);
         if (data) {
-          arr.push(data);
+          arr.splice(indexOfMonth, 1, data);
         }
       } catch (error) {
         console.log(error);
