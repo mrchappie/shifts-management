@@ -36,7 +36,7 @@
   }
 
   .custom-label {
-    @apply flex w-full border-b-2 border-black/50 bg-white px-2;
+    @apply flex w-full border-b-2 border-black/50 bg-white px-2 relative;
   }
 
   .custom-search-label {

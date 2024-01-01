@@ -75,7 +75,7 @@ export class MyShiftsComponent implements OnInit, OnDestroy {
   }
 
   async getShifts(userID: string) {
-    this.DB.handleGetShiftsByUserID(userID, this.filters.queryLimit);
+    this.DB.handleGetShiftsByUserID(userID);
   }
 
   async editShift(shiftID: string) {
