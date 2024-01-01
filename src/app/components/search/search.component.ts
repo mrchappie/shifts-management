@@ -32,7 +32,6 @@ export class SearchComponent implements OnInit, OnDestroy {
   constructor(
     private state: StateService,
     private fb: FormBuilder,
-    private DB: HandleDBService
     private DB: HandleDBService,
     private customFN: CustomFnService
   ) {}
