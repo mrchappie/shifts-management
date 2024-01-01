@@ -46,4 +46,12 @@ export class CustomFnService {
       return [yearMonth[0], months[+yearMonth[1] - 1]];
     }
   }
+
+  getCurrentYear() {
+    return new Date().getFullYear().toString();
+  }
+
+  getCurrentMonth() {
+    return (new Date().getMonth() + 1).toString().padStart(2, '0');
+  }
 }

@@ -8,6 +8,8 @@ import { CountI } from '../admin/dashboard/dashboard.component';
 
 import { ChartConfiguration, ChartData, ChartType } from 'chart.js';
 import { ChartComponent } from 'src/app/components/chart/chart.component';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { CustomFnService } from 'src/app/utils/services/customFn/custom-fn.service';
 
 @Component({
   selector: 'app-homepage',
@@ -141,24 +143,29 @@ export class HomepageComponent {
   currentState!: State;
   loggedUserID!: string;
   userShifts: Shift[] = [];
+  statsDateForm!: FormGroup;
 
   // DB Config
   fbConfig: FirebaseConfigI = firebaseConfig;
 
   private stateSubscription: Subscription | undefined;
 
-  constructor(private state: StateService, private DB: HandleDBService) {}
+  constructor(
+    private state: StateService,
+    private DB: HandleDBService,
+    private fb: FormBuilder,
+    private customFN: CustomFnService
+  ) {}
 
   ngOnInit(): void {
     this.currentState = this.state.getState();
     this.loggedUserID = this.currentState.currentLoggedFireUser!.id;
 
-    // above charts stats
-    const data = this.currentState.currentLoggedFireUser!.shiftsCount;
-    // this.shiftsCountData[0].value = data.totalShifts;
-    // this.shiftsCountData[2].value = data.lastWeek;
-    // this.shiftsCountData[3].value = data.thisWeek;
-    // this.shiftsCountData[4].value = data.nextWeek;
+    this.statsDateForm = this.fb.group({
+      statsDate: [
+        `${this.customFN.getCurrentYear()}-${this.customFN.getCurrentMonth()}`,
+      ],
+    });
 
     // Charts
     (async () => {

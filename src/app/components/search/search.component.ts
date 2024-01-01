@@ -5,6 +5,7 @@ import { StateService } from 'src/app/utils/services/state/state.service';
 import { Subscription } from 'rxjs';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { HandleDBService } from 'src/app/utils/services/handleDB/handle-db.service';
+import { CustomFnService } from 'src/app/utils/services/customFn/custom-fn.service';
 
 @Component({
   selector: 'app-search',
@@ -32,6 +33,8 @@ export class SearchComponent implements OnInit, OnDestroy {
     private state: StateService,
     private fb: FormBuilder,
     private DB: HandleDBService
+    private DB: HandleDBService,
+    private customFN: CustomFnService
   ) {}
 
   ngOnInit(): void {
@@ -61,11 +64,8 @@ export class SearchComponent implements OnInit, OnDestroy {
 
     // setting the default year-month to my form input
     this.searchForm.patchValue({
-      yearMonthQuery: `${new Date().getFullYear()}-${
-        new Date().getMonth() + 1
-      }`,
+      yearMonthQuery: `${this.customFN.getCurrentYear()}-${this.customFN.getCurrentMonth()}`,
     });
-
     this.filters = this.currentState.searchForm;
 
     this.stateSubscription = this.state.stateChanged.subscribe((newState) => {
@@ -118,6 +118,8 @@ export const defaultFormValues = {
   endDateQuery: '',
   sortByQuery: '',
   orderByQuery: '',
-  yearMonthQuery: `${new Date().getFullYear()}-${new Date().getMonth() + 1}`,
+  yearMonthQuery: `${new Date().getFullYear()}-${(new Date().getMonth() + 1)
+    .toString()
+    .padStart(2, '0')}`,
   queryLimit: 10,
 };
