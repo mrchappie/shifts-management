@@ -217,7 +217,7 @@ export class HomepageComponent {
 
   //? HANDLE BAR CHART DATA
   handleBarChartData() {
-    const arr: number[] = [];
+    const arr: number[] = new Array(10).fill(0);
     //prettier-ignore
     const months = [
       "january","february","march","april","may","june","july",
@@ -237,8 +237,9 @@ export class HomepageComponent {
         };
 
         const data = await this.DB.getFirebaseSum(queryOptions);
+        const indexOfMonth = months.indexOf(month);
         if (data) {
-          arr.push(Math.trunc(data));
+          arr.splice(indexOfMonth, 1, data);
         }
       } catch (error) {
         console.log(error);
@@ -256,7 +257,7 @@ export class HomepageComponent {
 
   //? HANDLE LINE CHART DATA
   handleLineChartData() {
-    const arr: number[] = [];
+    const arr: number[] = new Array(10).fill(0);
     //prettier-ignore
     const months = [
       "january","february","march","april","may","june","july",
@@ -276,8 +277,9 @@ export class HomepageComponent {
         };
 
         const data = await this.DB.getFirebaseCount(queryOptions);
+        const indexOfMonth = months.indexOf(month);
         if (data) {
-          arr.push(data);
+          arr.splice(indexOfMonth, 1, data);
         }
       } catch (error) {
         console.log(error);
@@ -288,7 +290,7 @@ export class HomepageComponent {
         this.lineChartData.datasets[0].data = arr;
 
         this.shiftsCountData[0].value = arr.reduce((a, b) => a + b, 0);
-        this.shiftsCountData[1].value = arr[arr.length - 1];
+        this.shiftsCountData[1].value = arr[new Date().getMonth()];
 
         this.lineChart.updateChart();
       }

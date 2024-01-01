@@ -459,7 +459,7 @@ export class HandleDBService {
   }
 
   //! AVERAGE
-  async getFirebaseAverage(queryOptions: { [key: string]: string }) {
+  async getFirebaseAverage(queryOptions: { [key: string]: any }) {
     const {
       month,
       year,
