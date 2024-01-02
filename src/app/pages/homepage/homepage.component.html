@@ -2,9 +2,13 @@
   <p class="font-semibold text-2xl">Statistics about your shifts</p>
   <div>
     <form [formGroup]="statsDateForm">
-      <label class="custom-label">
-        <div class="custom-label-text-r">Select Date</div>
-        <input type="month" formControlName="statsDate" class="custom-input" />
+      <label class="custom-label dark:bgDarkSecond">
+        <div class="custom-label-text-r dark:bgDarkSecond">Select Date</div>
+        <input
+          type="month"
+          formControlName="statsDate"
+          class="custom-input dark:bgDarkSecond"
+        />
       </label>
     </form>
   </div>

@@ -32,27 +32,27 @@
   }
 
   .custom-input {
-    @apply flex-1 p-3 outline-none bg-transparent cursor-text;
+    @apply flex-1 p-3 outline-none bg-transparent dark:bgDark cursor-text;
   }
 
   .custom-label {
-    @apply flex w-full border-b-2 border-black/50 bg-white px-2 relative;
+    @apply flex w-full border-b-2 border-black/50 bg-white dark:bgDark px-2 relative;
   }
 
   .custom-search-label {
-    @apply bg-white border-none p-2 rounded-md justify-between relative h-full cursor-text shadow-all-sides;
+    @apply bg-white dark:bgDark border-none p-2 rounded-md justify-between relative h-full cursor-text shadow-all-sides;
   }
 
   .custom-search-input {
-    @apply outline-none  text-black min-w-[50%] border-b-[1px] border-accentColor/75 cursor-text;
+    @apply outline-none  text-black min-w-[50%] border-b-[1px] border-accentColor/75 cursor-text bg-transparent dark:bgDark;
   }
 
   .custom-label-text-r {
-    @apply absolute top-[-15px] right-2 px-2 bg-white  rounded-md shadow-sm shadow-black/25;
+    @apply absolute top-[-15px] right-2 px-2 bg-white dark:bgDark  rounded-md shadow-sm shadow-black/25;
   }
 
   .custom-label-text-l {
-    @apply absolute top-[-15px] left-2 px-2 bg-white  rounded-md shadow-sm shadow-black/25;
+    @apply absolute top-[-15px] left-2 px-2 bg-white dark:bgDark rounded-md shadow-sm shadow-black/25;
   }
 
   .custom-link {
@@ -81,6 +81,14 @@
   // ? THEME
   .bgDark {
     @apply bg-[#222222] text-white;
+  }
+
+  .bgDarkSecond {
+    @apply bg-[#474A48] text-white/90;
+  }
+
+  .bgDarkThird {
+    @apply bg-[#666666] text-white;
   }
 }
 
