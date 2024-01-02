@@ -77,6 +77,11 @@
   .modal {
     @apply center absolute top-0 left-0 w-full h-full bg-black/50 z-10;
   }
+
+  // ? THEME
+  .bgDark {
+    @apply bg-[#222222] text-white;
+  }
 }
 
 body {
