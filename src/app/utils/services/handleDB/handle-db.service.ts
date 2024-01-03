@@ -66,7 +66,11 @@ export class HandleDBService {
 
   // localStorage
   setLocalStorage(key: string, data: any) {
-    localStorage.setItem(key, JSON.stringify(data));
+    if (typeof data != 'string') {
+      localStorage.setItem(key, JSON.stringify(data));
+    } else {
+      localStorage.setItem(key, data);
+    }
   }
 
   getLocalStorage(key: string) {

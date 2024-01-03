@@ -4,7 +4,11 @@
     (ngSubmit)="onSubmit()"
     class="center-col gap-4 p-12"
   >
-    <h1 class="text-2xl font-bold mb-4">Add New Shift</h1>
+    <h1
+      class="text-2xl font-bold mb-4 text-lightTextPrimary dark:text-darkTextSecondary"
+    >
+      Add New Shift
+    </h1>
 
     <ng-container *ngFor="let shift of shiftInputs">
       <ng-container *ngIf="shift.inputType === 'input'">

@@ -23,9 +23,9 @@
       </label>
     </div>
     <button
+      [disabled]="userProfileForm.valid"
       type="submit"
-      [disabled]="userProfileForm.invalid"
-      class="py-2 px-4 bg-baseColor text-white rounded-sm"
+      class="py-2 px-4 bg-lightPrimary text-lightTextPrimary rounded-sm"
     >
       Update information
     </button>
@@ -33,13 +33,13 @@
   <div class="flex-1 flex items-center justify-center">
     <label for="changeProfilePicture" class="center relative"
       ><div
-        class="center absolute bottom-[5%] right-[15%] p-2 bg-white rounded-[50%] shadow-all-sides cursor-pointer"
+        class="center absolute bottom-[5%] right-[15%] p-2 bg-lightBgPrimary dark:bg-darkBgPrimary rounded-[50%] shadow-all-sides cursor-pointer"
       >
         <mat-icon fontIcon="add_a_photo"></mat-icon
         ><input type="file" id="changeProfilePicture" class="hidden" />
       </div>
       <div
-        class="center w-[350px] aspect-square rounded-[50%] overflow-hidden border-[3px] border-baseColor shadow-2xl"
+        class="center w-[350px] aspect-square rounded-[50%] overflow-hidden border-[3px] border-lighbg-lightPrimary shadow-2xl"
       >
         <img
           [src]="

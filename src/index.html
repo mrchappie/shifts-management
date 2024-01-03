@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="light">
   <head>
     <meta charset="utf-8" />
     <title>Shift Management</title>
@@ -17,10 +17,23 @@
       href="https://fonts.googleapis.com/icon?family=Material+Icons"
       rel="stylesheet"
     />
+
+    <script>
+      // dark mode toggle onn page load or when changing themes
+      // added here in the head to avoid page rendering with wrong theme
+      if (
+        localStorage.getItem("theme") === "dark" &&
+        window.matchMedia("(prefers-color-scheme: dark)").matches
+      ) {
+        document.documentElement.classList.add("dark");
+      } else {
+        document.documentElement.classList.remove("dark");
+      }
+    </script>
   </head>
   <body>
     <app-root
-      class="center h-screen overflow-hidden bg-bgColor text-blackColor"
+      class="center h-screen overflow-hidden bg-lightBgPrimary text-lightTextPrimary dark:bg-darkBgPrimary dark:text-darkTextPrimary"
     ></app-root>
   </body>
 </html>

@@ -17,6 +17,8 @@ export class NavbarComponent implements OnInit, OnDestroy {
   navbarUserRoutes: NavbarRoutes[] = userRoutes;
   navbarAdminRoutes: NavbarRoutes[] = adminRoutes;
   isLoggedIn: boolean = false;
+  currentName: string | undefined | null = '';
+  public theme: string = 'light';
 
   private stateSubscription: Subscription | undefined;
 
@@ -28,9 +30,11 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.currentState = this.state.getState();
+    this.currentName = this.currentState.currentLoggedFireUser?.firstName;
 
     this.stateSubscription = this.state.stateChanged.subscribe((newState) => {
       this.currentState = newState;
+      this.currentName = this.currentState.currentLoggedFireUser!.firstName;
       this.isAdmin =
         this.currentState.currentLoggedFireUser?.adminPanel.isAdmin;
     });
@@ -45,5 +49,13 @@ export class NavbarComponent implements OnInit, OnDestroy {
   async onSubmit() {
     await this.DB.logout();
     this.router.navigate(['/login']);
+  }
+
+  toggleTheme() {
+    this.theme = this.theme === 'light' ? 'dark' : 'light';
+
+    document.documentElement.setAttribute('class', this.theme);
+
+    this.DB.setLocalStorage('theme', this.theme);
   }
 }

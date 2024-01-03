@@ -32,31 +32,31 @@
   }
 
   .custom-input {
-    @apply flex-1 p-3 outline-none bg-transparent cursor-text;
+    @apply flex-1 p-3 outline-none bg-transparent dark:bg-darkBgPrimary cursor-text;
   }
 
   .custom-label {
-    @apply flex w-full border-b-2 border-black/50 bg-white px-2 relative;
+    @apply flex w-full border-b-2 border-lightBorder/50 bg-lightBgPrimary dark:bg-darkBgPrimary dark:text-darkTextSecondary dark:border-darkAccent px-2 relative;
   }
 
   .custom-search-label {
-    @apply bg-white border-none p-2 rounded-md justify-between relative h-full cursor-text shadow-all-sides;
+    @apply bg-lightBgPrimary dark:bg-darkBgSecondary border-none p-2 rounded-md justify-between relative h-full cursor-text shadow-all-sides;
   }
 
   .custom-search-input {
-    @apply outline-none  text-black min-w-[50%] border-b-[1px] border-accentColor/75 cursor-text;
+    @apply outline-none  text-lightTextPrimary  min-w-[50%] border-b-[1px] border-lightAccent/75 cursor-text bg-transparent dark:text-darkTextPrimary dark:bg-darkBgSecondary;
   }
 
   .custom-label-text-r {
-    @apply absolute top-[-15px] right-2 px-2 bg-white  rounded-md shadow-sm shadow-black/25;
+    @apply absolute top-[-15px] right-2 px-2 bg-lightBgPrimary dark:bg-darkBgPrimary  rounded-md shadow-sm shadow-black/25;
   }
 
   .custom-label-text-l {
-    @apply absolute top-[-15px] left-2 px-2 bg-white  rounded-md shadow-sm shadow-black/25;
+    @apply absolute top-[-15px] left-2 px-2 bg-lightBgPrimary dark:bg-darkBgPrimary rounded-md shadow-sm shadow-black/25;
   }
 
   .custom-link {
-    @apply underline hover:text-accentColor cursor-pointer;
+    @apply underline hover:text-lightAccent  cursor-pointer;
   }
 
   .hidden {
@@ -64,14 +64,14 @@
   }
 
   .activeNavLink {
-    @apply text-accentColor;
+    @apply text-lightAccent;
   }
 
   .cta-btn {
   }
 
   .submit-btn {
-    @apply outline-none text-white bg-baseColor rounded-md py-2 px-4 shadow-sm hover:shadow-lg transition-all;
+    @apply outline-none text-lightTextPrimary bg-lightPrimary rounded-md py-2 px-4 shadow-sm hover:shadow-lg transition-all;
   }
 
   .modal {
