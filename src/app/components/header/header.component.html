@@ -1,18 +1,18 @@
 <header
-  class="center justify-between bg-white dark:bgDark text-black py-4 px-8 h-[100px] shadow-all-sides rounded-xl"
+  class="center justify-between bg-lightBgSecondary dark:bg-darkBgSecondary text-darkTextSecondary py-4 px-8 h-[100px] shadow-all-sides rounded-xl"
 >
   <div class="text-3xl">
     Shift Management
-    <span class="text-accentColor font-bold">{{ activeComponent }}</span>
+    <span class="text-darkAccent font-bold">{{ activeComponent }}</span>
   </div>
   <div class="text-3xl">
     Hey,
-    <span class="text-accentColor font-bold"
+    <span class="text-darkAccent font-bold"
       >{{ currentUserName
       }}<mat-icon
         *ngIf="currentState.emailVerified"
         fontIcon="check_circle"
-        class="text-baseColor"
+        class="text-darkAccent"
       ></mat-icon
     ></span>
   </div>

@@ -1,5 +1,5 @@
 <div
-  class="center-col gap-4 shadow-all-sides rounded-md p-4 bg-white dark:bgDarkSecond"
+  class="center-col gap-4 shadow-all-sides rounded-md p-4 bg-lightBgPrimary dark:bg-darkBgPrimary dark:text-darkTextPrimary"
 >
   <div class="w-[100px] h-[100px] rounded-[50%] overflow-hidden shadow-2xl">
     <img
@@ -18,7 +18,7 @@
       {{ userInfo?.firstName }} {{ userInfo?.lastName }}
     </div>
     <span
-      class="center font-semibold italic text-sm text-black/50 dark:bgDarkSecond"
+      class="center font-semibold italic text-sm text-black/50 dark:text-darkTextPrimary"
       ><div class="center"><mat-icon fontIcon="mail"></mat-icon></div>
       {{ userInfo?.email ? userInfo?.email : "Undefined" }}</span
     >
@@ -37,13 +37,13 @@
   <div class="center gap-2">
     <button
       [routerLink]="['/admin', 'edit-user', userInfo?.id]"
-      class="center gap-1 bg-baseColor text-white font-bold px-6 py-2 rounded-md"
+      class="center gap-1 bg-lightSucces text-darkTextPrimary font-bold px-6 py-2 rounded-md"
     >
       <div class="center"><mat-icon fontIcon="edit"></mat-icon></div>
     </button>
     <button
       (click)="openModal(userInfo!.id)"
-      class="center gap-1 bg-accentColor text-white font-bold px-6 py-2 rounded-md"
+      class="center gap-1 bg-lightError text-darkTextPrimary font-bold px-6 py-2 rounded-md"
     >
       <div class="center"><mat-icon fontIcon="delete"></mat-icon></div>
     </button>
