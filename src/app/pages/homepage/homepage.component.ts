@@ -50,9 +50,17 @@ export class HomepageComponent {
   //! BAR CHART
   @ViewChild('barChart') barChart!: ChartComponent;
   public barChartData: ChartData<ChartType, number[], string | string[]> = {
-    labels: ['June', 'July', 'August'],
+    // prettier-ignore
+    labels: [
+      "january","february","march","april","may","june","july",
+    "august", "september", "october", "november", "december"
+    ],
     datasets: [
-      { ...this.chartBorder, data: [3105, 2850, 3805], label: 'Revenue' },
+      {
+        ...this.chartBorder,
+        data: [20, 25, 14, 18, 22, 30, 15, 14, 18, 22, 30, 10],
+        label: 'Revenue',
+      },
     ],
   };
 
@@ -216,7 +224,7 @@ export class HomepageComponent {
   }
 
   //? HANDLE BAR CHART DATA
-  handleBarChartData() {
+  async handleBarChartData() {
     const arr: number[] = new Array(10).fill(0);
     //prettier-ignore
     const months = [
@@ -224,8 +232,9 @@ export class HomepageComponent {
       "august", "september", "october", "november", "december"
     ];
 
-    const fetchData = async (month: string) => {
-      try {
+    try {
+      // fetch data for chart
+      const fetchData = async (month: string) => {
         const queryOptions = {
           month: '',
           year: '',
@@ -238,25 +247,27 @@ export class HomepageComponent {
 
         const data = await this.DB.getFirebaseSum(queryOptions);
         const indexOfMonth = months.indexOf(month);
+
         if (data) {
           arr.splice(indexOfMonth, 1, data);
         }
-      } catch (error) {
-        console.log(error);
-      } finally {
-        this.barChartData.labels = months.map(
-          (month) => month.charAt(0).toUpperCase() + month.slice(1)
-        );
-        this.barChartData.datasets[0].data = arr;
-        this.barChart.updateChart();
-      }
-    };
-
-    months.forEach((month) => fetchData(month));
+      };
+      const fetchDataPromises = months.map((month) => fetchData(month));
+      await Promise.all(fetchDataPromises);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      // update chart
+      this.barChartData.labels = months.map(
+        (month) => month.charAt(0).toUpperCase() + month.slice(1)
+      );
+      this.barChartData.datasets[0].data = arr;
+      this.barChart.updateChart();
+    }
   }
 
   //? HANDLE LINE CHART DATA
-  handleLineChartData() {
+  async handleLineChartData() {
     const arr: number[] = new Array(10).fill(0);
     //prettier-ignore
     const months = [
@@ -264,8 +275,9 @@ export class HomepageComponent {
       "august", "september", "october", "november", "december"
     ];
 
-    const fetchData = async (month: string) => {
-      try {
+    try {
+      // fetch data for chart
+      const fetchData = async (month: string) => {
         const queryOptions = {
           month: '',
           year: '',
@@ -278,25 +290,25 @@ export class HomepageComponent {
 
         const data = await this.DB.getFirebaseCount(queryOptions);
         const indexOfMonth = months.indexOf(month);
+
         if (data) {
           arr.splice(indexOfMonth, 1, data);
         }
-      } catch (error) {
-        console.log(error);
-      } finally {
-        this.lineChartData.labels = months.map(
-          (month) => month.charAt(0).toUpperCase() + month.slice(1)
-        );
-        this.lineChartData.datasets[0].data = arr;
-
-        this.shiftsCountData[0].value = arr.reduce((a, b) => a + b, 0);
-        this.shiftsCountData[1].value = arr[new Date().getMonth()];
-
-        this.lineChart.updateChart();
-      }
-    };
-
-    months.forEach((month) => fetchData(month));
+      };
+      const fetchDataPromises = months.map((month) => fetchData(month));
+      await Promise.all(fetchDataPromises);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      // update chart
+      this.lineChartData.labels = months.map(
+        (month) => month.charAt(0).toUpperCase() + month.slice(1)
+      );
+      this.lineChartData.datasets[0].data = arr;
+      this.shiftsCountData[0].value = arr.reduce((a, b) => a + b, 0);
+      this.shiftsCountData[1].value = arr[new Date().getMonth()];
+      this.lineChart.updateChart();
+    }
   }
 
   //? HANDLE POLAR AREA CHART DATA
