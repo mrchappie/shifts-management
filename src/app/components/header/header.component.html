@@ -1,10 +1,11 @@
 <header
-  class="center justify-between bg-lightBgSecondary dark:bg-darkBgSecondary text-darkTextSecondary py-4 px-8 h-[100px] shadow-all-sides rounded-xl"
+  class="center justify-between text-lightTextPrimary bg-lightBgSecondary dark:bg-darkBgSecondary dark:text-darkTextSecondary py-4 px-8 h-[100px] shadow-all-sides rounded-xl"
 >
   <div class="text-3xl">
     Shift Management
     <span class="text-darkAccent font-bold">{{ activeComponent }}</span>
   </div>
+  <input type="checkbox" (click)="toggleTheme()" />
   <div class="text-3xl">
     Hey,
     <span class="text-darkAccent font-bold"

@@ -5,6 +5,7 @@ module.exports = {
     "./src/app/**/*.ts",
     "./src/index.html",
   ],
+  darkMode: "class",
   theme: {
     extend: {
       // colors

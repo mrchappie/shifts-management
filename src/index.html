@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="light">
   <head>
     <meta charset="utf-8" />
     <title>Shift Management</title>
@@ -17,6 +17,21 @@
       href="https://fonts.googleapis.com/icon?family=Material+Icons"
       rel="stylesheet"
     />
+
+    <script>
+      // dark mode toggle onn page load or when changing themes
+      // added here in the head to avoid page rendering with wrong theme
+      if (
+        localStorage.getItem("theme") === "dark" &&
+        window.matchMedia("(prefers-color-scheme: dark)").matches
+      ) {
+        console.log(localStorage.getItem("theme"));
+        document.documentElement.classList.add("dark");
+      } else {
+        console.log(localStorage.getItem("theme") === "dark");
+        document.documentElement.classList.remove("dark");
+      }
+    </script>
   </head>
   <body>
     <app-root
