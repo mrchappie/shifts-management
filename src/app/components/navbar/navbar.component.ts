@@ -18,6 +18,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   navbarAdminRoutes: NavbarRoutes[] = adminRoutes;
   isLoggedIn: boolean = false;
   currentName: string | undefined | null = '';
+  public theme: string = 'light';
 
   private stateSubscription: Subscription | undefined;
 
@@ -48,5 +49,13 @@ export class NavbarComponent implements OnInit, OnDestroy {
   async onSubmit() {
     await this.DB.logout();
     this.router.navigate(['/login']);
+  }
+
+  toggleTheme() {
+    this.theme = this.theme === 'light' ? 'dark' : 'light';
+
+    document.documentElement.setAttribute('class', this.theme);
+
+    this.DB.setLocalStorage('theme', this.theme);
   }
 }
