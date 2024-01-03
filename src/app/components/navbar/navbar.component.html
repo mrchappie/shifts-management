@@ -1,5 +1,5 @@
 <nav
-  class="bg-white shadow-all-sides rounded-xl center-col items-start justify-start p-4 h-full overflow-hidden"
+  class="bg-lightBgSecondary dark:bg-darkBgSecondary dark:text-darkTextSecondary shadow-all-sides rounded-xl center-col items-start justify-start p-4 h-full overflow-hidden"
 >
   <div class="center p-2">
     <div class="w-[40px] h-[40px] rounded-[50%] bg-black overflow-hidden">
@@ -27,7 +27,7 @@
         routerLink="{{ route.path }}"
         routerLinkActive="activeNavLink"
         [routerLinkActiveOptions]="{ exact: true }"
-        class="flex gap-4 capitalize text-lg font-semibold text-left w-full cursor-pointer px-4 py-3 hover:text-accentColor/75"
+        class="flex gap-4 capitalize text-lg font-semibold text-left w-full cursor-pointer px-4 py-3 hover:text-lightAccent/75"
       >
         <div class="center">
           <mat-icon fontIcon="{{ route.icon }}"></mat-icon>
@@ -42,7 +42,7 @@
         routerLink="{{ route.path }}"
         routerLinkActive="activeNavLink"
         [routerLinkActiveOptions]="{ exact: true }"
-        class="flex gap-4 capitalize text-md font-semibold text-left w-full cursor-pointer px-4 py-3 hover:text-accentColor/75"
+        class="flex gap-4 capitalize text-md font-semibold text-left w-full cursor-pointer px-4 py-3 hover:text-lightAccent/75"
       >
         <div class="center">
           <mat-icon fontIcon="{{ route.icon }}"></mat-icon>
@@ -52,7 +52,7 @@
     </ng-container>
   </ul>
   <button
-    class="center justify-start self-end gap-4 capitalize text-lg font-bold text-left w-full cursor-pointer px-4 py-3 hover:text-accentColor/75"
+    class="flex gap-4 capitalize text-lg font-bold text-left w-full cursor-pointer px-4 py-3 hover:text-accentColor/75"
     (click)="onSubmit()"
   >
     <div class="center"><mat-icon fontIcon="logout"></mat-icon></div>
