@@ -27,6 +27,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.currentState = this.state.getState();
     this.activeComponent = this.currentState.activeComponent;
+    this.currentUserName = this.currentState.currentLoggedFireUser?.firstName;
+
     this.stateSubscription = this.state.stateChanged.subscribe((newState) => {
       this.currentState = newState;
       this.activeComponent = this.currentState.activeComponent;

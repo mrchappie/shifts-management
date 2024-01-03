@@ -17,6 +17,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   navbarUserRoutes: NavbarRoutes[] = userRoutes;
   navbarAdminRoutes: NavbarRoutes[] = adminRoutes;
   isLoggedIn: boolean = false;
+  currentName: string | undefined | null = '';
 
   private stateSubscription: Subscription | undefined;
 
@@ -28,9 +29,11 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.currentState = this.state.getState();
+    this.currentName = this.currentState.currentLoggedFireUser?.firstName;
 
     this.stateSubscription = this.state.stateChanged.subscribe((newState) => {
       this.currentState = newState;
+      this.currentName = this.currentState.currentLoggedFireUser!.firstName;
       this.isAdmin =
         this.currentState.currentLoggedFireUser?.adminPanel.isAdmin;
     });
