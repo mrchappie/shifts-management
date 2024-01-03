@@ -2,7 +2,7 @@
   <form
     [formGroup]="shiftForm"
     (ngSubmit)="onSubmit()"
-    class="center-col gap-4 p-12"
+    class="center-col gap-6 p-12"
   >
     <h1 class="text-2xl font-bold mb-4">Add New Shift</h1>
 
@@ -18,6 +18,12 @@
             formControlName="{{ shift.formControl }}"
             class="custom-input w-[400px]"
           />
+          <div
+            *ngIf="formStatus(shift.formControl)"
+            class="absolute bottom-[-25px] left-0 text-red-500"
+          >
+            {{ getErrorMessage(shift.formControl) }}
+          </div>
         </label>
       </ng-container>
       <ng-container *ngIf="shift.inputType === 'select'">
@@ -44,11 +50,21 @@
               {{ workplace }}
             </option>
           </select>
+          <div
+            *ngIf="formStatus(shift.formControl)"
+            class="absolute bottom-[-25px] left-0 text-red-500"
+          >
+            {{ getErrorMessage(shift.formControl) }}
+          </div>
         </label>
       </ng-container>
     </ng-container>
 
-    <button type="submit" class="bg-baseColor py-3 px-6">
+    <button
+      [disabled]="shiftForm.invalid"
+      type="submit"
+      class="bg-baseColor py-3 px-6"
+    >
       <span *ngIf="!isEditing">Add</span
       ><span *ngIf="isEditing">Edit</span> shift
     </button>

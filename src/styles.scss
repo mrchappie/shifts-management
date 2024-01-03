@@ -36,7 +36,7 @@
   }
 
   .custom-label {
-    @apply flex w-full border-b-2 border-black/50;
+    @apply flex w-full border-b-2 border-black/50 relative;
   }
 }
 
@@ -46,10 +46,13 @@ body {
 }
 
 label:has(input.ng-touched),
-label:has(input.ng-dirty) {
+label:has(input.ng-dirty),
+label:has(select.ng-touched),
+label:has(select.ng-dirty) {
   border-color: red;
 }
 
-label:has(input.ng-valid) {
+label:has(input.ng-valid),
+label:has(select.ng-valid) {
   border-color: initial;
 }
