@@ -2,9 +2,9 @@
   <form
     [formGroup]="userProfileForm"
     (ngSubmit)="onSubmit()"
-    class="flex-1 center-col gap-8 items-start ml-8"
+    class="items-start flex-1 gap-8 ml-8 center-col"
   >
-    <div *ngFor="let input of settingsFormInputs" class="center items-start">
+    <div *ngFor="let input of settingsFormInputs" class="items-start center">
       <label class="custom-label">
         <div class="center">
           <mat-icon fontIcon="{{ input.icon }}"></mat-icon>
@@ -18,13 +18,13 @@
     </div>
     <button
       type="submit"
-      class="py-2 px-4 bg-lightPrimary text-lightTextPrimary rounded-sm"
+      class="px-4 py-2 rounded-sm bg-lightPrimary text-lightTextPrimary"
     >
       Update information
     </button>
   </form>
-  <div class="flex-1 flex items-center justify-center">
-    <label for="changeProfilePicture" class="center relative"
+  <div class="flex items-center justify-center flex-1">
+    <label for="changeProfilePicture" class="relative center"
       ><div
         class="center absolute bottom-[5%] right-[15%] p-2 bg-lightBgPrimary dark:bg-darkBgPrimary rounded-[50%] shadow-all-sides cursor-pointer"
       >

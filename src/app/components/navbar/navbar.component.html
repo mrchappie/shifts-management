@@ -1,7 +1,7 @@
 <nav
-  class="bg-lightBgSecondary dark:bg-darkBgSecondary dark:text-darkTextSecondary shadow-all-sides rounded-xl center-col items-start justify-start p-4 h-full overflow-hidden"
+  class="items-start justify-start h-full p-4 overflow-hidden bg-lightBgSecondary dark:bg-darkBgSecondary dark:text-darkTextSecondary shadow-all-sides rounded-xl center-col"
 >
-  <div class="center p-2">
+  <div class="p-2 center">
     <div class="w-[40px] h-[40px] rounded-[50%] bg-black overflow-hidden">
       <img
         src="{{ currentState.currentLoggedFireUser?.profileImage }}"
@@ -10,7 +10,7 @@
       />
     </div>
     <div class="text-lg">
-      <span class="text-accentColor font-bold"
+      <span class="font-bold text-accentColor"
         >{{ currentName
         }}<mat-icon
           *ngIf="currentState.emailVerified"
@@ -21,19 +21,23 @@
     </div>
     <div>
       <label class="checkbox style-e">
-        <input type="checkbox" (click)="toggleTheme()" />
+        <input
+          type="checkbox"
+          (click)="toggleTheme()"
+          [checked]="theme === 'dark'"
+        />
         <div class="checkbox__checkmark"></div>
       </label>
     </div>
   </div>
   <hr class="w-full" />
-  <ul class="center-col justify-start w-full h-full gap-4">
+  <ul class="justify-start w-full h-full gap-4 center-col">
     <ng-container *ngFor="let route of navbarUserRoutes">
       <li
         routerLink="{{ route.path }}"
         routerLinkActive="activeNavLink"
         [routerLinkActiveOptions]="{ exact: true }"
-        class="flex gap-4 capitalize text-lg font-semibold text-left w-full cursor-pointer px-4 py-3 hover:text-lightAccent/75"
+        class="flex w-full gap-4 px-4 py-3 text-lg font-semibold text-left capitalize cursor-pointer hover:text-lightAccent/75"
       >
         <div class="center">
           <mat-icon fontIcon="{{ route.icon }}"></mat-icon>
@@ -48,7 +52,7 @@
         routerLink="{{ route.path }}"
         routerLinkActive="activeNavLink"
         [routerLinkActiveOptions]="{ exact: true }"
-        class="flex gap-4 capitalize text-md font-semibold text-left w-full cursor-pointer px-4 py-3 hover:text-lightAccent/75"
+        class="flex w-full gap-4 px-4 py-3 font-semibold text-left capitalize cursor-pointer text-md hover:text-lightAccent/75"
       >
         <div class="center">
           <mat-icon fontIcon="{{ route.icon }}"></mat-icon>
@@ -58,7 +62,7 @@
     </ng-container>
   </ul>
   <button
-    class="flex gap-4 capitalize text-lg font-bold text-left w-full cursor-pointer px-4 py-3 hover:text-accentColor/75"
+    class="flex w-full gap-4 px-4 py-3 text-lg font-bold text-left capitalize cursor-pointer hover:text-accentColor/75"
     (click)="onSubmit()"
   >
     <div class="center"><mat-icon fontIcon="logout"></mat-icon></div>

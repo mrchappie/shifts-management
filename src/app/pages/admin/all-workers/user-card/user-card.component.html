@@ -1,5 +1,5 @@
 <div
-  class="center-col gap-4 shadow-all-sides rounded-md p-4 bg-lightBgPrimary dark:bg-darkBgPrimary dark:text-darkTextPrimary"
+  class="gap-4 p-4 rounded-md center-col shadow-all-sides bg-lightBgPrimary dark:bg-darkBgPrimary dark:text-darkTextPrimary"
 >
   <div class="w-[100px] h-[100px] rounded-[50%] overflow-hidden shadow-2xl">
     <img
@@ -13,17 +13,17 @@
     />
   </div>
   <div class="center-col">
-    <div class="center font-bold">
+    <div class="font-bold center">
       <div class="center"><mat-icon fontIcon="person"></mat-icon></div>
       {{ userInfo?.firstName }} {{ userInfo?.lastName }}
     </div>
     <span
-      class="center font-semibold italic text-sm text-black/50 dark:text-darkTextPrimary"
+      class="text-sm italic font-semibold center text-black/50 dark:text-darkTextPrimary"
       ><div class="center"><mat-icon fontIcon="mail"></mat-icon></div>
       {{ userInfo?.email ? userInfo?.email : "Undefined" }}</span
     >
   </div>
-  <div class="center-col gap-2 text-sm">
+  <div class="gap-2 text-sm center-col">
     <span class="center"
       ><div>
         <mat-icon fontIcon="calendar_month"></mat-icon>
@@ -34,16 +34,16 @@
       {{ userInfo?.phoneNumber ? userInfo?.phoneNumber : "Undefined" }}</span
     >
   </div>
-  <div class="center gap-2">
+  <div class="gap-2 center">
     <button
       [routerLink]="['/admin', 'edit-user', userInfo?.id]"
-      class="center gap-1 bg-lightSucces text-darkTextPrimary font-bold px-6 py-2 rounded-md"
+      class="gap-1 px-6 py-2 font-bold rounded-md center bg-lightSucces text-darkTextPrimary"
     >
       <div class="center"><mat-icon fontIcon="edit"></mat-icon></div>
     </button>
     <button
       (click)="openModal(userInfo!.id)"
-      class="center gap-1 bg-lightError text-darkTextPrimary font-bold px-6 py-2 rounded-md"
+      class="gap-1 px-6 py-2 font-bold rounded-md center bg-lightError text-darkTextPrimary"
     >
       <div class="center"><mat-icon fontIcon="delete"></mat-icon></div>
     </button>

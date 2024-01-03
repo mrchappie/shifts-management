@@ -3,12 +3,12 @@
 >
   <div class="text-3xl">
     Shift Management
-    <span class="text-darkAccent font-bold">{{ activeComponent }}</span>
+    <span class="font-bold text-darkAccent">{{ activeComponent }}</span>
   </div>
   <input type="checkbox" (click)="toggleTheme()" />
   <div class="text-3xl">
     Hey,
-    <span class="text-darkAccent font-bold"
+    <span class="font-bold text-darkAccent"
       >{{ currentUserName
       }}<mat-icon
         *ngIf="currentState.emailVerified"

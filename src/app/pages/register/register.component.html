@@ -1,19 +1,19 @@
-<section class="center h-full">
+<section class="h-full center">
   <div
     class="center w-[900px] h-[700px] bg-bg-lightBgSecondary dark:bg-darkBgPrimary shadow-all-sides p-8 rounded-2xl"
   >
-    <div class="flex-1 center flex-col gap-4">
+    <div class="flex-col flex-1 gap-4 center">
       <img
         src="../../../assets/illustrations/register.jpg"
         alt="register illustration"
       />
       <a routerLink="/login" class="custom-link">Already have an account?</a>
     </div>
-    <div class="flex items-start flex-col gap-10 flex-1 p-12">
+    <div class="flex flex-col items-start flex-1 gap-10 p-12">
       <form
         [formGroup]="registerForm"
         (ngSubmit)="onSubmit()"
-        class="flex flex-col items-start gap-4 w-full"
+        class="flex flex-col items-start w-full gap-4"
       >
         <h1 class="text-3xl font-extrabold">Register</h1>
         <ng-container *ngFor="let input of formData">
@@ -30,7 +30,7 @@
               />
             </ng-container>
             <ng-container *ngIf="input.disabled"
-              ><div class="custom-input cursor-not-allowed opacity-25">
+              ><div class="opacity-25 cursor-not-allowed custom-input">
                 {{
                   registerForm.get(input.formControl)?.value
                     ? registerForm.get(input.formControl)?.value

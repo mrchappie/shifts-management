@@ -1,17 +1,17 @@
-<div class="center gap-4 mb-4">
+<div class="gap-4 mb-4 center">
   <form
-    class="flex-1 grid grid-cols-7 gap-6 p-2 shadow-all-sides rounded-md bg-bgColor dark:bg-darkBgPrimary"
+    class="grid flex-1 grid-cols-7 gap-6 p-2 rounded-md shadow-all-sides bg-bgColor dark:bg-darkBgPrimary"
     [formGroup]="searchForm"
   >
     <!-- ITEMS COUNTS -->
     <div
-      class="col-span-1 col-start-2 row-start-2 center shadow-all-sides rounded-md bg-lightBgSecondary dark:bg-darkBgSecondary"
+      class="col-span-1 col-start-2 row-start-2 rounded-md center shadow-all-sides bg-lightBgSecondary dark:bg-darkBgSecondary"
     >
       <div>{{ parent === "all-users" ? "Users:" : "Shifts:" }}</div>
       <span class="font-bold text-[16px]">{{ shiftsCount }}</span>
     </div>
     <!-- FIRST ROW -->
-    <div class="center gap-4 col-span-3 col-start-3">
+    <div class="col-span-3 col-start-3 gap-4 center">
       <label class="flex-1 custom-search-label">
         <input
           type="text"
@@ -36,7 +36,7 @@
           class="custom-search-input"
         />
       </label>
-      <label class="center flex-1 custom-search-label">
+      <label class="flex-1 center custom-search-label">
         <select
           name="sorterBy"
           id="sorterBy"
@@ -62,10 +62,10 @@
 
     <!-- SECOND ROW -->
 
-    <div class="center gap-4 col-span-3 col-start-3">
+    <div class="col-span-3 col-start-3 gap-4 center">
       <label
         *ngIf="parent === 'my-shifts' || parent === 'all-shifts'"
-        class="center flex-1 custom-search-label"
+        class="flex-1 center custom-search-label"
       >
         <div class="custom-label-text-r">Start date</div>
         <input
@@ -77,7 +77,7 @@
       </label>
       <label
         *ngIf="parent === 'my-shifts' || parent === 'all-shifts'"
-        class="center flex-1 custom-search-label"
+        class="flex-1 center custom-search-label"
       >
         <div class="custom-label-text-r">End date</div>
         <input
@@ -90,7 +90,7 @@
 
       <!-- <div class="w-[0.5px] h-full bg-slate-300"></div> -->
 
-      <label class="center flex-1 custom-search-label">
+      <label class="flex-1 center custom-search-label">
         <div class="custom-label-text-r">Results</div>
         <select
           type="number"
@@ -110,11 +110,11 @@
 
     <!-- RESET BUTTON -->
 
-    <div class="center col-span-1 col-start-6 w-full">
+    <div class="w-full col-span-1 col-start-6 center">
       <button
         type="button"
         (click)="resetFilters()"
-        class="p-2 shadow-all-sides rounded-md border-2 border-transparent bg-lightBgPrimary dark:bg-darkBgSecondary w-full"
+        class="w-full p-2 border-2 border-transparent rounded-md shadow-all-sides bg-lightBgPrimary dark:bg-darkBgSecondary"
       >
         Reset
       </button>

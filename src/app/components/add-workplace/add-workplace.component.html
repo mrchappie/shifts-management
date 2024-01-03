@@ -9,7 +9,7 @@
       />
       <button
         (click)="addWorkplace(newWorkplace.value)"
-        class="center text-lightTextPrimary dark:text-darkTextSecondary text-3xl"
+        class="text-3xl center text-lightTextPrimary dark:text-darkTextSecondary"
       >
         <mat-icon fontIcon="add"></mat-icon>
       </button>
@@ -20,7 +20,7 @@
       *ngFor="
         let workplace of currentState.currentLoggedFireUser!.userWorkplaces
       "
-      class="center min-w-max px-4 py-2 bg-lightBgPrimary dark:bg-darkBgPrimary rounded-md"
+      class="px-4 py-2 rounded-md center min-w-max bg-lightBgPrimary dark:bg-darkBgPrimary"
       >{{ workplace }}
       <button
         (click)="removeWorkplace(workplace)"
