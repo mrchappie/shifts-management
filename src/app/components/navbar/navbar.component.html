@@ -20,13 +20,17 @@
       ></span>
     </div>
     <div>
-      <label class="checkbox style-e">
+      <label class="checkbox">
         <input
           type="checkbox"
           (click)="toggleTheme()"
           [checked]="theme === 'dark'"
         />
-        <div class="checkbox__checkmark"></div>
+
+        <div class="checkbox__checkmark">
+          <div class="light">Light</div>
+          <div class="dark">Dark</div>
+        </div>
       </label>
     </div>
   </div>

@@ -1,13 +1,13 @@
 <div
   class="gap-4 p-4 rounded-md center-col shadow-all-sides bg-lightBgPrimary dark:bg-darkBgPrimary dark:text-darkTextPrimary"
 >
-  <div class="w-[100px] h-[100px] rounded-[50%] overflow-hidden shadow-2xl">
+  <div
+    class="w-[100px] h-[100px] rounded-[50%] overflow-hidden shadow-2xl dark:text-darkTextPrimary center"
+  >
+    <mat-icon *ngIf="!userInfo?.profileImage" fontIcon="person"></mat-icon>
     <img
-      src="{{
-        userInfo?.profileImage
-          ? userInfo?.profileImage
-          : 'assets/illustrations/no_image_user.jpg'
-      }}"
+      *ngIf="userInfo?.profileImage"
+      src="{{ userInfo?.profileImage }}"
       alt="{{ userInfo?.firstName }} photo"
       class="object-cover"
     />
@@ -20,7 +20,7 @@
     <span
       class="text-sm italic font-semibold center text-black/50 dark:text-darkTextPrimary"
       ><div class="center"><mat-icon fontIcon="mail"></mat-icon></div>
-      {{ userInfo?.email ? userInfo?.email : "Undefined" }}</span
+      {{ userInfo?.email ? userInfo?.email : "Not set" }}</span
     >
   </div>
   <div class="gap-2 text-sm center-col">
@@ -28,10 +28,10 @@
       ><div>
         <mat-icon fontIcon="calendar_month"></mat-icon>
       </div>
-      {{ userInfo?.dob ? userInfo?.dob : "Undefined" }}</span
+      {{ userInfo?.dob ? userInfo?.dob : "Not set" }}</span
     ><span class="italic center"
       ><div><mat-icon fontIcon="phone"></mat-icon></div>
-      {{ userInfo?.phoneNumber ? userInfo?.phoneNumber : "Undefined" }}</span
+      {{ userInfo?.phoneNumber ? userInfo?.phoneNumber : "Not set" }}</span
     >
   </div>
   <div class="gap-2 center">
