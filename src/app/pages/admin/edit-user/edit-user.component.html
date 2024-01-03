@@ -3,7 +3,7 @@
   <app-user-profile></app-user-profile>
   <hr />
   <div class="py-2 text-2xl font-bold">Add user workplace</div>
-  <app-add-workplace></app-add-workplace>
+  <app-add-workplace [userIDFromURL]="userIDFromURL"></app-add-workplace>
   <hr />
   <button (click)="loadShifts = !loadShifts" class="p-2 my-10 bg-slate-200">
     Load user shifts
