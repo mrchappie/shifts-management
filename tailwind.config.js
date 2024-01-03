@@ -15,6 +15,29 @@ module.exports = {
         accentColor: "#fe4a49",
         bgColor: "#eff1f3",
         blackColor: "#272727",
+        // light theme
+        lightPrimary: "",
+        lightSecondary: "",
+        lightAccent: "",
+        lightError: "",
+        lightSucces: "",
+        lightWarning: "",
+        lightBgPrimary: "",
+        lightBgSecondary: "",
+        lightTextPrimary: "",
+        lightTextSecondary: "",
+
+        // dark theme
+        darkPrimary: "",
+        darkSecondary: "",
+        darkAccent: "",
+        darkError: "",
+        darkSucces: "",
+        darkWarning: "",
+        darkBgPrimary: "",
+        darkBgSecondary: "",
+        darkTextPrimary: "",
+        darkTextSecondary: "",
       },
       // shadows
       boxShadow: {
@@ -25,8 +48,6 @@ module.exports = {
       height: {
         content: "calc(100vh - 100px)",
       },
-      darkTheme: {},
-      lightTheme: {},
     },
   },
   plugins: [],

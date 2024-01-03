@@ -80,15 +80,16 @@
 
   // ? THEME
   .bgDark {
-    @apply bg-[#222222] text-white;
+    @apply bg-[#222222] text-[#fff]/75;
   }
 
   .bgDarkSecond {
-    @apply bg-[#474A48] text-white/90;
+    // @apply bg-[#474a48] text-white/70;
+    @apply bg-[#323232] text-[#fff]/75;
   }
 
   .bgDarkThird {
-    @apply bg-[#666666] text-white;
+    @apply bg-[#666666] text-[#fff]/75;
   }
 }
 
