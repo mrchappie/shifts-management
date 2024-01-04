@@ -43,6 +43,7 @@ import { ToastService } from 'angular-toastify';
 import { FirebaseConfigI, firebaseConfig } from 'firebase.config';
 import { CustomFnService } from '../customFn/custom-fn.service';
 import { Router } from '@angular/router';
+import { LoaderService } from '../loadingSpinner/loader.service';
 
 @Injectable({
   providedIn: 'root',
@@ -59,7 +60,8 @@ export class HandleDBService {
     private firestore: Firestore,
     private _toastService: ToastService,
     private customFN: CustomFnService,
-    private router: Router
+    private router: Router,
+    private loader: LoaderService
   ) {
     this.currentState = this.state.getState();
   }
@@ -275,6 +277,7 @@ export class HandleDBService {
   //! GET DOC
   async getFirestoreDoc(collectionName: string, documentPath: string[]) {
     try {
+      this.loader.setLoading(true);
       const docRef = doc(this.firestore, collectionName, ...documentPath);
       const docSnap = await getDoc(docRef);
 
@@ -283,6 +286,8 @@ export class HandleDBService {
       }
     } catch (error) {
       console.log(error);
+    } finally {
+      this.loader.setLoading(false);
     }
     return null;
   }
@@ -316,6 +321,7 @@ export class HandleDBService {
   //! GET DOCS BY QUERY
   async getFirestoreDocsByQuery(q: Query) {
     try {
+      this.loader.setLoading(true);
       const querySnapshot = await getDocs(q);
       const docs: any = [];
 
@@ -329,6 +335,8 @@ export class HandleDBService {
       }
     } catch (error) {
       this._toastService.error(`${error}`);
+    } finally {
+      this.loader.setLoading(false);
     }
   }
 
@@ -398,8 +406,10 @@ export class HandleDBService {
     if (shifts) {
       this.state.setState({ shifts: shifts });
       this.setLocalStorage('loggedUserShifts', shifts);
+      return shifts;
     }
-    return shifts;
+
+    return;
   }
 
   //! GET ALL SHIFTS

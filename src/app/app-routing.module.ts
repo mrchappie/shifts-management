@@ -20,7 +20,8 @@ const routes: Routes = [
   // main routes
   {
     path: '',
-    component: HomepageComponent,
+    // component: HomepageComponent,
+    component: SettingsComponent,
     canActivate: [isLoggedInGuard],
   },
 
