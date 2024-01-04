@@ -25,15 +25,17 @@
         localStorage.getItem("theme") === "dark" &&
         window.matchMedia("(prefers-color-scheme: dark)").matches
       ) {
+        document.documentElement.classList.remove("light");
         document.documentElement.classList.add("dark");
       } else {
         document.documentElement.classList.remove("dark");
+        document.documentElement.classList.add("light");
       }
     </script>
   </head>
   <body>
     <app-root
-      class="center h-screen overflow-hidden bg-lightBgPrimary text-lightTextPrimary dark:bg-darkBgPrimary dark:text-darkTextPrimary"
+      class="h-screen overflow-hidden center bg-lightBgPrimary text-lightTextPrimary dark:bg-darkBgPrimary dark:text-darkTextPrimary"
     ></app-root>
   </body>
 </html>
