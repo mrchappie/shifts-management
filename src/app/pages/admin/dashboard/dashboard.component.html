@@ -1,4 +1,14 @@
-<p class="mb-4 text-2xl font-semibold">Users and Shifts Statistics</p>
+<div class="justify-between my-4 center">
+  <p class="text-2xl font-semibold">Users and Shifts Statistics</p>
+  <div>
+    <form [formGroup]="statsDateForm">
+      <label class="custom-label">
+        <div class="custom-label-text-r">Select Date</div>
+        <input type="date" formControlName="statsDate" class="custom-input" />
+      </label>
+    </form>
+  </div>
+</div>
 <section class="gap-4 mb-4 center">
   <!-- STATISTICS -->
   <ng-container *ngFor="let item of usersShiftsCountData"

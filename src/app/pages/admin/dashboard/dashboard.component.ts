@@ -4,6 +4,8 @@ import { ChartConfiguration, ChartData, ChartType } from 'chart.js';
 import { Shift } from 'src/app/utils/Interfaces';
 import { firebaseConfig } from 'firebase.config';
 import { HandleDBService } from 'src/app/utils/services/handleDB/handle-db.service';
+import { FormGroup, FormBuilder } from '@angular/forms';
+import { CustomFnService } from 'src/app/utils/services/customFn/custom-fn.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -138,10 +140,21 @@ export class DashboardComponent {
 
   // Comp data
   shiftsCurrentMonth: Shift[] = [];
+  statsDateForm!: FormGroup;
 
-  constructor(private DB: HandleDBService) {}
+  constructor(
+    private DB: HandleDBService,
+    private fb: FormBuilder,
+    private customFN: CustomFnService
+  ) {}
 
   ngOnInit(): void {
+    this.statsDateForm = this.fb.group({
+      statsDate: [
+        `${this.customFN.getCurrentYear()}-${this.customFN.getCurrentMonth()}-${this.customFN.getCurrentDay()}`,
+      ],
+    });
+
     // Charts
     (async () => {
       this.shiftsCurrentMonth = await this.DB.getFirestoreDocs(
