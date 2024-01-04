@@ -4,8 +4,6 @@ import {
   EmailAuthProvider,
   User,
   createUserWithEmailAndPassword,
-  fetchSignInMethodsForEmail,
-  getAuth,
   onAuthStateChanged,
   reauthenticateWithCredential,
   sendEmailVerification,
@@ -440,16 +438,29 @@ export class HandleDBService {
         collectionName,
         ...collectionPath
       );
-      const q = query(coll, where(queryName, '==', queryValue));
+      // fetch with query if query data exists
+      if ((queryName || queryName != '') && (queryValue || queryValue != '')) {
+        const q = query(coll, where(queryName, '==', queryValue));
+        const snapshot = await getAggregateFromServer(q, {
+          sum: sum(itemToQuery),
+        });
 
-      const snapshot = await getAggregateFromServer(q, {
-        sum: sum(itemToQuery),
-      });
-
-      if (snapshot.data().sum) {
-        return snapshot.data().sum;
+        if (snapshot.data().sum) {
+          return snapshot.data().sum;
+        } else {
+          return 0;
+        }
+        // fetch without query if query data do not exists
       } else {
-        return 0;
+        const snapshot = await getAggregateFromServer(coll, {
+          sum: sum(itemToQuery),
+        });
+
+        if (snapshot.data().sum) {
+          return snapshot.data().sum;
+        } else {
+          return 0;
+        }
       }
     } catch (error) {
       console.log(error);
@@ -496,13 +507,25 @@ export class HandleDBService {
     } = queryOptions;
 
     const coll = collection(this.firestore, collectionName, ...collectionPath);
-    const q = query(coll, where(queryName, '==', queryValue));
-    const snapshot = await getCountFromServer(q);
+    // fetch with query if query data exists
+    if ((queryName || queryName != '') && (queryValue || queryValue != '')) {
+      const q = query(coll, where(queryName, '==', queryValue));
+      const snapshot = await getCountFromServer(q);
 
-    if (snapshot.data().count) {
-      return snapshot.data().count;
+      if (snapshot.data().count) {
+        return snapshot.data().count;
+      } else {
+        return 0;
+      }
+      // fetch without query if query data do not exists
     } else {
-      return 0;
+      const snapshot = await getCountFromServer(coll);
+
+      if (snapshot.data().count) {
+        return snapshot.data().count;
+      } else {
+        return 0;
+      }
     }
   }
 }

@@ -1,6 +1,9 @@
 import { Component, ViewChild } from '@angular/core';
 import { ChartComponent } from 'src/app/components/chart/chart.component';
 import { ChartConfiguration, ChartData, ChartType } from 'chart.js';
+import { Shift } from 'src/app/utils/Interfaces';
+import { firebaseConfig } from 'firebase.config';
+import { HandleDBService } from 'src/app/utils/services/handleDB/handle-db.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -10,7 +13,7 @@ import { ChartConfiguration, ChartData, ChartType } from 'chart.js';
 export class DashboardComponent {
   usersShiftsCountData: CountI[] = [
     { label: 'Total users', value: 10 },
-    { label: 'Users this month', value: 10 },
+    // { label: 'Users this month', value: 10 },
     { label: 'Total shifts', value: 10 },
     { label: 'Shifts this month', value: 10 },
   ];
@@ -32,7 +35,7 @@ export class DashboardComponent {
       },
       title: {
         display: true,
-        text: 'Workplaces by Revenue',
+        text: 'Workplaces by Revenue - Top 5 this month',
       },
     },
   };
@@ -54,7 +57,7 @@ export class DashboardComponent {
       },
       title: {
         display: true,
-        text: 'Top 3 months by revenue',
+        text: 'Revenue this year per month',
       },
     },
   };
@@ -93,7 +96,7 @@ export class DashboardComponent {
       },
       title: {
         display: true,
-        text: 'Revenue per month',
+        text: 'Number of shifts per month this year',
       },
     },
   };
@@ -128,10 +131,198 @@ export class DashboardComponent {
       },
       title: {
         display: true,
-        text: 'Worked hours per month',
+        text: 'Worked hours per workplace - Top 5 this month',
       },
     },
   };
+
+  // Comp data
+  shiftsCurrentMonth: Shift[] = [];
+
+  constructor(private DB: HandleDBService) {}
+
+  ngOnInit(): void {
+    // Charts
+    (async () => {
+      this.shiftsCurrentMonth = await this.DB.getFirestoreDocs(
+        firebaseConfig.dev.shiftsDB,
+        [new Date().getFullYear().toString(), 'january']
+      );
+      this.handlePieChartData();
+      this.handlePolarAreaChartData();
+    })();
+
+    this.handleCountTotalUsers();
+    this.handleLineChartData();
+    this.handleBarChartData();
+  }
+
+  //? HANDLE PIE CHART DATA
+  handlePieChartData() {
+    const shiftsToFilter = structuredClone(this.shiftsCurrentMonth);
+
+    const dataForChart: { [key: string]: number } = {};
+
+    shiftsToFilter.map((shift: Shift) => {
+      if (dataForChart[shift.workplace]) {
+        dataForChart[shift.workplace] += Number(shift.shiftRevenue);
+      } else {
+        dataForChart[shift.workplace] = Number(shift.shiftRevenue);
+      }
+    });
+
+    const sortedData = Object.entries(dataForChart)
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 5);
+
+    this.pieChartData.labels = sortedData.map((item) => item[0]);
+    this.pieChartData.datasets[0].data = sortedData.map((item) => item[1]);
+    this.pieChart.updateChart();
+  }
+
+  //? HANDLE BAR CHART DATA
+  async handleBarChartData() {
+    const arr: number[] = new Array(10).fill(0);
+    //prettier-ignore
+    const months = [
+      "january","february","march","april","may","june","july",
+      "august", "september", "october", "november", "december"
+    ];
+
+    try {
+      // fetch data for chart
+      const fetchData = async (month: string) => {
+        const queryOptions = {
+          month: '',
+          year: '',
+          collectionName: firebaseConfig.dev.shiftsDB,
+          collectionPath: [new Date().getFullYear().toString(), month],
+          queryName: '',
+          queryValue: '',
+          itemToQuery: 'shiftRevenue',
+        };
+
+        const data = await this.DB.getFirebaseSum(queryOptions);
+        const indexOfMonth = months.indexOf(month);
+
+        if (data) {
+          arr.splice(indexOfMonth, 1, data);
+        }
+      };
+      const fetchDataPromises = months.map((month) => fetchData(month));
+      await Promise.all(fetchDataPromises);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      // update chart
+      this.barChartData.labels = months.map(
+        (month) => month.charAt(0).toUpperCase() + month.slice(1)
+      );
+      this.barChartData.datasets[0].data = arr;
+      this.barChart.updateChart();
+    }
+  }
+
+  //? HANDLE LINE CHART DATA
+  async handleLineChartData() {
+    const arr: number[] = new Array(10).fill(0);
+    //prettier-ignore
+    const months = [
+      "january","february","march","april","may","june","july",
+      "august", "september", "october", "november", "december"
+    ];
+
+    try {
+      // fetch data for chart
+      const fetchData = async (month: string) => {
+        const queryOptions = {
+          month: '',
+          year: '',
+          collectionName: 'shiftAppShifts',
+          collectionPath: [new Date().getFullYear().toString(), month],
+          queryName: '',
+          queryValue: '',
+          itemToQuery: '',
+        };
+
+        const data = await this.DB.getFirebaseCount(queryOptions);
+        const indexOfMonth = months.indexOf(month);
+
+        if (data) {
+          arr.splice(indexOfMonth, 1, data);
+        }
+      };
+      const fetchDataPromises = months.map((month) => fetchData(month));
+      await Promise.all(fetchDataPromises);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      // update chart
+      this.lineChartData.labels = months.map(
+        (month) => month.charAt(0).toUpperCase() + month.slice(1)
+      );
+      this.lineChartData.datasets[0].data = arr;
+      this.usersShiftsCountData[1].value = arr.reduce((a, b) => a + b, 0);
+      this.usersShiftsCountData[2].value = arr[new Date().getMonth()];
+      this.lineChart.updateChart();
+    }
+  }
+
+  //? HANDLE POLAR AREA CHART DATA
+  handlePolarAreaChartData() {
+    const shiftsToFilter = structuredClone(this.shiftsCurrentMonth);
+    const reducedShifts: { [key: string]: number | string }[] = [];
+    const dataForChart: { [key: string]: number } = {};
+
+    // extracting wage, revenue and workplace from each shift
+    shiftsToFilter.map((shift: Shift) => {
+      reducedShifts.push({
+        wage: shift.wagePerHour,
+        revenue: shift.shiftRevenue,
+        workplace: shift.workplace,
+      });
+    });
+
+    // calculationg worked hours per workplace
+    reducedShifts.map((shift) => {
+      const hours: number = Math.trunc(
+        Number(shift.revenue) / Number(shift.wage)
+      );
+      if (dataForChart[shift.workplace]) {
+        dataForChart[shift.workplace] += hours;
+      } else {
+        dataForChart[shift.workplace] = hours;
+      }
+    });
+
+    const sortedData = Object.entries(dataForChart)
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 5);
+
+    this.polarAreaChartData.labels = sortedData.map((item) => item[0]);
+    this.polarAreaChartData.datasets[0].data = sortedData.map(
+      (item) => item[1]
+    );
+
+    this.polarArea.updateChart();
+  }
+
+  //? HANDLE COUNT TOTAL USERS
+  async handleCountTotalUsers() {
+    const queryOptions = {
+      month: '',
+      year: '',
+      collectionName: 'shiftAppUsers',
+      collectionPath: '',
+      queryName: '',
+      queryValue: '',
+      itemToQuery: '',
+    };
+
+    this.usersShiftsCountData[0].value = await this.DB.getFirebaseCount(
+      queryOptions
+    );
+  }
 }
 
 export interface CountI {
