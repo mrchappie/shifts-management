@@ -54,4 +54,8 @@ export class CustomFnService {
   getCurrentMonth() {
     return (new Date().getMonth() + 1).toString().padStart(2, '0');
   }
+
+  getCurrentDay() {
+    return new Date().getDate().toString().padStart(2, '0');
+  }
 }
