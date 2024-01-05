@@ -40,23 +40,14 @@ export class UserProfileComponent {
       (param) => (this.userIDFromURL = param['userID'])
     );
 
-    this.userProfileForm = this.fb.group(
-      {
-        userName: [''],
-        firstName: ['', [Validators.required]],
-        lastName: ['', [Validators.required]],
-        email: [
-          { value: '', disabled: this.userIDFromURL ? false : true },
-          [Validators.required, Validators.email],
-        ],
-        dob: ['', [Validators.required]],
-        phoneNumber: [
-          '',
-          [Validators.required, Validators.pattern(/[0-9]{10}/)],
-        ],
-      },
-      { validators: AgeValidation }
-    );
+    this.userProfileForm = this.fb.group({
+      userName: [''],
+      firstName: ['', [Validators.required, Validators.minLength(3)]],
+      lastName: ['', [Validators.required, Validators.minLength(3)]],
+      email: [''],
+      dob: ['', [Validators.required, AgeValidation]],
+      phoneNumber: ['', [Validators.required, Validators.pattern(/[0-9]{10}/)]],
+    });
 
     this.currentState = this.state.getState();
 
@@ -111,10 +102,13 @@ export class UserProfileComponent {
       );
     } else {
       return (
-        (this.userProfileForm.get(control)?.pristine &&
-          this.userProfileForm.get(control)?.touched) ||
-        (this.userProfileForm.get(control)?.touched &&
-          this.userProfileForm.get(control)?.dirty)
+        this.userProfileForm.get(control)?.invalid &&
+        ((this.userProfileForm.get(control)?.touched &&
+          this.userProfileForm.get(control)?.dirty) ||
+          (this.userProfileForm.get(control)?.untouched &&
+            this.userProfileForm.get(control)?.dirty) ||
+          (this.userProfileForm.get(control)?.touched &&
+            this.userProfileForm.get(control)?.pristine))
       );
     }
   }
@@ -122,12 +116,6 @@ export class UserProfileComponent {
   getErrorMessage(control: string) {
     if (this.userProfileForm.get(control)?.hasError('required')) {
       return 'This field is required';
-    }
-
-    if (control === 'userName') {
-      if (this.userProfileForm.get(control)?.hasError('pattern')) {
-        return 'Provide a valid username';
-      }
     }
 
     if (control === 'firstName') {
@@ -142,14 +130,8 @@ export class UserProfileComponent {
       }
     }
 
-    if (control === 'email') {
-      if (this.userProfileForm.get(control)?.hasError('email')) {
-        return 'Provide a valid email adress';
-      }
-    }
-
     if (control === 'dob') {
-      if (this.userProfileForm.hasError('ageIsNotLegal')) {
+      if (this.userProfileForm.get(control)?.hasError('ageIsNotLegal')) {
         return 'Your age must be between 18 and 65 years';
       }
     }
