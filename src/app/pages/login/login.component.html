@@ -1,85 +1,83 @@
-<section class="center h-full">
-  <div
-    class="center w-[900px] h-[700px] bg-white shadow-all-sides p-8 rounded-2xl"
-  >
-    <div class="flex-1 center flex-col gap-4">
-      <img
-        src="../../../assets/illustrations/login.jpg"
-        alt="login illustration"
-      />
-      <a routerLink="/register" class="underline">Create an account</a>
-    </div>
-    <div class="flex items-start flex-col gap-10 flex-1 p-12">
-      <form
-        [formGroup]="loginForm"
-        (ngSubmit)="onSubmit()"
-        class="flex flex-col items-start gap-8 w-full"
-      >
-        <h1 class="text-3xl font-extrabold">
-          Welcome back! Let's get started.
-        </h1>
-        <label class="custom-label relative">
-          <div class="center">
-            <mat-icon fontIcon="mail"></mat-icon>
-          </div>
-          <input
-            type="email"
-            placeholder="Email"
-            formControlName="email"
-            class="custom-input"
-          />
-          <div
-            *ngIf="formStatus('email')"
-            class="absolute bottom-[-25px] left-0 text-red-500"
-          >
-            {{ getErrorMessage("email") }}
-          </div>
-        </label>
-        <label class="custom-label relative">
-          <div class="center">
-            <mat-icon fontIcon="password"></mat-icon>
-          </div>
-          <input
-            type="password"
-            placeholder="Password"
-            formControlName="password"
-            class="custom-input"
-          />
-          <div
-            *ngIf="formStatus('password')"
-            class="absolute bottom-[-25px] left-0 text-red-500"
-          >
-            {{ getErrorMessage("password") }}
-          </div>
-        </label>
-        <button
-          type="submit"
-          class="center gap-2 bg-baseColor py-3 px-8 rounded-[8px] text-white font-bold"
-          [disabled]="loginForm.invalid"
+<section class="h-full center">
+  <div class="center-col w-[900px] bg-white shadow-all-sides p-8 rounded-2xl">
+    <h1 class="text-3xl font-extrabold">Welcome back! Let's get started.</h1>
+    <div class="center">
+      <div class="flex-col flex-1 gap-4 center">
+        <img
+          src="../../../assets/illustrations/login.jpg"
+          alt="login illustration"
+        />
+        <a routerLink="/register" class="underline">Create an account</a>
+      </div>
+      <div class="flex flex-col items-start flex-1 gap-10 p-12">
+        <form
+          [formGroup]="loginForm"
+          (ngSubmit)="onSubmit()"
+          class="flex flex-col items-start w-full gap-8"
         >
-          <div>Log in</div>
-          <div class="center">
-            <mat-icon fontIcon="login"></mat-icon>
+          <label class="relative custom-label">
+            <div class="center">
+              <mat-icon fontIcon="mail"></mat-icon>
+            </div>
+            <input
+              type="email"
+              placeholder="Email"
+              formControlName="email"
+              class="custom-input"
+            />
+            <div
+              *ngIf="formStatus('email')"
+              class="absolute bottom-[-25px] left-0 text-red-500"
+            >
+              {{ getErrorMessage("email") }}
+            </div>
+          </label>
+          <label class="relative custom-label">
+            <div class="center">
+              <mat-icon fontIcon="password"></mat-icon>
+            </div>
+            <input
+              type="password"
+              placeholder="Password"
+              formControlName="password"
+              class="custom-input"
+            />
+            <div
+              *ngIf="formStatus('password')"
+              class="absolute bottom-[-25px] left-0 text-red-500"
+            >
+              {{ getErrorMessage("password") }}
+            </div>
+          </label>
+          <button
+            type="submit"
+            class="center gap-2 bg-baseColor py-3 px-8 rounded-[8px] text-white font-bold"
+            [disabled]="loginForm.invalid"
+          >
+            <div>Log in</div>
+            <div class="center">
+              <mat-icon fontIcon="login"></mat-icon>
+            </div>
+          </button>
+        </form>
+        <div class="w-full center-col">
+          <p>Or continue with</p>
+          <div class="w-full center">
+            <button class="flex-1 px-8 py-2 rounded-lg center shadow-all-sides">
+              <img
+                src="assets/icons/google.svg"
+                alt="google login icon"
+                class="w-8"
+              />
+            </button>
+            <button class="flex-1 px-8 py-2 rounded-lg center shadow-all-sides">
+              <img
+                src="assets/icons/github.svg"
+                alt="github login icon"
+                class="w-8"
+              />
+            </button>
           </div>
-        </button>
-      </form>
-      <div class="center-col w-full">
-        <p>Or continue with</p>
-        <div class="center w-full">
-          <button class="center shadow-all-sides py-2 px-8 rounded-lg flex-1">
-            <img
-              src="assets/icons/google.svg"
-              alt="google login icon"
-              class="w-8"
-            />
-          </button>
-          <button class="center shadow-all-sides py-2 px-8 rounded-lg flex-1">
-            <img
-              src="assets/icons/github.svg"
-              alt="github login icon"
-              class="w-8"
-            />
-          </button>
         </div>
       </div>
     </div>

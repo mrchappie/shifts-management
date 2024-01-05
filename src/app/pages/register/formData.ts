@@ -43,7 +43,7 @@ export const registerFormData = [
   },
   {
     type: 'checkbox',
-    name: 'Accept terms and conditions',
+    name: 'I agree to the terms and conditions',
     formControl: 'termsAndConditions',
     disabled: false,
   },

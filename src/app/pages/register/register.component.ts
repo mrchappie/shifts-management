@@ -49,14 +49,11 @@ export class RegisterComponent {
           ],
         ],
         email: ['first name + last name@shift.app'],
-        dob: ['', [Validators.required]],
-        termsAndConditions: [false],
+        dob: ['', [Validators.required, AgeValidation]],
+        termsAndConditions: [false, [Validators.requiredTrue]],
       },
       {
-        validators: [
-          PasswordValidator('password', 'confPass'),
-          AgeValidation('dob'),
-        ],
+        validators: [PasswordValidator('password', 'confPass')],
       }
     );
 
@@ -75,6 +72,13 @@ export class RegisterComponent {
           '@shift.app',
       })
     );
+
+    this.registerForm
+      .get('termsAndConditions')
+      ?.valueChanges.subscribe((newValue) => {
+        console.log(newValue);
+        console.log(this.registerForm.value);
+      });
   }
 
   formStatus(control: string) {
@@ -86,15 +90,24 @@ export class RegisterComponent {
       );
     } else {
       return (
-        (this.registerForm.get(control)?.pristine &&
-          this.registerForm.get(control)?.touched) ||
-        (this.registerForm.get(control)?.touched &&
-          this.registerForm.get(control)?.dirty)
+        this.registerForm.get(control)?.invalid &&
+        ((this.registerForm.get(control)?.touched &&
+          this.registerForm.get(control)?.dirty) ||
+          (this.registerForm.get(control)?.untouched &&
+            this.registerForm.get(control)?.dirty) ||
+          (this.registerForm.get(control)?.touched &&
+            this.registerForm.get(control)?.pristine))
       );
     }
   }
 
   getErrorMessage(control: string) {
+    if ((control = 'termsAndConditions')) {
+      if (this.registerForm.get(control)?.hasError('required')) {
+        return 'You must agree to the terms and conditions.';
+      }
+    }
+
     if (this.registerForm.get(control)?.hasError('required')) {
       return 'This field is required';
     }
@@ -130,7 +143,7 @@ export class RegisterComponent {
     }
 
     if (control === 'dob') {
-      if (this.registerForm.hasError('ageIsNotLegal')) {
+      if (this.registerForm.get(control)?.hasError('ageIsNotLegal')) {
         return 'Your age must be between 18 and 65 years';
       }
     }
@@ -139,8 +152,18 @@ export class RegisterComponent {
   }
 
   async onSubmit() {
-    await this.auth.register(this.registerForm.value);
-    this.router.navigate(['/']);
+    if (
+      this.registerForm.valid &&
+      this.registerForm.get('termsAndConditions')?.value === true
+    ) {
+      await this.auth.register(this.registerForm.value);
+      this.router.navigate(['/']);
+    } else {
+      console.log(
+        'Something is wrong',
+        this.registerForm.get('termsAndConditions')?.value
+      );
+    }
   }
 }
 
