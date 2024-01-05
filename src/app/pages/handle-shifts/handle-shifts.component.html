@@ -2,10 +2,10 @@
   <form
     [formGroup]="shiftForm"
     (ngSubmit)="onSubmit()"
-    class="center-col gap-4 p-12"
+    class="gap-4 p-12 center-col"
   >
     <h1
-      class="text-2xl font-bold mb-4 text-lightTextPrimary dark:text-darkTextSecondary"
+      class="mb-4 text-2xl font-bold text-lightTextPrimary dark:text-darkTextSecondary"
     >
       Add New Shift
     </h1>
@@ -23,9 +23,15 @@
               formControlName="{{ shift.formControl }}"
               class="custom-input w-[400px]"
             />
+            <div
+              *ngIf="formStatus(shift.formControl)"
+              class="absolute bottom-[-25px] left-0 text-red-500"
+            >
+              {{ getErrorMessage(shift.formControl) }}
+            </div>
           </ng-container>
           <ng-container *ngIf="shift.disabled">
-            <div class="custom-input cursor-not-allowed opacity-25">
+            <div class="opacity-25 cursor-not-allowed custom-input">
               {{
                 shiftForm.get(shift.formControl)?.value
                   ? shiftForm.get(shift.formControl)?.value
@@ -59,11 +65,17 @@
               {{ workplace }}
             </option>
           </select>
+          <div
+            *ngIf="formStatus(shift.formControl)"
+            class="absolute bottom-[-25px] left-0 text-red-500"
+          >
+            {{ getErrorMessage(shift.formControl) }}
+          </div>
         </label>
       </ng-container>
     </ng-container>
 
-    <button type="submit" class="submit-btn px-12">
+    <button [disabled]="shiftForm.invalid" type="submit" class="submit-btn">
       <span *ngIf="!isEditing">Add</span
       ><span *ngIf="isEditing">Edit</span> shift
     </button>

@@ -2,24 +2,35 @@
   <form
     [formGroup]="userProfileForm"
     (ngSubmit)="onSubmit()"
-    class="flex-1 center-col gap-8 items-start ml-8"
+    class="items-start flex-1 gap-8 ml-8 center-col"
   >
-    <div *ngFor="let input of settingsFormInputs" class="center items-start">
-      <label *ngIf="input.formControl" class="custom-label relative">
+    <div *ngFor="let input of settingsFormInputs" class="items-start center">
+      <label *ngIf="input.formControl" class="relative custom-label">
         <div class="center">
           <mat-icon fontIcon="{{ input.icon }}"></mat-icon>
         </div>
-        <input
-          formControlName="{{ input.formControl }}"
-          type="{{ input.type }}"
-          class="custom-input w-[400px]"
-        />
-        <div
-          *ngIf="formStatus(input.formControl)"
-          class="absolute bottom-[-25px] left-0 text-red-500"
-        >
-          {{ getErrorMessage(input.formControl) }}
-        </div>
+        <ng-container *ngIf="!input.disabled">
+          <input
+            formControlName="{{ input.formControl }}"
+            type="{{ input.type }}"
+            class="custom-input w-[400px]"
+          />
+          <div
+            *ngIf="formStatus(input.formControl)"
+            class="absolute bottom-[-25px] left-0 text-red-500"
+          >
+            {{ getErrorMessage(input.formControl) }}
+          </div>
+        </ng-container>
+        <ng-container *ngIf="input.disabled">
+          <div class="opacity-25 cursor-not-allowed custom-input w-[400px]">
+            {{
+              userProfileForm.get(input.formControl)?.value
+                ? userProfileForm.get(input.formControl)?.value
+                : input.name
+            }}
+          </div>
+        </ng-container>
       </label>
     </div>
     <button
@@ -30,8 +41,8 @@
       Update information
     </button>
   </form>
-  <div class="flex-1 flex items-center justify-center">
-    <label for="changeProfilePicture" class="center relative"
+  <div class="flex items-center justify-center flex-1">
+    <label for="changeProfilePicture" class="relative center"
       ><div
         class="center absolute bottom-[5%] right-[15%] p-2 bg-lightBgPrimary dark:bg-darkBgPrimary rounded-[50%] shadow-all-sides cursor-pointer"
       >

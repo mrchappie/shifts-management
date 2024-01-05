@@ -18,7 +18,9 @@ export class NavbarComponent implements OnInit, OnDestroy {
   navbarAdminRoutes: NavbarRoutes[] = adminRoutes;
   isLoggedIn: boolean = false;
   currentName: string | undefined | null = '';
-  public theme: string = 'light';
+  theme: string | null = localStorage.getItem('theme')
+    ? localStorage.getItem('theme')
+    : 'light';
 
   private stateSubscription: Subscription | undefined;
 

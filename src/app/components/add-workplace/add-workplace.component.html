@@ -1,26 +1,24 @@
 <section class="min-h-[150px] my-[50px] center-col gap-4 items-start">
-  <form class="center">
+  <div class="center">
     <label class="custom-label">
       <input
         type="text"
         placeholder="Workplace"
         class="custom-input"
-        #newWorkplace
+        [(ngModel)]="newWorkplace"
       />
       <button
-        (click)="addWorkplace(newWorkplace.value)"
-        class="center text-lightTextPrimary dark:text-darkTextSecondary text-3xl"
+        (click)="addWorkplace()"
+        class="text-3xl center text-lightTextPrimary dark:text-darkTextSecondary"
       >
         <mat-icon fontIcon="add"></mat-icon>
       </button>
     </label>
-  </form>
+  </div>
   <div class="center justify-start flex-wrap w-[50%]">
     <span
-      *ngFor="
-        let workplace of currentState.currentLoggedFireUser!.userWorkplaces
-      "
-      class="center min-w-max px-4 py-2 bg-lightBgPrimary dark:bg-darkBgPrimary rounded-md"
+      *ngFor="let workplace of userWorkplaces"
+      class="px-4 py-2 rounded-md center min-w-max bg-lightBgPrimary dark:bg-darkBgPrimary"
       >{{ workplace }}
       <button
         (click)="removeWorkplace(workplace)"

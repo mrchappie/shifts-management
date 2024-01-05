@@ -1,9 +1,9 @@
-<section class="flex flex-col shadow-all-sides p-4 rounded-md">
-  <div class="text-2xl font-bold py-2">Update user information</div>
+<section class="flex flex-col p-4 rounded-md shadow-all-sides">
+  <div class="py-2 text-2xl font-bold">Update user information</div>
   <app-user-profile></app-user-profile>
   <hr />
-  <div class="text-2xl font-bold py-2">Add user workplace</div>
-  <app-add-workplace></app-add-workplace>
+  <div class="py-2 text-2xl font-bold">Add user workplace</div>
+  <app-add-workplace [userIDFromURL]="userIDFromURL"></app-add-workplace>
   <hr />
   <button (click)="loadShifts = !loadShifts" class="p-2 my-10 bg-slate-200">
     Load user shifts

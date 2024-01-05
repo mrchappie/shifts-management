@@ -1,7 +1,7 @@
 <section>
   <app-search [parent]="'all-shifts'"></app-search>
   <div class="">
-    <p *ngIf="allShifts.length === 0" class="text-center text-xl font-semibold">
+    <p *ngIf="allShifts.length === 0" class="text-xl font-semibold text-center">
       For current filters selection there are no shifts, please go to
       <a routerLink="/add-shift" class="underline hover:text-blue-400"
         >Add Shift</a
@@ -11,7 +11,7 @@
     <ul
       #shiftsList
       *ngIf="allShifts.length != 0"
-      class="custom-grid gap-4 w-full"
+      class="w-full gap-4 custom-grid"
     >
       <li
         *ngFor="
