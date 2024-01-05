@@ -23,6 +23,12 @@
               formControlName="{{ shift.formControl }}"
               class="custom-input w-[400px]"
             />
+            <div
+              *ngIf="formStatus(shift.formControl)"
+              class="absolute bottom-[-25px] left-0 text-red-500"
+            >
+              {{ getErrorMessage(shift.formControl) }}
+            </div>
           </ng-container>
           <ng-container *ngIf="shift.disabled">
             <div class="opacity-25 cursor-not-allowed custom-input">
@@ -59,11 +65,21 @@
               {{ workplace }}
             </option>
           </select>
+          <div
+            *ngIf="formStatus(shift.formControl)"
+            class="absolute bottom-[-25px] left-0 text-red-500"
+          >
+            {{ getErrorMessage(shift.formControl) }}
+          </div>
         </label>
       </ng-container>
     </ng-container>
 
-    <button type="submit" class="px-12 submit-btn">
+    <button
+      [disabled]="shiftForm.invalid"
+      type="submit"
+      class="px-6 py-3 bg-baseColor"
+    >
       <span *ngIf="!isEditing">Add</span
       ><span *ngIf="isEditing">Edit</span> shift
     </button>

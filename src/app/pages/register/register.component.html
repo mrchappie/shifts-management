@@ -1,62 +1,62 @@
 <section class="h-full center">
-  <div
-    class="center w-[900px] h-[700px] bg-bg-lightBgSecondary dark:bg-darkBgPrimary shadow-all-sides p-8 rounded-2xl"
-  >
-    <div class="flex-col flex-1 gap-4 center">
-      <img
-        src="../../../assets/illustrations/register.jpg"
-        alt="register illustration"
-      />
-      <a routerLink="/login" class="custom-link">Already have an account?</a>
-    </div>
-    <div class="flex flex-col items-start flex-1 gap-10 p-12">
-      <form
-        [formGroup]="registerForm"
-        (ngSubmit)="onSubmit()"
-        class="flex flex-col items-start w-full gap-4"
-      >
-        <h1 class="text-3xl font-extrabold">Register</h1>
-        <ng-container *ngFor="let input of formData">
-          <label *ngIf="input.type != 'checkbox'" class="custom-label">
-            <div class="center">
-              <mat-icon fontIcon="{{ input.icon }}"></mat-icon>
-            </div>
-            <ng-container *ngIf="!input.disabled">
+  <div class="center-col w-[900px] bg-white shadow-all-sides p-8 rounded-2xl">
+    <h1 class="text-3xl font-extrabold">Join us! Create your account today.</h1>
+    <div class="center">
+      <div class="flex-col flex-1 gap-4 center">
+        <img
+          src="../../../assets/illustrations/register.jpg"
+          alt="register illustration"
+        />
+        <a routerLink="/login" class="underline">Already have an account?</a>
+      </div>
+      <div class="flex flex-col items-start flex-1 gap-10 p-12">
+        <form
+          [formGroup]="registerForm"
+          (ngSubmit)="onSubmit()"
+          class="flex flex-col items-start w-full gap-8"
+        >
+          <ng-container *ngFor="let input of formData">
+            <label
+              *ngIf="input.type != 'checkbox'"
+              class="relative custom-label"
+            >
+              <div class="center">
+                <mat-icon fontIcon="{{ input.icon }}"></mat-icon>
+              </div>
               <input
                 type="{{ input.type }}"
-                placeholder="{{ input.placeholder }}"
+                placeholder="{{ input.name }}"
                 formControlName="{{ input.formControl }}"
+                [disabled]="input.disabled"
                 class="custom-input"
               />
-            </ng-container>
-            <ng-container *ngIf="input.disabled"
-              ><div class="opacity-25 cursor-not-allowed custom-input">
-                {{
-                  registerForm.get(input.formControl)?.value
-                    ? registerForm.get(input.formControl)?.value
-                    : input.placeholder
-                }}
-              </div></ng-container
-            >
-          </label>
-
-          <label *ngIf="input.type === 'checkbox'">
-            <input
-              type="{{ input.type }}"
-              name="{{ input.formControl }}"
-              formControlName="{{ input.formControl }}"
-            />
-            {{ input.placeholder }}
-          </label>
-        </ng-container>
-        <button
-          type="submit"
-          [disabled]="!registerForm.valid"
-          class="bg-lightPrimary py-3 px-8 rounded-[8px] text-lightTextSecondary font-bold"
-        >
-          Create Account
-        </button>
-      </form>
+              <div
+                *ngIf="formStatus(input.formControl)"
+                class="absolute bottom-[-25px] left-0 text-red-500"
+              >
+                {{ getErrorMessage(input.formControl) }}
+              </div>
+            </label>
+            <label *ngIf="input.type === 'checkbox'" class="relative w-full">
+              <input type="checkbox" formControlName="termsAndConditions" />
+              {{ input.name }}
+              <div
+                *ngIf="formStatus(input.formControl)"
+                class="absolute bottom-[-25px] left-0 text-red-500"
+              >
+                {{ getErrorMessage(input.formControl) }}
+              </div>
+            </label>
+          </ng-container>
+          <button
+            type="submit"
+            [disabled]="registerForm.invalid"
+            class="bg-baseColor py-3 px-8 rounded-[8px] text-white font-bold"
+          >
+            Create Account
+          </button>
+        </form>
+      </div>
     </div>
   </div>
 </section>

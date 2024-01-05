@@ -40,10 +40,10 @@ export class HandleShiftsComponent implements OnInit {
     this.shiftForm = this.fb.group({
       shiftID: [uuidv4()],
       shiftDate: ['', [Validators.required]],
-      startTime: ['08:00'],
-      endTime: ['20:00'],
-      workplace: [''],
-      wagePerHour: [''],
+      startTime: ['', [Validators.required]],
+      endTime: ['', [Validators.required]],
+      workplace: ['', [Validators.required]],
+      wagePerHour: ['', [Validators.required]],
       shiftRevenue: [''],
     });
 
@@ -113,6 +113,67 @@ export class HandleShiftsComponent implements OnInit {
     const day = today.getDate().toString().padStart(2, '0');
 
     return `${year}-${month}-${day}`;
+  }
+
+  formStatus(control: string) {
+    if (control != 'dob') {
+      return (
+        this.shiftForm.get(control)?.invalid &&
+        (this.shiftForm.get(control)?.dirty ||
+          this.shiftForm.get(control)?.touched)
+      );
+    } else {
+      return (
+        (this.shiftForm.get(control)?.pristine &&
+          this.shiftForm.get(control)?.touched) ||
+        (this.shiftForm.get(control)?.touched &&
+          this.shiftForm.get(control)?.dirty)
+      );
+    }
+  }
+
+  getErrorMessage(control: string) {
+    if (this.shiftForm.get(control)?.hasError('required')) {
+      return 'This field is required';
+    }
+
+    if (control === 'email') {
+      if (this.shiftForm.get(control)?.hasError('pattern')) {
+        return 'Provide a valid email adress';
+      }
+    }
+
+    if (control === 'password') {
+      if (this.shiftForm.get(control)?.hasError('pattern')) {
+        return '8+ chars, uppercase, lowercase, digit, special char';
+      }
+    }
+
+    if (control === 'confPass') {
+      if (this.shiftForm.hasError('passwordsMisMatch')) {
+        return 'Passwords do not match';
+      }
+    }
+
+    if (control === 'firstName') {
+      if (this.shiftForm.get(control)?.hasError('minlength')) {
+        return 'First name must be longer than 2 chars';
+      }
+    }
+
+    if (control === 'lastName') {
+      if (this.shiftForm.get(control)?.hasError('minlength')) {
+        return 'Last name must be longer than 2 chars';
+      }
+    }
+
+    if (control === 'dob') {
+      if (this.shiftForm.hasError('ageIsNotLegal')) {
+        return 'Your age must be between 18 and 65 years';
+      }
+    }
+
+    return '';
   }
 
   async onSubmit() {

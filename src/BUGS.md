@@ -18,3 +18,14 @@
 - Query limit on shifts / users ✅
 - Fetch shifts by year-month ✅
 - Grid / list selector
+
+5.  Bug password confirm - pattern validator doesn't work with custom password validator
+6.  Bug age validation
+
+## FEATURES
+
+1. Sort shifts by timestamp at load
+2. Toast notificatins - implement from scratch
+3. Admin dashboard statistics about users, shifts, etc. like numbers this month and per total.
+4. Dark Mode
+5. Google ang Github login

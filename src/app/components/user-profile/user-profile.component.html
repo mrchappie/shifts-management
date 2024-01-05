@@ -5,7 +5,7 @@
     class="items-start flex-1 gap-8 ml-8 center-col"
   >
     <div *ngFor="let input of settingsFormInputs" class="items-start center">
-      <label class="custom-label">
+      <label *ngIf="input.formControl" class="relative custom-label">
         <div class="center">
           <mat-icon fontIcon="{{ input.icon }}"></mat-icon>
         </div>
@@ -14,11 +14,18 @@
           type="{{ input.type }}"
           class="custom-input w-[400px]"
         />
+        <div
+          *ngIf="formStatus(input.formControl)"
+          class="absolute bottom-[-25px] left-0 text-red-500"
+        >
+          {{ getErrorMessage(input.formControl) }}
+        </div>
       </label>
     </div>
     <button
       type="submit"
-      class="px-4 py-2 rounded-sm bg-lightPrimary text-lightTextPrimary"
+      [disabled]="userProfileForm.invalid"
+      class="px-4 py-2 text-white rounded-sm bg-baseColor"
     >
       Update information
     </button>
