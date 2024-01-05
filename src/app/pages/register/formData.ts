@@ -32,7 +32,7 @@ export const registerFormData = [
     name: 'Email',
     formControl: 'email',
     icon: 'mail',
-    disabled: false,
+    disabled: true,
   },
   {
     type: 'date',
