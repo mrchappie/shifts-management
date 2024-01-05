@@ -9,23 +9,34 @@
         <div class="center">
           <mat-icon fontIcon="{{ input.icon }}"></mat-icon>
         </div>
-        <input
-          formControlName="{{ input.formControl }}"
-          type="{{ input.type }}"
-          class="custom-input w-[400px]"
-        />
-        <div
-          *ngIf="formStatus(input.formControl)"
-          class="absolute bottom-[-25px] left-0 text-red-500"
-        >
-          {{ getErrorMessage(input.formControl) }}
-        </div>
+        <ng-container *ngIf="!input.disabled">
+          <input
+            formControlName="{{ input.formControl }}"
+            type="{{ input.type }}"
+            class="custom-input w-[400px]"
+          />
+          <div
+            *ngIf="formStatus(input.formControl)"
+            class="absolute bottom-[-25px] left-0 text-red-500"
+          >
+            {{ getErrorMessage(input.formControl) }}
+          </div>
+        </ng-container>
+        <ng-container *ngIf="input.disabled">
+          <div class="opacity-25 cursor-not-allowed custom-input w-[400px]">
+            {{
+              userProfileForm.get(input.formControl)?.value
+                ? userProfileForm.get(input.formControl)?.value
+                : input.name
+            }}
+          </div>
+        </ng-container>
       </label>
     </div>
     <button
       type="submit"
       [disabled]="userProfileForm.invalid"
-      class="px-4 py-2 text-white rounded-sm bg-baseColor"
+      class="submit-btn"
     >
       Update information
     </button>

@@ -8,8 +8,6 @@ import { v4 as uuidv4 } from 'uuid';
 import { Router } from '@angular/router';
 import { Shift, State } from 'src/app/utils/Interfaces';
 import { FirebaseConfigI, firebaseConfig } from 'firebase.config';
-import { getCurrentYearMonth } from 'src/app/utils/functions';
-import { CustomFnService } from 'src/app/utils/services/customFn/custom-fn.service';
 
 @Component({
   selector: 'app-handle-shifts',

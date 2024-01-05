@@ -8,7 +8,6 @@ export function AgeValidation(
 ): { [key: string]: boolean } | null {
   const birthDate: string = control.value;
   const age: number = Number(calculateAge(new Date(birthDate)));
-  console.log(age);
 
   if (age && age >= MIN_WORK_AGE && age <= MAX_WORK_AGE) {
     return null;

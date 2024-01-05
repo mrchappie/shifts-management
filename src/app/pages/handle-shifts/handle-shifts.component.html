@@ -75,11 +75,7 @@
       </ng-container>
     </ng-container>
 
-    <button
-      [disabled]="shiftForm.invalid"
-      type="submit"
-      class="px-6 py-3 bg-baseColor"
-    >
+    <button [disabled]="shiftForm.invalid" type="submit" class="submit-btn">
       <span *ngIf="!isEditing">Add</span
       ><span *ngIf="isEditing">Edit</span> shift
     </button>

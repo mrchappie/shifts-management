@@ -1,22 +1,46 @@
 export const registerFormData = [
-  { type: 'text', name: 'First name', formControl: 'firstName', icon: 'badge' },
-  { type: 'text', name: 'Last name', formControl: 'lastName', icon: 'badge' },
+  {
+    type: 'text',
+    name: 'First name',
+    formControl: 'firstName',
+    icon: 'badge',
+    disabled: false,
+  },
+  {
+    type: 'text',
+    name: 'Last name',
+    formControl: 'lastName',
+    icon: 'badge',
+    disabled: false,
+  },
   {
     type: 'password',
-    placeholder: 'Password',
+    name: 'Password',
     formControl: 'password',
     icon: 'password',
     disabled: false,
   },
   {
     type: 'password',
-    placeholder: 'Confirm password',
+    name: 'Confirm password',
     formControl: 'confPass',
     icon: 'password',
     disabled: false,
   },
-  { type: 'text', name: 'Email', formControl: 'email', icon: 'mail' },
-  { type: 'date', name: 'Date of birth', formControl: 'dob', icon: 'cake' },
+  {
+    type: 'text',
+    name: 'Email',
+    formControl: 'email',
+    icon: 'mail',
+    disabled: false,
+  },
+  {
+    type: 'date',
+    name: 'Date of birth',
+    formControl: 'dob',
+    icon: 'cake',
+    disabled: false,
+  },
   {
     type: 'checkbox',
     name: 'Accept terms and conditions',
@@ -27,7 +51,7 @@ export const registerFormData = [
 
 export interface RegisterFormDataI {
   type: string;
-  placeholder: string;
+  name?: string;
   formControl: string;
   icon?: string;
   disabled: boolean;
