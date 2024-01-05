@@ -17,6 +17,7 @@ export class RegisterComponent {
 
   //
   registerForm!: FormGroup;
+  termsAndConditions: boolean = false;
 
   constructor(
     private fb: FormBuilder,
@@ -50,7 +51,7 @@ export class RegisterComponent {
         ],
         email: ['first name + last name@shift.app'],
         dob: ['', [Validators.required, AgeValidation]],
-        termsAndConditions: [false, [Validators.requiredTrue]],
+        termsAndConditions: [false],
       },
       {
         validators: [PasswordValidator('password', 'confPass')],
@@ -72,6 +73,12 @@ export class RegisterComponent {
           '@shift.app',
       })
     );
+
+    this.registerForm
+      .get('termsAndConditions')
+      ?.valueChanges.subscribe((newValue) => {
+        this.termsAndConditions = !newValue;
+      });
   }
 
   formStatus(control: string) {
@@ -95,12 +102,6 @@ export class RegisterComponent {
   }
 
   getErrorMessage(control: string) {
-    if ((control = 'termsAndConditions')) {
-      if (this.registerForm.get(control)?.hasError('required')) {
-        return 'You must agree to the terms and conditions.';
-      }
-    }
-
     if (this.registerForm.get(control)?.hasError('required')) {
       return 'This field is required';
     }
@@ -152,10 +153,7 @@ export class RegisterComponent {
       await this.auth.register(this.registerForm.value);
       this.router.navigate(['/']);
     } else {
-      console.log(
-        'Something is wrong',
-        this.registerForm.get('termsAndConditions')?.value
-      );
+      this.termsAndConditions = true;
     }
   }
 }

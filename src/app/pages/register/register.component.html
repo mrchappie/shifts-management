@@ -56,10 +56,10 @@
               <input type="checkbox" formControlName="termsAndConditions" />
               {{ input.name }}
               <div
-                *ngIf="formStatus(input.formControl)"
+                *ngIf="termsAndConditions"
                 class="absolute bottom-[-25px] left-0 text-red-500"
               >
-                {{ getErrorMessage(input.formControl) }}
+                {{ input.name }}
               </div>
             </label>
           </ng-container>
