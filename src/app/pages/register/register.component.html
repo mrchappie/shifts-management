@@ -1,5 +1,7 @@
 <section class="h-full center">
-  <div class="center-col w-[900px] bg-white shadow-all-sides p-8 rounded-2xl">
+  <div
+    class="center-col w-[900px] bg-lightBgPrimary dark:bg-darkBgPrimary shadow-all-sides p-8 rounded-2xl"
+  >
     <h1 class="text-3xl font-extrabold">Join us! Create your account today.</h1>
     <div class="center">
       <div class="flex-col flex-1 gap-4 center">
@@ -23,19 +25,32 @@
               <div class="center">
                 <mat-icon fontIcon="{{ input.icon }}"></mat-icon>
               </div>
-              <input
-                type="{{ input.type }}"
-                placeholder="{{ input.name }}"
-                formControlName="{{ input.formControl }}"
-                [disabled]="input.disabled"
-                class="custom-input"
-              />
-              <div
-                *ngIf="formStatus(input.formControl)"
-                class="absolute bottom-[-25px] left-0 text-red-500"
+              <ng-container *ngIf="!input.disabled">
+                <input
+                  type="{{ input.type }}"
+                  placeholder="{{ input.name }}"
+                  formControlName="{{ input.formControl }}"
+                  [disabled]="input.disabled"
+                  class="custom-input"
+                />
+                <div
+                  *ngIf="formStatus(input.formControl)"
+                  class="absolute bottom-[-25px] left-0 text-red-500"
+                >
+                  {{ getErrorMessage(input.formControl) }}
+                </div>
+              </ng-container>
+              <ng-container *ngIf="input.disabled"
+                ><div
+                  class="opacity-25 cursor-not-allowed custom-input w-[400px]"
+                >
+                  {{
+                    registerForm.get(input.formControl)?.value
+                      ? registerForm.get(input.formControl)?.value
+                      : input.name
+                  }}
+                </div></ng-container
               >
-                {{ getErrorMessage(input.formControl) }}
-              </div>
             </label>
             <label *ngIf="input.type === 'checkbox'" class="relative w-full">
               <input type="checkbox" formControlName="termsAndConditions" />
@@ -51,7 +66,7 @@
           <button
             type="submit"
             [disabled]="registerForm.invalid"
-            class="bg-baseColor py-3 px-8 rounded-[8px] text-white font-bold"
+            class="center submit-btn"
           >
             Create Account
           </button>

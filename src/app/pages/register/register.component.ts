@@ -72,13 +72,6 @@ export class RegisterComponent {
           '@shift.app',
       })
     );
-
-    this.registerForm
-      .get('termsAndConditions')
-      ?.valueChanges.subscribe((newValue) => {
-        console.log(newValue);
-        console.log(this.registerForm.value);
-      });
   }
 
   formStatus(control: string) {
