@@ -1,12 +1,21 @@
-<section class="flex flex-col p-4 rounded-md shadow-all-sides">
+<section class="flex flex-col">
   <div class="py-2 text-2xl font-bold">Update user information</div>
   <app-user-profile></app-user-profile>
   <hr />
   <div class="py-2 text-2xl font-bold">Add user workplace</div>
   <app-add-workplace [userIDFromURL]="userIDFromURL"></app-add-workplace>
   <hr />
-  <button (click)="loadShifts = !loadShifts" class="p-2 my-10 bg-slate-200">
-    Load user shifts
+  <div class="py-2 text-2xl font-bold">Add admin rights</div>
+  <app-admin-rights
+    [userID]="userIDFromURL"
+    [userData]="userData"
+  ></app-admin-rights>
+  <hr />
+  <button
+    (click)="loadShifts = !loadShifts"
+    class="p-2 my-10 font-bold bg-lightBgPrimary text-lightTextSecondary dark:bg-darkBgPrimary dark:text-darkTextSecondary shadow-all-sides"
+  >
+    Toggle user shifts
   </button>
   <section *ngIf="loadShifts">
     <app-my-shifts

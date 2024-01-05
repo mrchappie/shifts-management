@@ -43,6 +43,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { ConfirmationModalComponent } from './components/confirmation-modal/confirmation-modal.component';
 import { ChangeCredentialsComponent } from './components/change-credentials/change-credentials.component';
 import { CustomSortPipe } from './utils/pipes/customSort/customSort.pipe';
+import { AdminRightsComponent } from './pages/admin/components/admin-rights/admin-rights.component';
 
 @NgModule({
   declarations: [
@@ -75,6 +76,7 @@ import { CustomSortPipe } from './utils/pipes/customSort/customSort.pipe';
     CountCardComponent,
     ConfirmationModalComponent,
     ChangeCredentialsComponent,
+    AdminRightsComponent,
   ],
   imports: [
     BrowserModule,
