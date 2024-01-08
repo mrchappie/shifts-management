@@ -52,30 +52,30 @@ export class MyShiftsComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.currentState = this.state.getState();
-    // this.getShifts(this.currentState.currentLoggedFireUser!.id);
 
-    // if (this.currentState.shifts) {
-    //   this.myShifts = this.currentState.shifts;
-    // }
+    // fetch shifts based on opened page All Shifts / Single User Shifts / Edit User Info
+    if (!this.userIDFromURL && this.parent === 'single_user') {
+      const userID = this.currentState.currentLoggedFireUser!.id;
+      this.getShifts(userID, this.filters.queryLimit);
+    } else if (this.userIDFromURL) {
+      this.getShifts(this.userIDFromURL, this.filters.queryLimit);
+      this.getEditedUserData(this.userIDFromURL);
+    } else {
+      this.getAllShifts(this.filters.queryLimit);
+    }
+
+    if (this.currentState.shifts) {
+      this.myShifts = this.currentState.shifts;
+    }
 
     this.stateSubscription = this.state.stateChanged.subscribe((newState) => {
       this.currentState = newState;
       this.filters = this.currentState.searchForm;
 
-      // if (this.currentState.shifts) {
-      //   this.myShifts = this.currentState.shifts;
-      // }
+      if (this.currentState.shifts) {
+        this.myShifts = this.currentState.shifts;
+      }
     });
-
-    if (!this.userIDFromURL && this.parent === 'single_user') {
-      const userID = this.currentState.currentLoggedFireUser!.id;
-      this.getShifts(userID);
-    } else if (this.userIDFromURL) {
-      this.getShifts(this.userIDFromURL);
-      this.getEditedUserData(this.userIDFromURL);
-    } else {
-      this.getAllShifts(this.filters.queryLimit);
-    }
   }
 
   ngOnDestroy(): void {
@@ -84,8 +84,8 @@ export class MyShiftsComponent implements OnInit, OnDestroy {
     }
   }
 
-  async getShifts(userID: string) {
-    this.myShifts = await this.DB.handleGetShiftsByUserID(userID);
+  async getShifts(userID: string, queryLimit: number) {
+    this.myShifts = await this.DB.handleGetShiftsByUserID(userID, queryLimit);
   }
 
   async getAllShifts(queryLimit: number) {

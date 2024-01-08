@@ -8,7 +8,7 @@
       class="mb-4 text-2xl font-bold text-lightTextPrimary dark:text-darkTextSecondary"
     >
       <span *ngIf="isEditing">Update</span>
-      <span *ngIf="!isEditing">Add</span> New Shift
+      <span *ngIf="!isEditing">Add New</span> Shift
     </h1>
 
     <ng-container *ngFor="let shift of shiftInputs">
@@ -82,7 +82,7 @@
       class="w-full submit-btn"
     >
       <span *ngIf="isEditing">Update</span>
-      <span *ngIf="!isEditing">Add</span> shift
+      <span *ngIf="!isEditing">Add New</span> shift
     </button>
   </form>
   <!-- <div class="w-[400px]">

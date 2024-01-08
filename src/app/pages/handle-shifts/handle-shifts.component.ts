@@ -67,6 +67,8 @@ export class HandleShiftsComponent implements OnInit {
         this.currentState.editedUserData?.userWorkplaces ?? [];
       this.isEditing = true;
     } else {
+      this.userWorkplaces =
+        this.currentState.currentLoggedFireUser?.userWorkplaces ?? [];
       this.isEditing = false;
     }
 

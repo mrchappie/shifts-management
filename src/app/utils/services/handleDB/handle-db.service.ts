@@ -394,10 +394,10 @@ export class HandleDBService {
     const shifts = await this.getFirestoreDocsByQuery(q);
 
     if (shifts) {
-      // this.state.setState({ shifts: shifts });
-      this.setLocalStorage('loggedUserShifts', shifts);
+      this.state.setState({ shifts: shifts });
+      this.setLocalStorage('currentUserShiftsThisMonth', shifts);
+      return shifts;
     }
-    return shifts;
   }
 
   //! GET ALL SHIFTS
@@ -415,11 +415,10 @@ export class HandleDBService {
     const shifts = await this.getFirestoreDocsByQuery(q);
 
     if (shifts) {
-      // this.state.setState({ shifts: shifts });
-      this.setLocalStorage('loggedUserShifts', shifts);
+      this.state.setState({ shifts: shifts });
+      this.setLocalStorage('allShiftsThisMonth', shifts);
+      return shifts;
     }
-
-    return shifts;
   }
 
   //! AGGREGATION QUERIES
