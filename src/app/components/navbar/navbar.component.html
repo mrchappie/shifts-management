@@ -27,9 +27,15 @@
           [checked]="theme === 'dark'"
         />
 
-        <div class="checkbox__checkmark">
-          <div class="light">Light</div>
-          <div class="dark">Dark</div>
+        <div
+          class="checkbox__checkmark bg-lightBgPrimary dark:bg-darkBgPrimary shadow-all-sides"
+        >
+          <div class="light center">
+            <mat-icon fontIcon="light_mode"></mat-icon>
+          </div>
+          <div class="dark center">
+            <mat-icon fontIcon="dark_mode"></mat-icon>
+          </div>
         </div>
       </label>
     </div>
