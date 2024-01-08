@@ -5,11 +5,12 @@ export interface State {
   currentUserCred?: UserCredential;
   currentLoggedFireUser?: UserSettings;
   currentUserShifts?: Shift[];
-  isEditing: boolean;
   isLoggedIn: boolean;
   isAdmin: boolean;
   activeComponent: string;
+  isEditing: boolean;
   shiftToEdit: Shift | undefined;
+  editedUserData?: UserSettings;
   shiftsCount: number;
   // fetched shifts
   shifts: Shift[];

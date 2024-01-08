@@ -3,14 +3,14 @@
     class="center-col w-[900px] bg-lightBgPrimary dark:bg-darkBgPrimary shadow-all-sides p-8 rounded-2xl"
   >
     <h1 class="text-3xl font-extrabold">Welcome back! Let's get started.</h1>
-    <div class="center">
-      <div class="flex-col flex-1 gap-4 center">
+    <div class="center-col">
+      <!-- <div class="flex-col flex-1 gap-4 center">
         <img
           src="../../../assets/illustrations/login.jpg"
           alt="login illustration"
         />
         <a routerLink="/register" class="underline">Create an account</a>
-      </div>
+      </div> -->
       <div class="flex flex-col items-start flex-1 gap-10 p-12">
         <form
           [formGroup]="loginForm"
@@ -25,7 +25,7 @@
               type="email"
               placeholder="Email"
               formControlName="email"
-              class="custom-input"
+              class="custom-input w-[400px]"
             />
             <div
               *ngIf="formStatus('email')"
@@ -42,7 +42,7 @@
               type="password"
               placeholder="Password"
               formControlName="password"
-              class="custom-input"
+              class="custom-input w-[400px]"
             />
             <div
               *ngIf="formStatus('password')"
@@ -53,8 +53,8 @@
           </label>
           <button
             type="submit"
-            class="center submit-btn"
             [disabled]="loginForm.invalid"
+            class="w-full center submit-btn"
           >
             <div>Log in</div>
             <div class="center">
@@ -65,14 +65,14 @@
         <div class="w-full center-col">
           <p>Or continue with</p>
           <div class="w-full center">
-            <button class="flex-1 px-8 py-2 rounded-lg center shadow-all-sides">
+            <button class="flex-1 center submit-btn">
               <img
                 src="assets/icons/google.svg"
                 alt="google login icon"
                 class="w-8"
               />
             </button>
-            <button class="flex-1 px-8 py-2 rounded-lg center shadow-all-sides">
+            <button class="flex-1 center submit-btn">
               <img
                 src="assets/icons/github.svg"
                 alt="github login icon"
@@ -82,6 +82,7 @@
           </div>
         </div>
       </div>
+      <a routerLink="/register" class="underline">Create an account</a>
     </div>
   </div>
 </section>

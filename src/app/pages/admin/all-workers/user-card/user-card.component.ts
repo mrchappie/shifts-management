@@ -1,5 +1,4 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { user } from '@angular/fire/auth';
 import { UserSettings } from 'src/app/utils/Interfaces';
 
 @Component({

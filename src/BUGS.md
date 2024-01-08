@@ -9,6 +9,7 @@
 6. Bug password confirm - pattern validator doesn't work with custom password validator
 7. Bug age validation ✅
 8. If an admin edits a user shift, loaded workplaces are not for the edited user, they are the workplaces of the cuurent logged user
+9. Refetch data after refresh for all siblings components that use data saved in state from other components
 
 ## FEATURES
 
