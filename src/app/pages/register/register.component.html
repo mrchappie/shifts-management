@@ -3,14 +3,14 @@
     class="center-col w-[900px] bg-lightBgPrimary dark:bg-darkBgPrimary shadow-all-sides p-8 rounded-2xl"
   >
     <h1 class="text-3xl font-extrabold">Join us! Create your account today.</h1>
-    <div class="center">
-      <div class="flex-col flex-1 gap-4 center">
+    <div class="center-col">
+      <!-- <div class="flex-col flex-1 gap-4 center">
         <img
           src="../../../assets/illustrations/register.jpg"
           alt="register illustration"
         />
         <a routerLink="/login" class="underline">Already have an account?</a>
-      </div>
+      </div> -->
       <div class="flex flex-col items-start flex-1 gap-10 p-12">
         <form
           [formGroup]="registerForm"
@@ -56,22 +56,23 @@
               <input type="checkbox" formControlName="termsAndConditions" />
               {{ input.name }}
               <div
-                *ngIf="formStatus(input.formControl)"
+                *ngIf="termsAndConditions"
                 class="absolute bottom-[-25px] left-0 text-red-500"
               >
-                {{ getErrorMessage(input.formControl) }}
+                {{ input.name }}
               </div>
             </label>
           </ng-container>
           <button
             type="submit"
             [disabled]="registerForm.invalid"
-            class="center submit-btn"
+            class="w-full center submit-btn"
           >
             Create Account
           </button>
         </form>
       </div>
+      <a routerLink="/login" class="underline">Already have an account?</a>
     </div>
   </div>
 </section>

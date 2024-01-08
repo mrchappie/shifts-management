@@ -3,7 +3,12 @@ import { Subscription } from 'rxjs';
 import { HandleDBService } from 'src/app/utils/services/handleDB/handle-db.service';
 import { StateService } from 'src/app/utils/services/state/state.service';
 import { Router } from '@angular/router';
-import { SearchFilters, Shift, State } from 'src/app/utils/Interfaces';
+import {
+  SearchFilters,
+  Shift,
+  State,
+  UserSettings,
+} from 'src/app/utils/Interfaces';
 import { FirebaseConfigI, firebaseConfig } from 'firebase.config';
 import { CustomFnService } from 'src/app/utils/services/customFn/custom-fn.service';
 
@@ -14,6 +19,7 @@ import { CustomFnService } from 'src/app/utils/services/customFn/custom-fn.servi
 })
 export class MyShiftsComponent implements OnInit, OnDestroy {
   @Input() userIDFromURL: string = '';
+  @Input() isAdminPath: boolean = false;
 
   // filters
   filters: SearchFilters = {
@@ -65,6 +71,7 @@ export class MyShiftsComponent implements OnInit, OnDestroy {
       this.getShifts(userID);
     } else {
       this.getShifts(this.userIDFromURL);
+      this.getEditedUserData(this.userIDFromURL);
     }
   }
 
@@ -75,7 +82,17 @@ export class MyShiftsComponent implements OnInit, OnDestroy {
   }
 
   async getShifts(userID: string) {
-    this.DB.handleGetShiftsByUserID(userID);
+    await this.DB.handleGetShiftsByUserID(userID);
+  }
+
+  async getEditedUserData(userID: string) {
+    const data = (await this.DB.getFirestoreDoc(firebaseConfig.dev.usersDB, [
+      userID,
+    ])) as UserSettings;
+
+    this.currentState.editedUserData = data;
+
+    console.log(data);
   }
 
   async editShift(shiftID: string) {
@@ -86,7 +103,13 @@ export class MyShiftsComponent implements OnInit, OnDestroy {
       [currentYear, currentMonth, shiftID]
     )) as Shift;
 
-    this.router.navigate([`edit-shift/${shiftID}`]);
+    this.router.navigate([
+      `${
+        this.isAdminPath
+          ? `admin/all-users/edit-user/${this.userIDFromURL}/edit-shift/${shiftID}`
+          : `my-shifts/edit-shift/${shiftID}`
+      }`,
+    ]);
   }
 
   deleteShift(shiftID: string) {

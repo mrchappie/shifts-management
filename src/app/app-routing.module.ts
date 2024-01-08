@@ -48,7 +48,7 @@ const routes: Routes = [
     canActivate: [isLoggedInGuard],
   },
   {
-    path: 'edit-shift/:shiftID',
+    path: 'my-shifts/edit-shift/:shiftID',
     component: HandleShiftsComponent,
     canActivate: [isLoggedInGuard],
   },
@@ -70,13 +70,23 @@ const routes: Routes = [
     canActivate: [isLoggedInGuard, isAdminGuard],
   },
   {
+    path: 'admin/all-shifts/edit-shift/:shiftID',
+    component: HandleShiftsComponent,
+    canActivate: [isLoggedInGuard, isAdminGuard],
+  },
+  {
     path: 'admin/all-users',
     component: AllUsersComponent,
     canActivate: [isLoggedInGuard, isAdminGuard],
   },
   {
-    path: 'admin/edit-user/:userID',
+    path: 'admin/all-users/edit-user/:userID',
     component: EditUserComponent,
+    canActivate: [isLoggedInGuard, isAdminGuard],
+  },
+  {
+    path: 'admin/all-users/edit-user/:userID/edit-shift/:shiftID',
+    component: HandleShiftsComponent,
     canActivate: [isLoggedInGuard, isAdminGuard],
   },
   {

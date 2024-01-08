@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { InputType, formData } from './formData';
 import { StateService } from 'src/app/utils/services/state/state.service';
@@ -15,11 +15,14 @@ import { FirebaseConfigI, firebaseConfig } from 'firebase.config';
   styleUrls: ['./handle-shifts.component.scss'],
 })
 export class HandleShiftsComponent implements OnInit {
+  // parent component
+  @Input() parent: string = 'my-shifts';
+
   currentState!: State;
 
   shiftForm!: FormGroup;
   shiftInputs: InputType[] = formData;
-  userWorkplaces: string[] | undefined = [];
+  userWorkplaces: string[] = [];
   isEditing: boolean = false;
 
   // DB Config
@@ -45,16 +48,22 @@ export class HandleShiftsComponent implements OnInit {
       shiftRevenue: [''],
     });
 
-    this.calculateRevenue();
-
     this.currentState = this.state.getState();
-    this.isEditing = this.currentState.isEditing;
-    this.userWorkplaces =
-      this.currentState.currentLoggedFireUser?.userWorkplaces;
+
+    // check if url contains 'admin' keyword and sets isEditing state and userWorkplaces
+    if (this.router.url.split('/').includes('admin')) {
+      this.userWorkplaces =
+        this.currentState.editedUserData?.userWorkplaces ?? [];
+      this.isEditing = true;
+    } else {
+      this.userWorkplaces =
+        this.currentState.currentLoggedFireUser?.userWorkplaces ?? [];
+      this.isEditing = false;
+    }
 
     this.stateSubscription = this.state.stateChanged.subscribe((newState) => {
       this.currentState = newState;
-      this.isEditing = this.currentState.isEditing;
+      // this.isEditing = this.currentState.isEditing;
     });
 
     if (this.currentState.shiftToEdit) {
@@ -62,6 +71,8 @@ export class HandleShiftsComponent implements OnInit {
     } else {
       this.shiftForm.patchValue({ shiftDate: this.getTodayDate() });
     }
+
+    this.calculateRevenue();
   }
 
   ngOnDestroy(): void {

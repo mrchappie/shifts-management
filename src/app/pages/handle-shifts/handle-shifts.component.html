@@ -1,4 +1,4 @@
-<div class="center justify-evenly">
+<div class="h-full center">
   <form
     [formGroup]="shiftForm"
     (ngSubmit)="onSubmit()"
@@ -7,7 +7,8 @@
     <h1
       class="mb-4 text-2xl font-bold text-lightTextPrimary dark:text-darkTextSecondary"
     >
-      Add New Shift
+      <span *ngIf="isEditing">Update</span>
+      <span *ngIf="!isEditing">Add</span> New Shift
     </h1>
 
     <ng-container *ngFor="let shift of shiftInputs">
@@ -75,16 +76,20 @@
       </ng-container>
     </ng-container>
 
-    <button [disabled]="shiftForm.invalid" type="submit" class="submit-btn">
-      <span *ngIf="!isEditing">Add</span
-      ><span *ngIf="isEditing">Edit</span> shift
+    <button
+      [disabled]="shiftForm.invalid"
+      type="submit"
+      class="w-full submit-btn"
+    >
+      <span *ngIf="isEditing">Update</span>
+      <span *ngIf="!isEditing">Add</span> shift
     </button>
   </form>
-  <div class="w-[400px]">
+  <!-- <div class="w-[400px]">
     <img
       src="assets/illustrations/add_shift.jpg"
       alt="add shift form illustration"
       class="object-cover"
     />
-  </div>
+  </div> -->
 </div>
