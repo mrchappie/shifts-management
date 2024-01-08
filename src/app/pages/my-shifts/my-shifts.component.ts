@@ -86,7 +86,7 @@ export class MyShiftsComponent implements OnInit, OnDestroy {
   }
 
   async getEditedUserData(userID: string) {
-    const data = (await this.DB.getFirestoreDoc(firebaseConfig.dev.usersDB, [
+    const data = (await this.DB.getFirestoreDoc(firebaseConfig.deploy.usersDB, [
       userID,
     ])) as UserSettings;
 

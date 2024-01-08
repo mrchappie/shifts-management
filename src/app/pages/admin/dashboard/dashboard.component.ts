@@ -158,7 +158,7 @@ export class DashboardComponent {
     // Charts
     (async () => {
       this.shiftsCurrentMonth = await this.DB.getFirestoreDocs(
-        firebaseConfig.dev.shiftsDB,
+        firebaseConfig.deploy.shiftsDB,
         [new Date().getFullYear().toString(), 'january']
       );
       this.handlePieChartData();
@@ -208,7 +208,7 @@ export class DashboardComponent {
         const queryOptions = {
           month: '',
           year: '',
-          collectionName: firebaseConfig.dev.shiftsDB,
+          collectionName: firebaseConfig.deploy.shiftsDB,
           collectionPath: [new Date().getFullYear().toString(), month],
           queryName: '',
           queryValue: '',
