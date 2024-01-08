@@ -91,6 +91,7 @@ export class HandleDBService {
   //! CREATE ACCOUNT
   async register(data: RegisterFormData) {
     try {
+      this.loader.setLoading(true);
       const { email, password, firstName, lastName, dob, termsAndConditions } =
         data;
 
@@ -137,12 +138,15 @@ export class HandleDBService {
       }
     } catch (error) {
       console.log(error);
+    } finally {
+      this.loader.setLoading(false);
     }
   }
 
   //! LOGIN
   async login(email: string, password: string) {
     try {
+      this.loader.setLoading(true);
       const userCredential = await signInWithEmailAndPassword(
         this.auth,
         email,
@@ -171,20 +175,28 @@ export class HandleDBService {
       return userCredential;
     } catch (error) {
       this._toastService.error('Error on login!');
+    } finally {
+      this.loader.setLoading(false);
     }
     return null;
   }
 
   //! LOGOUT
   async logout() {
-    await signOut(this.auth);
-    this.state.setState(initialState);
-    this.removeLocalStorage('currentLoggedFireUser');
-    this.removeLocalStorage('loggedUserShifts');
+    try {
+      this.loader.setLoading(true);
+      await signOut(this.auth);
+      this.state.setState(initialState);
+      this.removeLocalStorage('currentLoggedFireUser');
+      this.removeLocalStorage('loggedUserShifts');
 
-    this.router.navigate(['/login']);
-
-    return;
+      this.router.navigate(['/login']);
+      return;
+    } catch (error) {
+      console.log(error);
+    } finally {
+      this.loader.setLoading(false);
+    }
   }
 
   //! SET PASSWORD
@@ -277,7 +289,9 @@ export class HandleDBService {
   //! GET DOC
   async getFirestoreDoc(collectionName: string, documentPath: string[]) {
     try {
-      this.loader.setLoading(true);
+      if (this.state.getState().isLoading != true) {
+        this.loader.setLoading(true);
+      }
       const docRef = doc(this.firestore, collectionName, ...documentPath);
       const docSnap = await getDoc(docRef);
 
@@ -295,6 +309,7 @@ export class HandleDBService {
   //! GET DOCS
   async getFirestoreDocs(collectionName: string, documentPath: string[]) {
     try {
+      this.loader.setLoading(true);
       const docRef = collection(
         this.firestore,
         collectionName,
@@ -315,6 +330,8 @@ export class HandleDBService {
       }
     } catch (error) {
       console.log(error);
+    } finally {
+      this.loader.setLoading(false);
     }
   }
 
@@ -347,6 +364,7 @@ export class HandleDBService {
     data: object
   ) {
     try {
+      // this.loader.setLoading(true);
       const docRef = doc(
         collection(this.firestore, collectionPath),
         ...documentPath
@@ -354,6 +372,8 @@ export class HandleDBService {
       await setDoc(docRef, data);
     } catch (error) {
       console.log(error);
+    } finally {
+      // this.loader.setLoading(false);
     }
   }
 
@@ -365,6 +385,7 @@ export class HandleDBService {
     data: object
   ) {
     try {
+      // this.loader.setLoading(true);
       const docRef = doc(
         collection(this.firestore, collectionPath),
         ...documentPath
@@ -372,6 +393,8 @@ export class HandleDBService {
       await updateDoc(docRef, data);
     } catch (error) {
       console.log(error);
+    } finally {
+      // this.loader.setLoading(false);
     }
   }
 
@@ -379,9 +402,12 @@ export class HandleDBService {
 
   async deleteFirestoreDoc(collectionName: string, documentPath: string[]) {
     try {
+      // this.loader.setLoading(true);
       await deleteDoc(doc(this.firestore, collectionName, ...documentPath));
     } catch (error) {
       console.log(error);
+    } finally {
+      // this.loader.setLoading(false);
     }
   }
 

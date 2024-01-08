@@ -3,7 +3,7 @@ import { State } from './utils/Interfaces';
 import { StateService } from './utils/services/state/state.service';
 import { HandleDBService } from './utils/services/handleDB/handle-db.service';
 import { Subscription } from 'rxjs';
-import { Router } from '@angular/router';
+import { LoaderService } from './utils/services/loadingSpinner/loader.service';
 
 @Component({
   selector: 'app-root',
@@ -14,13 +14,14 @@ export class AppComponent implements OnInit, OnDestroy {
   title = 'shift-management';
   currentState!: State;
   isLoggedIn: boolean = false;
+  isLoading$ = this.loaderService.loading;
 
   private stateSubscription: Subscription | undefined;
 
   constructor(
     private state: StateService,
     private DB: HandleDBService,
-    private router: Router
+    private loaderService: LoaderService
   ) {}
 
   ngOnInit(): void {

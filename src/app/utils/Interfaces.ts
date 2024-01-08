@@ -8,6 +8,7 @@ export interface State {
   isEditing: boolean;
   isLoggedIn: boolean;
   isAdmin: boolean;
+  isLoading: boolean;
   activeComponent: string;
   shiftToEdit: Shift | undefined;
   shiftsCount: number;

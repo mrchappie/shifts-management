@@ -15,9 +15,11 @@
         : 'col-start-1 col-span-12 row-span-3'
     "
   >
-    <app-loading-spinner
-      class="absolute top-0 left-0 w-full h-full z-10000"
-    ></app-loading-spinner>
-    <router-outlet class="relative"></router-outlet>
+    <app-loading-spinner *ngIf="isLoading$ | async"></app-loading-spinner>
+
+    <router-outlet
+      *ngIf="!(isLoading$ | async)"
+      class="relative"
+    ></router-outlet>
   </div>
 </div>
