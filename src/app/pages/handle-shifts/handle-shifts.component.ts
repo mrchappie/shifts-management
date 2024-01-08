@@ -50,20 +50,28 @@ export class HandleShiftsComponent implements OnInit {
 
     this.currentState = this.state.getState();
 
-    // check if url contains 'admin' keyword and sets isEditing state and userWorkplaces
-    if (this.router.url.split('/').includes('admin')) {
+    // check if url contains 'admin' || 'edit-shift' || 'all-shifts' keyword and sets isEditing state and userWorkplaces
+    if (
+      this.router.url.split('/').includes('admin') &&
+      this.router.url.split('/').includes('edit-shift')
+    ) {
+      this.userWorkplaces =
+        this.currentState.editedUserData?.userWorkplaces ?? [];
+      this.isEditing = true;
+    } else if (this.router.url.split('/').includes('edit-shift')) {
+      this.userWorkplaces =
+        this.currentState.currentLoggedFireUser?.userWorkplaces ?? [];
+      this.isEditing = true;
+    } else if (this.router.url.split('/').includes('all-shifts')) {
       this.userWorkplaces =
         this.currentState.editedUserData?.userWorkplaces ?? [];
       this.isEditing = true;
     } else {
-      this.userWorkplaces =
-        this.currentState.currentLoggedFireUser?.userWorkplaces ?? [];
       this.isEditing = false;
     }
 
     this.stateSubscription = this.state.stateChanged.subscribe((newState) => {
       this.currentState = newState;
-      // this.isEditing = this.currentState.isEditing;
     });
 
     if (this.currentState.shiftToEdit) {
