@@ -258,9 +258,9 @@ export class HandleDBService {
           });
           resolve(user);
 
-          this.updateFirestoreDoc(firebaseConfig.dev.usersDB, [user.uid], {
-            emailVerified: user.emailVerified,
-          });
+          // this.updateFirestoreDoc(firebaseConfig.dev.usersDB, [user.uid], {
+          //   emailVerified: user.emailVerified,
+          // });
         } else {
           // User is signed out
           resolve(null);
@@ -394,7 +394,7 @@ export class HandleDBService {
     const shifts = await this.getFirestoreDocsByQuery(q);
 
     if (shifts) {
-      this.state.setState({ shifts: shifts });
+      // this.state.setState({ shifts: shifts });
       this.setLocalStorage('loggedUserShifts', shifts);
     }
     return shifts;
@@ -415,7 +415,7 @@ export class HandleDBService {
     const shifts = await this.getFirestoreDocsByQuery(q);
 
     if (shifts) {
-      this.state.setState({ shifts: shifts });
+      // this.state.setState({ shifts: shifts });
       this.setLocalStorage('loggedUserShifts', shifts);
     }
 

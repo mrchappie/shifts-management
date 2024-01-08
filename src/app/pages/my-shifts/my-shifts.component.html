@@ -20,12 +20,13 @@
             | customSort : filters.sortByQuery : filters.orderByQuery;
           let index = index
         "
-        (click)="editShift(shift.shiftID)"
+        (click)="editShift(shift.shiftID, shift.userID)"
         class="relative cursor-pointer"
       >
         <app-shift-card
           [shift]="shift"
           [sortQuery]="filters.sortByQuery"
+          [parentName]="parent"
         ></app-shift-card>
         <div
           class="absolute top-[-5px] right-[-5px] center bg-red-500 text-white text-bold w-[30px] h-[30px] rounded-[50%] cursor-pointer"

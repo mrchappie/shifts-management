@@ -2,11 +2,13 @@
   class="flex flex-col items-start justify-center gap-4 p-4 rounded-lg shadow-all-sides bg-lightBgPrimary dark:bg-darkBgPrimary dark:text-darkTextSecondary"
 >
   <div class="flex gap-2">
-    <span class="font-bold">{{ parentName != "admin" ? "ID:" : "Name:" }}</span>
-    <span *ngIf="parentName != 'admin'"
+    <span class="font-bold">{{
+      parentName != "all-shifts" ? "ID:" : "Name:"
+    }}</span>
+    <span *ngIf="parentName != 'all-shifts'"
       >{{ shift?.shiftID | slice : 0 : 19 }}...</span
     >
-    <span *ngIf="parentName === 'admin'"
+    <span *ngIf="parentName === 'all-shifts'"
       >{{ shift?.userInfo?.firstName }} {{ shift?.userInfo?.lastName }}</span
     >
   </div>
