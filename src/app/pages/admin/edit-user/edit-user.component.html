@@ -1,16 +1,28 @@
 <section class="flex flex-col">
-  <div class="py-2 text-2xl font-bold">Update user information</div>
+  <app-section-heading
+    [heading]="'User profile information'"
+    [secHeading]="''"
+    class="my-[40px]"
+  ></app-section-heading>
   <app-user-profile></app-user-profile>
-  <hr />
-  <div class="py-2 text-2xl font-bold">Add user workplace</div>
+  <app-divider />
+  <app-section-heading
+    [heading]="'Add new workplace for this user'"
+    [secHeading]="''"
+    class="my-[40px]"
+  ></app-section-heading>
   <app-add-workplace [userIDFromURL]="userIDFromURL"></app-add-workplace>
-  <hr />
-  <div class="py-2 text-2xl font-bold">Add admin rights</div>
+  <app-divider />
+  <app-section-heading
+    [heading]="'Add new admin rights for this user'"
+    [secHeading]="''"
+    class="my-[40px]"
+  ></app-section-heading>
   <app-admin-rights
     [userID]="userIDFromURL"
     [userData]="userData"
   ></app-admin-rights>
-  <hr />
+  <app-divider />
   <button
     (click)="loadShifts = !loadShifts"
     class="p-2 my-10 font-bold bg-lightBgPrimary text-lightTextSecondary dark:bg-darkBgPrimary dark:text-darkTextSecondary shadow-all-sides"

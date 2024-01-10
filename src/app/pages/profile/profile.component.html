@@ -1,12 +1,24 @@
 <section
   class="flex flex-col text-lightTextPrimary dark:text-darkTextSecondary"
 >
-  <div class="py-2 text-2xl font-bold">User profile information</div>
+  <app-section-heading
+    [heading]="'User profile information'"
+    [secHeading]="''"
+    class="my-[40px]"
+  ></app-section-heading>
   <app-user-profile></app-user-profile>
-  <hr />
-  <div class="py-2 text-2xl font-bold">Update your credentials</div>
+  <app-divider />
+  <app-section-heading
+    [heading]="'Update your credentials'"
+    class="my-[40px]"
+    [secHeading]="''"
+  ></app-section-heading>
   <app-change-credentials></app-change-credentials>
-  <hr />
-  <div class="py-2 text-2xl font-bold">Add a new workplace</div>
+  <app-divider />
+  <app-section-heading
+    [heading]="'Add a new workplace'"
+    class="my-[40px]"
+    [secHeading]="''"
+  ></app-section-heading>
   <app-add-workplace></app-add-workplace>
 </section>

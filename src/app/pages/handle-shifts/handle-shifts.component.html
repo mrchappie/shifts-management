@@ -1,15 +1,19 @@
-<div class="h-full center">
+<div class="justify-start h-full center">
   <form
     [formGroup]="shiftForm"
     (ngSubmit)="onSubmit()"
-    class="gap-4 p-12 center-col"
+    class="gap-[35px] p-12 center-col items-start"
   >
-    <h1
-      class="mb-4 text-2xl font-bold text-lightTextPrimary dark:text-darkTextSecondary"
-    >
-      <span *ngIf="isEditing">Update</span>
-      <span *ngIf="!isEditing">Add New</span> Shift
-    </h1>
+    <app-section-heading
+      *ngIf="isEditing"
+      [heading]="'Update shift'"
+      [secHeading]="'Rapidly modify schedules with ease.'"
+    ></app-section-heading>
+    <app-section-heading
+      *ngIf="!isEditing"
+      [heading]="'Add new shift'"
+      [secHeading]="'Seamlessly add new shifts with ease.'"
+    ></app-section-heading>
 
     <ng-container *ngFor="let shift of shiftInputs">
       <ng-container *ngIf="shift.inputType === 'input'">
@@ -82,7 +86,7 @@
       class="w-full submit-btn"
     >
       <span *ngIf="isEditing">Update</span>
-      <span *ngIf="!isEditing">Add New</span> shift
+      <span *ngIf="!isEditing">Add new</span> shift
     </button>
   </form>
   <!-- <div class="w-[400px]">
