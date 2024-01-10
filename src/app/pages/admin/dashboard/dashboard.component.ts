@@ -11,7 +11,6 @@ import { AggQueriesService } from 'src/app/utils/services/aggQueries/agg-queries
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.scss'],
 })
 export class DashboardComponent {
   usersShiftsCountData: CountI[] = [

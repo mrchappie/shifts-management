@@ -7,7 +7,6 @@ import { HandleDBService } from 'src/app/utils/services/handleDB/handle-db.servi
 @Component({
   selector: 'app-admin-rights',
   templateUrl: './admin-rights.component.html',
-  styleUrls: ['./admin-rights.component.scss'],
 })
 export class AdminRightsComponent implements OnInit {
   @Input() userID: string = '';

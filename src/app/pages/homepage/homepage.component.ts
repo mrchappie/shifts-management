@@ -15,7 +15,6 @@ import { AggQueriesService } from 'src/app/utils/services/aggQueries/agg-queries
 @Component({
   selector: 'app-homepage',
   templateUrl: './homepage.component.html',
-  styleUrls: ['./homepage.component.scss'],
 })
 export class HomepageComponent {
   shiftsCountData: CountI[] = [

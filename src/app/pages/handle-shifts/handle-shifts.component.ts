@@ -12,7 +12,6 @@ import { FirebaseConfigI, firebaseConfig } from 'firebase.config';
 @Component({
   selector: 'app-handle-shifts',
   templateUrl: './handle-shifts.component.html',
-  styleUrls: ['./handle-shifts.component.scss'],
 })
 export class HandleShiftsComponent implements OnInit {
   // parent component

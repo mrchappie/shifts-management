@@ -8,7 +8,6 @@ import { FirebaseConfigI, firebaseConfig } from 'firebase.config';
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
-  styleUrls: ['./profile.component.scss'],
 })
 export class ProfileComponent implements OnInit, OnDestroy {
   currentState!: State;

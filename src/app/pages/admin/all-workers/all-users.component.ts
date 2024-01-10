@@ -10,7 +10,6 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-all-users',
   templateUrl: './all-users.component.html',
-  styleUrls: ['./all-users.component.scss'],
 })
 export class AllUsersComponent implements OnInit, OnDestroy {
   // state

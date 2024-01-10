@@ -9,7 +9,6 @@ import { StateService } from '../../utils/services/state/state.service';
 @Component({
   selector: 'app-add-workplace',
   templateUrl: './add-workplace.component.html',
-  styleUrls: ['./add-workplace.component.scss'],
 })
 export class AddWorkplaceComponent {
   @Input() userIDFromURL!: string;

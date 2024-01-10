@@ -5,7 +5,6 @@ import { BaseChartDirective } from 'ng2-charts';
 @Component({
   selector: 'app-chart',
   templateUrl: './chart.component.html',
-  styleUrls: ['./chart.component.scss'],
 })
 export class ChartComponent {
   // GLOBAL CHART VARIABLES

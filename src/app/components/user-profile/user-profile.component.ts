@@ -12,7 +12,6 @@ import { AgeValidation } from 'src/app/pages/register/customValidators/ageValida
 @Component({
   selector: 'app-user-profile',
   templateUrl: './user-profile.component.html',
-  styleUrls: ['./user-profile.component.scss'],
 })
 export class UserProfileComponent {
   currentState!: State;
@@ -46,7 +45,7 @@ export class UserProfileComponent {
       lastName: ['', [Validators.required, Validators.minLength(3)]],
       email: [''],
       dob: ['', [Validators.required, AgeValidation]],
-      phoneNumber: ['', [Validators.required, Validators.pattern(/[0-9]{10}/)]],
+      phoneNumber: ['', [Validators.pattern(/[0-9]{10}/)]],
     });
 
     this.currentState = this.state.getState();
@@ -133,12 +132,6 @@ export class UserProfileComponent {
     if (control === 'dob') {
       if (this.userProfileForm.get(control)?.hasError('ageIsNotLegal')) {
         return 'Your age must be between 18 and 65 years';
-      }
-    }
-
-    if (control === 'phoneNumber') {
-      if (this.userProfileForm.get(control)?.hasError('pattern')) {
-        return 'Provide a valid phone number';
       }
     }
 

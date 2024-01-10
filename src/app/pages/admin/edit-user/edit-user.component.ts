@@ -7,7 +7,6 @@ import { HandleDBService } from 'src/app/utils/services/handleDB/handle-db.servi
 @Component({
   selector: 'app-edit-user',
   templateUrl: './edit-user.component.html',
-  styleUrls: ['./edit-user.component.scss'],
 })
 export class EditUserComponent {
   loadShifts: boolean = false;

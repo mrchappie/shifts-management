@@ -9,7 +9,6 @@ import { HandleDBService } from 'src/app/utils/services/handleDB/handle-db.servi
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent implements OnInit {
   loginForm!: FormGroup;

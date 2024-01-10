@@ -15,7 +15,6 @@ import { CustomFnService } from 'src/app/utils/services/customFn/custom-fn.servi
 @Component({
   selector: 'app-my-shifts',
   templateUrl: './my-shifts.component.html',
-  styleUrls: ['./my-shifts.component.scss'],
 })
 export class MyShiftsComponent implements OnInit, OnDestroy {
   @Input() parent: string = 'single_user';

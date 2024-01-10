@@ -9,7 +9,6 @@ import { AuthService } from 'src/app/utils/services/auth/auth.service';
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
-  styleUrls: ['./register.component.scss'],
 })
 export class RegisterComponent {
   //html data

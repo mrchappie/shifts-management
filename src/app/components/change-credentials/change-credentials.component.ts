@@ -6,7 +6,6 @@ import { HandleDBService } from 'src/app/utils/services/handleDB/handle-db.servi
 @Component({
   selector: 'app-change-credentials',
   templateUrl: './change-credentials.component.html',
-  styleUrls: ['./change-credentials.component.scss'],
 })
 export class ChangeCredentialsComponent implements OnInit {
   changePasswordForm!: FormGroup;
