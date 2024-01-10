@@ -6,6 +6,7 @@ import { firebaseConfig } from 'firebase.config';
 import { HandleDBService } from 'src/app/utils/services/handleDB/handle-db.service';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { CustomFnService } from 'src/app/utils/services/customFn/custom-fn.service';
+import { AggQueriesService } from 'src/app/utils/services/aggQueries/agg-queries.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -145,7 +146,8 @@ export class DashboardComponent {
   constructor(
     private DB: HandleDBService,
     private fb: FormBuilder,
-    private customFN: CustomFnService
+    private customFN: CustomFnService,
+    private aggQueries: AggQueriesService
   ) {}
 
   ngOnInit(): void {
@@ -215,7 +217,7 @@ export class DashboardComponent {
           itemToQuery: 'shiftRevenue',
         };
 
-        const data = await this.DB.getFirebaseSum(queryOptions);
+        const data = await this.aggQueries.getFirebaseSum(queryOptions);
         const indexOfMonth = months.indexOf(month);
 
         if (data) {
@@ -258,7 +260,7 @@ export class DashboardComponent {
           itemToQuery: '',
         };
 
-        const data = await this.DB.getFirebaseCount(queryOptions);
+        const data = await this.aggQueries.getFirebaseCount(queryOptions);
         const indexOfMonth = months.indexOf(month);
 
         if (data) {
@@ -332,7 +334,7 @@ export class DashboardComponent {
       itemToQuery: '',
     };
 
-    this.usersShiftsCountData[0].value = await this.DB.getFirebaseCount(
+    this.usersShiftsCountData[0].value = await this.aggQueries.getFirebaseCount(
       queryOptions
     );
   }

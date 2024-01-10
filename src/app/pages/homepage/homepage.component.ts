@@ -10,6 +10,7 @@ import { ChartConfiguration, ChartData, ChartType } from 'chart.js';
 import { ChartComponent } from 'src/app/components/chart/chart.component';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { CustomFnService } from 'src/app/utils/services/customFn/custom-fn.service';
+import { AggQueriesService } from 'src/app/utils/services/aggQueries/agg-queries.service';
 
 @Component({
   selector: 'app-homepage',
@@ -162,7 +163,8 @@ export class HomepageComponent {
     private state: StateService,
     private DB: HandleDBService,
     private fb: FormBuilder,
-    private customFN: CustomFnService
+    private customFN: CustomFnService,
+    private aggQueries: AggQueriesService
   ) {}
 
   ngOnInit(): void {
@@ -245,7 +247,7 @@ export class HomepageComponent {
           itemToQuery: 'shiftRevenue',
         };
 
-        const data = await this.DB.getFirebaseSum(queryOptions);
+        const data = await this.aggQueries.getFirebaseSum(queryOptions);
         const indexOfMonth = months.indexOf(month);
 
         if (data) {
@@ -288,7 +290,7 @@ export class HomepageComponent {
           itemToQuery: '',
         };
 
-        const data = await this.DB.getFirebaseCount(queryOptions);
+        const data = await this.aggQueries.getFirebaseCount(queryOptions);
         const indexOfMonth = months.indexOf(month);
 
         if (data) {

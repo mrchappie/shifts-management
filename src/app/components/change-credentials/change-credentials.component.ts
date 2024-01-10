@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ChangeCredentialsService } from 'src/app/utils/services/changeCredential/change-credentials.service';
 import { HandleDBService } from 'src/app/utils/services/handleDB/handle-db.service';
-import { StateService } from 'src/app/utils/services/state/state.service';
 
 @Component({
   selector: 'app-change-credentials',
@@ -14,7 +14,10 @@ export class ChangeCredentialsComponent implements OnInit {
   showModal: boolean = false;
   changeType: string = '';
 
-  constructor(private DB: HandleDBService, private fb: FormBuilder) {}
+  constructor(
+    private changeCred: ChangeCredentialsService,
+    private fb: FormBuilder
+  ) {}
 
   ngOnInit(): void {
     this.changePasswordForm = this.fb.group({
@@ -50,7 +53,7 @@ export class ChangeCredentialsComponent implements OnInit {
     event.stopPropagation();
 
     if (type === 'password') {
-      this.DB.setUserPassword(
+      this.changeCred.setUserPassword(
         this.changePasswordForm.value.email,
         this.changePasswordForm.value.oldPass,
         this.changePasswordForm.value.newPass
@@ -58,7 +61,7 @@ export class ChangeCredentialsComponent implements OnInit {
     }
 
     if (type === 'email') {
-      this.DB.setUserEmail(
+      this.changeCred.setUserEmail(
         this.changeEmailForm.value.oldEmail,
         this.changeEmailForm.value.newEmail,
         this.changeEmailForm.value.password
@@ -67,6 +70,6 @@ export class ChangeCredentialsComponent implements OnInit {
   }
 
   verifyEmail() {
-    this.DB.verifyUserEmail();
+    this.changeCred.verifyUserEmail();
   }
 }

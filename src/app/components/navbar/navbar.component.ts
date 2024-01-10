@@ -5,6 +5,7 @@ import { HandleDBService } from 'src/app/utils/services/handleDB/handle-db.servi
 import { Subscription } from 'rxjs';
 import { State } from 'src/app/utils/Interfaces';
 import { Router } from '@angular/router';
+import { AuthService } from 'src/app/utils/services/authService/auth.service';
 
 @Component({
   selector: 'app-navbar',
@@ -27,6 +28,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   constructor(
     private state: StateService,
     private DB: HandleDBService,
+    private authService: AuthService,
     private router: Router
   ) {}
 
@@ -55,7 +57,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   async onSubmit() {
-    await this.DB.logout();
+    await this.authService.logout();
     this.router.navigate(['/login']);
   }
 

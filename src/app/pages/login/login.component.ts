@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { UserCredential } from '@angular/fire/auth';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { AuthService } from 'src/app/utils/services/authService/auth.service';
+import { ChangeCredentialsService } from 'src/app/utils/services/changeCredential/change-credentials.service';
 import { HandleDBService } from 'src/app/utils/services/handleDB/handle-db.service';
 
 @Component({
@@ -17,7 +19,9 @@ export class LoginComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private DB: HandleDBService,
-    private router: Router
+    private router: Router,
+    private authService: AuthService,
+    private changeCred: ChangeCredentialsService
   ) {}
 
   ngOnInit(): void {
@@ -64,7 +68,7 @@ export class LoginComponent implements OnInit {
   }
 
   async onSubmit() {
-    await this.DB.login(
+    await this.authService.login(
       this.loginForm.value.email,
       this.loginForm.value.password
     );
@@ -85,7 +89,7 @@ export class LoginComponent implements OnInit {
 
   async sendResetEmail(email: string) {
     try {
-      await this.DB.resetPasswordEmail(email);
+      await this.changeCred.resetPasswordEmail(email);
       this.toggleModal();
     } catch (error) {
       console.log(error);
