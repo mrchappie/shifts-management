@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { UserCredential } from '@angular/fire/auth';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { AuthService } from 'src/app/utils/services/authService/auth.service';
+import { AuthService } from 'src/app/utils/services/auth/auth.service';
 import { ChangeCredentialsService } from 'src/app/utils/services/changeCredential/change-credentials.service';
 import { HandleDBService } from 'src/app/utils/services/handleDB/handle-db.service';
 

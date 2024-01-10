@@ -5,7 +5,7 @@ import { HandleDBService } from 'src/app/utils/services/handleDB/handle-db.servi
 import { Subscription } from 'rxjs';
 import { State } from 'src/app/utils/Interfaces';
 import { Router } from '@angular/router';
-import { AuthService } from 'src/app/utils/services/authService/auth.service';
+import { AuthService } from 'src/app/utils/services/auth/auth.service';
 
 @Component({
   selector: 'app-navbar',

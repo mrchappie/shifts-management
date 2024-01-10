@@ -33,7 +33,7 @@ export class HandleDBService {
     private _toastService: ToastService
   ) {}
 
-  //! localStorage
+  //! Local Storage
   setLocalStorage(key: string, data: any) {
     if (typeof data != 'string') {
       localStorage.setItem(key, JSON.stringify(data));

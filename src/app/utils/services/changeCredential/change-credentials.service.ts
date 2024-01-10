@@ -10,7 +10,7 @@ import {
   sendEmailVerification,
 } from '@angular/fire/auth';
 import { firebaseConfig } from 'firebase.config';
-import { AuthService } from '../authService/auth.service';
+import { AuthService } from '../auth/auth.service';
 import { ToastService } from 'angular-toastify';
 import { HandleDBService } from '../handleDB/handle-db.service';
 

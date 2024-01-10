@@ -17,7 +17,7 @@ import { RegisterComponent } from './pages/register/register.component';
 import { NotFoundComponent } from './pages/404/404.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { FooterComponent } from './components/footer/footer.component';
-import { ButtonComponent } from './components/button/button.component';
+import { ButtonComponent } from './components/UI/button/button.component';
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { getAuth, provideAuth } from '@angular/fire/auth';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
@@ -40,7 +40,7 @@ import { CountCardComponent } from './components/count-card/count-card.component
 
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import { ConfirmationModalComponent } from './components/confirmation-modal/confirmation-modal.component';
+import { ConfirmationModalComponent } from './components/UI/confirmation-modal/confirmation-modal.component';
 import { ChangeCredentialsComponent } from './components/change-credentials/change-credentials.component';
 import { CustomSortPipe } from './utils/pipes/customSort/customSort.pipe';
 import { AdminRightsComponent } from './pages/admin/components/admin-rights/admin-rights.component';

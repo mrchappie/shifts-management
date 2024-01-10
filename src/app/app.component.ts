@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { State } from './utils/Interfaces';
 import { StateService } from './utils/services/state/state.service';
 import { Subscription } from 'rxjs';
-import { AuthService } from './utils/services/authService/auth.service';
+import { AuthService } from './utils/services/auth/auth.service';
 
 @Component({
   selector: 'app-root',

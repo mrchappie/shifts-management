@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { RegisterFormDataI, registerFormData } from './formData';
 import { PasswordValidator } from './customValidators/confirmPassword';
 import { AgeValidation } from './customValidators/ageValidation';
-import { AuthService } from 'src/app/utils/services/authService/auth.service';
+import { AuthService } from 'src/app/utils/services/auth/auth.service';
 
 @Component({
   selector: 'app-register',
