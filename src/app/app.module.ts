@@ -44,6 +44,8 @@ import { ConfirmationModalComponent } from './components/confirmation-modal/conf
 import { ChangeCredentialsComponent } from './components/change-credentials/change-credentials.component';
 import { CustomSortPipe } from './utils/pipes/customSort/customSort.pipe';
 import { AdminRightsComponent } from './pages/admin/components/admin-rights/admin-rights.component';
+import { SectionHeadingComponent } from './components/UI/section-heading/section-heading.component';
+import { DividerComponent } from './components/UI/divider/divider.component';
 
 @NgModule({
   declarations: [
@@ -77,6 +79,8 @@ import { AdminRightsComponent } from './pages/admin/components/admin-rights/admi
     ConfirmationModalComponent,
     ChangeCredentialsComponent,
     AdminRightsComponent,
+    SectionHeadingComponent,
+    DividerComponent,
   ],
   imports: [
     BrowserModule,

@@ -9,7 +9,7 @@ export const adminRoutes = [
   { path: '/admin/dashboard', name: 'dashboard', icon: 'grid_view' },
   { path: '/admin/all-users', name: 'all users', icon: 'group' },
   { path: '/admin/all-shifts', name: 'all shifts', icon: 'list_alt' },
-  { path: '/admin/settings', name: 'settings', icon: 'settings' },
+  // { path: '/admin/settings', name: 'settings', icon: 'settings' },
 ];
 
 export interface NavbarRoutes {
