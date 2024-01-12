@@ -1,6 +1,6 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { HandleDBService } from 'src/app/utils/services/handleDB/handle-db.service';
+import { FirestoreService } from 'src/app/utils/services/firestore/firestore.service';
 import { StateService } from 'src/app/utils/services/state/state.service';
 import { Router } from '@angular/router';
 import {
@@ -43,7 +43,7 @@ export class MyShiftsComponent implements OnInit, OnDestroy {
   private stateSubscription: Subscription | undefined;
 
   constructor(
-    private DB: HandleDBService,
+    private DB: FirestoreService,
     private state: StateService,
     private router: Router,
     private customFN: CustomFnService

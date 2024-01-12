@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { firebaseConfig } from 'firebase.config';
 import { UserSettings } from 'src/app/utils/Interfaces';
-import { HandleDBService } from 'src/app/utils/services/handleDB/handle-db.service';
+import { FirestoreService } from 'src/app/utils/services/firestore/firestore.service';
 
 @Component({
   selector: 'app-edit-user',
@@ -13,7 +13,7 @@ export class EditUserComponent {
   userIDFromURL: string = '';
   userData!: UserSettings | null;
 
-  constructor(private route: ActivatedRoute, private DB: HandleDBService) {}
+  constructor(private route: ActivatedRoute, private DB: FirestoreService) {}
 
   ngOnInit(): void {
     this.route.params.subscribe(

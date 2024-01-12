@@ -2,7 +2,7 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { SearchFilters, State, UserSettings } from 'src/app/utils/Interfaces';
 import { Subscription } from 'rxjs';
 import { StateService } from 'src/app/utils/services/state/state.service';
-import { HandleDBService } from 'src/app/utils/services/handleDB/handle-db.service';
+import { FirestoreService } from 'src/app/utils/services/firestore/firestore.service';
 import { FirebaseConfigI, firebaseConfig } from 'firebase.config';
 import { ToastService } from 'angular-toastify';
 import { Router } from '@angular/router';
@@ -36,7 +36,7 @@ export class AllUsersComponent implements OnInit, OnDestroy {
 
   constructor(
     private state: StateService,
-    private DB: HandleDBService,
+    private DB: FirestoreService,
     private router: Router,
     private _toastService: ToastService
   ) {}

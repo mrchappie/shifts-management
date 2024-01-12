@@ -11,7 +11,7 @@ import { RegisterFormData } from 'src/app/pages/register/register.component';
 import { calculateAge } from '../../functions';
 import { userProfile } from '../../userProfile';
 import { StateService, initialState } from '../state/state.service';
-import { HandleDBService } from '../handleDB/handle-db.service';
+import { FirestoreService } from '../firestore/firestore.service';
 import { FirebaseConfigI, firebaseConfig } from 'firebase.config';
 import { ToastService } from 'angular-toastify';
 import { Router } from '@angular/router';
@@ -30,7 +30,7 @@ export class AuthService {
   constructor(
     private auth: Auth,
     private state: StateService,
-    private DB: HandleDBService,
+    private DB: FirestoreService,
     private _toastService: ToastService,
     private router: Router
   ) {}

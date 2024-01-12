@@ -1,10 +1,10 @@
 import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
-import { HandleDBService } from '../../services/handleDB/handle-db.service';
+import { FirestoreService } from '../../services/firestore/firestore.service';
 import { AuthService } from '../../services/auth/auth.service';
 
 export const isLoggedInGuard: CanActivateFn = async (route, state) => {
-  const db = inject(HandleDBService);
+  const db = inject(FirestoreService);
   const authService = inject(AuthService);
   const router = inject(Router);
 

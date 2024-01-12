@@ -3,7 +3,7 @@ import { ChartComponent } from 'src/app/components/chart/chart.component';
 import { ChartConfiguration, ChartData, ChartType } from 'chart.js';
 import { Shift } from 'src/app/utils/Interfaces';
 import { firebaseConfig } from 'firebase.config';
-import { HandleDBService } from 'src/app/utils/services/handleDB/handle-db.service';
+import { FirestoreService } from 'src/app/utils/services/firestore/firestore.service';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { CustomFnService } from 'src/app/utils/services/customFn/custom-fn.service';
 import { AggQueriesService } from 'src/app/utils/services/aggQueries/agg-queries.service';
@@ -143,7 +143,7 @@ export class DashboardComponent {
   statsDateForm!: FormGroup;
 
   constructor(
-    private DB: HandleDBService,
+    private DB: FirestoreService,
     private fb: FormBuilder,
     private customFN: CustomFnService,
     private aggQueries: AggQueriesService

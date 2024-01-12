@@ -2,7 +2,7 @@ import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { firebaseConfig } from 'firebase.config';
 import { UserSettings } from 'src/app/utils/Interfaces';
-import { HandleDBService } from 'src/app/utils/services/handleDB/handle-db.service';
+import { FirestoreService } from 'src/app/utils/services/firestore/firestore.service';
 
 @Component({
   selector: 'app-admin-rights',
@@ -13,7 +13,7 @@ export class AdminRightsComponent implements OnInit {
   @Input() userData!: UserSettings | null;
   protected adminRightsForm!: FormGroup;
 
-  constructor(private DB: HandleDBService, private fb: FormBuilder) {}
+  constructor(private DB: FirestoreService, private fb: FormBuilder) {}
 
   ngOnInit(): void {
     this.adminRightsForm = this.fb.group({

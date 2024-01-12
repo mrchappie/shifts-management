@@ -22,7 +22,7 @@ import { CustomFnService } from '../customFn/custom-fn.service';
 @Injectable({
   providedIn: 'root',
 })
-export class HandleDBService {
+export class FirestoreService {
   // DB Config
   fbConfig: FirebaseConfigI = firebaseConfig;
 

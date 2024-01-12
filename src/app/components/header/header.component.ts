@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { State } from 'src/app/utils/Interfaces';
-import { HandleDBService } from 'src/app/utils/services/handleDB/handle-db.service';
+import { FirestoreService } from 'src/app/utils/services/firestore/firestore.service';
 import { StateService } from 'src/app/utils/services/state/state.service';
 
 @Component({
@@ -16,7 +16,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   private stateSubscription: Subscription | undefined;
 
-  constructor(private state: StateService, private DB: HandleDBService) {}
+  constructor(private state: StateService, private DB: FirestoreService) {}
 
   ngOnInit(): void {
     this.currentState = this.state.getState();

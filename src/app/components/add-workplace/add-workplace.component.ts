@@ -3,7 +3,7 @@ import { arrayUnion, arrayRemove } from '@angular/fire/firestore';
 import { FirebaseConfigI, firebaseConfig } from 'firebase.config';
 import { Subscription } from 'rxjs';
 import { State } from '../../utils/Interfaces';
-import { HandleDBService } from '../../utils/services/handleDB/handle-db.service';
+import { FirestoreService } from '../../utils/services/firestore/firestore.service';
 import { StateService } from '../../utils/services/state/state.service';
 
 @Component({
@@ -21,7 +21,7 @@ export class AddWorkplaceComponent {
 
   private stateSubscription: Subscription | undefined;
 
-  constructor(private state: StateService, private DB: HandleDBService) {}
+  constructor(private state: StateService, private DB: FirestoreService) {}
 
   ngOnInit(): void {
     // init state

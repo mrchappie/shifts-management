@@ -2,7 +2,7 @@ import { Component, ViewChild } from '@angular/core';
 import { FirebaseConfigI, firebaseConfig } from 'firebase.config';
 import { Subscription } from 'rxjs';
 import { Shift, State } from 'src/app/utils/Interfaces';
-import { HandleDBService } from 'src/app/utils/services/handleDB/handle-db.service';
+import { FirestoreService } from 'src/app/utils/services/firestore/firestore.service';
 import { StateService } from 'src/app/utils/services/state/state.service';
 import { CountI } from '../admin/dashboard/dashboard.component';
 
@@ -160,7 +160,7 @@ export class HomepageComponent {
 
   constructor(
     private state: StateService,
-    private DB: HandleDBService,
+    private DB: FirestoreService,
     private fb: FormBuilder,
     private customFN: CustomFnService,
     private aggQueries: AggQueriesService

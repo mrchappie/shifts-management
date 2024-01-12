@@ -4,7 +4,7 @@ import { Filter, sortShiftsBy, sortUsersBy } from './formData';
 import { StateService } from 'src/app/utils/services/state/state.service';
 import { Subscription } from 'rxjs';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { HandleDBService } from 'src/app/utils/services/handleDB/handle-db.service';
+import { FirestoreService } from 'src/app/utils/services/firestore/firestore.service';
 import { CustomFnService } from 'src/app/utils/services/customFn/custom-fn.service';
 
 @Component({
@@ -31,7 +31,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   constructor(
     private state: StateService,
     private fb: FormBuilder,
-    private DB: HandleDBService,
+    private DB: FirestoreService,
     private customFN: CustomFnService
   ) {}
 

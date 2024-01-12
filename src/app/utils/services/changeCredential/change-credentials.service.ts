@@ -12,7 +12,7 @@ import {
 import { firebaseConfig } from 'firebase.config';
 import { AuthService } from '../auth/auth.service';
 import { ToastService } from 'angular-toastify';
-import { HandleDBService } from '../handleDB/handle-db.service';
+import { FirestoreService } from '../firestore/firestore.service';
 
 @Injectable({
   providedIn: 'root',
@@ -22,7 +22,7 @@ export class ChangeCredentialsService {
     private authService: AuthService,
     private auth: Auth,
     private _toastService: ToastService,
-    private DB: HandleDBService
+    private DB: FirestoreService
   ) {}
 
   //! SET PASSWORD

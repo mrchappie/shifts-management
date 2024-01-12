@@ -4,7 +4,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/utils/services/auth/auth.service';
 import { ChangeCredentialsService } from 'src/app/utils/services/changeCredential/change-credentials.service';
-import { HandleDBService } from 'src/app/utils/services/handleDB/handle-db.service';
+import { FirestoreService } from 'src/app/utils/services/firestore/firestore.service';
 
 @Component({
   selector: 'app-login',
@@ -17,7 +17,7 @@ export class LoginComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private DB: HandleDBService,
+    private DB: FirestoreService,
     private router: Router,
     private authService: AuthService,
     private changeCred: ChangeCredentialsService

@@ -3,7 +3,7 @@ import { State, UserSettings } from 'src/app/utils/Interfaces';
 import { SettingsForm, settingsFormData } from './formData';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
-import { HandleDBService } from 'src/app/utils/services/handleDB/handle-db.service';
+import { FirestoreService } from 'src/app/utils/services/firestore/firestore.service';
 import { StateService } from 'src/app/utils/services/state/state.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FirebaseConfigI, firebaseConfig } from 'firebase.config';
@@ -28,7 +28,7 @@ export class UserProfileComponent {
 
   constructor(
     private state: StateService,
-    private DB: HandleDBService,
+    private DB: FirestoreService,
     private fb: FormBuilder,
     private route: ActivatedRoute,
     private router: Router
