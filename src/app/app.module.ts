@@ -46,6 +46,7 @@ import { CustomSortPipe } from './utils/pipes/customSort/customSort.pipe';
 import { AdminRightsComponent } from './pages/admin/components/admin-rights/admin-rights.component';
 import { SectionHeadingComponent } from './components/UI/section-heading/section-heading.component';
 import { DividerComponent } from './components/UI/divider/divider.component';
+import { NewSearchComponent } from './components/new-search/new-search.component';
 
 @NgModule({
   declarations: [
@@ -81,6 +82,7 @@ import { DividerComponent } from './components/UI/divider/divider.component';
     AdminRightsComponent,
     SectionHeadingComponent,
     DividerComponent,
+    NewSearchComponent,
   ],
   imports: [
     BrowserModule,
