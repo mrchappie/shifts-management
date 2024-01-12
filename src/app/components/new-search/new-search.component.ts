@@ -53,6 +53,7 @@ export class NewSearchComponent implements OnInit, OnDestroy {
       this.state.setState({ searchForm: value });
     });
 
+    // fetch shifts by query limit
     this.searchForm
       .get('queryLimit')
       ?.valueChanges.subscribe((value: number) => {
@@ -88,6 +89,11 @@ export class NewSearchComponent implements OnInit, OnDestroy {
     } else if (this.parent === 'all-shifts') {
       this.DB.handleGetAllShifts(limit as number);
     }
+  }
+
+  searchShiftsByWorkplace() {
+    const query: string = this.searchForm.get('nameQuery')?.value;
+    this.DB.handleGetShiftsBySearch(query.toLowerCase());
   }
 
   resetFilters() {

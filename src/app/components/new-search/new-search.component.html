@@ -2,17 +2,22 @@
   class="relative justify-between gap-4 p-2 mb-4 rounded-md center bg-lightBgSecondary dark:bg-darkBgPrimary shadow-all-sides"
 >
   <form class="gap-6 center" [formGroup]="searchForm">
-    <label class="flex-1 min-w-max custom-search-label">
-      <input
-        type="text"
-        name="workplace"
-        [placeholder]="
-          parent === 'all-users' ? 'Search by name' : 'Search by workplace'
-        "
-        formControlName="nameQuery"
-        class="w-full custom-search-input"
-      />
-    </label>
+    <div class="flex-1 min-w-max custom-search-label center">
+      <label class="min-w-max">
+        <input
+          type="text"
+          name="workplace"
+          [placeholder]="
+            parent === 'all-users' ? 'Search by name' : 'Search by workplace'
+          "
+          formControlName="nameQuery"
+          class="w-full custom-search-input"
+        />
+      </label>
+      <div (click)="searchShiftsByWorkplace()" class="cursor-pointer center">
+        <mat-icon fontIcon="search "></mat-icon>
+      </div>
+    </div>
 
     <label class="flex-1 min-w-max center custom-search-label">
       <select
