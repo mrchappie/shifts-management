@@ -60,7 +60,7 @@ export class ChangeCredentialsService {
       // this.verifyUserEmail();
       await updateEmail(user, newEmail);
 
-      this.DB.updateFirestoreDoc(firebaseConfig.dev.usersDB, [user.uid], {
+      this.DB.updateFirestoreDoc(firebaseConfig.deploy.usersDB, [user.uid], {
         email: newEmail,
       });
 

@@ -50,7 +50,7 @@ export class AuthService {
       // add user information to firestore
       if (userCredential) {
         this.DB.setFirestoreDoc(
-          this.fbConfig.dev.usersDB,
+          this.fbConfig.deploy.usersDB,
           [userCredential.user.uid],
           {
             firstName,
@@ -67,7 +67,7 @@ export class AuthService {
         // add user information to state
         this.state.setState({
           currentLoggedFireUser: this.DB.getFirestoreDoc(
-            this.fbConfig.dev.usersDB,
+            this.fbConfig.deploy.usersDB,
             [userCredential.user.uid]
           ),
           currentUserCred: userCredential,
@@ -99,7 +99,7 @@ export class AuthService {
       // add user information to state
       this.state.setState({
         currentLoggedFireUser: await this.DB.getFirestoreDoc(
-          this.fbConfig.dev.usersDB,
+          this.fbConfig.deploy.usersDB,
           [userCredential.user.uid]
         ),
         currentUserCred: userCredential,
@@ -142,7 +142,7 @@ export class AuthService {
           // User is signed in
           this.state.setState({
             currentLoggedFireUser: await this.DB.getFirestoreDoc(
-              this.fbConfig.dev.usersDB,
+              this.fbConfig.deploy.usersDB,
               [user.uid]
             ),
             emailVerified: user.emailVerified,
@@ -151,7 +151,7 @@ export class AuthService {
           });
           resolve(user);
 
-          // this.updateFirestoreDoc(firebaseConfig.dev.usersDB, [user.uid], {
+          // this.updateFirestoreDoc(firebaseConfig.deploy.usersDB, [user.uid], {
           //   emailVerified: user.emailVerified,
           // });
         } else {
