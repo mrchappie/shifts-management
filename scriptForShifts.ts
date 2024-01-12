@@ -26,7 +26,7 @@
 //           0,
 //           this.currentState.currentLoggedFireUser?.userWorkplaces.length
 //         )
-//       ]
+//       ].toLowerCase()
 //     }`,
 //     wagePerHour: `${getRandomArbitrary(10, 30)}`,
 //     shiftRevenue: ``,
