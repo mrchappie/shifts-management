@@ -1,6 +1,6 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { HandleDBService } from 'src/app/utils/services/handleDB/handle-db.service';
+import { FirestoreService } from 'src/app/utils/services/firestore/firestore.service';
 import { StateService } from 'src/app/utils/services/state/state.service';
 import { Router } from '@angular/router';
 import {
@@ -15,7 +15,6 @@ import { CustomFnService } from 'src/app/utils/services/customFn/custom-fn.servi
 @Component({
   selector: 'app-my-shifts',
   templateUrl: './my-shifts.component.html',
-  styleUrls: ['./my-shifts.component.scss'],
 })
 export class MyShiftsComponent implements OnInit, OnDestroy {
   @Input() parent: string = 'single_user';
@@ -44,7 +43,7 @@ export class MyShiftsComponent implements OnInit, OnDestroy {
   private stateSubscription: Subscription | undefined;
 
   constructor(
-    private DB: HandleDBService,
+    private DB: FirestoreService,
     private state: StateService,
     private router: Router,
     private customFN: CustomFnService

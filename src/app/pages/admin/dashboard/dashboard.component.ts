@@ -3,14 +3,14 @@ import { ChartComponent } from 'src/app/components/chart/chart.component';
 import { ChartConfiguration, ChartData, ChartType } from 'chart.js';
 import { Shift } from 'src/app/utils/Interfaces';
 import { firebaseConfig } from 'firebase.config';
-import { HandleDBService } from 'src/app/utils/services/handleDB/handle-db.service';
+import { FirestoreService } from 'src/app/utils/services/firestore/firestore.service';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { CustomFnService } from 'src/app/utils/services/customFn/custom-fn.service';
+import { AggQueriesService } from 'src/app/utils/services/aggQueries/agg-queries.service';
 
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.scss'],
 })
 export class DashboardComponent {
   usersShiftsCountData: CountI[] = [
@@ -143,9 +143,10 @@ export class DashboardComponent {
   statsDateForm!: FormGroup;
 
   constructor(
-    private DB: HandleDBService,
+    private DB: FirestoreService,
     private fb: FormBuilder,
-    private customFN: CustomFnService
+    private customFN: CustomFnService,
+    private aggQueries: AggQueriesService
   ) {}
 
   ngOnInit(): void {
@@ -215,7 +216,7 @@ export class DashboardComponent {
           itemToQuery: 'shiftRevenue',
         };
 
-        const data = await this.DB.getFirebaseSum(queryOptions);
+        const data = await this.aggQueries.getFirebaseSum(queryOptions);
         const indexOfMonth = months.indexOf(month);
 
         if (data) {
@@ -258,7 +259,7 @@ export class DashboardComponent {
           itemToQuery: '',
         };
 
-        const data = await this.DB.getFirebaseCount(queryOptions);
+        const data = await this.aggQueries.getFirebaseCount(queryOptions);
         const indexOfMonth = months.indexOf(month);
 
         if (data) {
@@ -332,7 +333,7 @@ export class DashboardComponent {
       itemToQuery: '',
     };
 
-    this.usersShiftsCountData[0].value = await this.DB.getFirebaseCount(
+    this.usersShiftsCountData[0].value = await this.aggQueries.getFirebaseCount(
       queryOptions
     );
   }

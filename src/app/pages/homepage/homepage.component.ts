@@ -2,7 +2,7 @@ import { Component, ViewChild } from '@angular/core';
 import { FirebaseConfigI, firebaseConfig } from 'firebase.config';
 import { Subscription } from 'rxjs';
 import { Shift, State } from 'src/app/utils/Interfaces';
-import { HandleDBService } from 'src/app/utils/services/handleDB/handle-db.service';
+import { FirestoreService } from 'src/app/utils/services/firestore/firestore.service';
 import { StateService } from 'src/app/utils/services/state/state.service';
 import { CountI } from '../admin/dashboard/dashboard.component';
 
@@ -10,11 +10,11 @@ import { ChartConfiguration, ChartData, ChartType } from 'chart.js';
 import { ChartComponent } from 'src/app/components/chart/chart.component';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { CustomFnService } from 'src/app/utils/services/customFn/custom-fn.service';
+import { AggQueriesService } from 'src/app/utils/services/aggQueries/agg-queries.service';
 
 @Component({
   selector: 'app-homepage',
   templateUrl: './homepage.component.html',
-  styleUrls: ['./homepage.component.scss'],
 })
 export class HomepageComponent {
   shiftsCountData: CountI[] = [
@@ -160,9 +160,10 @@ export class HomepageComponent {
 
   constructor(
     private state: StateService,
-    private DB: HandleDBService,
+    private DB: FirestoreService,
     private fb: FormBuilder,
-    private customFN: CustomFnService
+    private customFN: CustomFnService,
+    private aggQueries: AggQueriesService
   ) {}
 
   ngOnInit(): void {
@@ -245,7 +246,7 @@ export class HomepageComponent {
           itemToQuery: 'shiftRevenue',
         };
 
-        const data = await this.DB.getFirebaseSum(queryOptions);
+        const data = await this.aggQueries.getFirebaseSum(queryOptions);
         const indexOfMonth = months.indexOf(month);
 
         if (data) {
@@ -288,7 +289,7 @@ export class HomepageComponent {
           itemToQuery: '',
         };
 
-        const data = await this.DB.getFirebaseCount(queryOptions);
+        const data = await this.aggQueries.getFirebaseCount(queryOptions);
         const indexOfMonth = months.indexOf(month);
 
         if (data) {

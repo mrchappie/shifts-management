@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { StateService } from 'src/app/utils/services/state/state.service';
-import { HandleDBService } from 'src/app/utils/services/handleDB/handle-db.service';
+import { FirestoreService } from 'src/app/utils/services/firestore/firestore.service';
 import { Subscription } from 'rxjs';
 import { State } from 'src/app/utils/Interfaces';
 import { FirebaseConfigI, firebaseConfig } from 'firebase.config';
@@ -8,7 +8,6 @@ import { FirebaseConfigI, firebaseConfig } from 'firebase.config';
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
-  styleUrls: ['./profile.component.scss'],
 })
 export class ProfileComponent implements OnInit, OnDestroy {
   currentState!: State;
@@ -18,7 +17,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
   private stateSubscription: Subscription | undefined;
 
-  constructor(private state: StateService, private DB: HandleDBService) {}
+  constructor(private state: StateService, private DB: FirestoreService) {}
 
   ngOnInit(): void {
     this.currentState = this.state.getState();

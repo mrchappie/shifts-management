@@ -1,15 +1,14 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { HandleDBService } from 'src/app/utils/services/handleDB/handle-db.service';
 import { RegisterFormDataI, registerFormData } from './formData';
 import { PasswordValidator } from './customValidators/confirmPassword';
 import { AgeValidation } from './customValidators/ageValidation';
+import { AuthService } from 'src/app/utils/services/auth/auth.service';
 
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
-  styleUrls: ['./register.component.scss'],
 })
 export class RegisterComponent {
   //html data
@@ -21,8 +20,8 @@ export class RegisterComponent {
 
   constructor(
     private fb: FormBuilder,
-    private auth: HandleDBService,
-    private router: Router
+    private router: Router,
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {
@@ -150,7 +149,7 @@ export class RegisterComponent {
       this.registerForm.valid &&
       this.registerForm.get('termsAndConditions')?.value === true
     ) {
-      await this.auth.register(this.registerForm.value);
+      await this.authService.register(this.registerForm.value);
       this.router.navigate(['/']);
     } else {
       this.termsAndConditions = true;

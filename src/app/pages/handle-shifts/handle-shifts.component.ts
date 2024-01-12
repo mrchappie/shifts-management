@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { InputType, formData } from './formData';
 import { StateService } from 'src/app/utils/services/state/state.service';
-import { HandleDBService } from 'src/app/utils/services/handleDB/handle-db.service';
+import { FirestoreService } from 'src/app/utils/services/firestore/firestore.service';
 import { Subscription } from 'rxjs';
 import { v4 as uuidv4 } from 'uuid';
 import { Router } from '@angular/router';
@@ -12,7 +12,6 @@ import { FirebaseConfigI, firebaseConfig } from 'firebase.config';
 @Component({
   selector: 'app-handle-shifts',
   templateUrl: './handle-shifts.component.html',
-  styleUrls: ['./handle-shifts.component.scss'],
 })
 export class HandleShiftsComponent implements OnInit {
   // parent component
@@ -33,7 +32,7 @@ export class HandleShiftsComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private state: StateService,
-    private DB: HandleDBService,
+    private DB: FirestoreService,
     private router: Router
   ) {}
 

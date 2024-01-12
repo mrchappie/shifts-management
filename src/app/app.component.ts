@@ -1,9 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { State } from './utils/Interfaces';
 import { StateService } from './utils/services/state/state.service';
-import { HandleDBService } from './utils/services/handleDB/handle-db.service';
 import { Subscription } from 'rxjs';
-import { Router } from '@angular/router';
+import { AuthService } from './utils/services/auth/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -17,14 +16,10 @@ export class AppComponent implements OnInit, OnDestroy {
 
   private stateSubscription: Subscription | undefined;
 
-  constructor(
-    private state: StateService,
-    private DB: HandleDBService,
-    private router: Router
-  ) {}
+  constructor(private state: StateService, private authService: AuthService) {}
 
   ngOnInit(): void {
-    this.DB.getUserState();
+    this.authService.getUserState();
 
     this.stateSubscription = this.state.stateChanged.subscribe((newState) => {
       this.currentState = newState;
