@@ -81,7 +81,30 @@ export class HandleShiftsComponent implements OnInit {
       this.shiftForm.patchValue({ shiftDate: this.getTodayDate() });
     }
 
-    this.calculateRevenue();
+    // observables for each form input that we need to calculate revenue
+    this.shiftForm
+      .get('wagePerHour')
+      ?.valueChanges.subscribe((value: number) => {
+        this.calculateRevenue(
+          value,
+          this.shiftForm.value.startTime,
+          this.shiftForm.value.endTime
+        );
+      });
+    this.shiftForm.get('startTime')?.valueChanges.subscribe((value: string) => {
+      this.calculateRevenue(
+        this.shiftForm.value.wagePerHour,
+        value,
+        this.shiftForm.value.endTime
+      );
+    });
+    this.shiftForm.get('endTime')?.valueChanges.subscribe((value: string) => {
+      this.calculateRevenue(
+        this.shiftForm.value.wagePerHour,
+        this.shiftForm.value.startTime,
+        value
+      );
+    });
   }
 
   ngOnDestroy(): void {
@@ -90,38 +113,39 @@ export class HandleShiftsComponent implements OnInit {
     }
   }
 
-  calculateRevenue() {
-    this.shiftForm.get('wagePerHour')?.valueChanges.subscribe((wage) => {
-      const MINUTES_PER_HOUR: number = 60;
-      const HOURS_IN_DAY: number = 24;
-      const startHours: string = this.shiftForm.value.startTime.split(':')[0];
-      const startMinutes: string = this.shiftForm.value.startTime.split(':')[1];
-      const endHours: string = this.shiftForm.value.endTime.split(':')[0];
-      const endMinutes: string = this.shiftForm.value.endTime.split(':')[1];
+  calculateRevenue(wage: number, startTime: string, endTime: string) {
+    const MINUTES_PER_HOUR: number = 60;
+    const HOURS_IN_DAY: number = 24;
+    const startHours: string = startTime.split(':')[0];
+    const startMinutes: string = startTime.split(':')[1];
+    const endHours: string = endTime.split(':')[0];
+    const endMinutes: string = endTime.split(':')[1];
 
-      const startTimeMinutes: number =
-        +startHours * MINUTES_PER_HOUR + +startMinutes;
+    const startTimeMinutes: number =
+      +startHours * MINUTES_PER_HOUR + +startMinutes;
+    const endTimeMinutes: number = +endHours * MINUTES_PER_HOUR + +endMinutes;
 
-      const endTimeMinutes: number = +endHours * MINUTES_PER_HOUR + +endMinutes;
+    // check to see if none of the time inputs are empty
+    if (isNaN(startTimeMinutes) || isNaN(endTimeMinutes)) return;
 
-      if (startTimeMinutes > endTimeMinutes) {
-        this.shiftForm.patchValue({
-          shiftRevenue: Math.round(
-            ((endTimeMinutes +
-              HOURS_IN_DAY * MINUTES_PER_HOUR -
-              startTimeMinutes) /
-              60) *
-              wage
-          ).toString(),
-        });
-      } else {
-        this.shiftForm.patchValue({
-          shiftRevenue: Math.round(
-            ((endTimeMinutes - startTimeMinutes) / 60) * wage
-          ).toString(),
-        });
-      }
-    });
+    // check to see if start time is in the same day as end time
+    if (startTimeMinutes > endTimeMinutes) {
+      this.shiftForm.patchValue({
+        shiftRevenue: Math.round(
+          ((endTimeMinutes +
+            HOURS_IN_DAY * MINUTES_PER_HOUR -
+            startTimeMinutes) /
+            60) *
+            wage
+        ).toString(),
+      });
+    } else {
+      this.shiftForm.patchValue({
+        shiftRevenue: Math.round(
+          ((endTimeMinutes - startTimeMinutes) / 60) * wage
+        ).toString(),
+      });
+    }
   }
 
   getTodayDate() {
