@@ -1,13 +1,13 @@
-import { NgIf } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { MatIconModule } from '@angular/material/icon';
-import { RouterLink } from '@angular/router';
 import { UserSettings } from 'src/app/utils/Interfaces';
+import { RouterLink } from '@angular/router';
+import { MatIconModule } from '@angular/material/icon';
+import { NgIf } from '@angular/common';
 
 @Component({
-  standalone: true,
   selector: 'app-user-card',
   templateUrl: './user-card.component.html',
+  standalone: true,
   imports: [NgIf, MatIconModule, RouterLink],
 })
 export class UserCardComponent {

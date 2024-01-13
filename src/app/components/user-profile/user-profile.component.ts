@@ -14,13 +14,13 @@ import { StateService } from 'src/app/utils/services/state/state.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FirebaseConfigI, firebaseConfig } from 'firebase.config';
 import { AgeValidation } from 'src/app/pages/register/customValidators/ageValidation';
-import { NgFor, NgIf } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
+import { NgFor, NgIf } from '@angular/common';
 
 @Component({
-  standalone: true,
   selector: 'app-user-profile',
   templateUrl: './user-profile.component.html',
+  standalone: true,
   imports: [FormsModule, ReactiveFormsModule, NgFor, NgIf, MatIconModule],
 })
 export class UserProfileComponent {

@@ -1,4 +1,3 @@
-import { NgIf } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { UserCredential } from '@angular/fire/auth';
 import {
@@ -8,17 +7,18 @@ import {
   FormsModule,
   ReactiveFormsModule,
 } from '@angular/forms';
-import { MatIconModule } from '@angular/material/icon';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { AuthService } from 'src/app/utils/services/auth/auth.service';
 import { ChangeCredentialsService } from 'src/app/utils/services/changeCredential/change-credentials.service';
 import { FirestoreService } from 'src/app/utils/services/firestore/firestore.service';
+import { NgIf } from '@angular/common';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
-  standalone: true,
   selector: 'app-login',
   templateUrl: './login.component.html',
-  imports: [FormsModule, ReactiveFormsModule, NgIf, MatIconModule],
+  standalone: true,
+  imports: [FormsModule, ReactiveFormsModule, MatIconModule, NgIf, RouterLink],
 })
 export class LoginComponent implements OnInit {
   loginForm!: FormGroup;

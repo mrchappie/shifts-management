@@ -4,6 +4,7 @@ import { Shift } from '../../Interfaces';
 @Pipe({
   standalone: true,
   name: 'customFilter',
+  standalone: true,
 })
 export class CustomFilterPipe implements PipeTransform {
   transform(value: any[], ...args: string[]): any[] {

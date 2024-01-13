@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 
 @Component({
-  standalone: true,
-  selector: 'app-add-user',
-  templateUrl: './add-user.component.html',
+    selector: 'app-add-user',
+    templateUrl: './add-user.component.html',
+    standalone: true,
 })
 export class AddUserComponent {}

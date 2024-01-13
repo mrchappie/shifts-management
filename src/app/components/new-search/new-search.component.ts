@@ -11,14 +11,15 @@ import {
 } from '@angular/forms';
 import { FirestoreService } from 'src/app/utils/services/firestore/firestore.service';
 import { CustomFnService } from 'src/app/utils/services/customFn/custom-fn.service';
+import { NgFor, NgIf } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
-import { NgIf } from '@angular/common';
 
 @Component({
   standalone: true,
   selector: 'app-new-search',
   templateUrl: './new-search.component.html',
-  imports: [FormsModule, ReactiveFormsModule, MatIconModule, NgIf],
+  standalone: true,
+  imports: [FormsModule, ReactiveFormsModule, MatIconModule, NgFor, NgIf],
 })
 export class NewSearchComponent implements OnInit, OnDestroy {
   @Input() parent: string = '';

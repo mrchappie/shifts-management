@@ -16,21 +16,22 @@ import {
 } from '@angular/forms';
 import { CustomFnService } from 'src/app/utils/services/customFn/custom-fn.service';
 import { AggQueriesService } from 'src/app/utils/services/aggQueries/agg-queries.service';
-import { SectionHeadingComponent } from 'src/app/components/UI/section-heading/section-heading.component';
-import { CountCardComponent } from 'src/app/components/count-card/count-card.component';
+import { ChartComponent as ChartComponent_1 } from '../../components/chart/chart.component';
+import { CountCardComponent } from '../../components/count-card/count-card.component';
 import { NgFor } from '@angular/common';
+import { SectionHeadingComponent } from '../../components/UI/section-heading/section-heading.component';
 
 @Component({
-  standalone: true,
   selector: 'app-homepage',
   templateUrl: './homepage.component.html',
+  standalone: true,
   imports: [
+    SectionHeadingComponent,
     FormsModule,
     ReactiveFormsModule,
     NgFor,
-    SectionHeadingComponent,
     CountCardComponent,
-    ChartComponent,
+    ChartComponent_1,
   ],
 })
 export class HomepageComponent {

@@ -10,9 +10,9 @@ import { UserSettings } from 'src/app/utils/Interfaces';
 import { FirestoreService } from 'src/app/utils/services/firestore/firestore.service';
 
 @Component({
-  standalone: true,
   selector: 'app-admin-rights',
   templateUrl: './admin-rights.component.html',
+  standalone: true,
   imports: [FormsModule, ReactiveFormsModule],
 })
 export class AdminRightsComponent implements OnInit {

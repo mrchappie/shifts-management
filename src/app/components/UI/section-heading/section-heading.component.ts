@@ -4,6 +4,7 @@ import { Component, Input } from '@angular/core';
   standalone: true,
   selector: 'app-section-heading',
   templateUrl: './section-heading.component.html',
+  standalone: true,
 })
 export class SectionHeadingComponent {
   @Input() heading: string = '';

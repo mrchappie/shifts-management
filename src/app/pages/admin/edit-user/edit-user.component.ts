@@ -1,27 +1,27 @@
-import { NgIf } from '@angular/common';
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { firebaseConfig } from 'firebase.config';
-import { DividerComponent } from 'src/app/components/UI/divider/divider.component';
-import { SectionHeadingComponent } from 'src/app/components/UI/section-heading/section-heading.component';
-import { AddWorkplaceComponent } from 'src/app/components/add-workplace/add-workplace.component';
-import { UserProfileComponent } from 'src/app/components/user-profile/user-profile.component';
 import { UserSettings } from 'src/app/utils/Interfaces';
 import { FirestoreService } from 'src/app/utils/services/firestore/firestore.service';
-import { AdminRightsComponent } from '../components/admin-rights/admin-rights.component';
 import { MyShiftsComponent } from '../../my-shifts/my-shifts.component';
+import { NgIf } from '@angular/common';
+import { AdminRightsComponent } from '../components/admin-rights/admin-rights.component';
+import { AddWorkplaceComponent } from '../../../components/add-workplace/add-workplace.component';
+import { DividerComponent } from '../../../components/UI/divider/divider.component';
+import { UserProfileComponent } from '../../../components/user-profile/user-profile.component';
+import { SectionHeadingComponent } from '../../../components/UI/section-heading/section-heading.component';
 
 @Component({
-  standalone: true,
   selector: 'app-edit-user',
   templateUrl: './edit-user.component.html',
+  standalone: true,
   imports: [
-    NgIf,
     SectionHeadingComponent,
     UserProfileComponent,
     DividerComponent,
     AddWorkplaceComponent,
     AdminRightsComponent,
+    NgIf,
     MyShiftsComponent,
   ],
 })

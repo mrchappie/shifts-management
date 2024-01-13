@@ -2,7 +2,7 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { FirestoreService } from 'src/app/utils/services/firestore/firestore.service';
 import { StateService } from 'src/app/utils/services/state/state.service';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import {
   SearchFilters,
   Shift,
@@ -11,23 +11,24 @@ import {
 } from 'src/app/utils/Interfaces';
 import { FirebaseConfigI, firebaseConfig } from 'firebase.config';
 import { CustomFnService } from 'src/app/utils/services/customFn/custom-fn.service';
-import { NgFor, NgIf } from '@angular/common';
-import { NewSearchComponent } from 'src/app/components/new-search/new-search.component';
-import { ShiftCardComponent } from 'src/app/components/shift-card/shift-card.component';
-import { CustomSortPipe } from 'src/app/utils/pipes/customSort/customSort.pipe';
+import { CustomSortPipe } from '../../utils/pipes/customSort/customSort.pipe';
 import { MatIconModule } from '@angular/material/icon';
+import { ShiftCardComponent } from '../../components/shift-card/shift-card.component';
+import { NgIf, NgFor } from '@angular/common';
+import { NewSearchComponent } from '../../components/new-search/new-search.component';
 
 @Component({
-  standalone: true,
   selector: 'app-my-shifts',
   templateUrl: './my-shifts.component.html',
+  standalone: true,
   imports: [
-    NgIf,
-    NgFor,
     NewSearchComponent,
+    NgIf,
+    RouterLink,
+    NgFor,
     ShiftCardComponent,
-    CustomSortPipe,
     MatIconModule,
+    CustomSortPipe,
   ],
 })
 export class MyShiftsComponent implements OnInit, OnDestroy {
