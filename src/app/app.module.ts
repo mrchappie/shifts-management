@@ -7,10 +7,10 @@ import { AllShiftsComponent } from './pages/admin/all-shifts/all-shifts.componen
 import { ProfileComponent } from './pages/profile/profile.component';
 import { HandleShiftsComponent } from './pages/handle-shifts/handle-shifts.component';
 import { MyShiftsComponent } from './pages/my-shifts/my-shifts.component';
-import { HomepageComponent } from './pages/homepage/homepage.component';
-import { BrowserModule } from '@angular/platform-browser';
+// import { HomepageComponent } from './pages/homepage/homepage.component';
+import { BrowserModule, platformBrowser } from '@angular/platform-browser';
 
-import { AppRoutingModule } from './app-routing.module';
+import { AppRoutingModule } from './routes/app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './pages/login/login.component';
 import { RegisterComponent } from './pages/register/register.component';
@@ -34,61 +34,61 @@ import { UserProfileComponent } from './components/user-profile/user-profile.com
 import { AddWorkplaceComponent } from './components/add-workplace/add-workplace.component';
 
 import { ToastService, AngularToastifyModule } from 'angular-toastify';
-import { NgChartsModule } from 'ng2-charts';
-import { ChartComponent } from './components/chart/chart.component';
-import { CountCardComponent } from './components/count-card/count-card.component';
+// import { NgChartsModule } from 'ng2-charts';
+// import { ChartComponent } from './components/chart/chart.component';
+// import { CountCardComponent } from './components/count-card/count-card.component';
 
-import { MatIconModule } from '@angular/material/icon';
-import { MatButtonModule } from '@angular/material/button';
+// import { MatIconModule } from '@angular/material/icon';
+// import { MatButtonModule } from '@angular/material/button';
 import { ConfirmationModalComponent } from './components/UI/confirmation-modal/confirmation-modal.component';
 import { ChangeCredentialsComponent } from './components/change-credentials/change-credentials.component';
 import { CustomSortPipe } from './utils/pipes/customSort/customSort.pipe';
 import { AdminRightsComponent } from './pages/admin/components/admin-rights/admin-rights.component';
-import { SectionHeadingComponent } from './components/UI/section-heading/section-heading.component';
+// import { SectionHeadingComponent } from './components/UI/section-heading/section-heading.component';
 import { DividerComponent } from './components/UI/divider/divider.component';
 import { NewSearchComponent } from './components/new-search/new-search.component';
 
 @NgModule({
   declarations: [
-    AppComponent,
-    LoginComponent,
-    RegisterComponent,
-    NotFoundComponent,
-    HomepageComponent,
-    MyShiftsComponent,
-    HandleShiftsComponent,
-    ProfileComponent,
-    AllShiftsComponent,
-    AllUsersComponent,
-    AddUserComponent,
-    NavbarComponent,
-    FooterComponent,
-    ButtonComponent,
-    HeaderComponent,
-    CustomFilterPipe,
-    CustomSortPipe,
-    DashboardComponent,
-    ShiftCardComponent,
-    UserCardComponent,
-    SearchComponent,
-    SettingsComponent,
-    EditUserComponent,
-    UserProfileComponent,
-    AddWorkplaceComponent,
-    ChartComponent,
-    CountCardComponent,
-    ConfirmationModalComponent,
-    ChangeCredentialsComponent,
-    AdminRightsComponent,
-    SectionHeadingComponent,
-    DividerComponent,
-    NewSearchComponent,
+    // AppComponent,
+    // LoginComponent,
+    // RegisterComponent,
+    // NotFoundComponent,
+    // HomepageComponent,
+    // MyShiftsComponent,
+    // HandleShiftsComponent,
+    // ProfileComponent,
+    // AllShiftsComponent,
+    // AllUsersComponent,
+    // AddUserComponent,
+    // NavbarComponent,
+    // FooterComponent,
+    // ButtonComponent,
+    // HeaderComponent,
+    // CustomFilterPipe,
+    // CustomSortPipe,
+    // DashboardComponent,
+    // ShiftCardComponent,
+    // UserCardComponent,
+    // SearchComponent,
+    // SettingsComponent,
+    // EditUserComponent,
+    // UserProfileComponent,
+    // AddWorkplaceComponent,
+    // ChartComponent,
+    // CountCardComponent,
+    // ConfirmationModalComponent,
+    // ChangeCredentialsComponent,
+    // AdminRightsComponent,
+    // SectionHeadingComponent,
+    // DividerComponent,
+    // NewSearchComponent,
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule,
-    FormsModule,
-    ReactiveFormsModule,
+    // AppRoutingModule,
+    // FormsModule,
+    // ReactiveFormsModule,
     provideFirebaseApp(() =>
       initializeApp({
         projectId: 'learn-ang-3a987',
@@ -103,12 +103,12 @@ import { NewSearchComponent } from './components/new-search/new-search.component
     provideAuth(() => getAuth()),
     provideFirestore(() => getFirestore()),
     BrowserAnimationsModule,
-    AngularToastifyModule,
-    NgChartsModule,
-    MatIconModule,
-    MatButtonModule,
+    // AngularToastifyModule,
+    // NgChartsModule,
+    // MatIconModule,
+    // MatButtonModule,
   ],
   providers: [ToastService],
-  bootstrap: [AppComponent],
+  bootstrap: [],
 })
 export class AppModule {}

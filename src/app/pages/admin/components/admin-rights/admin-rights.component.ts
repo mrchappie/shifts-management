@@ -1,12 +1,19 @@
 import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { firebaseConfig } from 'firebase.config';
 import { UserSettings } from 'src/app/utils/Interfaces';
 import { FirestoreService } from 'src/app/utils/services/firestore/firestore.service';
 
 @Component({
+  standalone: true,
   selector: 'app-admin-rights',
   templateUrl: './admin-rights.component.html',
+  imports: [FormsModule, ReactiveFormsModule],
 })
 export class AdminRightsComponent implements OnInit {
   @Input() userID: string = '';

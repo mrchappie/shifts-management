@@ -2,6 +2,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 import { Shift } from '../../Interfaces';
 
 @Pipe({
+  standalone: true,
   name: 'customSort',
 })
 export class CustomSortPipe implements PipeTransform {

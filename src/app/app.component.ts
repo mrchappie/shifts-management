@@ -3,11 +3,16 @@ import { State } from './utils/Interfaces';
 import { StateService } from './utils/services/state/state.service';
 import { Subscription } from 'rxjs';
 import { AuthService } from './utils/services/auth/auth.service';
+import { NavbarComponent } from './components/navbar/navbar.component';
+import { NgClass, NgIf } from '@angular/common';
+import { RouterOutlet } from '@angular/router';
 
 @Component({
+  standalone: true,
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
+  imports: [NavbarComponent, NgIf, NgClass, RouterOutlet],
 })
 export class AppComponent implements OnInit, OnDestroy {
   title = 'shift-management';

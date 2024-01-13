@@ -5,10 +5,15 @@ import { Subscription } from 'rxjs';
 import { State } from '../../utils/Interfaces';
 import { FirestoreService } from '../../utils/services/firestore/firestore.service';
 import { StateService } from '../../utils/services/state/state.service';
+import { NgFor, NgIf } from '@angular/common';
+import { MatIconModule } from '@angular/material/icon';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
+  standalone: true,
   selector: 'app-add-workplace',
   templateUrl: './add-workplace.component.html',
+  imports: [NgFor, NgIf, MatIconModule, FormsModule, ReactiveFormsModule],
 })
 export class AddWorkplaceComponent {
   @Input() userIDFromURL!: string;

@@ -11,10 +11,24 @@ import {
 } from 'src/app/utils/Interfaces';
 import { FirebaseConfigI, firebaseConfig } from 'firebase.config';
 import { CustomFnService } from 'src/app/utils/services/customFn/custom-fn.service';
+import { NgFor, NgIf } from '@angular/common';
+import { NewSearchComponent } from 'src/app/components/new-search/new-search.component';
+import { ShiftCardComponent } from 'src/app/components/shift-card/shift-card.component';
+import { CustomSortPipe } from 'src/app/utils/pipes/customSort/customSort.pipe';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
+  standalone: true,
   selector: 'app-my-shifts',
   templateUrl: './my-shifts.component.html',
+  imports: [
+    NgIf,
+    NgFor,
+    NewSearchComponent,
+    ShiftCardComponent,
+    CustomSortPipe,
+    MatIconModule,
+  ],
 })
 export class MyShiftsComponent implements OnInit, OnDestroy {
   @Input() parent: string = 'single_user';

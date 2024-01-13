@@ -1,5 +1,11 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { InputType, formData } from './formData';
 import { StateService } from 'src/app/utils/services/state/state.service';
 import { FirestoreService } from 'src/app/utils/services/firestore/firestore.service';
@@ -8,10 +14,22 @@ import { v4 as uuidv4 } from 'uuid';
 import { Router } from '@angular/router';
 import { Shift, State } from 'src/app/utils/Interfaces';
 import { FirebaseConfigI, firebaseConfig } from 'firebase.config';
+import { NgFor, NgIf } from '@angular/common';
+import { SectionHeadingComponent } from 'src/app/components/UI/section-heading/section-heading.component';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
+  standalone: true,
   selector: 'app-handle-shifts',
   templateUrl: './handle-shifts.component.html',
+  imports: [
+    FormsModule,
+    ReactiveFormsModule,
+    NgIf,
+    NgFor,
+    SectionHeadingComponent,
+    MatIconModule,
+  ],
 })
 export class HandleShiftsComponent implements OnInit {
   // parent component

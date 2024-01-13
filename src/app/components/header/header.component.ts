@@ -1,12 +1,16 @@
+import { NgIf } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { MatIconModule } from '@angular/material/icon';
 import { Subscription } from 'rxjs';
 import { State } from 'src/app/utils/Interfaces';
 import { FirestoreService } from 'src/app/utils/services/firestore/firestore.service';
 import { StateService } from 'src/app/utils/services/state/state.service';
 
 @Component({
+  standalone: true,
   selector: 'app-header',
   templateUrl: './header.component.html',
+  imports: [NgIf, MatIconModule],
 })
 export class HeaderComponent implements OnInit, OnDestroy {
   currentState!: State;

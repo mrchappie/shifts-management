@@ -4,10 +4,23 @@ import { FirestoreService } from 'src/app/utils/services/firestore/firestore.ser
 import { Subscription } from 'rxjs';
 import { State } from 'src/app/utils/Interfaces';
 import { FirebaseConfigI, firebaseConfig } from 'firebase.config';
+import { SectionHeadingComponent } from 'src/app/components/UI/section-heading/section-heading.component';
+import { UserProfileComponent } from 'src/app/components/user-profile/user-profile.component';
+import { DividerComponent } from 'src/app/components/UI/divider/divider.component';
+import { ChangeCredentialsComponent } from 'src/app/components/change-credentials/change-credentials.component';
+import { AddWorkplaceComponent } from 'src/app/components/add-workplace/add-workplace.component';
 
 @Component({
+  standalone: true,
   selector: 'app-profile',
   templateUrl: './profile.component.html',
+  imports: [
+    SectionHeadingComponent,
+    UserProfileComponent,
+    DividerComponent,
+    ChangeCredentialsComponent,
+    AddWorkplaceComponent,
+  ],
 })
 export class ProfileComponent implements OnInit, OnDestroy {
   currentState!: State;

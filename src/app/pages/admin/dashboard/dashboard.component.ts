@@ -4,13 +4,30 @@ import { ChartConfiguration, ChartData, ChartType } from 'chart.js';
 import { Shift } from 'src/app/utils/Interfaces';
 import { firebaseConfig } from 'firebase.config';
 import { FirestoreService } from 'src/app/utils/services/firestore/firestore.service';
-import { FormGroup, FormBuilder } from '@angular/forms';
+import {
+  FormGroup,
+  FormBuilder,
+  FormsModule,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { CustomFnService } from 'src/app/utils/services/customFn/custom-fn.service';
 import { AggQueriesService } from 'src/app/utils/services/aggQueries/agg-queries.service';
+import { SectionHeadingComponent } from 'src/app/components/UI/section-heading/section-heading.component';
+import { CountCardComponent } from 'src/app/components/count-card/count-card.component';
+import { NgFor } from '@angular/common';
 
 @Component({
+  standalone: true,
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
+  imports: [
+    SectionHeadingComponent,
+    CountCardComponent,
+    ChartComponent,
+    NgFor,
+    FormsModule,
+    ReactiveFormsModule,
+  ],
 })
 export class DashboardComponent {
   usersShiftsCountData: CountI[] = [

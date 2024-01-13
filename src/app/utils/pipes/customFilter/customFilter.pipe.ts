@@ -2,6 +2,7 @@ import { Pipe, PipeTransform, inject } from '@angular/core';
 import { Shift } from '../../Interfaces';
 
 @Pipe({
+  standalone: true,
   name: 'customFilter',
 })
 export class CustomFilterPipe implements PipeTransform {

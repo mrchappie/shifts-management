@@ -1,12 +1,8 @@
 <div class="grid w-full h-full grid-cols-12 gap-4 p-4 custom-grid-rows">
-  <lib-toastify-toast-container
-    position="top-right"
-    class="absolute"
-  ></lib-toastify-toast-container>
-  <ng-container *ngIf="isLoggedIn">
-    <!-- <app-header class="col-span-12 col-start-1 row-span-1"></app-header> -->
-    <app-navbar class="col-span-2 col-start-1 row-span-2"></app-navbar>
-  </ng-container>
+  <app-navbar
+    *ngIf="isLoggedIn"
+    class="col-span-2 col-start-1 row-span-2"
+  ></app-navbar>
   <div
     class="h-full p-4 overflow-y-scroll rounded-md scrollbar-hide shadow-all-sides bg-lightBgSecondary dark:bg-darkBgSecondary"
     [ngClass]="

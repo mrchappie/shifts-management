@@ -4,13 +4,25 @@ import { StateService } from 'src/app/utils/services/state/state.service';
 import { FirestoreService } from 'src/app/utils/services/firestore/firestore.service';
 import { Subscription } from 'rxjs';
 import { State } from 'src/app/utils/Interfaces';
-import { Router } from '@angular/router';
+import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { AuthService } from 'src/app/utils/services/auth/auth.service';
+import { DividerComponent } from '../UI/divider/divider.component';
+import { NgFor, NgIf } from '@angular/common';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
+  standalone: true,
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.scss'],
+  imports: [
+    DividerComponent,
+    NgIf,
+    NgFor,
+    MatIconModule,
+    RouterLink,
+    RouterLinkActive,
+  ],
 })
 export class NavbarComponent implements OnInit, OnDestroy {
   currentState!: State;
