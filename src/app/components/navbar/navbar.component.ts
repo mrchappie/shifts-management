@@ -6,6 +6,7 @@ import { Subscription } from 'rxjs';
 import { State } from 'src/app/utils/Interfaces';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/utils/services/auth/auth.service';
+import { ToastService } from 'src/app/utils/services/toast/toast.service';
 
 @Component({
   selector: 'app-navbar',
@@ -29,7 +30,8 @@ export class NavbarComponent implements OnInit, OnDestroy {
     private state: StateService,
     private DB: FirestoreService,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private toastService: ToastService
   ) {}
 
   ngOnInit(): void {

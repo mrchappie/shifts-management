@@ -13,9 +13,9 @@ import { userProfile } from '../../userProfile';
 import { StateService, initialState } from '../state/state.service';
 import { FirestoreService } from '../firestore/firestore.service';
 import { FirebaseConfigI, firebaseConfig } from 'firebase.config';
-import { ToastService } from 'angular-toastify';
 import { Router } from '@angular/router';
 import { State } from '../../Interfaces';
+import { ToastService } from '../toast/toast.service';
 
 @Injectable({
   providedIn: 'root',
@@ -31,7 +31,7 @@ export class AuthService {
     private auth: Auth,
     private state: StateService,
     private DB: FirestoreService,
-    private _toastService: ToastService,
+    private toast: ToastService,
     private router: Router
   ) {}
 
@@ -114,10 +114,10 @@ export class AuthService {
         this.currentState.currentLoggedFireUser
       );
 
-      this._toastService.success('Login successfully!');
+      this.toast.success('Login successfully!');
       return userCredential;
     } catch (error) {
-      this._toastService.error('Invalid credentials, please try again!');
+      this.toast.error('Invalid credentials, please try again!');
     }
     return null;
   }

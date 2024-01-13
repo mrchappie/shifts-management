@@ -3,6 +3,7 @@ import { State } from './utils/Interfaces';
 import { StateService } from './utils/services/state/state.service';
 import { Subscription } from 'rxjs';
 import { AuthService } from './utils/services/auth/auth.service';
+import { ToastService } from './utils/services/toast/toast.service';
 
 @Component({
   selector: 'app-root',
@@ -16,7 +17,11 @@ export class AppComponent implements OnInit, OnDestroy {
 
   private stateSubscription: Subscription | undefined;
 
-  constructor(private state: StateService, private authService: AuthService) {}
+  constructor(
+    private state: StateService,
+    private authService: AuthService,
+    public toastService: ToastService
+  ) {}
 
   ngOnInit(): void {
     this.authService.getUserState();

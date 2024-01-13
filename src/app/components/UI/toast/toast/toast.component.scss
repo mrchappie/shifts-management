@@ -1,0 +1,122 @@
+.success {
+  background-color: white;
+  color: black;
+  position: relative;
+  border-radius: 10px;
+  overflow: hidden;
+  transition: opacity 0.5 linear;
+
+  .icon {
+    color: #44cc77;
+  }
+
+  ::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 10px;
+    height: 100%;
+    background: #44cc77;
+  }
+}
+
+.warning {
+  background-color: white;
+  color: black;
+  position: relative;
+  border-radius: 10px;
+  overflow: hidden;
+  transition: opacity 0.5 linear;
+
+  .icon {
+    color: #ff8800;
+  }
+
+  ::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 10px;
+    height: 100%;
+    background: #ff8800;
+  }
+}
+
+.error {
+  background-color: white;
+  color: black;
+  position: relative;
+  border-radius: 10px;
+  overflow: hidden;
+  transition: opacity 0.5 linear;
+
+  .icon {
+    color: #ee2c4a;
+  }
+
+  ::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 10px;
+    height: 100%;
+    background: #ee2c4a;
+  }
+}
+
+.info {
+  background-color: white;
+  color: black;
+  position: relative;
+  border-radius: 10px;
+  overflow: hidden;
+  transition: opacity 0.5 linear;
+
+  .icon {
+    color: #2673d0;
+  }
+
+  ::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 10px;
+    height: 100%;
+    background: #2673d0;
+  }
+}
+
+.animation-show {
+  animation-name: showToast;
+  animation-duration: 0.3s;
+  animation-timing-function: ease-in-out;
+  animation-fill-mode: forwards;
+}
+
+@keyframes showToast {
+  0% {
+    right: -400px;
+  }
+  50% {
+    right: -200px;
+  }
+  100% {
+    right: 0;
+  }
+}
+
+@keyframes removeToast {
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  0% {
+    opacity: 0;
+  }
+}

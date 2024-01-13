@@ -47,6 +47,7 @@ import { AdminRightsComponent } from './pages/admin/components/admin-rights/admi
 import { SectionHeadingComponent } from './components/UI/section-heading/section-heading.component';
 import { DividerComponent } from './components/UI/divider/divider.component';
 import { NewSearchComponent } from './components/new-search/new-search.component';
+import { ToastComponent } from './components/UI/toast/toast/toast.component';
 
 @NgModule({
   declarations: [
@@ -83,6 +84,7 @@ import { NewSearchComponent } from './components/new-search/new-search.component
     SectionHeadingComponent,
     DividerComponent,
     NewSearchComponent,
+    ToastComponent,
   ],
   imports: [
     BrowserModule,

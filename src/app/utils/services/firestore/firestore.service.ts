@@ -15,7 +15,7 @@ import {
   where,
 } from '@angular/fire/firestore';
 import { StateService } from '../state/state.service';
-import { ToastService } from 'angular-toastify';
+import { ToastService } from '../toast/toast.service';
 import { FirebaseConfigI, firebaseConfig } from 'firebase.config';
 import { CustomFnService } from '../customFn/custom-fn.service';
 
@@ -30,7 +30,7 @@ export class FirestoreService {
     private state: StateService,
     private firestore: Firestore,
     private customFN: CustomFnService,
-    private _toastService: ToastService
+    private toastService: ToastService
   ) {}
 
   //! Local Storage
@@ -85,7 +85,6 @@ export class FirestoreService {
         docsData.forEach((doc) => {
           docs.push(doc.data());
         });
-
         return docs;
       } else {
         return [];
@@ -110,7 +109,7 @@ export class FirestoreService {
         return [];
       }
     } catch (error) {
-      this._toastService.error(`${error}`);
+      this.toastService.error(`${error}`);
     }
   }
 
