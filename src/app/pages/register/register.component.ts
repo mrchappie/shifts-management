@@ -1,14 +1,31 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import {
+  FormBuilder,
+  FormGroup,
+  Validators,
+  FormsModule,
+  ReactiveFormsModule,
+} from '@angular/forms';
+import { Router, RouterLink } from '@angular/router';
 import { RegisterFormDataI, registerFormData } from './formData';
 import { PasswordValidator } from './customValidators/confirmPassword';
 import { AgeValidation } from './customValidators/ageValidation';
 import { AuthService } from 'src/app/utils/services/auth/auth.service';
+import { MatIconModule } from '@angular/material/icon';
+import { NgFor, NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
+  standalone: true,
+  imports: [
+    FormsModule,
+    ReactiveFormsModule,
+    NgFor,
+    NgIf,
+    MatIconModule,
+    RouterLink,
+  ],
 })
 export class RegisterComponent {
   //html data

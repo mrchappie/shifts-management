@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { SearchFilters, State, UserSettings } from 'src/app/utils/Interfaces';
 import { Subscription } from 'rxjs';
 import { StateService } from 'src/app/utils/services/state/state.service';
@@ -6,10 +6,24 @@ import { FirestoreService } from 'src/app/utils/services/firestore/firestore.ser
 import { FirebaseConfigI, firebaseConfig } from 'firebase.config';
 import { ToastService } from 'angular-toastify';
 import { Router } from '@angular/router';
+import { CustomFilterPipe } from '../../../utils/pipes/customFilter/customFilter.pipe';
+import { UserCardComponent } from './user-card/user-card.component';
+import { NewSearchComponent } from '../../../components/new-search/new-search.component';
+import { NgClass, NgFor } from '@angular/common';
+import { ConfirmationModalComponent } from '../../../components/UI/confirmation-modal/confirmation-modal.component';
 
 @Component({
   selector: 'app-all-users',
   templateUrl: './all-users.component.html',
+  standalone: true,
+  imports: [
+    ConfirmationModalComponent,
+    NgClass,
+    NewSearchComponent,
+    NgFor,
+    UserCardComponent,
+    CustomFilterPipe,
+  ],
 })
 export class AllUsersComponent implements OnInit, OnDestroy {
   // state

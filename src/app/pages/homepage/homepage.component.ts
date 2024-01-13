@@ -8,13 +8,31 @@ import { CountI } from '../admin/dashboard/dashboard.component';
 
 import { ChartConfiguration, ChartData, ChartType } from 'chart.js';
 import { ChartComponent } from 'src/app/components/chart/chart.component';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { CustomFnService } from 'src/app/utils/services/customFn/custom-fn.service';
 import { AggQueriesService } from 'src/app/utils/services/aggQueries/agg-queries.service';
+import { ChartComponent as ChartComponent_1 } from '../../components/chart/chart.component';
+import { CountCardComponent } from '../../components/count-card/count-card.component';
+import { NgFor } from '@angular/common';
+import { SectionHeadingComponent } from '../../components/UI/section-heading/section-heading.component';
 
 @Component({
   selector: 'app-homepage',
   templateUrl: './homepage.component.html',
+  standalone: true,
+  imports: [
+    SectionHeadingComponent,
+    FormsModule,
+    ReactiveFormsModule,
+    NgFor,
+    CountCardComponent,
+    ChartComponent_1,
+  ],
 })
 export class HomepageComponent {
   shiftsCountData: CountI[] = [

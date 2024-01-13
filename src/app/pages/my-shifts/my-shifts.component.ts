@@ -2,7 +2,7 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { FirestoreService } from 'src/app/utils/services/firestore/firestore.service';
 import { StateService } from 'src/app/utils/services/state/state.service';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import {
   SearchFilters,
   Shift,
@@ -11,10 +11,25 @@ import {
 } from 'src/app/utils/Interfaces';
 import { FirebaseConfigI, firebaseConfig } from 'firebase.config';
 import { CustomFnService } from 'src/app/utils/services/customFn/custom-fn.service';
+import { CustomSortPipe } from '../../utils/pipes/customSort/customSort.pipe';
+import { MatIconModule } from '@angular/material/icon';
+import { ShiftCardComponent } from '../../components/shift-card/shift-card.component';
+import { NgIf, NgFor } from '@angular/common';
+import { NewSearchComponent } from '../../components/new-search/new-search.component';
 
 @Component({
   selector: 'app-my-shifts',
   templateUrl: './my-shifts.component.html',
+  standalone: true,
+  imports: [
+    NewSearchComponent,
+    NgIf,
+    RouterLink,
+    NgFor,
+    ShiftCardComponent,
+    MatIconModule,
+    CustomSortPipe,
+  ],
 })
 export class MyShiftsComponent implements OnInit, OnDestroy {
   @Input() parent: string = 'single_user';

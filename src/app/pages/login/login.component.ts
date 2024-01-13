@@ -1,14 +1,24 @@
 import { Component, OnInit } from '@angular/core';
 import { UserCredential } from '@angular/fire/auth';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import {
+  FormGroup,
+  FormBuilder,
+  Validators,
+  FormsModule,
+  ReactiveFormsModule,
+} from '@angular/forms';
+import { Router, RouterLink } from '@angular/router';
 import { AuthService } from 'src/app/utils/services/auth/auth.service';
 import { ChangeCredentialsService } from 'src/app/utils/services/changeCredential/change-credentials.service';
 import { FirestoreService } from 'src/app/utils/services/firestore/firestore.service';
+import { NgIf } from '@angular/common';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
+  standalone: true,
+  imports: [FormsModule, ReactiveFormsModule, MatIconModule, NgIf, RouterLink],
 })
 export class LoginComponent implements OnInit {
   loginForm!: FormGroup;

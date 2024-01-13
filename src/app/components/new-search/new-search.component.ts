@@ -11,16 +11,16 @@ import {
 } from '@angular/forms';
 import { FirestoreService } from 'src/app/utils/services/firestore/firestore.service';
 import { CustomFnService } from 'src/app/utils/services/customFn/custom-fn.service';
+import { NgFor, NgIf } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
-import { NgIf, NgFor } from '@angular/common';
 
 @Component({
-  selector: 'app-search',
-  templateUrl: './search.component.html',
   standalone: true,
-  imports: [FormsModule, ReactiveFormsModule, NgIf, NgFor, MatIconModule],
+  selector: 'app-new-search',
+  templateUrl: './new-search.component.html',
+  imports: [FormsModule, ReactiveFormsModule, MatIconModule, NgFor, NgIf],
 })
-export class SearchComponent implements OnInit, OnDestroy {
+export class NewSearchComponent implements OnInit, OnDestroy {
   @Input() parent: string = '';
 
   // html data
@@ -34,6 +34,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   currentState!: State;
   searchForm!: FormGroup;
   filters?: SearchFilters;
+  showMoreFilters: boolean = false;
 
   private stateSubscription: Subscription | undefined;
 
@@ -61,6 +62,7 @@ export class SearchComponent implements OnInit, OnDestroy {
       this.state.setState({ searchForm: value });
     });
 
+    // fetch shifts by query limit
     this.searchForm
       .get('queryLimit')
       ?.valueChanges.subscribe((value: number) => {
@@ -98,6 +100,11 @@ export class SearchComponent implements OnInit, OnDestroy {
     }
   }
 
+  searchShiftsByWorkplace() {
+    const query: string = this.searchForm.get('nameQuery')?.value;
+    this.DB.handleGetShiftsBySearch(query.toLowerCase());
+  }
+
   resetFilters() {
     this.searchForm.patchValue(defaultFormValues);
 
@@ -116,6 +123,10 @@ export class SearchComponent implements OnInit, OnDestroy {
       this.orderBy = 'asc';
       this.searchForm.patchValue({ orderByQuery: 'asc' });
     }
+  }
+
+  toggleMoreFilters() {
+    this.showMoreFilters = !this.showMoreFilters;
   }
 }
 

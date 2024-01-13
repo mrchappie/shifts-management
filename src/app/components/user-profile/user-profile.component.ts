@@ -1,17 +1,27 @@
 import { Component } from '@angular/core';
 import { State, UserSettings } from 'src/app/utils/Interfaces';
 import { SettingsForm, settingsFormData } from './formData';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import {
+  FormGroup,
+  FormBuilder,
+  Validators,
+  FormsModule,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { FirestoreService } from 'src/app/utils/services/firestore/firestore.service';
 import { StateService } from 'src/app/utils/services/state/state.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FirebaseConfigI, firebaseConfig } from 'firebase.config';
 import { AgeValidation } from 'src/app/pages/register/customValidators/ageValidation';
+import { MatIconModule } from '@angular/material/icon';
+import { NgFor, NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-user-profile',
   templateUrl: './user-profile.component.html',
+  standalone: true,
+  imports: [FormsModule, ReactiveFormsModule, NgFor, NgIf, MatIconModule],
 })
 export class UserProfileComponent {
   currentState!: State;

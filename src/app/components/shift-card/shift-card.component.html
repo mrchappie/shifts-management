@@ -27,7 +27,7 @@
   </div>
   <div [ngClass]="sortQuery === 'workplace' ? 'active-query' : ''">
     <span class="font-bold">Workplace: </span
-    ><span>{{ shift?.workplace }}</span>
+    ><span>{{ shift?.workplace | titlecase }} </span>
   </div>
   <div [ngClass]="sortQuery === 'wagePerHour' ? 'active-query' : ''">
     <span class="font-bold">Wage / hour: </span

@@ -204,4 +204,24 @@ export class FirestoreService {
       return shifts;
     }
   }
+
+  //! GET SHIFTS BY SEARCH QUERY
+  async handleGetShiftsBySearch(queryName: string) {
+    const [currentYear, currentMonth] = this.customFN.getCurrentYearMonth();
+
+    const docRef = collection(
+      this.firestore,
+      this.fbConfig.dev.shiftsDB,
+      ...[currentYear, currentMonth]
+    );
+
+    const q = query(docRef, where('workplace', '==', queryName), limit(10));
+
+    const shifts = await this.getFirestoreDocsByQuery(q);
+
+    if (shifts) {
+      this.state.setState({ shifts: shifts });
+      return shifts;
+    }
+  }
 }
