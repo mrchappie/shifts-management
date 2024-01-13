@@ -1,11 +1,19 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  Validators,
+  FormsModule,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { ChangeCredentialsService } from 'src/app/utils/services/changeCredential/change-credentials.service';
-import { FirestoreService } from 'src/app/utils/services/firestore/firestore.service';
+import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-change-credentials',
   templateUrl: './change-credentials.component.html',
+  standalone: true,
+  imports: [NgIf, FormsModule, ReactiveFormsModule],
 })
 export class ChangeCredentialsComponent implements OnInit {
   changePasswordForm!: FormGroup;

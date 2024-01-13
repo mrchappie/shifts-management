@@ -3,13 +3,22 @@ import { SearchFilters, Shift, State } from 'src/app/utils/Interfaces';
 import { Filter, sortShiftsBy, sortUsersBy } from './formData';
 import { StateService } from 'src/app/utils/services/state/state.service';
 import { Subscription } from 'rxjs';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { FirestoreService } from 'src/app/utils/services/firestore/firestore.service';
 import { CustomFnService } from 'src/app/utils/services/customFn/custom-fn.service';
+import { NgFor, NgIf } from '@angular/common';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-new-search',
   templateUrl: './new-search.component.html',
+  standalone: true,
+  imports: [FormsModule, ReactiveFormsModule, MatIconModule, NgFor, NgIf],
 })
 export class NewSearchComponent implements OnInit, OnDestroy {
   @Input() parent: string = '';

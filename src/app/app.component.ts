@@ -3,11 +3,23 @@ import { State } from './utils/Interfaces';
 import { StateService } from './utils/services/state/state.service';
 import { Subscription } from 'rxjs';
 import { AuthService } from './utils/services/auth/auth.service';
+import { RouterOutlet } from '@angular/router';
+import { NavbarComponent } from './components/navbar/navbar.component';
+import { NgIf, NgClass } from '@angular/common';
+import { AngularToastifyModule } from 'angular-toastify';
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss'],
+    selector: 'app-root',
+    templateUrl: './app.component.html',
+    styleUrls: ['./app.component.scss'],
+    standalone: true,
+    imports: [
+        AngularToastifyModule,
+        NgIf,
+        NavbarComponent,
+        NgClass,
+        RouterOutlet,
+    ],
 })
 export class AppComponent implements OnInit, OnDestroy {
   title = 'shift-management';
