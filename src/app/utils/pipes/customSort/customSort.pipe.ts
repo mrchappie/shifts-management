@@ -4,7 +4,6 @@ import { Shift } from '../../Interfaces';
 @Pipe({
   standalone: true,
   name: 'customSort',
-  standalone: true,
 })
 export class CustomSortPipe implements PipeTransform {
   convertToMiliseconds(time: string) {

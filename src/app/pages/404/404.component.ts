@@ -5,7 +5,6 @@ import { RouterLink } from '@angular/router';
   standalone: true,
   selector: 'app-404',
   templateUrl: './404.component.html',
-  standalone: true,
   imports: [RouterLink],
 })
 export class NotFoundComponent {}

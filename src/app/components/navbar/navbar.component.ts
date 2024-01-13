@@ -15,7 +15,6 @@ import { NgIf, NgFor } from '@angular/common';
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.scss'],
-  standalone: true,
   imports: [
     NgIf,
     MatIconModule,

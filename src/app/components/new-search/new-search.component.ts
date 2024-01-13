@@ -18,7 +18,6 @@ import { MatIconModule } from '@angular/material/icon';
   standalone: true,
   selector: 'app-new-search',
   templateUrl: './new-search.component.html',
-  standalone: true,
   imports: [FormsModule, ReactiveFormsModule, MatIconModule, NgFor, NgIf],
 })
 export class NewSearchComponent implements OnInit, OnDestroy {

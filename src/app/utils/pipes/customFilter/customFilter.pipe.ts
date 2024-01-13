@@ -1,10 +1,8 @@
-import { Pipe, PipeTransform, inject } from '@angular/core';
-import { Shift } from '../../Interfaces';
+import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
   standalone: true,
   name: 'customFilter',
-  standalone: true,
 })
 export class CustomFilterPipe implements PipeTransform {
   transform(value: any[], ...args: string[]): any[] {

@@ -4,7 +4,6 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
   standalone: true,
   selector: 'app-confirmation-modal',
   templateUrl: './confirmation-modal.component.html',
-  standalone: true,
 })
 export class ConfirmationModalComponent {
   @Input() title: string = '';

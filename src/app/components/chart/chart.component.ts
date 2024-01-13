@@ -2,13 +2,11 @@ import { NgIf } from '@angular/common';
 import { Component, Input, ViewChild } from '@angular/core';
 import { ChartType } from 'chart.js';
 import { BaseChartDirective, NgChartsModule } from 'ng2-charts';
-import { NgIf } from '@angular/common';
 
 @Component({
   standalone: true,
   selector: 'app-chart',
   templateUrl: './chart.component.html',
-  standalone: true,
   imports: [NgIf, NgChartsModule],
 })
 export class ChartComponent {
