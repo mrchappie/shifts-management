@@ -1,10 +1,13 @@
+import { NgIf } from '@angular/common';
 import { Component, Input, ViewChild } from '@angular/core';
 import { ChartType } from 'chart.js';
-import { BaseChartDirective } from 'ng2-charts';
+import { BaseChartDirective, NgChartsModule } from 'ng2-charts';
 
 @Component({
+  standalone: true,
   selector: 'app-chart',
   templateUrl: './chart.component.html',
+  imports: [NgIf, NgChartsModule],
 })
 export class ChartComponent {
   // GLOBAL CHART VARIABLES

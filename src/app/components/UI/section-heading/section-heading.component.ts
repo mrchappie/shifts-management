@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 
 @Component({
+  standalone: true,
   selector: 'app-section-heading',
   templateUrl: './section-heading.component.html',
 })
