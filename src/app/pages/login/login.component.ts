@@ -38,13 +38,13 @@ export class LoginComponent implements OnInit {
 
     this.loginForm = this.fb.group({
       email: [
-        '',
+        'al@mail.com',
         [
           Validators.required,
           Validators.pattern(/^[\w\.-]+@[a-z\d\.-]+\.[a-z]{2,}$/i),
         ],
       ],
-      password: ['', [Validators.required, Validators.minLength(8)]],
+      password: ['Alex2023!', [Validators.required, Validators.minLength(8)]],
     });
   }
 

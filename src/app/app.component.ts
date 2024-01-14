@@ -5,9 +5,9 @@ import { Subscription } from 'rxjs';
 import { AuthService } from './utils/services/auth/auth.service';
 import { RouterOutlet } from '@angular/router';
 import { NavbarComponent } from './components/navbar/navbar.component';
-import { NgIf, NgClass } from '@angular/common';
-import { AngularToastifyModule } from 'angular-toastify';
+import { NgIf, NgClass, NgFor } from '@angular/common';
 import { ToastService } from './utils/services/toast/toast.service';
+import { ToastComponent } from './components/UI/toast/toast/toast.component';
 
 @Component({
   selector: 'app-root',
@@ -15,11 +15,12 @@ import { ToastService } from './utils/services/toast/toast.service';
   styleUrls: ['./app.component.scss'],
   standalone: true,
   imports: [
-    AngularToastifyModule,
     NgIf,
-    NavbarComponent,
+    NgFor,
     NgClass,
     RouterOutlet,
+    NavbarComponent,
+    ToastComponent,
   ],
 })
 export class AppComponent implements OnInit, OnDestroy {

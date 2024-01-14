@@ -1,6 +1,6 @@
 <div class="grid w-full h-full grid-cols-12 gap-4 p-4 custom-grid-rows">
   <!-- toasts container -->
-  <div class="fixed z-10 gap-4 right-4 top-4 center-col">
+  <div class="fixed z-10 items-end gap-4 right-4 top-4 center-col">
     <app-toast
       *ngFor="let toast of toastService.toastsList; let index = index"
       [toast]="toast"
