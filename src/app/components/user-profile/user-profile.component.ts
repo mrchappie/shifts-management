@@ -177,7 +177,7 @@ export class UserProfileComponent {
         });
       }
 
-      this.profileImage = this.userSettings.profileImage;
+      this.profileImage = imageUrl as string;
 
       if (initialIndexOfImage) {
         this.profileAvatars = this.profileAvatars.splice(
