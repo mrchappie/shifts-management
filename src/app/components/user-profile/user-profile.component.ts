@@ -18,6 +18,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { NgFor, NgIf } from '@angular/common';
 import { errorMessages, successMessages } from 'src/app/utils/toastMessages';
 import { ToastService } from 'src/app/utils/services/toast/toast.service';
+import { calculateAge } from 'src/app/utils/functions';
 
 @Component({
   selector: 'app-user-profile',
@@ -157,14 +158,20 @@ export class UserProfileComponent {
         await this.DB.updateFirestoreDoc(
           this.fbConfig.dev.usersDB,
           [this.currentState.currentLoggedFireUser!.id],
-          this.userProfileForm.value
+          {
+            ...this.userProfileForm.value,
+            age: calculateAge(this.userProfileForm.get('dob')?.value),
+          }
         );
         this.state.setState(this.userProfileForm.value);
       } else {
         await this.DB.updateFirestoreDoc(
           this.fbConfig.dev.usersDB,
           [this.userIDFromURL],
-          this.userProfileForm.value
+          {
+            ...this.userProfileForm.value,
+            age: calculateAge(this.userProfileForm.get('dob')?.value),
+          }
         );
       }
       this.toast.success(successMessages.firestore.profile.update);

@@ -14,19 +14,22 @@
       <div
         *ngFor="
           let userInfo of allUsers
-            | customFilter
-              : filters.nameQuery
-              : filters.startDateQuery
-              : filters.endDateQuery
-              : 'users'
+            | customUsersSort : filters.sortByQuery : filters.orderByQuery
         "
         class=""
       >
         <app-user-card
           [userInfo]="userInfo"
+          [sortQuery]="filters.sortByQuery"
           (openModalEvent)="toggleModal($event)"
         ></app-user-card>
       </div>
     </section>
   </div>
 </section>
+
+<!-- | customFilter
+              : filters.nameQuery
+              : filters.startDateQuery
+              : filters.endDateQuery
+              : 'users' -->

@@ -10,7 +10,6 @@ import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app/routes/app-routing.module';
 import { BrowserModule, bootstrapApplication } from '@angular/platform-browser';
-import { ToastService, AngularToastifyModule } from 'angular-toastify';
 
 bootstrapApplication(AppComponent, {
   providers: [
@@ -32,12 +31,11 @@ bootstrapApplication(AppComponent, {
       ),
       provideAuth(() => getAuth()),
       provideFirestore(() => getFirestore()),
-      AngularToastifyModule,
       NgChartsModule,
       MatIconModule,
       MatButtonModule
     ),
-    ToastService,
+
     provideAnimations(),
   ],
 }).catch((err) => console.error(err));

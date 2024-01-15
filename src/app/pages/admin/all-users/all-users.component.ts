@@ -4,13 +4,14 @@ import { Subscription } from 'rxjs';
 import { StateService } from 'src/app/utils/services/state/state.service';
 import { FirestoreService } from 'src/app/utils/services/firestore/firestore.service';
 import { FirebaseConfigI, firebaseConfig } from 'firebase.config';
-import { CustomFilterPipe } from '../../../utils/pipes/customFilter/customFilter.pipe';
+import { CustomShiftsFilterPipe } from '../../../utils/pipes/customFilter/custom-shifts-filter.pipe';
 import { UserCardComponent } from './user-card/user-card.component';
 import { NewSearchComponent } from '../../../components/new-search/new-search.component';
 import { NgClass, NgFor } from '@angular/common';
 import { ConfirmationModalComponent } from '../../../components/UI/confirmation-modal/confirmation-modal.component';
 import { ToastService } from 'src/app/utils/services/toast/toast.service';
 import { errorMessages, successMessages } from 'src/app/utils/toastMessages';
+import { CustomUsersSortPipe } from 'src/app/utils/pipes/customSort/custom-users-sort.pipe';
 
 @Component({
   selector: 'app-all-users',
@@ -22,7 +23,8 @@ import { errorMessages, successMessages } from 'src/app/utils/toastMessages';
     NewSearchComponent,
     NgFor,
     UserCardComponent,
-    CustomFilterPipe,
+    CustomShiftsFilterPipe,
+    CustomUsersSortPipe,
   ],
 })
 export class AllUsersComponent implements OnInit, OnDestroy {
@@ -62,6 +64,7 @@ export class AllUsersComponent implements OnInit, OnDestroy {
     this.stateSubscription = this.state.stateChanged.subscribe((newState) => {
       this.currentState = newState;
       this.filters = this.currentState.searchForm;
+      console.log(this.filters);
     });
   }
 
@@ -76,6 +79,8 @@ export class AllUsersComponent implements OnInit, OnDestroy {
       this.fbConfig.dev.usersDB,
       []
     );
+
+    console.log(this.allUsers);
   }
 
   toggleModal(event?: string) {

@@ -11,7 +11,7 @@ import {
 } from 'src/app/utils/Interfaces';
 import { FirebaseConfigI, firebaseConfig } from 'firebase.config';
 import { CustomFnService } from 'src/app/utils/services/customFn/custom-fn.service';
-import { CustomSortPipe } from '../../utils/pipes/customSort/customSort.pipe';
+import { CustomShiftsSortPipe } from '../../utils/pipes/customSort/custom-shifts-sort.pipe';
 import { MatIconModule } from '@angular/material/icon';
 import { ShiftCardComponent } from '../../components/shift-card/shift-card.component';
 import { NgIf, NgFor } from '@angular/common';
@@ -30,7 +30,7 @@ import { errorMessages, successMessages } from 'src/app/utils/toastMessages';
     NgFor,
     ShiftCardComponent,
     MatIconModule,
-    CustomSortPipe,
+    CustomShiftsSortPipe,
   ],
 })
 export class MyShiftsComponent implements OnInit, OnDestroy {

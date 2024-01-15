@@ -12,28 +12,28 @@
       >{{ shift?.userInfo?.firstName }} {{ shift?.userInfo?.lastName }}</span
     >
   </div>
-  <div [ngClass]="sortQuery === 'shiftDate' ? 'active-query' : ''">
+  <div [ngClass]="sortQuery === 'shiftDate' ? 'active-query' : null">
     <span class="font-bold">Date: </span><span>{{ shift?.shiftDate }}</span>
   </div>
   <div>
     <span class="font-bold">Interval: </span
-    ><span [ngClass]="sortQuery === 'startTime' ? 'active-query' : ''">{{
+    ><span [ngClass]="sortQuery === 'startTime' ? 'active-query' : null">{{
       shift?.startTime
     }}</span
     >&nbsp;-&nbsp;<span
-      [ngClass]="sortQuery === 'endTime' ? 'active-query' : ''"
+      [ngClass]="sortQuery === 'endTime' ? 'active-query' : null"
       >{{ shift?.endTime }}
     </span>
   </div>
-  <div [ngClass]="sortQuery === 'workplace' ? 'active-query' : ''">
+  <div [ngClass]="sortQuery === 'workplace' ? 'active-query' : null">
     <span class="font-bold">Workplace: </span
     ><span>{{ shift?.workplace | titlecase }} </span>
   </div>
-  <div [ngClass]="sortQuery === 'wagePerHour' ? 'active-query' : ''">
+  <div [ngClass]="sortQuery === 'wagePerHour' ? 'active-query' : null">
     <span class="font-bold">Wage / hour: </span
     ><span>{{ shift?.wagePerHour | currency }}</span>
   </div>
-  <div [ngClass]="sortQuery === 'shiftRevenue' ? 'active-query' : ''">
+  <div [ngClass]="sortQuery === 'shiftRevenue' ? 'active-query' : null">
     <span class="font-bold">Revenue / shift: </span
     ><span>{{ shift?.shiftRevenue | currency }}</span>
   </div>
