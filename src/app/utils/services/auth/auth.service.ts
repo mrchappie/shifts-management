@@ -126,8 +126,7 @@ export class AuthService {
   async logout() {
     await signOut(this.auth);
     this.state.setState(initialState);
-    this.DB.removeLocalStorage('currentLoggedFireUser');
-    this.DB.removeLocalStorage('loggedUserShifts');
+    this.DB.clearLocalStorage();
 
     this.router.navigate(['/login']);
 

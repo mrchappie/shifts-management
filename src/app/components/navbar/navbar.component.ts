@@ -33,6 +33,8 @@ export class NavbarComponent implements OnInit, OnDestroy {
   currentName: any = '';
   theme: string | null = localStorage.getItem('theme')
     ? localStorage.getItem('theme')
+    : window.matchMedia('(prefers-color-scheme: dark)').matches
+    ? 'dark'
     : 'light';
 
   private stateSubscription: Subscription | undefined;
