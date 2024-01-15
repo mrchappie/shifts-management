@@ -1,14 +1,17 @@
 export const firebaseConfig: FirebaseConfigI = {
-  prod: { usersDB: 'shiftAppUsers', shiftsDB: 'shiftAppShifts' },
-  dev: { usersDB: 'shiftAppUsers', shiftsDB: 'shiftAppShifts' },
-  deploy: {
-    usersDB: 'shiftAppUsers-deploy',
-    shiftsDB: 'shiftAppShifts-deploy',
+  prod: {
+    usersDB: 'shiftAppUsers',
+    shiftsDB: 'shiftAppShifts',
+    statistics: 'statistics',
+  },
+  dev: {
+    usersDB: 'shiftAppUsers',
+    shiftsDB: 'shiftAppShifts',
+    statistics: 'statistics',
   },
 };
 
 export interface FirebaseConfigI {
-  prod: { usersDB: string; shiftsDB: string };
-  dev: { usersDB: string; shiftsDB: string };
-  deploy: { usersDB: string; shiftsDB: string };
+  prod: { usersDB: string; shiftsDB: string; statistics: string };
+  dev: { usersDB: string; shiftsDB: string; statistics: string };
 }

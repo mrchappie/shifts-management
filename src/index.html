@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="light">
+<html lang="en">
   <head>
     <meta charset="utf-8" />
     <title>Shift Management</title>
@@ -19,17 +19,28 @@
     />
 
     <script>
-      // dark mode toggle onn page load or when changing themes
+      // dark mode toggle on page load based on logged user preferences or when changing OS theme
       // added here in the head to avoid page rendering with wrong theme
-      if (
-        localStorage.getItem("theme") === "dark" &&
-        window.matchMedia("(prefers-color-scheme: dark)").matches
-      ) {
-        document.documentElement.classList.remove("light");
-        document.documentElement.classList.add("dark");
+      const prefersDarkMode = window.matchMedia(
+        "(prefers-color-scheme: dark)"
+      ).matches;
+      const currentTheme = localStorage.getItem("theme");
+
+      if (!currentTheme) {
+        document.documentElement.classList.remove("dark", "light");
+        document.documentElement.classList.add(
+          prefersDarkMode ? "dark" : "light"
+        );
       } else {
-        document.documentElement.classList.remove("dark");
-        document.documentElement.classList.add("light");
+        document.documentElement.classList.remove("dark", "light");
+        document.documentElement.classList.add(currentTheme);
+      }
+
+      if (!currentTheme || (currentTheme === "dark" && prefersDarkMode)) {
+        localStorage.setItem(
+          "theme",
+          document.documentElement.classList.contains("dark") ? "dark" : "light"
+        );
       }
     </script>
   </head>
