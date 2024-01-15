@@ -74,7 +74,7 @@ export class AllUsersComponent implements OnInit, OnDestroy {
 
   async getAllUsers() {
     this.allUsers = await this.DB.getFirestoreDocs(
-      this.fbConfig.deploy.usersDB,
+      this.fbConfig.dev.usersDB,
       []
     );
   }
@@ -87,7 +87,7 @@ export class AllUsersComponent implements OnInit, OnDestroy {
   confirmModal(event: Event) {
     event.stopPropagation();
     try {
-      this.DB.deleteFirestoreDoc(firebaseConfig.deploy.usersDB, [this.userID]);
+      this.DB.deleteFirestoreDoc(firebaseConfig.dev.usersDB, [this.userID]);
       this.showModal = !this.showModal;
       this._toastService.success('User deleted successfully!');
       setTimeout(() => {

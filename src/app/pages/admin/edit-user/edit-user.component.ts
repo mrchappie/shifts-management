@@ -39,7 +39,7 @@ export class EditUserComponent {
 
     (async () => {
       this.userData = (await this.DB.getFirestoreDoc(
-        firebaseConfig.deploy.usersDB,
+        firebaseConfig.dev.usersDB,
         [this.userIDFromURL]
       )) as UserSettings;
     })();

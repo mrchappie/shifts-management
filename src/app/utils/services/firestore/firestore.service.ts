@@ -165,7 +165,7 @@ export class FirestoreService {
 
     const docRef = collection(
       this.firestore,
-      this.fbConfig.deploy.shiftsDB,
+      this.fbConfig.dev.shiftsDB,
       ...[currentYear, currentMonth]
     );
 
@@ -190,7 +190,7 @@ export class FirestoreService {
 
     const docRef = collection(
       this.firestore,
-      this.fbConfig.deploy.shiftsDB,
+      this.fbConfig.dev.shiftsDB,
       ...[currentYear, currentMonth]
     );
 
@@ -211,7 +211,7 @@ export class FirestoreService {
 
     const docRef = collection(
       this.firestore,
-      this.fbConfig.deploy.shiftsDB,
+      this.fbConfig.dev.shiftsDB,
       ...[currentYear, currentMonth]
     );
 

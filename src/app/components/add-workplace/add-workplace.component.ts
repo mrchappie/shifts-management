@@ -58,7 +58,7 @@ export class AddWorkplaceComponent {
   addWorkplace() {
     if (this.newWorkplace === '') return;
     this.DB.updateFirestoreDoc(
-      this.fbConfig.deploy.usersDB,
+      this.fbConfig.dev.usersDB,
       [this.userIDFromURL ?? this.currentState.currentLoggedFireUser!.id],
       { userWorkplaces: arrayUnion(this.newWorkplace) }
     );
@@ -81,7 +81,7 @@ export class AddWorkplaceComponent {
   // remove workplace from db
   removeWorkplace(workplace: string) {
     this.DB.updateFirestoreDoc(
-      this.fbConfig.deploy.usersDB,
+      this.fbConfig.dev.usersDB,
       [this.userIDFromURL ?? this.currentState.currentLoggedFireUser!.id],
       { userWorkplaces: arrayRemove(workplace) }
     );
@@ -101,10 +101,9 @@ export class AddWorkplaceComponent {
 
   // fetch user workplaces if a user information is modified from admin panel
   async getUserWorkplaces(userID: string) {
-    const userData = await this.DB.getFirestoreDoc(
-      this.fbConfig.deploy.usersDB,
-      [userID]
-    );
+    const userData = await this.DB.getFirestoreDoc(this.fbConfig.dev.usersDB, [
+      userID,
+    ]);
 
     this.userWorkplaces = userData?.userWorkplaces;
   }
@@ -112,7 +111,7 @@ export class AddWorkplaceComponent {
   // update state only if the user profile page is accessed
   async updateState() {
     const userSettings = await this.DB.getFirestoreDoc(
-      this.fbConfig.deploy.usersDB,
+      this.fbConfig.dev.usersDB,
       [this.currentState.currentLoggedFireUser!.id]
     );
 

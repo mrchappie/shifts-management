@@ -50,7 +50,7 @@ export class AdminRightsComponent implements OnInit {
 
   async onSubmit(isAdminF: boolean) {
     await this.DB.updateFirestoreDoc(
-      firebaseConfig.deploy.usersDB,
+      firebaseConfig.dev.usersDB,
       [this.userID],
       { adminPanel: { isAdmin: isAdminF } }
     );

@@ -79,7 +79,7 @@ export class UserProfileComponent {
 
   async getUserData(userID: string) {
     this.userSettings = (await this.DB.getFirestoreDoc(
-      this.fbConfig.deploy.usersDB,
+      this.fbConfig.dev.usersDB,
       [userID]
     )) as UserSettings;
 
@@ -151,14 +151,14 @@ export class UserProfileComponent {
   async onSubmit() {
     if (!this.userIDFromURL) {
       await this.DB.updateFirestoreDoc(
-        this.fbConfig.deploy.usersDB,
+        this.fbConfig.dev.usersDB,
         [this.currentState.currentLoggedFireUser!.id],
         this.userProfileForm.value
       );
       this.state.setState(this.userProfileForm.value);
     } else {
       await this.DB.updateFirestoreDoc(
-        this.fbConfig.deploy.usersDB,
+        this.fbConfig.dev.usersDB,
         [this.userIDFromURL],
         this.userProfileForm.value
       );

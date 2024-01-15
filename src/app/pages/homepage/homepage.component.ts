@@ -257,7 +257,7 @@ export class HomepageComponent {
         const queryOptions = {
           month: '',
           year: '',
-          collectionName: firebaseConfig.deploy.shiftsDB,
+          collectionName: firebaseConfig.dev.shiftsDB,
           collectionPath: [new Date().getFullYear().toString(), month],
           queryName: 'userID',
           queryValue: this.loggedUserID,
@@ -300,7 +300,7 @@ export class HomepageComponent {
         const queryOptions = {
           month: '',
           year: '',
-          collectionName: firebaseConfig.deploy.shiftsDB,
+          collectionName: firebaseConfig.dev.shiftsDB,
           collectionPath: [new Date().getFullYear().toString(), month],
           queryName: 'userID',
           queryValue: this.loggedUserID,

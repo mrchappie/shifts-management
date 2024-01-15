@@ -107,7 +107,7 @@ export class MyShiftsComponent implements OnInit, OnDestroy {
   }
 
   async getEditedUserData(userID: string) {
-    const data = (await this.DB.getFirestoreDoc(firebaseConfig.deploy.usersDB, [
+    const data = (await this.DB.getFirestoreDoc(firebaseConfig.dev.usersDB, [
       userID,
     ])) as UserSettings;
 
@@ -118,7 +118,7 @@ export class MyShiftsComponent implements OnInit, OnDestroy {
     const [currentYear, currentMonth] = this.customFN.getCurrentYearMonth();
 
     this.currentState.shiftToEdit = (await this.DB.getFirestoreDoc(
-      this.fbConfig.deploy.shiftsDB,
+      this.fbConfig.dev.shiftsDB,
       [currentYear, currentMonth, shiftID]
     )) as Shift;
 
@@ -140,7 +140,7 @@ export class MyShiftsComponent implements OnInit, OnDestroy {
   deleteShift(shiftID: string) {
     const [currentYear, currentMonth] = this.customFN.getCurrentYearMonth();
 
-    this.DB.deleteFirestoreDoc(this.fbConfig.deploy.shiftsDB, [
+    this.DB.deleteFirestoreDoc(this.fbConfig.dev.shiftsDB, [
       currentYear,
       currentMonth,
       shiftID,
