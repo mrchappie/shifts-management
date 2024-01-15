@@ -9,6 +9,7 @@ import { AuthService } from 'src/app/utils/services/auth/auth.service';
 import { DividerComponent } from '../UI/divider/divider.component';
 import { MatIconModule } from '@angular/material/icon';
 import { NgIf, NgFor } from '@angular/common';
+import { ToastService } from 'src/app/utils/services/toast/toast.service';
 
 @Component({
   standalone: true,
@@ -43,7 +44,8 @@ export class NavbarComponent implements OnInit, OnDestroy {
     private state: StateService,
     private DB: FirestoreService,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private toastService: ToastService
   ) {}
 
   ngOnInit(): void {

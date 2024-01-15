@@ -1,0 +1,20 @@
+<div
+  #toastEl
+  (click)="closeToast($event, index)"
+  class="absolute justify-between gap-4 p-2 w-[400px] center animation-show shadow-all-sides rounded-md text-lightTextPrimary dark:text-darkTextPrimary bg-lightBgPrimary dark:bg-darkBgPrimary"
+  [ngClass]="toast.type"
+>
+  <div class="gap-6 mx-6 center">
+    <div>
+      <mat-icon
+        class="icon"
+        fontIcon="{{ toast.type === 'success' ? 'check_circle' : toast.type }}"
+      ></mat-icon>
+    </div>
+    <div class="items-start center-col">
+      <h1 class="font-bold">{{ toast.type | titlecase }}</h1>
+      <p>{{ toast.message }}</p>
+    </div>
+  </div>
+  <span class="cursor-pointer"><mat-icon fontIcon="close"></mat-icon></span>
+</div>

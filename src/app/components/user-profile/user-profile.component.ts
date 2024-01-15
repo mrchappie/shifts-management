@@ -16,6 +16,8 @@ import { FirebaseConfigI, firebaseConfig } from 'firebase.config';
 import { AgeValidation } from 'src/app/pages/register/customValidators/ageValidation';
 import { MatIconModule } from '@angular/material/icon';
 import { NgFor, NgIf } from '@angular/common';
+import { errorMessages, successMessages } from 'src/app/utils/toastMessages';
+import { ToastService } from 'src/app/utils/services/toast/toast.service';
 
 @Component({
   selector: 'app-user-profile',
@@ -41,7 +43,8 @@ export class UserProfileComponent {
     private DB: FirestoreService,
     private fb: FormBuilder,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private toast: ToastService
   ) {}
 
   ngOnInit(): void {
@@ -149,19 +152,24 @@ export class UserProfileComponent {
   }
 
   async onSubmit() {
-    if (!this.userIDFromURL) {
-      await this.DB.updateFirestoreDoc(
-        this.fbConfig.dev.usersDB,
-        [this.currentState.currentLoggedFireUser!.id],
-        this.userProfileForm.value
-      );
-      this.state.setState(this.userProfileForm.value);
-    } else {
-      await this.DB.updateFirestoreDoc(
-        this.fbConfig.dev.usersDB,
-        [this.userIDFromURL],
-        this.userProfileForm.value
-      );
+    try {
+      if (!this.userIDFromURL) {
+        await this.DB.updateFirestoreDoc(
+          this.fbConfig.dev.usersDB,
+          [this.currentState.currentLoggedFireUser!.id],
+          this.userProfileForm.value
+        );
+        this.state.setState(this.userProfileForm.value);
+      } else {
+        await this.DB.updateFirestoreDoc(
+          this.fbConfig.dev.usersDB,
+          [this.userIDFromURL],
+          this.userProfileForm.value
+        );
+      }
+      this.toast.success(successMessages.firestore.profile.update);
+    } catch (error) {
+      this.toast.error(errorMessages.firestore);
     }
   }
 }

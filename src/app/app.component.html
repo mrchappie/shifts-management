@@ -1,8 +1,20 @@
 <div class="grid w-full h-full grid-cols-12 gap-4 p-4 custom-grid-rows">
+  <!-- toasts container -->
+  <div class="fixed z-10 items-end gap-4 right-4 top-4 center-col">
+    <app-toast
+      *ngFor="let toast of toastService.toastsList; let index = index"
+      [toast]="toast"
+      [index]="index"
+    ></app-toast>
+  </div>
+
+  <!-- nav -->
   <app-navbar
     *ngIf="isLoggedIn"
     class="col-span-2 col-start-1 row-span-2"
   ></app-navbar>
+
+  <!-- main content container -->
   <div
     class="h-full p-4 overflow-y-scroll rounded-md scrollbar-hide shadow-all-sides bg-lightBgSecondary dark:bg-darkBgSecondary"
     [ngClass]="
