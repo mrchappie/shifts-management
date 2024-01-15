@@ -16,6 +16,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { ShiftCardComponent } from '../../components/shift-card/shift-card.component';
 import { NgIf, NgFor } from '@angular/common';
 import { NewSearchComponent } from '../../components/new-search/new-search.component';
+import { ToastService } from 'src/app/utils/services/toast/toast.service';
+import { errorMessages, successMessages } from 'src/app/utils/toastMessages';
 
 @Component({
   selector: 'app-my-shifts',
@@ -61,7 +63,8 @@ export class MyShiftsComponent implements OnInit, OnDestroy {
     private DB: FirestoreService,
     private state: StateService,
     private router: Router,
-    private customFN: CustomFnService
+    private customFN: CustomFnService,
+    private toast: ToastService
   ) {}
 
   ngOnInit(): void {
@@ -138,14 +141,20 @@ export class MyShiftsComponent implements OnInit, OnDestroy {
   }
 
   deleteShift(shiftID: string) {
-    const [currentYear, currentMonth] = this.customFN.getCurrentYearMonth();
+    try {
+      const [currentYear, currentMonth] = this.customFN.getCurrentYearMonth();
 
-    this.DB.deleteFirestoreDoc(this.fbConfig.dev.shiftsDB, [
-      currentYear,
-      currentMonth,
-      shiftID,
-    ]);
+      this.DB.deleteFirestoreDoc(this.fbConfig.dev.shiftsDB, [
+        currentYear,
+        currentMonth,
+        shiftID,
+      ]);
 
-    this.myShifts = this.myShifts.filter((shift) => shift.shiftID != shiftID);
+      this.toast.success(successMessages.firestore.shift.delete);
+
+      this.myShifts = this.myShifts.filter((shift) => shift.shiftID != shiftID);
+    } catch (error) {
+      this.toast.error(errorMessages.firestore);
+    }
   }
 }

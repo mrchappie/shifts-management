@@ -4,13 +4,13 @@ import { Subscription } from 'rxjs';
 import { StateService } from 'src/app/utils/services/state/state.service';
 import { FirestoreService } from 'src/app/utils/services/firestore/firestore.service';
 import { FirebaseConfigI, firebaseConfig } from 'firebase.config';
-import { ToastService } from 'angular-toastify';
-import { Router } from '@angular/router';
 import { CustomFilterPipe } from '../../../utils/pipes/customFilter/customFilter.pipe';
 import { UserCardComponent } from './user-card/user-card.component';
 import { NewSearchComponent } from '../../../components/new-search/new-search.component';
 import { NgClass, NgFor } from '@angular/common';
 import { ConfirmationModalComponent } from '../../../components/UI/confirmation-modal/confirmation-modal.component';
+import { ToastService } from 'src/app/utils/services/toast/toast.service';
+import { errorMessages, successMessages } from 'src/app/utils/toastMessages';
 
 @Component({
   selector: 'app-all-users',
@@ -51,8 +51,7 @@ export class AllUsersComponent implements OnInit, OnDestroy {
   constructor(
     private state: StateService,
     private DB: FirestoreService,
-    private router: Router,
-    private _toastService: ToastService
+    private toast: ToastService
   ) {}
 
   ngOnInit(): void {
@@ -89,12 +88,12 @@ export class AllUsersComponent implements OnInit, OnDestroy {
     try {
       this.DB.deleteFirestoreDoc(firebaseConfig.dev.usersDB, [this.userID]);
       this.showModal = !this.showModal;
-      this._toastService.success('User deleted successfully!');
+      this.toast.success(successMessages.firestore.users.delete);
       setTimeout(() => {
         location.reload();
       }, 500);
     } catch (error) {
-      this._toastService.error('Error deleting the user, please try again!');
+      this.toast.error(errorMessages.firestore);
     }
   }
 }

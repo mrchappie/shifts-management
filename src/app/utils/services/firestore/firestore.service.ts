@@ -18,6 +18,7 @@ import { StateService } from '../state/state.service';
 import { ToastService } from '../toast/toast.service';
 import { FirebaseConfigI, firebaseConfig } from 'firebase.config';
 import { CustomFnService } from '../customFn/custom-fn.service';
+import { errorMessages } from '../../toastMessages';
 
 @Injectable({
   providedIn: 'root',
@@ -30,7 +31,7 @@ export class FirestoreService {
     private state: StateService,
     private firestore: Firestore,
     private customFN: CustomFnService,
-    private toastService: ToastService
+    private toast: ToastService
   ) {}
 
   //! Local Storage
@@ -62,9 +63,11 @@ export class FirestoreService {
 
       if (docSnap.exists()) {
         return docSnap.data();
+      } else {
+        return null;
       }
     } catch (error) {
-      console.log(error);
+      this.toast.error(errorMessages.firestore);
     }
     return null;
   }
@@ -90,7 +93,7 @@ export class FirestoreService {
         return [];
       }
     } catch (error) {
-      console.log(error);
+      this.toast.error(errorMessages.firestore);
     }
   }
 
@@ -109,7 +112,7 @@ export class FirestoreService {
         return [];
       }
     } catch (error) {
-      this.toastService.error(`${error}`);
+      this.toast.error(errorMessages.firestore);
     }
   }
 
@@ -126,7 +129,7 @@ export class FirestoreService {
       );
       await setDoc(docRef, data);
     } catch (error) {
-      console.log(error);
+      this.toast.error(errorMessages.firestore);
     }
   }
 
@@ -144,7 +147,7 @@ export class FirestoreService {
       );
       await updateDoc(docRef, data);
     } catch (error) {
-      console.log(error);
+      this.toast.error(errorMessages.firestore);
     }
   }
 
@@ -154,7 +157,7 @@ export class FirestoreService {
     try {
       await deleteDoc(doc(this.firestore, collectionName, ...documentPath));
     } catch (error) {
-      console.log(error);
+      this.toast.error(errorMessages.firestore);
     }
   }
 

@@ -16,7 +16,9 @@ import { Shift, State } from 'src/app/utils/Interfaces';
 import { FirebaseConfigI, firebaseConfig } from 'firebase.config';
 import { MatIconModule } from '@angular/material/icon';
 import { SectionHeadingComponent } from '../../components/UI/section-heading/section-heading.component';
-import { NgIf, NgFor } from '@angular/common';
+import { NgIf, NgFor, LowerCasePipe } from '@angular/common';
+import { ToastService } from 'src/app/utils/services/toast/toast.service';
+import { errorMessages, successMessages } from 'src/app/utils/toastMessages';
 
 @Component({
   selector: 'app-handle-shifts',
@@ -29,6 +31,7 @@ import { NgIf, NgFor } from '@angular/common';
     SectionHeadingComponent,
     NgFor,
     MatIconModule,
+    LowerCasePipe,
   ],
 })
 export class HandleShiftsComponent implements OnInit {
@@ -51,7 +54,8 @@ export class HandleShiftsComponent implements OnInit {
     private fb: FormBuilder,
     private state: StateService,
     private DB: FirestoreService,
-    private router: Router
+    private router: Router,
+    private toast: ToastService
   ) {}
 
   ngOnInit(): void {
@@ -269,9 +273,27 @@ export class HandleShiftsComponent implements OnInit {
         shiftData
       );
 
-      this.router.navigate(['my-shifts']);
+      if (!this.isEditing) {
+        this.toast.success(successMessages.firestore.shift.add);
+      } else {
+        this.toast.success(successMessages.firestore.shift.update);
+      }
+
+      this.router.navigate(['my-shifts']).then(() => {
+        this.shiftForm.patchValue(this.initialFormValue);
+      });
     } catch (error) {
-      console.log(error);
+      this.toast.error(errorMessages.firestore);
     }
   }
+
+  private initialFormValue = {
+    shiftID: [uuidv4()],
+    shiftDate: '',
+    startTime: this.getTodayDate(),
+    endTime: '',
+    workplace: '',
+    wagePerHour: '',
+    shiftRevenue: '',
+  };
 }

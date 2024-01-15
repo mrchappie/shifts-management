@@ -8,6 +8,8 @@ import { StateService } from '../../utils/services/state/state.service';
 import { NgFor } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { FormsModule } from '@angular/forms';
+import { ToastService } from 'src/app/utils/services/toast/toast.service';
+import { errorMessages, successMessages } from 'src/app/utils/toastMessages';
 
 @Component({
   selector: 'app-add-workplace',
@@ -26,7 +28,11 @@ export class AddWorkplaceComponent {
 
   private stateSubscription: Subscription | undefined;
 
-  constructor(private state: StateService, private DB: FirestoreService) {}
+  constructor(
+    private state: StateService,
+    private DB: FirestoreService,
+    private toast: ToastService
+  ) {}
 
   ngOnInit(): void {
     // init state
@@ -57,45 +63,57 @@ export class AddWorkplaceComponent {
   // add workplace from DB
   addWorkplace() {
     if (this.newWorkplace === '') return;
-    this.DB.updateFirestoreDoc(
-      this.fbConfig.dev.usersDB,
-      [this.userIDFromURL ?? this.currentState.currentLoggedFireUser!.id],
-      { userWorkplaces: arrayUnion(this.newWorkplace) }
-    );
-    // updates the workplaces array variable
-    if (
-      !this.userWorkplaces.includes(this.newWorkplace) &&
-      this.userIDFromURL
-    ) {
-      this.userWorkplaces.push(this.newWorkplace);
-      this.newWorkplace = '';
-    }
-    // if regular user updates his profile, update the state
-    if (!this.userIDFromURL) {
-      this.updateState();
-      this.newWorkplace = '';
-      return;
+    try {
+      this.DB.updateFirestoreDoc(
+        this.fbConfig.dev.usersDB,
+        [this.userIDFromURL ?? this.currentState.currentLoggedFireUser!.id],
+        { userWorkplaces: arrayUnion(this.newWorkplace) }
+      );
+
+      this.toast.success(successMessages.firestore.workplace.add);
+      // updates the workplaces array variable
+      if (
+        !this.userWorkplaces.includes(this.newWorkplace) &&
+        this.userIDFromURL
+      ) {
+        this.userWorkplaces.push(this.newWorkplace);
+        this.newWorkplace = '';
+      }
+      // if regular user updates his profile, update the state
+      if (!this.userIDFromURL) {
+        this.updateState();
+        this.newWorkplace = '';
+        return;
+      }
+    } catch (error) {
+      this.toast.error(errorMessages.firestore);
     }
   }
 
   // remove workplace from db
   removeWorkplace(workplace: string) {
-    this.DB.updateFirestoreDoc(
-      this.fbConfig.dev.usersDB,
-      [this.userIDFromURL ?? this.currentState.currentLoggedFireUser!.id],
-      { userWorkplaces: arrayRemove(workplace) }
-    );
-    // updates the workplaces array variable
-    if (
-      !this.userWorkplaces.includes(this.newWorkplace) &&
-      this.userIDFromURL
-    ) {
-      this.userWorkplaces.splice(this.userWorkplaces.indexOf(workplace), 1);
-    }
-    // if regular user updates his profile, update the state
-    if (!this.userIDFromURL) {
-      this.updateState();
-      return;
+    try {
+      this.DB.updateFirestoreDoc(
+        this.fbConfig.dev.usersDB,
+        [this.userIDFromURL ?? this.currentState.currentLoggedFireUser!.id],
+        { userWorkplaces: arrayRemove(workplace) }
+      );
+      this.toast.success(successMessages.firestore.workplace.delete);
+
+      // updates the workplaces array variable
+      if (
+        !this.userWorkplaces.includes(this.newWorkplace) &&
+        this.userIDFromURL
+      ) {
+        this.userWorkplaces.splice(this.userWorkplaces.indexOf(workplace), 1);
+      }
+      // if regular user updates his profile, update the state
+      if (!this.userIDFromURL) {
+        this.updateState();
+        return;
+      }
+    } catch (error) {
+      this.toast.error(errorMessages.firestore);
     }
   }
 

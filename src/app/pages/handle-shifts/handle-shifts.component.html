@@ -65,7 +65,7 @@
             </option>
             <option
               *ngFor="let workplace of userWorkplaces"
-              value="{{ workplace }}"
+              value="{{ workplace | lowercase }}"
             >
               {{ workplace }}
             </option>

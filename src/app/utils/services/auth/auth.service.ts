@@ -16,6 +16,7 @@ import { FirebaseConfigI, firebaseConfig } from 'firebase.config';
 import { Router } from '@angular/router';
 import { State } from '../../Interfaces';
 import { ToastService } from '../toast/toast.service';
+import { errorMessages, successMessages } from '../../toastMessages';
 
 @Injectable({
   providedIn: 'root',
@@ -81,9 +82,12 @@ export class AuthService {
           'currentLoggedFireUser',
           this.currentState.currentLoggedFireUser
         );
+
+        return;
       }
+      this.toast.success(successMessages.register);
     } catch (error) {
-      console.log(error);
+      this.toast.error(errorMessages.register);
     }
   }
 
@@ -96,28 +100,30 @@ export class AuthService {
         password
       );
 
-      // add user information to state
-      this.state.setState({
-        currentLoggedFireUser: await this.DB.getFirestoreDoc(
-          this.fbConfig.dev.usersDB,
-          [userCredential.user.uid]
-        ),
-        currentUserCred: userCredential,
-        isLoggedIn: true,
-        loggedUserID: userCredential.user.uid,
-      });
-      this.currentState = this.state.getState();
+      if (userCredential) {
+        // add user information to state
+        this.state.setState({
+          currentLoggedFireUser: await this.DB.getFirestoreDoc(
+            this.fbConfig.dev.usersDB,
+            [userCredential.user.uid]
+          ),
+          currentUserCred: userCredential,
+          isLoggedIn: true,
+          loggedUserID: userCredential.user.uid,
+        });
+        this.currentState = this.state.getState();
 
-      // add user information to localStorage
-      this.DB.setLocalStorage(
-        'currentLoggedFireUser',
-        this.currentState.currentLoggedFireUser
-      );
+        // add user information to localStorage
+        this.DB.setLocalStorage(
+          'currentLoggedFireUser',
+          this.currentState.currentLoggedFireUser
+        );
 
-      this.toast.success('Login successfully!');
-      return userCredential;
+        this.toast.success(successMessages.login);
+        return userCredential;
+      }
     } catch (error) {
-      this.toast.error('Invalid credentials, please try again!');
+      this.toast.error(errorMessages.login);
     }
     return null;
   }
