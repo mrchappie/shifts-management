@@ -19,20 +19,33 @@ import { NgFor, NgIf } from '@angular/common';
 import { errorMessages, successMessages } from 'src/app/utils/toastMessages';
 import { ToastService } from 'src/app/utils/services/toast/toast.service';
 import { calculateAge } from 'src/app/utils/functions';
+import { BackdropComponent } from '../UI/backdrop/backdrop.component';
+import { StorageService } from 'src/app/utils/services/storage/storage.service';
 
 @Component({
   selector: 'app-user-profile',
   templateUrl: './user-profile.component.html',
   standalone: true,
-  imports: [FormsModule, ReactiveFormsModule, NgFor, NgIf, MatIconModule],
+  imports: [
+    FormsModule,
+    ReactiveFormsModule,
+    NgFor,
+    NgIf,
+    MatIconModule,
+    BackdropComponent,
+  ],
 })
 export class UserProfileComponent {
+  // component
   currentState!: State;
   settingsFormInputs: SettingsForm[] = settingsFormData;
   userSettings!: UserSettings;
   profileImage: string = '';
-  userIDFromURL!: string;
+  userID!: string;
   userProfileForm!: FormGroup;
+  showPhotosModal: boolean = false;
+
+  profileAvatars: (string | null)[] = [];
 
   // DB Config
   fbConfig: FirebaseConfigI = firebaseConfig;
@@ -45,13 +58,13 @@ export class UserProfileComponent {
     private fb: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
-    private toast: ToastService
+    private toast: ToastService,
+    private storage: StorageService
   ) {}
 
   ngOnInit(): void {
-    this.route.params.subscribe(
-      (param) => (this.userIDFromURL = param['userID'])
-    );
+    // get the user ID from URL if an admin edits a user
+    this.route.params.subscribe((param) => (this.userID = param['userID']));
 
     this.userProfileForm = this.fb.group({
       userName: [''],
@@ -62,17 +75,26 @@ export class UserProfileComponent {
       phoneNumber: ['', [Validators.pattern(/[0-9]{10}/)]],
     });
 
+    // init state
     this.currentState = this.state.getState();
 
-    if (!this.userIDFromURL) {
+    // get current logged user data
+    if (!this.userID) {
       this.getUserData(this.currentState.currentLoggedFireUser!.id);
+      this.profileAvatars.push(
+        this.currentState.currentLoggedFireUser!.profileImage
+      );
+      this.profileImage = this.currentState.currentLoggedFireUser!.profileImage;
     } else {
-      this.getUserData(this.userIDFromURL);
+      this.getUserData(this.userID);
     }
 
     this.stateSubscription = this.state.stateChanged.subscribe((newState) => {
       this.currentState = newState;
+      this.profileImage = this.currentState.currentLoggedFireUser!.profileImage;
     });
+
+    this.getUrlsFromDB();
   }
 
   ngOnDestroy(): void {
@@ -86,13 +108,14 @@ export class UserProfileComponent {
       this.fbConfig.dev.usersDB,
       [userID]
     )) as UserSettings;
+    this.profileImage = this.userSettings.profileImage;
 
     if (!this.userSettings) {
       this.router.navigate(['404']);
     }
 
     // update the state only when there is no userID param
-    if (!this.userIDFromURL) {
+    if (!this.userID) {
       // update state with user info
       this.state.setState({
         currentLoggedFireUser: this.userSettings,
@@ -101,9 +124,93 @@ export class UserProfileComponent {
 
     // update form if user info exists
     if (this.userSettings) {
-      this.profileImage = this.userSettings.profileImage;
       this.userProfileForm.patchValue(this.userSettings);
     }
+  }
+
+  // toggle change picture modal
+  openAvatarsModal(event: Event) {
+    event.stopPropagation();
+    this.showPhotosModal = !this.showPhotosModal;
+  }
+
+  closeAvatarsModal(event: Event) {
+    event.stopPropagation();
+    if (event.target === event.currentTarget) {
+      this.showPhotosModal = !this.showPhotosModal;
+    }
+  }
+
+  // upload profile picture
+  async uploadFile(event: Event) {
+    // get the current index of profile picture from array of avatars
+    const initialIndexOfImage = this.profileAvatars.indexOf(this.profileImage);
+
+    const element = event.currentTarget as HTMLInputElement;
+    let fileList: FileList | null = element.files;
+    if (fileList) {
+      // profile photo name will be the user name
+      const photoName =
+        this.userSettings.firstName + '_' + this.userSettings.lastName;
+      // upload the image to firebase storage
+      await this.storage.uploadFile(fileList[0], photoName, [
+        firebaseConfig.storage.profileImages,
+      ]);
+      // get the image url
+      const imageUrl = await this.storage.getUrl([
+        firebaseConfig.storage.profileImages,
+        photoName,
+      ]);
+
+      // update de user profile picture in DB
+      this.DB.updateFirestoreDoc(firebaseConfig.dev.usersDB, [this.userID], {
+        profileImage: imageUrl,
+      });
+
+      if (!this.userID) {
+        // update de user profile picture in state
+        this.state.setState({
+          currentLoggedFireUser: {
+            ...this.userSettings,
+            profileImage: imageUrl,
+          },
+        });
+      }
+
+      this.profileImage = this.userSettings.profileImage;
+
+      if (initialIndexOfImage) {
+        this.profileAvatars = this.profileAvatars.splice(
+          initialIndexOfImage,
+          1,
+          imageUrl
+        );
+      }
+    }
+  }
+
+  // get avatar urls
+  async getUrlsFromDB() {
+    const urls = await this.storage.getUrls();
+    this.profileAvatars.push(...urls!.filter((item) => item != null));
+  }
+
+  // change profile avatar
+  changeProfileAvatar(avatar: string | null) {
+    this.DB.updateFirestoreDoc(firebaseConfig.dev.usersDB, [this.userID], {
+      profileImage: avatar,
+    });
+
+    if (!this.userID) {
+      this.state.setState({
+        currentLoggedFireUser: {
+          ...this.userSettings,
+          profileImage: avatar,
+        },
+      });
+    }
+
+    this.profileImage = avatar as string;
   }
 
   formStatus(control: string) {
@@ -154,7 +261,7 @@ export class UserProfileComponent {
 
   async onSubmit() {
     try {
-      if (!this.userIDFromURL) {
+      if (!this.userID) {
         await this.DB.updateFirestoreDoc(
           this.fbConfig.dev.usersDB,
           [this.currentState.currentLoggedFireUser!.id],
@@ -167,7 +274,7 @@ export class UserProfileComponent {
       } else {
         await this.DB.updateFirestoreDoc(
           this.fbConfig.dev.usersDB,
-          [this.userIDFromURL],
+          [this.userID],
           {
             ...this.userProfileForm.value,
             age: calculateAge(this.userProfileForm.get('dob')?.value),
