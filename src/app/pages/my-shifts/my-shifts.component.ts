@@ -9,7 +9,7 @@ import {
   State,
   UserSettings,
 } from 'src/app/utils/Interfaces';
-import { FirebaseConfigI, firebaseConfig } from 'firebase.config';
+import { FirebaseConfigI, firestoreConfig } from 'firebase.config';
 import { CustomFnService } from 'src/app/utils/services/customFn/custom-fn.service';
 import { CustomShiftsSortPipe } from '../../utils/pipes/customSort/custom-shifts-sort.pipe';
 import { MatIconModule } from '@angular/material/icon';
@@ -49,8 +49,8 @@ export class MyShiftsComponent implements OnInit, OnDestroy {
     queryLimit: 10,
   };
 
-  // DB Config
-  fbConfig: FirebaseConfigI = firebaseConfig;
+  // firestore Config
+  fbConfig: FirebaseConfigI = firestoreConfig;
 
   // component data
   currentState!: State;
@@ -60,7 +60,7 @@ export class MyShiftsComponent implements OnInit, OnDestroy {
   private stateSubscription: Subscription | undefined;
 
   constructor(
-    private DB: FirestoreService,
+    private firestore: FirestoreService,
     private state: StateService,
     private router: Router,
     private customFN: CustomFnService,
@@ -102,17 +102,21 @@ export class MyShiftsComponent implements OnInit, OnDestroy {
   }
 
   async getShifts(userID: string, queryLimit: number) {
-    this.myShifts = await this.DB.handleGetShiftsByUserID(userID, queryLimit);
+    this.myShifts = await this.firestore.handleGetShiftsByUserID(
+      userID,
+      queryLimit
+    );
   }
 
   async getAllShifts(queryLimit: number) {
-    this.myShifts = await this.DB.handleGetAllShifts(queryLimit);
+    this.myShifts = await this.firestore.handleGetAllShifts(queryLimit);
   }
 
   async getEditedUserData(userID: string) {
-    const data = (await this.DB.getFirestoreDoc(firebaseConfig.dev.usersDB, [
-      userID,
-    ])) as UserSettings;
+    const data = (await this.firestore.getFirestoreDoc(
+      firestoreConfig.dev.usersDB,
+      [userID]
+    )) as UserSettings;
 
     this.currentState.editedUserData = data;
   }
@@ -120,7 +124,7 @@ export class MyShiftsComponent implements OnInit, OnDestroy {
   async editShift(shiftID: string, userID: string) {
     const [currentYear, currentMonth] = this.customFN.getCurrentYearMonth();
 
-    this.currentState.shiftToEdit = (await this.DB.getFirestoreDoc(
+    this.currentState.shiftToEdit = (await this.firestore.getFirestoreDoc(
       this.fbConfig.dev.shiftsDB,
       [currentYear, currentMonth, shiftID]
     )) as Shift;
@@ -144,7 +148,7 @@ export class MyShiftsComponent implements OnInit, OnDestroy {
     try {
       const [currentYear, currentMonth] = this.customFN.getCurrentYearMonth();
 
-      this.DB.deleteFirestoreDoc(this.fbConfig.dev.shiftsDB, [
+      this.firestore.deleteFirestoreDoc(this.fbConfig.dev.shiftsDB, [
         currentYear,
         currentMonth,
         shiftID,

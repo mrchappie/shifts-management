@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { FirebaseConfigI, firebaseConfig } from 'firebase.config';
+import { FirebaseConfigI, firestoreConfig } from 'firebase.config';
 import { Subscription } from 'rxjs';
 import { Shift, State } from 'src/app/utils/Interfaces';
 import { FirestoreService } from 'src/app/utils/services/firestore/firestore.service';
@@ -171,14 +171,14 @@ export class HomepageComponent {
   userShifts: Shift[] = [];
   statsDateForm!: FormGroup;
 
-  // DB Config
-  fbConfig: FirebaseConfigI = firebaseConfig;
+  // firestore Config
+  fbConfig: FirebaseConfigI = firestoreConfig;
 
   private stateSubscription: Subscription | undefined;
 
   constructor(
     private state: StateService,
-    private DB: FirestoreService,
+    private firestore: FirestoreService,
     private fb: FormBuilder,
     private customFN: CustomFnService,
     private aggQueries: AggQueriesService
@@ -196,7 +196,7 @@ export class HomepageComponent {
 
     // Charts
     (async () => {
-      this.userShifts = await this.DB.handleGetShiftsByUserID(
+      this.userShifts = await this.firestore.handleGetShiftsByUserID(
         this.loggedUserID
       );
 
@@ -257,7 +257,7 @@ export class HomepageComponent {
         const queryOptions = {
           month: '',
           year: '',
-          collectionName: firebaseConfig.dev.shiftsDB,
+          collectionName: firestoreConfig.dev.shiftsDB,
           collectionPath: [new Date().getFullYear().toString(), month],
           queryName: 'userID',
           queryValue: this.loggedUserID,

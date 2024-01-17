@@ -23,7 +23,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   private stateSubscription: Subscription | undefined;
 
-  constructor(private state: StateService, private DB: FirestoreService) {}
+  constructor(
+    private state: StateService,
+    private firestore: FirestoreService
+  ) {}
 
   ngOnInit(): void {
     this.currentState = this.state.getState();
@@ -48,6 +51,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
     document.documentElement.setAttribute('class', this.theme);
 
-    this.DB.setLocalStorage('theme', this.theme);
+    this.firestore.setLocalStorage('theme', this.theme);
   }
 }

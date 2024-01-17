@@ -9,7 +9,7 @@ import {
   updateEmail,
   sendEmailVerification,
 } from '@angular/fire/auth';
-import { firebaseConfig } from 'firebase.config';
+import { firestoreConfig } from 'firebase.config';
 import { AuthService } from '../auth/auth.service';
 import { FirestoreService } from '../firestore/firestore.service';
 import { ToastService } from '../toast/toast.service';
@@ -22,7 +22,7 @@ export class ChangeCredentialsService {
     private authService: AuthService,
     private auth: Auth,
     private toast: ToastService,
-    private DB: FirestoreService
+    private firestore: FirestoreService
   ) {}
 
   //! SET PASSWORD
@@ -60,9 +60,13 @@ export class ChangeCredentialsService {
       // this.verifyUserEmail();
       await updateEmail(user, newEmail);
 
-      this.DB.updateFirestoreDoc(firebaseConfig.dev.usersDB, [user.uid], {
-        email: newEmail,
-      });
+      this.firestore.updateFirestoreDoc(
+        firestoreConfig.dev.usersDB,
+        [user.uid],
+        {
+          email: newEmail,
+        }
+      );
 
       this.authService.logout();
     } catch (error) {

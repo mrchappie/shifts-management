@@ -40,7 +40,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   constructor(
     private state: StateService,
     private fb: FormBuilder,
-    private DB: FirestoreService,
+    private firestore: FirestoreService,
     private customFN: CustomFnService
   ) {}
 
@@ -89,12 +89,12 @@ export class SearchComponent implements OnInit, OnDestroy {
 
   getShiftsByDate(limit: number) {
     if (this.parent === 'my-shifts') {
-      this.DB.handleGetShiftsByUserID(
+      this.firestore.handleGetShiftsByUserID(
         this.currentState.currentLoggedFireUser!.id,
         limit
       );
     } else if (this.parent === 'all-shifts') {
-      this.DB.handleGetAllShifts(limit as number);
+      this.firestore.handleGetAllShifts(limit as number);
     }
   }
 

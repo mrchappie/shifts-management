@@ -12,7 +12,7 @@ import { calculateAge } from '../../functions';
 import { userProfile } from '../../userProfile';
 import { StateService, initialState } from '../state/state.service';
 import { FirestoreService } from '../firestore/firestore.service';
-import { FirebaseConfigI, firebaseConfig } from 'firebase.config';
+import { FirebaseConfigI, firestoreConfig } from 'firebase.config';
 import { Router } from '@angular/router';
 import { State } from '../../Interfaces';
 import { ToastService } from '../toast/toast.service';
@@ -25,13 +25,13 @@ export class AuthService {
   // state init
   currentState!: State;
 
-  // DB Config
-  fbConfig: FirebaseConfigI = firebaseConfig;
+  // firestore Config
+  fbConfig: FirebaseConfigI = firestoreConfig;
 
   constructor(
     private auth: Auth,
     private state: StateService,
-    private DB: FirestoreService,
+    private firestore: FirestoreService,
     private toast: ToastService,
     private router: Router
   ) {}
@@ -50,7 +50,7 @@ export class AuthService {
 
       // add user information to firestore
       if (userCredential) {
-        this.DB.setFirestoreDoc(
+        this.firestore.setFirestoreDoc(
           this.fbConfig.dev.usersDB,
           [userCredential.user.uid],
           {
@@ -67,7 +67,7 @@ export class AuthService {
 
         // add user information to state
         this.state.setState({
-          currentLoggedFireUser: this.DB.getFirestoreDoc(
+          currentLoggedFireUser: this.firestore.getFirestoreDoc(
             this.fbConfig.dev.usersDB,
             [userCredential.user.uid]
           ),
@@ -78,7 +78,7 @@ export class AuthService {
         this.currentState = this.state.getState();
 
         // add user information to localStorage
-        this.DB.setLocalStorage(
+        this.firestore.setLocalStorage(
           'currentLoggedFireUser',
           this.currentState.currentLoggedFireUser
         );
@@ -103,7 +103,7 @@ export class AuthService {
       if (userCredential) {
         // add user information to state
         this.state.setState({
-          currentLoggedFireUser: await this.DB.getFirestoreDoc(
+          currentLoggedFireUser: await this.firestore.getFirestoreDoc(
             this.fbConfig.dev.usersDB,
             [userCredential.user.uid]
           ),
@@ -114,7 +114,7 @@ export class AuthService {
         this.currentState = this.state.getState();
 
         // add user information to localStorage
-        this.DB.setLocalStorage(
+        this.firestore.setLocalStorage(
           'currentLoggedFireUser',
           this.currentState.currentLoggedFireUser
         );
@@ -132,7 +132,7 @@ export class AuthService {
   async logout() {
     await signOut(this.auth);
     this.state.setState(initialState);
-    this.DB.clearLocalStorage();
+    this.firestore.clearLocalStorage();
 
     this.router.navigate(['/login']);
 
@@ -146,7 +146,7 @@ export class AuthService {
         if (user) {
           // User is signed in
           this.state.setState({
-            currentLoggedFireUser: await this.DB.getFirestoreDoc(
+            currentLoggedFireUser: await this.firestore.getFirestoreDoc(
               this.fbConfig.dev.usersDB,
               [user.uid]
             ),
@@ -156,7 +156,7 @@ export class AuthService {
           });
           resolve(user);
 
-          // this.updateFirestoreDoc(firebaseConfig.dev.usersDB, [user.uid], {
+          // this.updateFirestoreDoc(firestoreConfig.dev.usersDB, [user.uid], {
           //   emailVerified: user.emailVerified,
           // });
         } else {

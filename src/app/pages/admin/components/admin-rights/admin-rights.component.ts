@@ -5,7 +5,7 @@ import {
   FormsModule,
   ReactiveFormsModule,
 } from '@angular/forms';
-import { firebaseConfig } from 'firebase.config';
+import { firestoreConfig } from 'firebase.config';
 import { UserSettings } from 'src/app/utils/Interfaces';
 import { FirestoreService } from 'src/app/utils/services/firestore/firestore.service';
 
@@ -20,7 +20,7 @@ export class AdminRightsComponent implements OnInit {
   @Input() userData!: UserSettings | null;
   protected adminRightsForm!: FormGroup;
 
-  constructor(private DB: FirestoreService, private fb: FormBuilder) {}
+  constructor(private firestore: FirestoreService, private fb: FormBuilder) {}
 
   ngOnInit(): void {
     this.adminRightsForm = this.fb.group({
@@ -49,8 +49,8 @@ export class AdminRightsComponent implements OnInit {
   }
 
   async onSubmit(isAdminF: boolean) {
-    await this.DB.updateFirestoreDoc(
-      firebaseConfig.dev.usersDB,
+    await this.firestore.updateFirestoreDoc(
+      firestoreConfig.dev.usersDB,
       [this.userID],
       { adminPanel: { isAdmin: isAdminF } }
     );

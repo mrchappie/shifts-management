@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { firebaseConfig } from 'firebase.config';
+import { firestoreConfig } from 'firebase.config';
 import {
   getStorage,
   ref,
@@ -48,7 +48,7 @@ export class StorageService {
       const storageRef = ref(storage, path);
       const storageItems = await listAll(storageRef);
       const avatarsUrlsPromises = storageItems.items.map((item) =>
-        this.getUrl([firebaseConfig.storage.profileAvatars, item.name])
+        this.getUrl([firestoreConfig.storage.profileAvatars, item.name])
       );
 
       const avatarsUrls = await Promise.all(avatarsUrlsPromises);
@@ -61,7 +61,7 @@ export class StorageService {
 
   async deleteFile(filePath: string) {
     try {
-      const path = `${firebaseConfig.storage.profileAvatars}/${filePath}`;
+      const path = `${firestoreConfig.storage.profileAvatars}/${filePath}`;
       const storageRef = ref(storage, path);
       await deleteObject(storageRef);
     } catch (error) {

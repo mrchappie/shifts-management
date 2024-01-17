@@ -2,7 +2,7 @@ import { Component, ViewChild } from '@angular/core';
 import { ChartComponent } from 'src/app/components/chart/chart.component';
 import { ChartConfiguration, ChartData, ChartType } from 'chart.js';
 import { Shift } from 'src/app/utils/Interfaces';
-import { firebaseConfig } from 'firebase.config';
+import { firestoreConfig } from 'firebase.config';
 import { FirestoreService } from 'src/app/utils/services/firestore/firestore.service';
 import {
   FormGroup,
@@ -161,7 +161,7 @@ export class DashboardComponent {
   statsDateForm!: FormGroup;
 
   constructor(
-    private DB: FirestoreService,
+    private firestore: FirestoreService,
     private fb: FormBuilder,
     private customFN: CustomFnService,
     private aggQueries: AggQueriesService
@@ -176,8 +176,8 @@ export class DashboardComponent {
 
     // Charts
     (async () => {
-      this.shiftsCurrentMonth = await this.DB.getFirestoreDocs(
-        firebaseConfig.dev.shiftsDB,
+      this.shiftsCurrentMonth = await this.firestore.getFirestoreDocs(
+        firestoreConfig.dev.shiftsDB,
         [new Date().getFullYear().toString(), 'january']
       );
       this.handlePieChartData();
@@ -227,7 +227,7 @@ export class DashboardComponent {
         const queryOptions = {
           month: '',
           year: '',
-          collectionName: firebaseConfig.dev.shiftsDB,
+          collectionName: firestoreConfig.dev.shiftsDB,
           collectionPath: [new Date().getFullYear().toString(), month],
           queryName: '',
           queryValue: '',

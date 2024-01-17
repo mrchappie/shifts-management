@@ -29,7 +29,7 @@ export class LoginComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private DB: FirestoreService,
+    private firestore: FirestoreService,
     private router: Router,
     private authService: AuthService,
     private changeCred: ChangeCredentialsService,
@@ -37,7 +37,7 @@ export class LoginComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.currentUser = this.DB.getLocalStorage('userCredentials');
+    this.currentUser = this.firestore.getLocalStorage('userCredentials');
 
     this.loginForm = this.fb.group({
       email: [

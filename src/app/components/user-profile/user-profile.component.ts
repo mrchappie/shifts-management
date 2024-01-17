@@ -12,7 +12,7 @@ import { Subscription } from 'rxjs';
 import { FirestoreService } from 'src/app/utils/services/firestore/firestore.service';
 import { StateService } from 'src/app/utils/services/state/state.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FirebaseConfigI, firebaseConfig } from 'firebase.config';
+import { FirebaseConfigI, firestoreConfig } from 'firebase.config';
 import { AgeValidation } from 'src/app/pages/register/customValidators/ageValidation';
 import { MatIconModule } from '@angular/material/icon';
 import { NgFor, NgIf } from '@angular/common';
@@ -49,14 +49,11 @@ export class UserProfileComponent {
 
   profileAvatars: string[] = [];
 
-  // DB Config
-  fbConfig: FirebaseConfigI = firebaseConfig;
-
   private stateSubscription: Subscription | undefined;
 
   constructor(
     private state: StateService,
-    private DB: FirestoreService,
+    private firestore: FirestoreService,
     private fb: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
@@ -111,8 +108,8 @@ export class UserProfileComponent {
   }
 
   async getUserData(userID: string) {
-    this.userSettings = (await this.DB.getFirestoreDoc(
-      this.fbConfig.dev.usersDB,
+    this.userSettings = (await this.firestore.getFirestoreDoc(
+      firestoreConfig.dev.usersDB,
       [userID]
     )) as UserSettings;
     this.profileImage = this.userSettings.profileImage;
@@ -160,18 +157,22 @@ export class UserProfileComponent {
         this.userSettings.firstName + '_' + this.userSettings.lastName;
       // upload the image to firebase storage
       await this.storage.uploadFile(fileList[0], photoName, [
-        firebaseConfig.storage.profileImages,
+        firestoreConfig.storage.profileImages,
       ]);
       // get the image url
       const imageUrl = await this.storage.getUrl([
-        firebaseConfig.storage.profileImages,
+        firestoreConfig.storage.profileImages,
         photoName,
       ]);
 
-      // update de user profile picture in DB
-      this.DB.updateFirestoreDoc(firebaseConfig.dev.usersDB, [this.userID], {
-        profileImage: imageUrl,
-      });
+      // update de user profile picture in firestore
+      this.firestore.updateFirestoreDoc(
+        firestoreConfig.dev.usersDB,
+        [this.userID],
+        {
+          profileImage: imageUrl,
+        }
+      );
 
       if (!this.userID) {
         // update de user profile picture in state
@@ -193,12 +194,12 @@ export class UserProfileComponent {
   // get avatar urls
   async getAvatarsFromDB() {
     const urls = await this.storage.getUrls([
-      firebaseConfig.storage.profileAvatars,
+      firestoreConfig.storage.profileAvatars,
     ]);
     const tempArr = urls.filter((item) => item != null) as string[];
 
     const userProfileImage = await this.storage.getUrl([
-      firebaseConfig.storage.profileImages,
+      firestoreConfig.storage.profileImages,
       `${this.userSettings.firstName}_${this.userSettings.lastName}`,
     ]);
 
@@ -208,9 +209,13 @@ export class UserProfileComponent {
 
   // change profile avatar
   changeProfileAvatar(avatar: string) {
-    this.DB.updateFirestoreDoc(firebaseConfig.dev.usersDB, [this.userID], {
-      profileImage: avatar,
-    });
+    this.firestore.updateFirestoreDoc(
+      firestoreConfig.dev.usersDB,
+      [this.userID],
+      {
+        profileImage: avatar,
+      }
+    );
     //! BUG
     if (!this.userID) {
       this.state.setState({
@@ -238,8 +243,8 @@ export class UserProfileComponent {
   async onSubmit() {
     try {
       if (!this.userID) {
-        await this.DB.updateFirestoreDoc(
-          this.fbConfig.dev.usersDB,
+        await this.firestore.updateFirestoreDoc(
+          firestoreConfig.dev.usersDB,
           [this.currentState.currentLoggedFireUser!.id],
           {
             ...this.userProfileForm.value,
@@ -248,8 +253,8 @@ export class UserProfileComponent {
         );
         this.state.setState(this.userProfileForm.value);
       } else {
-        await this.DB.updateFirestoreDoc(
-          this.fbConfig.dev.usersDB,
+        await this.firestore.updateFirestoreDoc(
+          firestoreConfig.dev.usersDB,
           [this.userID],
           {
             ...this.userProfileForm.value,

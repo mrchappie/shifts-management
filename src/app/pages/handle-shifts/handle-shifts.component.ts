@@ -13,7 +13,7 @@ import { Subscription } from 'rxjs';
 import { v4 as uuidv4 } from 'uuid';
 import { Router } from '@angular/router';
 import { Shift, State } from 'src/app/utils/Interfaces';
-import { FirebaseConfigI, firebaseConfig } from 'firebase.config';
+import { FirebaseConfigI, firestoreConfig } from 'firebase.config';
 import { MatIconModule } from '@angular/material/icon';
 import { SectionHeadingComponent } from '../../components/UI/section-heading/section-heading.component';
 import { NgIf, NgFor, LowerCasePipe } from '@angular/common';
@@ -46,15 +46,15 @@ export class HandleShiftsComponent implements OnInit {
   userWorkplaces: string[] = [];
   isEditing: boolean = false;
 
-  // DB Config
-  fbConfig: FirebaseConfigI = firebaseConfig;
+  // firestore Config
+  fbConfig: FirebaseConfigI = firestoreConfig;
 
   private stateSubscription: Subscription | undefined;
 
   constructor(
     private fb: FormBuilder,
     private state: StateService,
-    private DB: FirestoreService,
+    private firestore: FirestoreService,
     private router: Router,
     private toast: ToastService,
     private validation: ValidationService
@@ -216,7 +216,7 @@ export class HandleShiftsComponent implements OnInit {
         },
       };
 
-      this.DB.setFirestoreDoc(
+      this.firestore.setFirestoreDoc(
         this.fbConfig.dev.shiftsDB,
         [currentYear, currentMonth, shiftID],
         shiftData

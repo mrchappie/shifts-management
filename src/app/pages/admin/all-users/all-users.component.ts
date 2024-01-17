@@ -3,7 +3,7 @@ import { SearchFilters, State, UserSettings } from 'src/app/utils/Interfaces';
 import { Subscription } from 'rxjs';
 import { StateService } from 'src/app/utils/services/state/state.service';
 import { FirestoreService } from 'src/app/utils/services/firestore/firestore.service';
-import { FirebaseConfigI, firebaseConfig } from 'firebase.config';
+import { FirebaseConfigI, firestoreConfig } from 'firebase.config';
 import { CustomShiftsFilterPipe } from '../../../utils/pipes/customFilter/custom-shifts-filter.pipe';
 import { UserCardComponent } from './user-card/user-card.component';
 import { NewSearchComponent } from '../../../components/new-search/new-search.component';
@@ -40,8 +40,8 @@ export class AllUsersComponent implements OnInit, OnDestroy {
     queryLimit: 10,
   };
 
-  // DB Config
-  fbConfig: FirebaseConfigI = firebaseConfig;
+  // firestore Config
+  fbConfig: FirebaseConfigI = firestoreConfig;
 
   // component data
   allUsers: UserSettings[] = [];
@@ -52,7 +52,7 @@ export class AllUsersComponent implements OnInit, OnDestroy {
 
   constructor(
     private state: StateService,
-    private DB: FirestoreService,
+    private firestore: FirestoreService,
     private toast: ToastService
   ) {}
 
@@ -75,7 +75,7 @@ export class AllUsersComponent implements OnInit, OnDestroy {
   }
 
   async getAllUsers() {
-    this.allUsers = await this.DB.getFirestoreDocs(
+    this.allUsers = await this.firestore.getFirestoreDocs(
       this.fbConfig.dev.usersDB,
       []
     );
@@ -91,7 +91,9 @@ export class AllUsersComponent implements OnInit, OnDestroy {
   confirmModal(event: Event) {
     event.stopPropagation();
     try {
-      this.DB.deleteFirestoreDoc(firebaseConfig.dev.usersDB, [this.userID]);
+      this.firestore.deleteFirestoreDoc(firestoreConfig.dev.usersDB, [
+        this.userID,
+      ]);
       this.showModal = !this.showModal;
       this.toast.success(successMessages.firestore.users.delete);
       setTimeout(() => {
