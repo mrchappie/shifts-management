@@ -44,10 +44,10 @@
   <div class="flex items-center justify-center flex-1">
     <label for="changeProfilePicture" class="relative center"
       ><div
+        (click)="openAvatarsModal($event)"
         class="center absolute bottom-[5%] right-[15%] p-2 bg-lightBgPrimary dark:bg-darkBgPrimary rounded-[50%] shadow-all-sides cursor-pointer"
       >
-        <mat-icon fontIcon="add_a_photo"></mat-icon
-        ><input type="file" id="changeProfilePicture" class="hidden" />
+        <mat-icon fontIcon="add_a_photo"></mat-icon>
       </div>
       <div
         class="center w-[350px] aspect-square rounded-[50%] overflow-hidden border-[3px] border-lighbg-lightPrimary shadow-2xl"
@@ -63,5 +63,43 @@
         />
       </div>
     </label>
+  </div>
+  <!-- <app-backdrop
+    *ngIf="showPhotosModal"
+    (click)="toggleAvatarsModal($event)"
+    class="absolute top-0 left-0 z-50 w-full h-full bg-black/25"
+  ></app-backdrop> -->
+  <div
+    *ngIf="showPhotosModal"
+    (click)="closeAvatarsModal($event)"
+    class="absolute top-0 left-0 z-50 w-full h-full bg-black/25 center"
+  >
+    <div
+      class="max-w-[600px] aspect-square bg-darkBgSecondary text-darkTextPrimary grid grid-cols-2 gap-4 p-4 rounded-md"
+    >
+      <div
+        *ngFor="let avatar of profileAvatars"
+        class="overflow-hidden rounded-md cursor-pointer aspect-square"
+      >
+        <img
+          (click)="changeProfileAvatar(avatar)"
+          src="{{ avatar }}"
+          alt=""
+          class="object-cover"
+        />
+      </div>
+      <div class="border-2 rounded-md aspect-square">
+        <label class="w-full h-full cursor-pointer center">
+          <mat-icon fontIcon="upload"></mat-icon>
+          <input
+            (change)="uploadFile($event)"
+            type="file"
+            name="userProfileImage"
+            id="userProfileImage"
+            class="hidden"
+          />
+        </label>
+      </div>
+    </div>
   </div>
 </section>

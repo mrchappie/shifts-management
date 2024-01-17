@@ -21,20 +21,33 @@ import { ToastService } from 'src/app/utils/services/toast/toast.service';
 import { calculateAge } from 'src/app/utils/functions';
 import { ValidationService } from './validationService/validation.service';
 import { validationPatterns } from 'src/app/utils/validationData';
+import { BackdropComponent } from '../UI/backdrop/backdrop.component';
+import { StorageService } from 'src/app/utils/services/storage/storage.service';
 
 @Component({
   selector: 'app-user-profile',
   templateUrl: './user-profile.component.html',
   standalone: true,
-  imports: [FormsModule, ReactiveFormsModule, NgFor, NgIf, MatIconModule],
+  imports: [
+    FormsModule,
+    ReactiveFormsModule,
+    NgFor,
+    NgIf,
+    MatIconModule,
+    BackdropComponent,
+  ],
 })
 export class UserProfileComponent {
+  // component
   currentState!: State;
   settingsFormInputs: SettingsForm[] = settingsFormData;
   userSettings!: UserSettings;
   profileImage: string = '';
-  userIDFromURL!: string;
+  userID!: string;
   userProfileForm!: FormGroup;
+  showPhotosModal: boolean = false;
+
+  profileAvatars: string[] = [];
 
   // DB Config
   fbConfig: FirebaseConfigI = firebaseConfig;
@@ -48,13 +61,13 @@ export class UserProfileComponent {
     private route: ActivatedRoute,
     private router: Router,
     private toast: ToastService,
-    private validation: ValidationService
+    private validation: ValidationService,
+    private storage: StorageService
   ) {}
 
   ngOnInit(): void {
-    this.route.params.subscribe(
-      (param) => (this.userIDFromURL = param['userID'])
-    );
+    // get the user ID from URL if an admin edits a user
+    this.route.params.subscribe((param) => (this.userID = param['userID']));
 
     this.userProfileForm = this.fb.group({
       userName: [''],
@@ -71,17 +84,24 @@ export class UserProfileComponent {
       ],
     });
 
+    // init state
     this.currentState = this.state.getState();
 
-    if (!this.userIDFromURL) {
+    // get current logged user data
+    if (!this.userID) {
       this.getUserData(this.currentState.currentLoggedFireUser!.id);
+      this.profileImage = this.currentState.currentLoggedFireUser!.profileImage;
+      this.userID = this.currentState.currentLoggedFireUser!.id;
     } else {
-      this.getUserData(this.userIDFromURL);
+      this.getUserData(this.userID);
     }
 
     this.stateSubscription = this.state.stateChanged.subscribe((newState) => {
       this.currentState = newState;
+      this.profileImage = this.currentState.currentLoggedFireUser!.profileImage;
     });
+
+    this.getAvatarsFromDB();
   }
 
   ngOnDestroy(): void {
@@ -95,13 +115,14 @@ export class UserProfileComponent {
       this.fbConfig.dev.usersDB,
       [userID]
     )) as UserSettings;
+    this.profileImage = this.userSettings.profileImage;
 
     if (!this.userSettings) {
       this.router.navigate(['404']);
     }
 
     // update the state only when there is no userID param
-    if (!this.userIDFromURL) {
+    if (!this.userID) {
       // update state with user info
       this.state.setState({
         currentLoggedFireUser: this.userSettings,
@@ -110,9 +131,192 @@ export class UserProfileComponent {
 
     // update form if user info exists
     if (this.userSettings) {
-      this.profileImage = this.userSettings.profileImage;
       this.userProfileForm.patchValue(this.userSettings);
     }
+  }
+
+  // toggle change picture modal
+  openAvatarsModal(event: Event) {
+    event.stopPropagation();
+    this.showPhotosModal = !this.showPhotosModal;
+  }
+
+  closeAvatarsModal(event: Event) {
+    event.stopPropagation();
+    if (event.target === event.currentTarget) {
+      this.showPhotosModal = !this.showPhotosModal;
+    }
+  }
+
+  // upload profile picture
+  async uploadFile(event: Event) {
+    // get the current index of profile picture from array of avatars
+
+    const element = event.currentTarget as HTMLInputElement;
+    let fileList: FileList | null = element.files;
+    if (fileList) {
+      // profile photo name will be the user name
+      const photoName =
+        this.userSettings.firstName + '_' + this.userSettings.lastName;
+      // upload the image to firebase storage
+      await this.storage.uploadFile(fileList[0], photoName, [
+        firebaseConfig.storage.profileImages,
+      ]);
+      // get the image url
+      const imageUrl = await this.storage.getUrl([
+        firebaseConfig.storage.profileImages,
+        photoName,
+      ]);
+
+      // update de user profile picture in DB
+      this.DB.updateFirestoreDoc(firebaseConfig.dev.usersDB, [this.userID], {
+        profileImage: imageUrl,
+      });
+
+      if (!this.userID) {
+        // update de user profile picture in state
+        this.state.setState({
+          currentLoggedFireUser: {
+            ...this.userSettings,
+            profileImage: imageUrl,
+          },
+        });
+      }
+
+      this.profileImage = imageUrl as string;
+
+      // hide modal after a photo upload
+      this.showPhotosModal = false;
+    }
+  }
+
+  // get avatar urls
+  async getAvatarsFromDB() {
+    const urls = await this.storage.getUrls([
+      firebaseConfig.storage.profileAvatars,
+    ]);
+    const tempArr = urls.filter((item) => item != null) as string[];
+
+    const userProfileImage = await this.storage.getUrl([
+      firebaseConfig.storage.profileImages,
+      `${this.userSettings.firstName}_${this.userSettings.lastName}`,
+    ]);
+
+    this.profileAvatars.push(...tempArr);
+    this.profileAvatars.unshift(userProfileImage ?? '');
+  }
+
+  // change profile avatar
+  changeProfileAvatar(avatar: string) {
+    this.DB.updateFirestoreDoc(firebaseConfig.dev.usersDB, [this.userID], {
+      profileImage: avatar,
+    });
+    //! BUG
+    if (!this.userID) {
+      this.state.setState({
+        currentLoggedFireUser: {
+          ...this.userSettings,
+          profileImage: avatar,
+        },
+      });
+    }
+
+    this.profileImage = avatar as string;
+
+    // hide modal after a photo change
+    this.showPhotosModal = false;
+  }
+
+  // toggle change picture modal
+  openAvatarsModal(event: Event) {
+    event.stopPropagation();
+    this.showPhotosModal = !this.showPhotosModal;
+  }
+
+  closeAvatarsModal(event: Event) {
+    event.stopPropagation();
+    if (event.target === event.currentTarget) {
+      this.showPhotosModal = !this.showPhotosModal;
+    }
+  }
+
+  // upload profile picture
+  async uploadFile(event: Event) {
+    // get the current index of profile picture from array of avatars
+
+    const element = event.currentTarget as HTMLInputElement;
+    let fileList: FileList | null = element.files;
+    if (fileList) {
+      // profile photo name will be the user name
+      const photoName =
+        this.userSettings.firstName + '_' + this.userSettings.lastName;
+      // upload the image to firebase storage
+      await this.storage.uploadFile(fileList[0], photoName, [
+        firebaseConfig.storage.profileImages,
+      ]);
+      // get the image url
+      const imageUrl = await this.storage.getUrl([
+        firebaseConfig.storage.profileImages,
+        photoName,
+      ]);
+
+      // update de user profile picture in DB
+      this.DB.updateFirestoreDoc(firebaseConfig.dev.usersDB, [this.userID], {
+        profileImage: imageUrl,
+      });
+
+      if (!this.userID) {
+        // update de user profile picture in state
+        this.state.setState({
+          currentLoggedFireUser: {
+            ...this.userSettings,
+            profileImage: imageUrl,
+          },
+        });
+      }
+
+      this.profileImage = imageUrl as string;
+
+      // hide modal after a photo upload
+      this.showPhotosModal = false;
+    }
+  }
+
+  // get avatar urls
+  async getAvatarsFromDB() {
+    const urls = await this.storage.getUrls([
+      firebaseConfig.storage.profileAvatars,
+    ]);
+    const tempArr = urls.filter((item) => item != null) as string[];
+
+    const userProfileImage = await this.storage.getUrl([
+      firebaseConfig.storage.profileImages,
+      `${this.userSettings.firstName}_${this.userSettings.lastName}`,
+    ]);
+
+    this.profileAvatars.push(...tempArr);
+    this.profileAvatars.unshift(userProfileImage ?? '');
+  }
+
+  // change profile avatar
+  changeProfileAvatar(avatar: string) {
+    this.DB.updateFirestoreDoc(firebaseConfig.dev.usersDB, [this.userID], {
+      profileImage: avatar,
+    });
+    //! BUG
+    if (!this.userID) {
+      this.state.setState({
+        currentLoggedFireUser: {
+          ...this.userSettings,
+          profileImage: avatar,
+        },
+      });
+    }
+
+    this.profileImage = avatar as string;
+
+    // hide modal after a photo change
+    this.showPhotosModal = false;
   }
 
   // form validation service
@@ -125,7 +329,7 @@ export class UserProfileComponent {
 
   async onSubmit() {
     try {
-      if (!this.userIDFromURL) {
+      if (!this.userID) {
         await this.DB.updateFirestoreDoc(
           this.fbConfig.dev.usersDB,
           [this.currentState.currentLoggedFireUser!.id],
@@ -138,7 +342,7 @@ export class UserProfileComponent {
       } else {
         await this.DB.updateFirestoreDoc(
           this.fbConfig.dev.usersDB,
-          [this.userIDFromURL],
+          [this.userID],
           {
             ...this.userProfileForm.value,
             age: calculateAge(this.userProfileForm.get('dob')?.value),
