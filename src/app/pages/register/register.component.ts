@@ -14,6 +14,7 @@ import { AuthService } from 'src/app/utils/services/auth/auth.service';
 import { MatIconModule } from '@angular/material/icon';
 import { NgFor, NgIf } from '@angular/common';
 import { ValidationService } from './validationService/validation.service';
+import { validationPatterns } from 'src/app/utils/validationData';
 
 @Component({
   selector: 'app-register',
@@ -53,21 +54,11 @@ export class RegisterComponent {
           '',
           [
             Validators.required,
-            Validators.pattern(
-              /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
-            ),
+            Validators.pattern(validationPatterns.register.password),
           ],
         ],
-        confPass: [
-          '',
-          [
-            Validators.required,
-            Validators.pattern(
-              /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
-            ),
-          ],
-        ],
-        email: ['first name + last name@shift.app'],
+        confPass: ['', [Validators.required]],
+        email: ['firstName.lastName@shift.app'],
         dob: ['', [Validators.required, AgeValidation]],
         termsAndConditions: [false],
       },

@@ -1,4 +1,4 @@
-import { NgIf } from '@angular/common';
+import { NgFor, NgIf } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import {
   FormBuilder,
@@ -7,45 +7,107 @@ import {
   FormsModule,
   ReactiveFormsModule,
 } from '@angular/forms';
+import { PasswordValidator } from 'src/app/pages/register/customValidators/confirmPassword';
 import { ChangeCredentialsService } from 'src/app/utils/services/changeCredential/change-credentials.service';
+import { validationPatterns } from 'src/app/utils/validationData';
+import { ValidationService } from './validationService/validation.service';
+import {
+  ChangeCredentials,
+  changeEmailFormInputs,
+  changePassFormInputs,
+} from './formData';
 
 @Component({
   standalone: true,
   selector: 'app-change-credentials',
   templateUrl: './change-credentials.component.html',
-  imports: [NgIf, FormsModule, ReactiveFormsModule],
+  imports: [NgIf, NgFor, FormsModule, ReactiveFormsModule],
 })
 export class ChangeCredentialsComponent implements OnInit {
   changePasswordForm!: FormGroup;
   changeEmailForm!: FormGroup;
   showModal: boolean = false;
   changeType: string = '';
+  // forms data
+  changePasswordFormData: ChangeCredentials[] = changePassFormInputs;
+  changeEmailFormData: ChangeCredentials[] = changeEmailFormInputs;
 
   constructor(
     private changeCred: ChangeCredentialsService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private validation: ValidationService
   ) {}
 
   ngOnInit(): void {
-    this.changePasswordForm = this.fb.group({
-      email: ['', [Validators.required]],
-      oldPass: ['', [Validators.required]],
-      newPass: ['', [Validators.required]],
-      confNewPass: ['', [Validators.required]],
-    });
+    this.changePasswordForm = this.fb.group(
+      {
+        email: [
+          '',
+          [
+            Validators.required,
+            Validators.pattern(validationPatterns.credentials.email),
+          ],
+        ],
+        oldPass: ['', [Validators.required, Validators.minLength(8)]],
+        newPass: [
+          '',
+          [
+            Validators.required,
+            Validators.pattern(validationPatterns.credentials.email),
+          ],
+        ],
+        confNewPass: ['', [Validators.required]],
+      },
+      {
+        validators: [PasswordValidator('password', 'confNewPass')],
+      }
+    );
 
     this.changeEmailForm = this.fb.group({
-      oldEmail: ['', [Validators.required]],
-      newEmail: ['', [Validators.required]],
-      password: ['', [Validators.required]],
+      oldEmail: [
+        '',
+        [
+          Validators.required,
+          Validators.pattern(validationPatterns.credentials.email),
+        ],
+      ],
+      newEmail: [
+        '',
+        [
+          Validators.required,
+          Validators.pattern(validationPatterns.credentials.email),
+        ],
+      ],
+      password: ['', [Validators.required, Validators.minLength(8)]],
     });
   }
 
+  // form validation service
+  // Password
+  formStatusPassword(control: string) {
+    return this.validation.getFormStatus(this.changePasswordForm, control);
+  }
+  getErrorMessagePassword(control: string) {
+    return this.validation.getErrorMessage(this.changePasswordForm, control);
+  }
+  // Email
+  formStatusEmail(control: string) {
+    return this.validation.getFormStatus(this.changeEmailForm, control);
+  }
+  getErrorMessageEmail(control: string) {
+    return this.validation.getErrorMessage(this.changeEmailForm, control);
+  }
+
+  // toggle modal for credentials
   closeModal(event: Event) {
     event.stopPropagation();
 
     if (event.target === event.currentTarget) {
       this.showModal = !this.showModal;
+
+      // resseting the forms when the modal is closed
+      this.changePasswordForm.reset();
+      this.changeEmailForm.reset();
     }
   }
 
@@ -56,6 +118,7 @@ export class ChangeCredentialsComponent implements OnInit {
     this.showModal = !this.showModal;
   }
 
+  // change credentials
   changeCredential(event: Event, type: string) {
     event.stopPropagation();
 
@@ -74,6 +137,8 @@ export class ChangeCredentialsComponent implements OnInit {
         this.changeEmailForm.value.password
       );
     }
+
+    this.showModal = !this.showModal;
   }
 
   verifyEmail() {

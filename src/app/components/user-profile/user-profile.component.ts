@@ -20,6 +20,7 @@ import { errorMessages, successMessages } from 'src/app/utils/toastMessages';
 import { ToastService } from 'src/app/utils/services/toast/toast.service';
 import { calculateAge } from 'src/app/utils/functions';
 import { ValidationService } from './validationService/validation.service';
+import { validationPatterns } from 'src/app/utils/validationData';
 
 @Component({
   selector: 'app-user-profile',
@@ -61,7 +62,13 @@ export class UserProfileComponent {
       lastName: ['', [Validators.required, Validators.minLength(3)]],
       email: [''],
       dob: ['', [Validators.required, AgeValidation]],
-      phoneNumber: ['', [Validators.pattern(/[0-9]{10}/)]],
+      phoneNumber: [
+        '',
+        [
+          Validators.pattern(validationPatterns.profile.phoneNumber),
+          Validators.minLength(10),
+        ],
+      ],
     });
 
     this.currentState = this.state.getState();

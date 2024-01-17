@@ -14,6 +14,7 @@ import { FirestoreService } from 'src/app/utils/services/firestore/firestore.ser
 import { NgIf } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { ValidationService } from './validationService/validation.service';
+import { validationPatterns } from 'src/app/utils/validationData';
 
 @Component({
   selector: 'app-login',
@@ -40,10 +41,10 @@ export class LoginComponent implements OnInit {
 
     this.loginForm = this.fb.group({
       email: [
-        'al@mail.com',
+        'alex@mail.com',
         [
           Validators.required,
-          Validators.pattern(/^[\w\.-]+@[a-z\d\.-]+\.[a-z]{2,}$/i),
+          Validators.pattern(validationPatterns.login.email),
         ],
       ],
       password: ['Alex2023!', [Validators.required, Validators.minLength(8)]],

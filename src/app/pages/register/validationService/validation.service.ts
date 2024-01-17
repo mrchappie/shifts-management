@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { FormGroup } from '@angular/forms';
+import { errorMessages } from 'src/app/utils/validationData';
 
 @Injectable({
   providedIn: 'root',
@@ -8,6 +9,7 @@ export class ValidationService {
   constructor() {}
 
   getFormStatus(form: FormGroup, control: string): boolean {
+    // return form input status
     if (control != 'dob') {
       return (
         form.get(control)!.invalid &&
@@ -24,43 +26,45 @@ export class ValidationService {
   }
 
   getErrorMessage(form: FormGroup, control: string): string {
+    // return error if field was touched but not completed
     if (form.get(control)?.hasError('required')) {
-      return 'This field is required';
+      return errorMessages.required;
     }
 
-    if (control === 'email') {
-      if (form.get(control)?.hasError('pattern')) {
-        return 'Provide a valid email adress';
-      }
-    }
-
-    if (control === 'password') {
-      if (form.get(control)?.hasError('pattern')) {
-        return '8+ chars, uppercase, lowercase, digit, special char';
-      }
-    }
-
-    if (control === 'confPass') {
-      if (form.hasError('passwordsMisMatch')) {
-        return 'Passwords do not match';
-      }
-    }
-
+    // return error for every input if inputed data is not valid
     if (control === 'firstName') {
       if (form.get(control)?.hasError('minlength')) {
-        return 'First name must be longer than 2 chars';
+        return errorMessages.register.firstName;
       }
     }
 
     if (control === 'lastName') {
       if (form.get(control)?.hasError('minlength')) {
-        return 'Last name must be longer than 2 chars';
+        return errorMessages.register.lastName;
+      }
+    }
+
+    if (control === 'password') {
+      if (form.get(control)?.hasError('pattern')) {
+        return errorMessages.register.password.invalid;
+      }
+    }
+
+    if (control === 'confPass') {
+      if (form.hasError('passwordsMisMatch')) {
+        return errorMessages.register.confPass.notMatch;
+      }
+    }
+
+    if (control === 'email') {
+      if (form.get(control)?.hasError('pattern')) {
+        return errorMessages.register.email;
       }
     }
 
     if (control === 'dob') {
       if (form.get(control)?.hasError('ageIsNotLegal')) {
-        return 'Your age must be between 18 and 65 years';
+        return errorMessages.register.dob;
       }
     }
 

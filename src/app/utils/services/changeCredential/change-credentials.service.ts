@@ -66,7 +66,7 @@ export class ChangeCredentialsService {
 
       this.authService.logout();
     } catch (error) {
-      console.log(error);
+      this.toast.warning('Please verify the new email before changing email.');
     }
   }
 
