@@ -3,7 +3,7 @@ import { StateService } from 'src/app/utils/services/state/state.service';
 import { FirestoreService } from 'src/app/utils/services/firestore/firestore.service';
 import { Subscription } from 'rxjs';
 import { State } from 'src/app/utils/Interfaces';
-import { FirebaseConfigI, firebaseConfig } from 'firebase.config';
+import { FirebaseConfigI, firestoreConfig } from 'firebase.config';
 import { AddWorkplaceComponent } from '../../components/add-workplace/add-workplace.component';
 import { ChangeCredentialsComponent } from '../../components/change-credentials/change-credentials.component';
 import { DividerComponent } from '../../components/UI/divider/divider.component';
@@ -25,12 +25,15 @@ import { SectionHeadingComponent } from '../../components/UI/section-heading/sec
 export class ProfileComponent implements OnInit, OnDestroy {
   currentState!: State;
 
-  // DB Config
-  fbConfig: FirebaseConfigI = firebaseConfig;
+  // firestore Config
+  fbConfig: FirebaseConfigI = firestoreConfig;
 
   private stateSubscription: Subscription | undefined;
 
-  constructor(private state: StateService, private DB: FirestoreService) {}
+  constructor(
+    private state: StateService,
+    private firestore: FirestoreService
+  ) {}
 
   ngOnInit(): void {
     this.currentState = this.state.getState();

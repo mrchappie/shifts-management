@@ -4,7 +4,7 @@ import { FirestoreService } from '../../services/firestore/firestore.service';
 import { AuthService } from '../../services/auth/auth.service';
 
 export const isLoggedInGuard: CanActivateFn = async (route, state) => {
-  const db = inject(FirestoreService);
+  const firestore = inject(FirestoreService);
   const authService = inject(AuthService);
   const router = inject(Router);
 
@@ -14,7 +14,7 @@ export const isLoggedInGuard: CanActivateFn = async (route, state) => {
     return true;
   } else {
     router.navigate(['/login']);
-    db.clearLocalStorage();
+    firestore.clearLocalStorage();
     return false;
   }
 };

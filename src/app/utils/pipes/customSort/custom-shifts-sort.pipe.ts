@@ -5,7 +5,7 @@ import { Shift } from '../../Interfaces';
   standalone: true,
   name: 'customSort',
 })
-export class CustomSortPipe implements PipeTransform {
+export class CustomShiftsSortPipe implements PipeTransform {
   convertToMiliseconds(time: string) {
     const hours = time.split(':')[0];
     const minutes = time.split(':')[1];

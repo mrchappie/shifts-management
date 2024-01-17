@@ -25,6 +25,7 @@ export interface UserSettings {
   lastName: string;
   email: string;
   dob: Date;
+  age: number;
   id: string;
   phoneNumber: string;
   profileImage: string;
@@ -32,12 +33,6 @@ export interface UserSettings {
     isAdmin: boolean;
   };
   userWorkplaces: string[];
-  shiftsCount: {
-    lastWeek: number;
-    thisWeek: number;
-    nextWeek: number;
-    totalShifts: number;
-  };
 }
 
 export interface Shift {

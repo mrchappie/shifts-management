@@ -4,7 +4,7 @@ import { Pipe, PipeTransform } from '@angular/core';
   standalone: true,
   name: 'customFilter',
 })
-export class CustomFilterPipe implements PipeTransform {
+export class CustomShiftsFilterPipe implements PipeTransform {
   transform(value: any[], ...args: string[]): any[] {
     const shiftsToFilter: any[] = structuredClone(value);
 

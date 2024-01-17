@@ -13,22 +13,29 @@
     />
   </div>
   <div class="center-col">
-    <div class="font-bold center">
-      <div class="center"><mat-icon fontIcon="person"></mat-icon></div>
+    <div
+      class="font-bold center"
+      [ngClass]="sortQuery === 'name' ? 'active-query' : null"
+    >
+      <div class="center">
+        <mat-icon fontIcon="person"></mat-icon>
+      </div>
       {{ userInfo?.firstName }} {{ userInfo?.lastName }}
     </div>
     <span
       class="text-sm italic font-semibold center text-black/50 dark:text-darkTextPrimary"
-      ><div class="center"><mat-icon fontIcon="mail"></mat-icon></div>
+      ><div class="center">
+        <mat-icon fontIcon="mail"></mat-icon>
+      </div>
       {{ userInfo?.email ? userInfo?.email : "Not set" }}</span
     >
   </div>
   <div class="gap-2 text-sm center-col">
-    <span class="center"
+    <span class="center" [ngClass]="sortQuery === 'age' ? 'active-query' : null"
       ><div>
         <mat-icon fontIcon="calendar_month"></mat-icon>
       </div>
-      {{ userInfo?.dob ? userInfo?.dob : "Not set" }}</span
+      {{ userInfo?.age ? userInfo?.age + " years old" : "Not set" }}</span
     ><span class="italic center"
       ><div><mat-icon fontIcon="phone"></mat-icon></div>
       {{ userInfo?.phoneNumber ? userInfo?.phoneNumber : "Not set" }}</span

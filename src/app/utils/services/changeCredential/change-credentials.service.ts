@@ -9,10 +9,10 @@ import {
   updateEmail,
   sendEmailVerification,
 } from '@angular/fire/auth';
-import { firebaseConfig } from 'firebase.config';
+import { firestoreConfig } from 'firebase.config';
 import { AuthService } from '../auth/auth.service';
-import { ToastService } from 'angular-toastify';
 import { FirestoreService } from '../firestore/firestore.service';
+import { ToastService } from '../toast/toast.service';
 
 @Injectable({
   providedIn: 'root',
@@ -21,8 +21,8 @@ export class ChangeCredentialsService {
   constructor(
     private authService: AuthService,
     private auth: Auth,
-    private _toastService: ToastService,
-    private DB: FirestoreService
+    private toast: ToastService,
+    private firestore: FirestoreService
   ) {}
 
   //! SET PASSWORD
@@ -43,9 +43,9 @@ export class ChangeCredentialsService {
   async resetPasswordEmail(email: string) {
     try {
       await sendPasswordResetEmail(this.auth, email);
-      this._toastService.success('Reset password email was sent.');
+      this.toast.success('Reset password email was sent.');
     } catch (error) {
-      this._toastService.error('Invalid email, please try again.');
+      this.toast.error('Invalid email, please try again.');
       console.log(error);
     }
   }
@@ -60,13 +60,17 @@ export class ChangeCredentialsService {
       // this.verifyUserEmail();
       await updateEmail(user, newEmail);
 
-      this.DB.updateFirestoreDoc(firebaseConfig.dev.usersDB, [user.uid], {
-        email: newEmail,
-      });
+      this.firestore.updateFirestoreDoc(
+        firestoreConfig.dev.usersDB,
+        [user.uid],
+        {
+          email: newEmail,
+        }
+      );
 
       this.authService.logout();
     } catch (error) {
-      console.log(error);
+      this.toast.warning('Please verify the new email before changing email.');
     }
   }
 
@@ -75,7 +79,7 @@ export class ChangeCredentialsService {
     try {
       const user = this.auth.currentUser as User;
       await sendEmailVerification(user);
-      this._toastService.warn('Email verification sent!');
+      this.toast.warning('Email verification sent!');
     } catch (error) {
       console.log(error);
     }

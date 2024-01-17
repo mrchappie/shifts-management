@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { arrayUnion, arrayRemove } from '@angular/fire/firestore';
-import { FirebaseConfigI, firebaseConfig } from 'firebase.config';
+import { FirebaseConfigI, firestoreConfig } from 'firebase.config';
 import { Subscription } from 'rxjs';
 import { State } from '../../utils/Interfaces';
 import { FirestoreService } from '../../utils/services/firestore/firestore.service';
@@ -23,14 +23,14 @@ export class AddWorkplaceComponent {
   newWorkplace: string = '';
   userWorkplaces: string[] = [];
 
-  // DB Config
-  fbConfig: FirebaseConfigI = firebaseConfig;
+  // firestore Config
+  fbConfig: FirebaseConfigI = firestoreConfig;
 
   private stateSubscription: Subscription | undefined;
 
   constructor(
     private state: StateService,
-    private DB: FirestoreService,
+    private firestore: FirestoreService,
     private toast: ToastService
   ) {}
 
@@ -60,11 +60,11 @@ export class AddWorkplaceComponent {
     }
   }
 
-  // add workplace from DB
+  // add workplace from firestore
   addWorkplace() {
     if (this.newWorkplace === '') return;
     try {
-      this.DB.updateFirestoreDoc(
+      this.firestore.updateFirestoreDoc(
         this.fbConfig.dev.usersDB,
         [this.userIDFromURL ?? this.currentState.currentLoggedFireUser!.id],
         { userWorkplaces: arrayUnion(this.newWorkplace) }
@@ -90,10 +90,10 @@ export class AddWorkplaceComponent {
     }
   }
 
-  // remove workplace from db
+  // remove workplace from firestore
   removeWorkplace(workplace: string) {
     try {
-      this.DB.updateFirestoreDoc(
+      this.firestore.updateFirestoreDoc(
         this.fbConfig.dev.usersDB,
         [this.userIDFromURL ?? this.currentState.currentLoggedFireUser!.id],
         { userWorkplaces: arrayRemove(workplace) }
@@ -119,16 +119,17 @@ export class AddWorkplaceComponent {
 
   // fetch user workplaces if a user information is modified from admin panel
   async getUserWorkplaces(userID: string) {
-    const userData = await this.DB.getFirestoreDoc(this.fbConfig.dev.usersDB, [
-      userID,
-    ]);
+    const userData = await this.firestore.getFirestoreDoc(
+      this.fbConfig.dev.usersDB,
+      [userID]
+    );
 
     this.userWorkplaces = userData?.userWorkplaces;
   }
 
   // update state only if the user profile page is accessed
   async updateState() {
-    const userSettings = await this.DB.getFirestoreDoc(
+    const userSettings = await this.firestore.getFirestoreDoc(
       this.fbConfig.dev.usersDB,
       [this.currentState.currentLoggedFireUser!.id]
     );

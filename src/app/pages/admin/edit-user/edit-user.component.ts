@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { firebaseConfig } from 'firebase.config';
+import { firestoreConfig } from 'firebase.config';
 import { UserSettings } from 'src/app/utils/Interfaces';
 import { FirestoreService } from 'src/app/utils/services/firestore/firestore.service';
 import { MyShiftsComponent } from '../../my-shifts/my-shifts.component';
@@ -30,7 +30,10 @@ export class EditUserComponent {
   userIDFromURL: string = '';
   userData!: UserSettings | null;
 
-  constructor(private route: ActivatedRoute, private DB: FirestoreService) {}
+  constructor(
+    private route: ActivatedRoute,
+    private firestore: FirestoreService
+  ) {}
 
   ngOnInit(): void {
     this.route.params.subscribe(
@@ -38,8 +41,8 @@ export class EditUserComponent {
     );
 
     (async () => {
-      this.userData = (await this.DB.getFirestoreDoc(
-        firebaseConfig.dev.usersDB,
+      this.userData = (await this.firestore.getFirestoreDoc(
+        firestoreConfig.dev.usersDB,
         [this.userIDFromURL]
       )) as UserSettings;
     })();

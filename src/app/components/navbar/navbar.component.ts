@@ -42,7 +42,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   constructor(
     private state: StateService,
-    private DB: FirestoreService,
+    private firestore: FirestoreService,
     private authService: AuthService,
     private router: Router,
     private toastService: ToastService
@@ -82,6 +82,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
     document.documentElement.setAttribute('class', this.theme);
 
-    this.DB.setLocalStorage('theme', this.theme);
+    this.firestore.setLocalStorage('theme', this.theme);
   }
 }

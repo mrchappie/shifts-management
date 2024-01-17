@@ -13,6 +13,8 @@ import { ChangeCredentialsService } from 'src/app/utils/services/changeCredentia
 import { FirestoreService } from 'src/app/utils/services/firestore/firestore.service';
 import { NgIf } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
+import { ValidationService } from './validationService/validation.service';
+import { validationPatterns } from 'src/app/utils/validationData';
 
 @Component({
   selector: 'app-login',
@@ -27,53 +29,34 @@ export class LoginComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private DB: FirestoreService,
+    private firestore: FirestoreService,
     private router: Router,
     private authService: AuthService,
-    private changeCred: ChangeCredentialsService
+    private changeCred: ChangeCredentialsService,
+    private validation: ValidationService
   ) {}
 
   ngOnInit(): void {
-    this.currentUser = this.DB.getLocalStorage('userCredentials');
+    this.currentUser = this.firestore.getLocalStorage('userCredentials');
 
     this.loginForm = this.fb.group({
       email: [
-        'al@mail.com',
+        'alex@mail.com',
         [
           Validators.required,
-          Validators.pattern(/^[\w\.-]+@[a-z\d\.-]+\.[a-z]{2,}$/i),
+          Validators.pattern(validationPatterns.login.email),
         ],
       ],
       password: ['Alex2023!', [Validators.required, Validators.minLength(8)]],
     });
   }
 
-  formStatus(control: string) {
-    return (
-      this.loginForm.get(control)?.invalid &&
-      (this.loginForm.get(control)?.dirty ||
-        this.loginForm.get(control)?.touched)
-    );
+  // form validation service
+  formStatus(control: string): boolean {
+    return this.validation.getFormStatus(this.loginForm, control);
   }
-
-  getErrorMessage(control: string) {
-    if (control === 'email') {
-      if (this.loginForm.get(control)?.hasError('required')) {
-        return 'This field is required';
-      }
-      if (this.loginForm.get(control)?.hasError('pattern')) {
-        return 'Provide a valid email adress';
-      }
-    }
-    if (control === 'password') {
-      if (this.loginForm.get(control)?.hasError('required')) {
-        return 'This field is required';
-      } else {
-        return 'Password is to short';
-      }
-    }
-
-    return '';
+  getErrorMessage(control: string): string {
+    return this.validation.getErrorMessage(this.loginForm, control);
   }
 
   async onSubmit() {

@@ -16,7 +16,7 @@ import {
 } from '@angular/fire/firestore';
 import { StateService } from '../state/state.service';
 import { ToastService } from '../toast/toast.service';
-import { FirebaseConfigI, firebaseConfig } from 'firebase.config';
+import { FirebaseConfigI, firestoreConfig } from 'firebase.config';
 import { CustomFnService } from '../customFn/custom-fn.service';
 import { errorMessages } from '../../toastMessages';
 
@@ -24,8 +24,8 @@ import { errorMessages } from '../../toastMessages';
   providedIn: 'root',
 })
 export class FirestoreService {
-  // DB Config
-  fbConfig: FirebaseConfigI = firebaseConfig;
+  // firestore Config
+  fbConfig: FirebaseConfigI = firestoreConfig;
 
   constructor(
     private state: StateService,
@@ -147,6 +147,7 @@ export class FirestoreService {
       );
       await updateDoc(docRef, data);
     } catch (error) {
+      console.log(error);
       this.toast.error(errorMessages.firestore);
     }
   }
