@@ -31,10 +31,10 @@ export class StorageService {
     try {
       const path = `${filePath.join('/')}`;
       const storageRef = ref(storage, path);
-      const avatarsUrl = await getDownloadURL(storageRef);
+      const avatarUrl = await getDownloadURL(storageRef);
 
-      if (avatarsUrl) {
-        return avatarsUrl;
+      if (avatarUrl) {
+        return avatarUrl;
       }
     } catch (error) {
       console.log(error);
@@ -42,9 +42,9 @@ export class StorageService {
     return null;
   }
 
-  async getUrls() {
+  async getUrls(filePath: string[]) {
     try {
-      const path = `${firebaseConfig.storage.profileAvatars}`;
+      const path = `${filePath.join('/')}`;
       const storageRef = ref(storage, path);
       const storageItems = await listAll(storageRef);
       const avatarsUrlsPromises = storageItems.items.map((item) =>
@@ -56,7 +56,7 @@ export class StorageService {
     } catch (error) {
       console.log(error);
     }
-    return null;
+    return [];
   }
 
   async deleteFile(filePath: string) {

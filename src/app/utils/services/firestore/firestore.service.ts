@@ -147,6 +147,7 @@ export class FirestoreService {
       );
       await updateDoc(docRef, data);
     } catch (error) {
+      console.log(error);
       this.toast.error(errorMessages.firestore);
     }
   }

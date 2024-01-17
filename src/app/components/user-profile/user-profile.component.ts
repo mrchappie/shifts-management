@@ -45,7 +45,7 @@ export class UserProfileComponent {
   userProfileForm!: FormGroup;
   showPhotosModal: boolean = false;
 
-  profileAvatars: (string | null)[] = [];
+  profileAvatars: string[] = [];
 
   // DB Config
   fbConfig: FirebaseConfigI = firebaseConfig;
@@ -81,10 +81,8 @@ export class UserProfileComponent {
     // get current logged user data
     if (!this.userID) {
       this.getUserData(this.currentState.currentLoggedFireUser!.id);
-      this.profileAvatars.push(
-        this.currentState.currentLoggedFireUser!.profileImage
-      );
       this.profileImage = this.currentState.currentLoggedFireUser!.profileImage;
+      this.userID = this.currentState.currentLoggedFireUser!.id;
     } else {
       this.getUserData(this.userID);
     }
@@ -94,7 +92,7 @@ export class UserProfileComponent {
       this.profileImage = this.currentState.currentLoggedFireUser!.profileImage;
     });
 
-    this.getUrlsFromDB();
+    this.getAvatarsFromDB();
   }
 
   ngOnDestroy(): void {
@@ -144,7 +142,6 @@ export class UserProfileComponent {
   // upload profile picture
   async uploadFile(event: Event) {
     // get the current index of profile picture from array of avatars
-    const initialIndexOfImage = this.profileAvatars.indexOf(this.profileImage);
 
     const element = event.currentTarget as HTMLInputElement;
     let fileList: FileList | null = element.files;
@@ -179,28 +176,33 @@ export class UserProfileComponent {
 
       this.profileImage = imageUrl as string;
 
-      if (initialIndexOfImage) {
-        this.profileAvatars = this.profileAvatars.splice(
-          initialIndexOfImage,
-          1,
-          imageUrl
-        );
-      }
+      // hide modal after a photo upload
+      this.showPhotosModal = false;
     }
   }
 
   // get avatar urls
-  async getUrlsFromDB() {
-    const urls = await this.storage.getUrls();
-    this.profileAvatars.push(...urls!.filter((item) => item != null));
+  async getAvatarsFromDB() {
+    const urls = await this.storage.getUrls([
+      firebaseConfig.storage.profileAvatars,
+    ]);
+    const tempArr = urls.filter((item) => item != null) as string[];
+
+    const userProfileImage = await this.storage.getUrl([
+      firebaseConfig.storage.profileImages,
+      `${this.userSettings.firstName}_${this.userSettings.lastName}`,
+    ]);
+
+    this.profileAvatars.push(...tempArr);
+    this.profileAvatars.unshift(userProfileImage ?? '');
   }
 
   // change profile avatar
-  changeProfileAvatar(avatar: string | null) {
+  changeProfileAvatar(avatar: string) {
     this.DB.updateFirestoreDoc(firebaseConfig.dev.usersDB, [this.userID], {
       profileImage: avatar,
     });
-
+    //! BUG
     if (!this.userID) {
       this.state.setState({
         currentLoggedFireUser: {
@@ -211,6 +213,9 @@ export class UserProfileComponent {
     }
 
     this.profileImage = avatar as string;
+
+    // hide modal after a photo change
+    this.showPhotosModal = false;
   }
 
   formStatus(control: string) {
