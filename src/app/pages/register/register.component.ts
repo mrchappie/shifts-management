@@ -13,6 +13,7 @@ import { AgeValidation } from './customValidators/ageValidation';
 import { AuthService } from 'src/app/utils/services/auth/auth.service';
 import { MatIconModule } from '@angular/material/icon';
 import { NgFor, NgIf } from '@angular/common';
+import { ValidationService } from './validationService/validation.service';
 
 @Component({
   selector: 'app-register',
@@ -38,7 +39,8 @@ export class RegisterComponent {
   constructor(
     private fb: FormBuilder,
     private router: Router,
-    private authService: AuthService
+    private authService: AuthService,
+    private validation: ValidationService
   ) {}
 
   ngOnInit(): void {
@@ -97,68 +99,12 @@ export class RegisterComponent {
       });
   }
 
-  formStatus(control: string) {
-    if (control != 'dob') {
-      return (
-        this.registerForm.get(control)?.invalid &&
-        (this.registerForm.get(control)?.dirty ||
-          this.registerForm.get(control)?.touched)
-      );
-    } else {
-      return (
-        this.registerForm.get(control)?.invalid &&
-        ((this.registerForm.get(control)?.touched &&
-          this.registerForm.get(control)?.dirty) ||
-          (this.registerForm.get(control)?.untouched &&
-            this.registerForm.get(control)?.dirty) ||
-          (this.registerForm.get(control)?.touched &&
-            this.registerForm.get(control)?.pristine))
-      );
-    }
+  // form validation service
+  formStatus(control: string): boolean {
+    return this.validation.getFormStatus(this.registerForm, control);
   }
-
-  getErrorMessage(control: string) {
-    if (this.registerForm.get(control)?.hasError('required')) {
-      return 'This field is required';
-    }
-
-    if (control === 'email') {
-      if (this.registerForm.get(control)?.hasError('pattern')) {
-        return 'Provide a valid email adress';
-      }
-    }
-
-    if (control === 'password') {
-      if (this.registerForm.get(control)?.hasError('pattern')) {
-        return '8+ chars, uppercase, lowercase, digit, special char';
-      }
-    }
-
-    if (control === 'confPass') {
-      if (this.registerForm.hasError('passwordsMisMatch')) {
-        return 'Passwords do not match';
-      }
-    }
-
-    if (control === 'firstName') {
-      if (this.registerForm.get(control)?.hasError('minlength')) {
-        return 'First name must be longer than 2 chars';
-      }
-    }
-
-    if (control === 'lastName') {
-      if (this.registerForm.get(control)?.hasError('minlength')) {
-        return 'Last name must be longer than 2 chars';
-      }
-    }
-
-    if (control === 'dob') {
-      if (this.registerForm.get(control)?.hasError('ageIsNotLegal')) {
-        return 'Your age must be between 18 and 65 years';
-      }
-    }
-
-    return '';
+  getErrorMessage(control: string): string {
+    return this.validation.getErrorMessage(this.registerForm, control);
   }
 
   async onSubmit() {

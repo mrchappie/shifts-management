@@ -19,6 +19,7 @@ import { SectionHeadingComponent } from '../../components/UI/section-heading/sec
 import { NgIf, NgFor, LowerCasePipe } from '@angular/common';
 import { ToastService } from 'src/app/utils/services/toast/toast.service';
 import { errorMessages, successMessages } from 'src/app/utils/toastMessages';
+import { ValidationService } from './validationService/validation.service';
 
 @Component({
   selector: 'app-handle-shifts',
@@ -55,7 +56,8 @@ export class HandleShiftsComponent implements OnInit {
     private state: StateService,
     private DB: FirestoreService,
     private router: Router,
-    private toast: ToastService
+    private toast: ToastService,
+    private validation: ValidationService
   ) {}
 
   ngOnInit(): void {
@@ -179,65 +181,12 @@ export class HandleShiftsComponent implements OnInit {
     return `${year}-${month}-${day}`;
   }
 
-  formStatus(control: string) {
-    if (control != 'dob') {
-      return (
-        this.shiftForm.get(control)?.invalid &&
-        (this.shiftForm.get(control)?.dirty ||
-          this.shiftForm.get(control)?.touched)
-      );
-    } else {
-      return (
-        (this.shiftForm.get(control)?.pristine &&
-          this.shiftForm.get(control)?.touched) ||
-        (this.shiftForm.get(control)?.touched &&
-          this.shiftForm.get(control)?.dirty)
-      );
-    }
+  // form validation service
+  formStatus(control: string): boolean {
+    return this.validation.getFormStatus(this.shiftForm, control);
   }
-
-  getErrorMessage(control: string) {
-    if (this.shiftForm.get(control)?.hasError('required')) {
-      return 'This field is required';
-    }
-
-    if (control === 'email') {
-      if (this.shiftForm.get(control)?.hasError('pattern')) {
-        return 'Provide a valid email adress';
-      }
-    }
-
-    if (control === 'password') {
-      if (this.shiftForm.get(control)?.hasError('pattern')) {
-        return '8+ chars, uppercase, lowercase, digit, special char';
-      }
-    }
-
-    if (control === 'confPass') {
-      if (this.shiftForm.hasError('passwordsMisMatch')) {
-        return 'Passwords do not match';
-      }
-    }
-
-    if (control === 'firstName') {
-      if (this.shiftForm.get(control)?.hasError('minlength')) {
-        return 'First name must be longer than 2 chars';
-      }
-    }
-
-    if (control === 'lastName') {
-      if (this.shiftForm.get(control)?.hasError('minlength')) {
-        return 'Last name must be longer than 2 chars';
-      }
-    }
-
-    if (control === 'dob') {
-      if (this.shiftForm.hasError('ageIsNotLegal')) {
-        return 'Your age must be between 18 and 65 years';
-      }
-    }
-
-    return '';
+  getErrorMessage(control: string): string {
+    return this.validation.getErrorMessage(this.shiftForm, control);
   }
 
   async onSubmit() {

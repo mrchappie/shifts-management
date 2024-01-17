@@ -19,6 +19,7 @@ import { NgFor, NgIf } from '@angular/common';
 import { errorMessages, successMessages } from 'src/app/utils/toastMessages';
 import { ToastService } from 'src/app/utils/services/toast/toast.service';
 import { calculateAge } from 'src/app/utils/functions';
+import { ValidationService } from './validationService/validation.service';
 
 @Component({
   selector: 'app-user-profile',
@@ -45,7 +46,8 @@ export class UserProfileComponent {
     private fb: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
-    private toast: ToastService
+    private toast: ToastService,
+    private validation: ValidationService
   ) {}
 
   ngOnInit(): void {
@@ -106,50 +108,12 @@ export class UserProfileComponent {
     }
   }
 
-  formStatus(control: string) {
-    if (control != 'dob') {
-      return (
-        this.userProfileForm.get(control)?.invalid &&
-        (this.userProfileForm.get(control)?.dirty ||
-          this.userProfileForm.get(control)?.touched)
-      );
-    } else {
-      return (
-        this.userProfileForm.get(control)?.invalid &&
-        ((this.userProfileForm.get(control)?.touched &&
-          this.userProfileForm.get(control)?.dirty) ||
-          (this.userProfileForm.get(control)?.untouched &&
-            this.userProfileForm.get(control)?.dirty) ||
-          (this.userProfileForm.get(control)?.touched &&
-            this.userProfileForm.get(control)?.pristine))
-      );
-    }
+  // form validation service
+  formStatus(control: string): boolean {
+    return this.validation.getFormStatus(this.userProfileForm, control);
   }
-
-  getErrorMessage(control: string) {
-    if (this.userProfileForm.get(control)?.hasError('required')) {
-      return 'This field is required';
-    }
-
-    if (control === 'firstName') {
-      if (this.userProfileForm.get(control)?.hasError('minlength')) {
-        return 'First name must be longer than 2 chars';
-      }
-    }
-
-    if (control === 'lastName') {
-      if (this.userProfileForm.get(control)?.hasError('minlength')) {
-        return 'Last name must be longer than 2 chars';
-      }
-    }
-
-    if (control === 'dob') {
-      if (this.userProfileForm.get(control)?.hasError('ageIsNotLegal')) {
-        return 'Your age must be between 18 and 65 years';
-      }
-    }
-
-    return '';
+  getErrorMessage(control: string): string {
+    return this.validation.getErrorMessage(this.userProfileForm, control);
   }
 
   async onSubmit() {

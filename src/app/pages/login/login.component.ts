@@ -13,6 +13,7 @@ import { ChangeCredentialsService } from 'src/app/utils/services/changeCredentia
 import { FirestoreService } from 'src/app/utils/services/firestore/firestore.service';
 import { NgIf } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
+import { ValidationService } from './validationService/validation.service';
 
 @Component({
   selector: 'app-login',
@@ -30,7 +31,8 @@ export class LoginComponent implements OnInit {
     private DB: FirestoreService,
     private router: Router,
     private authService: AuthService,
-    private changeCred: ChangeCredentialsService
+    private changeCred: ChangeCredentialsService,
+    private validation: ValidationService
   ) {}
 
   ngOnInit(): void {
@@ -48,32 +50,12 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  formStatus(control: string) {
-    return (
-      this.loginForm.get(control)?.invalid &&
-      (this.loginForm.get(control)?.dirty ||
-        this.loginForm.get(control)?.touched)
-    );
+  // form validation service
+  formStatus(control: string): boolean {
+    return this.validation.getFormStatus(this.loginForm, control);
   }
-
-  getErrorMessage(control: string) {
-    if (control === 'email') {
-      if (this.loginForm.get(control)?.hasError('required')) {
-        return 'This field is required';
-      }
-      if (this.loginForm.get(control)?.hasError('pattern')) {
-        return 'Provide a valid email adress';
-      }
-    }
-    if (control === 'password') {
-      if (this.loginForm.get(control)?.hasError('required')) {
-        return 'This field is required';
-      } else {
-        return 'Password is to short';
-      }
-    }
-
-    return '';
+  getErrorMessage(control: string): string {
+    return this.validation.getErrorMessage(this.loginForm, control);
   }
 
   async onSubmit() {
