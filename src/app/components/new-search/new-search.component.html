@@ -18,7 +18,19 @@
         <mat-icon fontIcon="search "></mat-icon>
       </div>
     </div>
-
+    <label
+      *ngIf="parent === 'my-shifts' || parent === 'all-shifts'"
+      class="flex-1 custom-search-label"
+    >
+      <input
+        type="month"
+        name="yearMonth"
+        id="yearMonth"
+        formControlName="yearMonthQuery"
+        (change)="getShiftsByDate(filters!.queryLimit)"
+        class="custom-search-input"
+      />
+    </label>
     <label class="flex-1 min-w-max center custom-search-label">
       <select
         name="sorterBy"
@@ -75,19 +87,6 @@
       *ngIf="showMoreFilters"
       class="absolute right-0 top-[110%] bg-lightBgPrimary dark:bg-darkBgSecondary center-col gap-12 p-6 rounded-md shadow-all-sides z-50"
     >
-      <label
-        *ngIf="parent === 'my-shifts' || parent === 'all-shifts'"
-        class="flex-1 custom-search-label dark:bg-darkBgPrimary"
-      >
-        <input
-          type="month"
-          name="yearMonth"
-          id="yearMonth"
-          formControlName="yearMonthQuery"
-          (change)="getShiftsByDate(filters!.queryLimit)"
-          class="custom-search-input dark:bg-darkBgPrimary"
-        />
-      </label>
       <label
         *ngIf="parent === 'my-shifts' || parent === 'all-shifts'"
         class="flex-1 center custom-search-label dark:bg-darkBgPrimary"
