@@ -23,13 +23,13 @@ export class ValidationService {
     }
 
     // return error for every input if inputed data is not valid
-    if (control === 'email') {
+    if (control === 'email' || control === 'resetPasswordEmail') {
       if (form.get(control)?.hasError('pattern')) {
         return errorMessages.login.email;
       }
     }
     if (control === 'password') {
-      if (form.get(control)?.hasError('minLength')) {
+      if (form.get(control)?.hasError('minlength')) {
         return errorMessages.login.password;
       }
     }

@@ -18,7 +18,7 @@ export class ValidationService {
     );
   }
 
-  getErrorMessage(form: FormGroup, control: string): string {
+  getEmailErrorMessage(form: FormGroup, control: string): string {
     // return error if field was touched but not completed
     if (form.get(control)?.hasError('required')) {
       return errorMessages.required;
@@ -26,27 +26,30 @@ export class ValidationService {
 
     // return error for every input if inputed data is not valid
     if (control === 'password') {
-      if (form.get(control)?.hasError('minLength')) {
-        return errorMessages.credentials.password.invalid;
+      if (form.get(control)?.hasError('minlength')) {
+        return errorMessages.credentials.password.short;
       }
     }
 
-    if (control === 'oldPass') {
-      if (form.get(control)?.hasError('minLength')) {
-        return errorMessages.credentials.oldPass.invalid;
-      }
-    }
-
-    if (control === 'newPass') {
+    if (control === 'oldEmail') {
       if (form.get(control)?.hasError('pattern')) {
-        return errorMessages.credentials.newPass.invalid;
+        return errorMessages.credentials.email;
       }
     }
 
-    if (control === 'confNewPass') {
-      if (form.hasError('passwordsMisMatch')) {
-        return errorMessages.credentials.confNewPass.notMatch;
+    if (control === 'newEmail') {
+      if (form.get(control)?.hasError('pattern')) {
+        return errorMessages.credentials.email;
       }
+    }
+
+    return '';
+  }
+
+  getPasswordErrorMessage(form: FormGroup, control: string): string {
+    // return error if field was touched but not completed
+    if (form.get(control)?.hasError('required')) {
+      return errorMessages.required;
     }
 
     if (control === 'email') {
@@ -55,15 +58,23 @@ export class ValidationService {
       }
     }
 
-    if (control === 'oldEmail') {
-      if (form.get(control)?.hasError('pattern')) {
-        return errorMessages.credentials.oldEmail;
+    if (control === 'oldPass') {
+      if (form.get(control)?.hasError('minlength')) {
+        return errorMessages.credentials.password.short;
       }
     }
 
-    if (control === 'newEmail') {
+    if (control === 'newPass') {
       if (form.get(control)?.hasError('pattern')) {
-        return errorMessages.credentials.newEmail;
+        return errorMessages.credentials.password.invalid;
+      }
+    }
+
+    if (control === 'confNewPass') {
+      console.log(form.errors);
+
+      if (form.hasError('passwordsMisMatch')) {
+        return errorMessages.credentials.password.notMatch;
       }
     }
 

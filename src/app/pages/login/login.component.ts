@@ -24,6 +24,7 @@ import { validationPatterns } from 'src/app/utils/validationData';
 })
 export class LoginComponent implements OnInit {
   loginForm!: FormGroup;
+  resetPassword!: FormGroup;
   currentUser!: UserCredential;
   showResetModal: boolean = false;
 
@@ -39,15 +40,27 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {
     this.currentUser = this.firestore.getLocalStorage('userCredentials');
 
+    // login form
     this.loginForm = this.fb.group({
       email: [
-        'alex@mail.com',
+        '',
         [
           Validators.required,
           Validators.pattern(validationPatterns.login.email),
         ],
       ],
-      password: ['Alex2023!', [Validators.required, Validators.minLength(8)]],
+      password: ['', [Validators.required, Validators.minLength(8)]],
+    });
+
+    // reset passeord form
+    this.resetPassword = this.fb.group({
+      resetPasswordEmail: [
+        '',
+        [
+          Validators.required,
+          Validators.pattern(validationPatterns.login.email),
+        ],
+      ],
     });
   }
 
@@ -57,6 +70,12 @@ export class LoginComponent implements OnInit {
   }
   getErrorMessage(control: string): string {
     return this.validation.getErrorMessage(this.loginForm, control);
+  }
+  formResetStatus(control: string): boolean {
+    return this.validation.getFormStatus(this.resetPassword, control);
+  }
+  getResetErrorMessage(control: string): string {
+    return this.validation.getErrorMessage(this.resetPassword, control);
   }
 
   async onSubmit() {

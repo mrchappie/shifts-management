@@ -53,13 +53,13 @@ export class ChangeCredentialsComponent implements OnInit {
           '',
           [
             Validators.required,
-            Validators.pattern(validationPatterns.credentials.email),
+            Validators.pattern(validationPatterns.credentials.password),
           ],
         ],
         confNewPass: ['', [Validators.required]],
       },
       {
-        validators: [PasswordValidator('password', 'confNewPass')],
+        validators: [PasswordValidator('newPass', 'confNewPass')],
       }
     );
 
@@ -88,14 +88,18 @@ export class ChangeCredentialsComponent implements OnInit {
     return this.validation.getFormStatus(this.changePasswordForm, control);
   }
   getErrorMessagePassword(control: string) {
-    return this.validation.getErrorMessage(this.changePasswordForm, control);
+    console.log(this.changePasswordForm.errors);
+    return this.validation.getPasswordErrorMessage(
+      this.changePasswordForm,
+      control
+    );
   }
   // Email
   formStatusEmail(control: string) {
     return this.validation.getFormStatus(this.changeEmailForm, control);
   }
   getErrorMessageEmail(control: string) {
-    return this.validation.getErrorMessage(this.changeEmailForm, control);
+    return this.validation.getEmailErrorMessage(this.changeEmailForm, control);
   }
 
   // toggle modal for credentials
