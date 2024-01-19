@@ -182,8 +182,8 @@ export class HandleShiftsComponent implements OnInit {
   }
 
   // form validation service
-  formStatus(control: string): boolean {
-    return this.validation.getFormStatus(this.shiftForm, control);
+  formInputStatus(control: string): boolean {
+    return this.validation.getFormInputStatus(this.shiftForm, control);
   }
   getErrorMessage(control: string): string {
     return this.validation.getErrorMessage(this.shiftForm, control);

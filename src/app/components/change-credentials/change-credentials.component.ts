@@ -7,7 +7,7 @@ import {
   FormsModule,
   ReactiveFormsModule,
 } from '@angular/forms';
-import { PasswordValidator } from 'src/app/pages/register/customValidators/confirmPassword';
+import { PasswordValidator } from 'src/app/utils/customValidators/confirmPassword';
 import { ChangeCredentialsService } from 'src/app/utils/services/changeCredential/change-credentials.service';
 import { validationPatterns } from 'src/app/utils/validationData';
 import { ValidationService } from './validationService/validation.service';
@@ -53,13 +53,13 @@ export class ChangeCredentialsComponent implements OnInit {
           '',
           [
             Validators.required,
-            Validators.pattern(validationPatterns.credentials.email),
+            Validators.pattern(validationPatterns.credentials.password),
           ],
         ],
         confNewPass: ['', [Validators.required]],
       },
       {
-        validators: [PasswordValidator('password', 'confNewPass')],
+        validators: [PasswordValidator('newPass', 'confNewPass')],
       }
     );
 
@@ -85,17 +85,21 @@ export class ChangeCredentialsComponent implements OnInit {
   // form validation service
   // Password
   formStatusPassword(control: string) {
-    return this.validation.getFormStatus(this.changePasswordForm, control);
+    return this.validation.getFormInputStatus(this.changePasswordForm, control);
   }
   getErrorMessagePassword(control: string) {
-    return this.validation.getErrorMessage(this.changePasswordForm, control);
+    console.log(this.changePasswordForm.errors);
+    return this.validation.getPasswordErrorMessage(
+      this.changePasswordForm,
+      control
+    );
   }
   // Email
   formStatusEmail(control: string) {
-    return this.validation.getFormStatus(this.changeEmailForm, control);
+    return this.validation.getFormInputStatus(this.changeEmailForm, control);
   }
   getErrorMessageEmail(control: string) {
-    return this.validation.getErrorMessage(this.changeEmailForm, control);
+    return this.validation.getEmailErrorMessage(this.changeEmailForm, control);
   }
 
   // toggle modal for credentials

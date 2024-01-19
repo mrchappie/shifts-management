@@ -41,6 +41,9 @@ export class AddWorkplaceComponent {
     if (this.userIDFromURL) {
       // if exists, fetch edited user data
       this.getUserWorkplaces(this.userIDFromURL);
+    } else {
+      this.userWorkplaces =
+        this.currentState.currentLoggedFireUser!.userWorkplaces;
     }
 
     // state subscription to update currentState to the new global state

@@ -16,7 +16,7 @@
             class="custom-input w-[400px]"
           />
           <div
-            *ngIf="formStatus(input.formControl)"
+            *ngIf="formInputStatus(input.formControl)"
             class="absolute bottom-[-25px] left-0 text-red-500"
           >
             {{ getErrorMessage(input.formControl) }}
@@ -75,7 +75,7 @@
     class="absolute top-0 left-0 z-50 w-full h-full bg-black/25 center"
   >
     <div
-      class="max-w-[600px] aspect-square bg-darkBgSecondary text-darkTextPrimary grid grid-cols-2 gap-4 p-4 rounded-md"
+      class="max-w-[600px] bg-darkBgSecondary text-darkTextPrimary grid grid-cols-3 gap-4 p-4 rounded-md"
     >
       <div
         *ngFor="let avatar of profileAvatars"

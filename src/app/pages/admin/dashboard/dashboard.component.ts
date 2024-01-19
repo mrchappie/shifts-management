@@ -214,7 +214,7 @@ export class DashboardComponent {
 
   //? HANDLE BAR CHART DATA
   async handleBarChartData() {
-    const arr: number[] = new Array(10).fill(0);
+    const arr: number[] = new Array(11).fill(0);
     //prettier-ignore
     const months = [
       "january","february","march","april","may","june","july",
@@ -257,7 +257,7 @@ export class DashboardComponent {
 
   //? HANDLE LINE CHART DATA
   async handleLineChartData() {
-    const arr: number[] = new Array(10).fill(0);
+    const arr: number[] = new Array(11).fill(0);
     //prettier-ignore
     const months = [
       "january","february","march","april","may","june","july",

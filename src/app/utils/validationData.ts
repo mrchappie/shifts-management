@@ -20,22 +20,9 @@ export const errorMessages = {
   },
   credentials: {
     email: 'Please enter a valid email address.',
-    oldEmail: 'Please enter a valid email address.',
-    newEmail: 'Please enter a valid email address.',
     password: {
-      invalid: 'Password must be at least 8 characters long.',
-      notMatch: 'Passwords do not match.',
-    },
-    newPass: {
-      invalid: '8+ chars, uppercase, lowercase, digit, special char',
-      notMatch: 'Passwords do not match.',
-    },
-    confNewPass: {
-      invalid: '8+ chars, uppercase, lowercase, digit, special char',
-      notMatch: 'Passwords do not match.',
-    },
-    oldPass: {
-      invalid: 'Password must be at least 8 characters long.',
+      invalid: '8+ chars, uppercase, lowercase, digit, special char.',
+      short: 'Password must be at least 8 characters long.',
       notMatch: 'Passwords do not match.',
     },
   },

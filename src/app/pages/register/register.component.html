@@ -27,7 +27,7 @@
                   class="custom-input"
                 />
                 <div
-                  *ngIf="formStatus(input.formControl)"
+                  *ngIf="formInputStatus(input.formControl)"
                   class="absolute bottom-[-25px] left-0 text-red-500"
                 >
                   {{ getErrorMessage(input.formControl) }}
