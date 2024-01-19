@@ -8,7 +8,7 @@ import { errorMessages } from 'src/app/utils/validationData';
 export class ValidationService {
   constructor() {}
 
-  getFormStatus(form: FormGroup, control: string): boolean {
+  getFormInputStatus(form: FormGroup, control: string): boolean {
     // return form input status
     return (
       form.get(control)!.invalid &&
@@ -23,13 +23,13 @@ export class ValidationService {
     }
 
     // return error for every input if inputed data is not valid
-    if (control === 'email') {
+    if (control === 'email' || control === 'resetPasswordEmail') {
       if (form.get(control)?.hasError('pattern')) {
         return errorMessages.login.email;
       }
     }
     if (control === 'password') {
-      if (form.get(control)?.hasError('minLength')) {
+      if (form.get(control)?.hasError('minlength')) {
         return errorMessages.login.password;
       }
     }

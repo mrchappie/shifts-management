@@ -8,7 +8,7 @@ import { errorMessages } from 'src/app/utils/validationData';
 export class ValidationService {
   constructor() {}
 
-  getFormStatus(form: FormGroup, control: string): boolean {
+  getFormInputStatus(form: FormGroup, control: string): boolean {
     // return form input status
 
     if (control != 'dob') {

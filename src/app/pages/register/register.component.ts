@@ -8,8 +8,8 @@ import {
 } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { RegisterFormDataI, registerFormData } from './formData';
-import { PasswordValidator } from './customValidators/confirmPassword';
-import { AgeValidation } from './customValidators/ageValidation';
+import { PasswordValidator } from '../../utils/customValidators/confirmPassword';
+import { AgeValidation } from '../../utils/customValidators/ageValidation';
 import { AuthService } from 'src/app/utils/services/auth/auth.service';
 import { MatIconModule } from '@angular/material/icon';
 import { NgFor, NgIf } from '@angular/common';
@@ -91,8 +91,8 @@ export class RegisterComponent {
   }
 
   // form validation service
-  formStatus(control: string): boolean {
-    return this.validation.getFormStatus(this.registerForm, control);
+  formInputStatus(control: string): boolean {
+    return this.validation.getFormInputStatus(this.registerForm, control);
   }
   getErrorMessage(control: string): string {
     return this.validation.getErrorMessage(this.registerForm, control);

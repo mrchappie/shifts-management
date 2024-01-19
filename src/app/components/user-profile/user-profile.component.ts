@@ -13,7 +13,7 @@ import { FirestoreService } from 'src/app/utils/services/firestore/firestore.ser
 import { StateService } from 'src/app/utils/services/state/state.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FirebaseConfigI, firestoreConfig } from 'firebase.config';
-import { AgeValidation } from 'src/app/pages/register/customValidators/ageValidation';
+import { AgeValidation } from 'src/app/utils/customValidators/ageValidation';
 import { MatIconModule } from '@angular/material/icon';
 import { NgFor, NgIf } from '@angular/common';
 import { errorMessages, successMessages } from 'src/app/utils/toastMessages';
@@ -233,8 +233,8 @@ export class UserProfileComponent {
   }
 
   // form validation service
-  formStatus(control: string): boolean {
-    return this.validation.getFormStatus(this.userProfileForm, control);
+  formInputStatus(control: string): boolean {
+    return this.validation.getFormInputStatus(this.userProfileForm, control);
   }
   getErrorMessage(control: string): string {
     return this.validation.getErrorMessage(this.userProfileForm, control);

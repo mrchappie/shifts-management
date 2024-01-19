@@ -29,7 +29,7 @@
               class="custom-input w-[400px]"
             />
             <div
-              *ngIf="formStatus(shift.formControl)"
+              *ngIf="formInputStatus(shift.formControl)"
               class="absolute bottom-[-25px] left-0 text-red-500"
             >
               {{ getErrorMessage(shift.formControl) }}
@@ -71,7 +71,7 @@
             </option>
           </select>
           <div
-            *ngIf="formStatus(shift.formControl)"
+            *ngIf="formInputStatus(shift.formControl)"
             class="absolute bottom-[-25px] left-0 text-red-500"
           >
             {{ getErrorMessage(shift.formControl) }}
