@@ -8,8 +8,8 @@ import {
 } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { RegisterFormDataI, registerFormData } from './formData';
-import { PasswordValidator } from './customValidators/confirmPassword';
-import { AgeValidation } from './customValidators/ageValidation';
+import { PasswordValidator } from '../../utils/customValidators/confirmPassword';
+import { AgeValidation } from '../../utils/customValidators/ageValidation';
 import { AuthService } from 'src/app/utils/services/auth/auth.service';
 import { MatIconModule } from '@angular/material/icon';
 import { NgFor, NgIf } from '@angular/common';

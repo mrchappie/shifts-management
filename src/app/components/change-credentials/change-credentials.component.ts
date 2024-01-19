@@ -7,7 +7,7 @@ import {
   FormsModule,
   ReactiveFormsModule,
 } from '@angular/forms';
-import { PasswordValidator } from 'src/app/pages/register/customValidators/confirmPassword';
+import { PasswordValidator } from 'src/app/utils/customValidators/confirmPassword';
 import { ChangeCredentialsService } from 'src/app/utils/services/changeCredential/change-credentials.service';
 import { validationPatterns } from 'src/app/utils/validationData';
 import { ValidationService } from './validationService/validation.service';
