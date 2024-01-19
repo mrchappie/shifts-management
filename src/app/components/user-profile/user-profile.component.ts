@@ -233,8 +233,8 @@ export class UserProfileComponent {
   }
 
   // form validation service
-  formStatus(control: string): boolean {
-    return this.validation.getFormStatus(this.userProfileForm, control);
+  formInputStatus(control: string): boolean {
+    return this.validation.getFormInputStatus(this.userProfileForm, control);
   }
   getErrorMessage(control: string): string {
     return this.validation.getErrorMessage(this.userProfileForm, control);

@@ -91,8 +91,8 @@ export class RegisterComponent {
   }
 
   // form validation service
-  formStatus(control: string): boolean {
-    return this.validation.getFormStatus(this.registerForm, control);
+  formInputStatus(control: string): boolean {
+    return this.validation.getFormInputStatus(this.registerForm, control);
   }
   getErrorMessage(control: string): string {
     return this.validation.getErrorMessage(this.registerForm, control);

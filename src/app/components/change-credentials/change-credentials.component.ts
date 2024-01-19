@@ -85,7 +85,7 @@ export class ChangeCredentialsComponent implements OnInit {
   // form validation service
   // Password
   formStatusPassword(control: string) {
-    return this.validation.getFormStatus(this.changePasswordForm, control);
+    return this.validation.getFormInputStatus(this.changePasswordForm, control);
   }
   getErrorMessagePassword(control: string) {
     console.log(this.changePasswordForm.errors);
@@ -96,7 +96,7 @@ export class ChangeCredentialsComponent implements OnInit {
   }
   // Email
   formStatusEmail(control: string) {
-    return this.validation.getFormStatus(this.changeEmailForm, control);
+    return this.validation.getFormInputStatus(this.changeEmailForm, control);
   }
   getErrorMessageEmail(control: string) {
     return this.validation.getEmailErrorMessage(this.changeEmailForm, control);
