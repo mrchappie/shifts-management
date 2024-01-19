@@ -9,6 +9,7 @@ import { ChangeCredentialsComponent } from '../../components/change-credentials/
 import { DividerComponent } from '../../components/UI/divider/divider.component';
 import { UserProfileComponent } from '../../components/user-profile/user-profile.component';
 import { SectionHeadingComponent } from '../../components/UI/section-heading/section-heading.component';
+import { DeleteAccountComponent } from 'src/app/components/user-profile/delete-account/delete-account.component';
 
 @Component({
   selector: 'app-profile',
@@ -20,6 +21,7 @@ import { SectionHeadingComponent } from '../../components/UI/section-heading/sec
     DividerComponent,
     ChangeCredentialsComponent,
     AddWorkplaceComponent,
+    DeleteAccountComponent,
   ],
 })
 export class ProfileComponent implements OnInit, OnDestroy {

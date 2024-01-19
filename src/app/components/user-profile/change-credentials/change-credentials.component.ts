@@ -16,6 +16,7 @@ import {
   changeEmailFormInputs,
   changePassFormInputs,
 } from './formData';
+import { AuthService } from 'src/app/utils/services/auth/auth.service';
 
 @Component({
   standalone: true,
@@ -35,7 +36,8 @@ export class ChangeCredentialsComponent implements OnInit {
   constructor(
     private changeCred: ChangeCredentialsService,
     private fb: FormBuilder,
-    private validation: ValidationService
+    private validation: ValidationService,
+    private auth: AuthService
   ) {}
 
   ngOnInit(): void {
@@ -88,7 +90,6 @@ export class ChangeCredentialsComponent implements OnInit {
     return this.validation.getFormInputStatus(this.changePasswordForm, control);
   }
   getErrorMessagePassword(control: string) {
-    console.log(this.changePasswordForm.errors);
     return this.validation.getPasswordErrorMessage(
       this.changePasswordForm,
       control

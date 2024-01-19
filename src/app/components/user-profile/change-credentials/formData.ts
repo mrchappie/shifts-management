@@ -15,6 +15,11 @@ export const changeEmailFormInputs: ChangeCredentials[] = [
   { type: 'password', formControl: 'password', name: 'Password' },
 ];
 
+export const deleteAccount: ChangeCredentials[] = [
+  { type: 'text', formControl: 'email', name: 'Email' },
+  { type: 'password', formControl: 'password', name: 'Password' },
+];
+
 export interface ChangeCredentials {
   type: string;
   name: string;

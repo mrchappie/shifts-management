@@ -1,0 +1,47 @@
+<section class="min-h-[150px] my-[50px] center-col gap-4 items-start">
+  <button class="submit-btn" (click)="openModal($event)">Delete Account</button>
+  <div *ngIf="showModal" (click)="closeModal($event)" class="modal center">
+    <div class="p-8 rounded-md bg-lightBgSecondary dark:bg-darkBgSecondary">
+      <!-- DELETE ACCOUNT FORM-->
+      <form [formGroup]="deleteAccountForm" class="gap-10 center-col">
+        <p class="text-xl">
+          Please confirm your credentials to delete your account!
+        </p>
+        <label
+          *ngFor="let input of deleteAccount"
+          class="relative flex custom-label"
+        >
+          <div class="custom-label-text-l">{{ input.name }}</div>
+          <input
+            formControlName="{{ input.formControl }}"
+            type="{{ input.type }}"
+            class="custom-input w-[300px]"
+          />
+          <div
+            *ngIf="formStatus(input.formControl)"
+            class="absolute bottom-[-25px] left-0 text-red-500"
+          >
+            {{ getErrorMessage(input.formControl) }}
+          </div>
+        </label>
+        <div class="gap-4 center">
+          <button
+            (click)="deleteAccountFn($event)"
+            [disabled]="deleteAccountForm.invalid"
+            type="submit"
+            class="submit-btn bg-lightSucces"
+          >
+            Delete
+          </button>
+          <button
+            (click)="closeModal($event)"
+            type="submit"
+            class="submit-btn bg-lightError"
+          >
+            Cancel
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>

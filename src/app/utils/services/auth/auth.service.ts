@@ -1,9 +1,12 @@
 import { Injectable } from '@angular/core';
 import {
   Auth,
+  EmailAuthProvider,
   User,
   createUserWithEmailAndPassword,
+  deleteUser,
   onAuthStateChanged,
+  reauthenticateWithCredential,
   signInWithEmailAndPassword,
   signOut,
 } from '@angular/fire/auth';
@@ -137,6 +140,39 @@ export class AuthService {
     this.router.navigate(['/login']);
 
     return;
+  }
+
+  //! DELETE USER
+  async deleteUserFromFirebase(email: string, password: string) {
+    try {
+      const user = this.auth.currentUser as User;
+      const userID = user.uid;
+
+      // get user credentials
+      const credentials = EmailAuthProvider.credential(email, password);
+
+      // re auth user
+      await reauthenticateWithCredential(user, credentials);
+
+      // delete user info from firestore
+      this.firestore.deleteFirestoreDoc(firestoreConfig.dev.usersDB, [userID]);
+      // this.firestore.deleteUserShiftsOnAccountDelete(
+      //   firestoreConfig.dev.shiftsDB,
+      //   [userID]
+      // );
+
+      // delete user
+      await deleteUser(user);
+
+      // send succes toast if user was deleted and after 1 second,
+      // logout the user end return in to login page
+      this.toast.success(successMessages.deleteAccount);
+      setTimeout(() => {
+        this.router.navigate(['/login']);
+      }, 1000);
+    } catch (error) {
+      this.toast.error(errorMessages.deleteAccount);
+    }
   }
 
   //! firebase getLoggedUser

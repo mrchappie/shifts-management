@@ -162,6 +162,18 @@ export class FirestoreService {
     }
   }
 
+  //! DELETE ALL USER SHIFST
+  async deleteUserShiftsOnAccountDelete(
+    collectionName: string,
+    documentPath: string[]
+  ) {
+    try {
+      await deleteDoc(doc(this.firestore, collectionName, ...documentPath));
+    } catch (error) {
+      this.toast.error(errorMessages.firestore);
+    }
+  }
+
   //! GET SHIFTS
   async handleGetShiftsByUserID(userID: string, queryLimit?: number) {
     const [currentYear, currentMonth] = this.customFN.getCurrentYearMonth();
