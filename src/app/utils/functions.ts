@@ -31,3 +31,19 @@ export const getCurrentYearMonth = (): string[] => {
 
   return [currentYear, currentMonth];
 };
+
+export function timeStringToMilliseconds(timeString: string): number {
+  // Parse hours and minutes from the time string
+  const [hoursStr, minutesStr] = timeString.split(':');
+  const hours = parseInt(hoursStr, 10);
+  const minutes = parseInt(minutesStr, 10);
+
+  // Convert hours and minutes to milliseconds
+  const hoursInMilliseconds = hours * 60 * 60 * 1000;
+  const minutesInMilliseconds = minutes * 60 * 1000;
+
+  // Sum the milliseconds for hours and minutes
+  const totalMilliseconds = hoursInMilliseconds + minutesInMilliseconds;
+
+  return totalMilliseconds;
+}

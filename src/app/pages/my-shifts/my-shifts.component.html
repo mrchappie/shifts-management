@@ -15,7 +15,7 @@
             | customSort : filters.sortByQuery : filters.orderByQuery;
           let index = index
         "
-        (click)="editShift(shift.shiftID, shift.userID)"
+        (click)="editShift(shift)"
         class="relative cursor-pointer"
       >
         <app-shift-card
@@ -25,7 +25,7 @@
         ></app-shift-card>
         <div
           class="absolute top-[-5px] right-[-5px] center bg-red-500 text-white text-bold w-[30px] h-[30px] rounded-[50%] cursor-pointer"
-          (click)="deleteShift(shift.shiftID)"
+          (click)="deleteShift(shift)"
         >
           <div class="center"><mat-icon fontIcon="delete"></mat-icon></div>
         </div>

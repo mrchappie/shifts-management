@@ -24,9 +24,6 @@ import { errorMessages } from '../../toastMessages';
   providedIn: 'root',
 })
 export class FirestoreService {
-  // firestore Config
-  fbConfig: FirebaseConfigI = firestoreConfig;
-
   constructor(
     private state: StateService,
     private firestore: Firestore,
@@ -163,6 +160,7 @@ export class FirestoreService {
   }
 
   //! DELETE ALL USER SHIFST
+  //! WORK IN PROGRESS
   async deleteUserShiftsOnAccountDelete(
     collectionName: string,
     documentPath: string[]
@@ -176,20 +174,13 @@ export class FirestoreService {
 
   //! GET SHIFTS
   async handleGetShiftsByUserID(userID: string, queryLimit?: number) {
-    const [currentYear, currentMonth] = this.customFN.getCurrentYearMonth();
-
     const docRef = collection(
       this.firestore,
-      this.fbConfig.dev.shiftsDB,
-      ...[currentYear, currentMonth]
+      firestoreConfig.dev.shiftsDB.base,
+      ...[firestoreConfig.dev.shiftsDB.subColl, userID]
     );
 
-    const q = query(
-      docRef,
-      where('userID', '==', userID),
-      limit(queryLimit as number)
-    );
-
+    const q = query(docRef, limit(queryLimit as number));
     const shifts = await this.getFirestoreDocsByQuery(q);
 
     if (shifts) {
@@ -205,7 +196,7 @@ export class FirestoreService {
 
     const docRef = collection(
       this.firestore,
-      this.fbConfig.dev.shiftsDB,
+      firestoreConfig.dev.shiftsDB.base,
       ...[currentYear, currentMonth]
     );
 
@@ -226,7 +217,7 @@ export class FirestoreService {
 
     const docRef = collection(
       this.firestore,
-      this.fbConfig.dev.shiftsDB,
+      firestoreConfig.dev.shiftsDB.base,
       ...[currentYear, currentMonth]
     );
 

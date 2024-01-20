@@ -177,7 +177,7 @@ export class DashboardComponent {
     // Charts
     (async () => {
       this.shiftsCurrentMonth = await this.firestore.getFirestoreDocs(
-        firestoreConfig.dev.shiftsDB,
+        firestoreConfig.dev.shiftsDB.base,
         [new Date().getFullYear().toString(), 'january']
       );
       this.handlePieChartData();

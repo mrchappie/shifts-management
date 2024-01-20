@@ -13,16 +13,17 @@
     >
   </div>
   <div [ngClass]="sortQuery === 'shiftDate' ? 'active-query' : null">
-    <span class="font-bold">Date: </span><span>{{ shift?.shiftDate }}</span>
+    <span class="font-bold">Date: </span
+    ><span>{{ shift!.shiftDate | date }}</span>
   </div>
   <div>
     <span class="font-bold">Interval: </span
     ><span [ngClass]="sortQuery === 'startTime' ? 'active-query' : null">{{
-      shift?.startTime
+      shift!.startTime | milisecondsToTime
     }}</span
     >&nbsp;-&nbsp;<span
       [ngClass]="sortQuery === 'endTime' ? 'active-query' : null"
-      >{{ shift?.endTime }}
+      >{{ shift!.endTime | milisecondsToTime }}
     </span>
   </div>
   <div [ngClass]="sortQuery === 'workplace' ? 'active-query' : null">

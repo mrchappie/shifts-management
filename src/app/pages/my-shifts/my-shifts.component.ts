@@ -9,8 +9,7 @@ import {
   State,
   UserSettings,
 } from 'src/app/utils/Interfaces';
-import { FirebaseConfigI, firestoreConfig } from 'firebase.config';
-import { CustomFnService } from 'src/app/utils/services/customFn/custom-fn.service';
+import { firestoreConfig } from 'firebase.config';
 import { CustomShiftsSortPipe } from '../../utils/pipes/customSort/custom-shifts-sort.pipe';
 import { MatIconModule } from '@angular/material/icon';
 import { ShiftCardComponent } from '../../components/shift-card/shift-card.component';
@@ -49,11 +48,9 @@ export class MyShiftsComponent implements OnInit, OnDestroy {
     queryLimit: 10,
   };
 
-  // firestore Config
-  fbConfig: FirebaseConfigI = firestoreConfig;
-
   // component data
   currentState!: State;
+  userID: string = '';
   myShifts: Shift[] = [];
   shiftsCount: number = 0;
 
@@ -63,17 +60,16 @@ export class MyShiftsComponent implements OnInit, OnDestroy {
     private firestore: FirestoreService,
     private state: StateService,
     private router: Router,
-    private customFN: CustomFnService,
     private toast: ToastService
   ) {}
 
   ngOnInit(): void {
     this.currentState = this.state.getState();
 
-    // fetch shifts based on opened page All Shifts / Single User Shifts / Edit User Info
+    // fetch shifts based on opened page - All Shifts / Single User Shifts / Edit User Info
     if (!this.userIDFromURL && this.parent === 'single_user') {
-      const userID = this.currentState.currentLoggedFireUser!.id;
-      this.getShifts(userID, this.filters.queryLimit);
+      this.userID = this.currentState.currentLoggedFireUser!.id;
+      this.getShifts(this.userID, this.filters.queryLimit);
     } else if (this.userIDFromURL) {
       this.getShifts(this.userIDFromURL, this.filters.queryLimit);
       this.getEditedUserData(this.userIDFromURL);
@@ -121,42 +117,40 @@ export class MyShiftsComponent implements OnInit, OnDestroy {
     this.currentState.editedUserData = data;
   }
 
-  async editShift(shiftID: string, userID: string) {
-    const [currentYear, currentMonth] = this.customFN.getCurrentYearMonth();
-
+  async editShift(shift: Shift) {
     this.currentState.shiftToEdit = (await this.firestore.getFirestoreDoc(
-      this.fbConfig.dev.shiftsDB,
-      [currentYear, currentMonth, shiftID]
+      firestoreConfig.dev.shiftsDB.base,
+      [firestoreConfig.dev.shiftsDB.subColl, this.userID, shift.shiftID]
     )) as Shift;
 
-    if (this.parent === 'all-shifts') {
-      this.getEditedUserData(userID);
+    if (this.parent === 'edit-user') {
+      this.getEditedUserData(shift.userID);
     }
 
     this.router.navigate([
       `${
         this.isAdminPath
           ? this.parent === 'all-shifts'
-            ? `admin/all-shifts/edit-shift/${shiftID}`
-            : `admin/all-users/edit-user/${this.userIDFromURL}/edit-shift/${shiftID}`
-          : `my-shifts/edit-shift/${shiftID}`
+            ? `admin/all-shifts/edit-shift/${shift.shiftID}`
+            : `admin/all-users/edit-user/${this.userIDFromURL}/edit-shift/${shift.shiftID}`
+          : `my-shifts/edit-shift/${shift.shiftID}`
       }`,
     ]);
   }
 
-  deleteShift(shiftID: string) {
+  deleteShift(shift: Shift) {
     try {
-      const [currentYear, currentMonth] = this.customFN.getCurrentYearMonth();
-
-      this.firestore.deleteFirestoreDoc(this.fbConfig.dev.shiftsDB, [
-        currentYear,
-        currentMonth,
-        shiftID,
+      this.firestore.deleteFirestoreDoc(firestoreConfig.dev.shiftsDB.base, [
+        firestoreConfig.dev.shiftsDB.subColl,
+        shift.userID,
+        shift.shiftID,
       ]);
 
       this.toast.success(successMessages.firestore.shift.delete);
 
-      this.myShifts = this.myShifts.filter((shift) => shift.shiftID != shiftID);
+      this.myShifts = this.myShifts.filter(
+        (existingShift) => existingShift.shiftID != shift.shiftID
+      );
     } catch (error) {
       this.toast.error(errorMessages.firestore);
     }

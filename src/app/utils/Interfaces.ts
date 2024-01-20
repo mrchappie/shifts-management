@@ -37,13 +37,15 @@ export interface UserSettings {
 
 export interface Shift {
   shiftID: string;
-  shiftDate: string;
-  startTime: string;
-  endTime: string;
+  userID: string;
+  shiftDate: number;
+  startTime: number;
+  endTime: number;
   workplace: string;
   wagePerHour: number;
   shiftRevenue: number;
-  timeStamp: Date;
+  creationDate: Date;
+  lastUpdateDate: Date;
   [key: string]: any;
   userInfo: {
     firstName: string;

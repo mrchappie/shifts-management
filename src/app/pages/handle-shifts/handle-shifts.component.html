@@ -21,6 +21,7 @@
           <div class="center">
             <mat-icon fontIcon="{{ shift.icon }}"></mat-icon>
           </div>
+          <!-- render inputs is they are not disabled -->
           <ng-container *ngIf="!shift.disabled">
             <input
               type="{{ shift.type }}"
@@ -35,6 +36,7 @@
               {{ getErrorMessage(shift.formControl) }}
             </div>
           </ng-container>
+          <!-- render divs is the inputs are disabled -->
           <ng-container *ngIf="shift.disabled">
             <div class="opacity-25 cursor-not-allowed custom-input">
               {{

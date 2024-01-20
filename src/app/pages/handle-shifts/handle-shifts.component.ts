@@ -12,14 +12,16 @@ import { FirestoreService } from 'src/app/utils/services/firestore/firestore.ser
 import { Subscription } from 'rxjs';
 import { v4 as uuidv4 } from 'uuid';
 import { Router } from '@angular/router';
-import { Shift, State } from 'src/app/utils/Interfaces';
-import { FirebaseConfigI, firestoreConfig } from 'firebase.config';
+import { Shift, State, UserSettings } from 'src/app/utils/Interfaces';
+import { firestoreConfig } from 'firebase.config';
 import { MatIconModule } from '@angular/material/icon';
 import { SectionHeadingComponent } from '../../components/UI/section-heading/section-heading.component';
-import { NgIf, NgFor, LowerCasePipe } from '@angular/common';
+import { NgIf, NgFor, LowerCasePipe, DatePipe } from '@angular/common';
 import { ToastService } from 'src/app/utils/services/toast/toast.service';
 import { errorMessages, successMessages } from 'src/app/utils/toastMessages';
 import { ValidationService } from './validationService/validation.service';
+import { timeStringToMilliseconds } from 'src/app/utils/functions';
+import { MilisecondsToTimePipe } from 'src/app/utils/pipes/milisecondsToTime/miliseconds-to-time.pipe';
 
 @Component({
   selector: 'app-handle-shifts',
@@ -33,6 +35,8 @@ import { ValidationService } from './validationService/validation.service';
     NgFor,
     MatIconModule,
     LowerCasePipe,
+    DatePipe,
+    MilisecondsToTimePipe,
   ],
 })
 export class HandleShiftsComponent implements OnInit {
@@ -40,14 +44,11 @@ export class HandleShiftsComponent implements OnInit {
   @Input() parent: string = 'my-shifts';
 
   currentState!: State;
-
+  currentUser!: UserSettings;
   shiftForm!: FormGroup;
   shiftInputs: InputType[] = formData;
   userWorkplaces: string[] = [];
   isEditing: boolean = false;
-
-  // firestore Config
-  fbConfig: FirebaseConfigI = firestoreConfig;
 
   private stateSubscription: Subscription | undefined;
 
@@ -72,6 +73,7 @@ export class HandleShiftsComponent implements OnInit {
     });
 
     this.currentState = this.state.getState();
+    this.currentUser = this.currentState.currentLoggedFireUser as UserSettings;
 
     // check if url contains 'admin' || 'edit-shift' || 'all-shifts' keyword and sets isEditing state and userWorkplaces
     if (
@@ -97,10 +99,18 @@ export class HandleShiftsComponent implements OnInit {
 
     this.stateSubscription = this.state.stateChanged.subscribe((newState) => {
       this.currentState = newState;
+      this.currentUser = this.currentState
+        .currentLoggedFireUser as UserSettings;
     });
 
+    // if a shift is edited, patch the form with the shift values
     if (this.currentState.shiftToEdit) {
-      this.shiftForm.patchValue(this.currentState.shiftToEdit);
+      this.shiftForm.patchValue({
+        ...this.currentState.shiftToEdit,
+        shiftDate: this.formatDate(this.currentState.shiftToEdit.shiftDate),
+        startTime: this.formatTime(this.currentState.shiftToEdit.startTime),
+        endTime: this.formatTime(this.currentState.shiftToEdit.endTime),
+      });
     } else {
       this.shiftForm.patchValue({ shiftDate: this.getTodayDate() });
     }
@@ -129,6 +139,27 @@ export class HandleShiftsComponent implements OnInit {
         value
       );
     });
+  }
+
+  // Helper method to convert milliseconds to Date and format as date string
+  formatDate(milliseconds: number): string {
+    const date = new Date(milliseconds);
+    // 'yyyy-MM-dd'
+
+    return `${date.getFullYear().toString().padStart(2, '0')}-${(
+      date.getMonth() + 1
+    )
+      .toString()
+      .padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`;
+  }
+  // Helper method to convert milliseconds to Date and format as time string
+  formatTime(milliseconds: number): string {
+    const time = new Date(milliseconds);
+    // 'HH:mm'
+    return `${(time.getHours() - 2).toString().padStart(2, '0')}:${time
+      .getMinutes()
+      .toString()
+      .padStart(2, '0')}`;
   }
 
   ngOnDestroy(): void {
@@ -190,25 +221,21 @@ export class HandleShiftsComponent implements OnInit {
   }
 
   async onSubmit() {
-    // prettier-ignore
-    const months: string[]=["january","february","march","april","may","june","july",
-      "august", "september", "october", "november", "december"];
-
     try {
       const shiftID = this.shiftForm.value.shiftID;
-      const shiftDate = new Date(this.shiftForm.value.shiftDate);
-      const currentYear = shiftDate.getFullYear().toString();
-      const currentMonth = months[shiftDate.getMonth()];
 
       const shiftData: Shift = {
         shiftID: this.shiftForm.value.shiftID,
-        shiftDate: this.shiftForm.value.shiftDate,
-        startTime: this.shiftForm.value.startTime,
-        endTime: this.shiftForm.value.endTime,
+        shiftDate: new Date(this.shiftForm.value.shiftDate).getTime(),
+        startTime: timeStringToMilliseconds(this.shiftForm.value.startTime),
+        endTime: timeStringToMilliseconds(this.shiftForm.value.endTime),
         workplace: this.shiftForm.value.workplace,
         wagePerHour: Number(this.shiftForm.value.wagePerHour),
         shiftRevenue: Number(this.shiftForm.value.shiftRevenue),
-        timeStamp: new Date(),
+        creationDate: this.currentState.shiftToEdit
+          ? this.currentState.shiftToEdit.creationDate
+          : new Date(),
+        lastUpdateDate: new Date(),
         userID: this.currentState.currentLoggedFireUser!.id,
         userInfo: {
           firstName: this.currentState.currentLoggedFireUser!.firstName,
@@ -216,9 +243,9 @@ export class HandleShiftsComponent implements OnInit {
         },
       };
 
-      this.firestore.setFirestoreDoc(
-        this.fbConfig.dev.shiftsDB,
-        [currentYear, currentMonth, shiftID],
+      await this.firestore.setFirestoreDoc(
+        firestoreConfig.dev.shiftsDB.base,
+        [firestoreConfig.dev.shiftsDB.subColl, this.currentUser.id, shiftID],
         shiftData
       );
 
@@ -226,6 +253,7 @@ export class HandleShiftsComponent implements OnInit {
         this.toast.success(successMessages.firestore.shift.add);
       } else {
         this.toast.success(successMessages.firestore.shift.update);
+        this.state.setState({ shiftToEdit: undefined });
       }
 
       this.router.navigate(['my-shifts']).then(() => {

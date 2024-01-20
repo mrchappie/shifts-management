@@ -6,14 +6,24 @@ import {
   SlicePipe,
   TitleCasePipe,
   CurrencyPipe,
+  DatePipe,
 } from '@angular/common';
+import { MilisecondsToTimePipe } from 'src/app/utils/pipes/milisecondsToTime/miliseconds-to-time.pipe';
 
 @Component({
   selector: 'app-shift-card',
   templateUrl: './shift-card.component.html',
   styleUrls: ['./shift-card.component.scss'],
   standalone: true,
-  imports: [NgIf, NgClass, SlicePipe, TitleCasePipe, CurrencyPipe],
+  imports: [
+    NgIf,
+    NgClass,
+    SlicePipe,
+    TitleCasePipe,
+    CurrencyPipe,
+    DatePipe,
+    MilisecondsToTimePipe,
+  ],
 })
 export class ShiftCardComponent {
   @Input() shift?: Shift;

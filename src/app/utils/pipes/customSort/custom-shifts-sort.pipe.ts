@@ -33,18 +33,12 @@ export class CustomShiftsSortPipe implements PipeTransform {
         break;
       case 'startTime':
         shiftsToSort.sort((a: Shift, b: Shift) => {
-          return (
-            this.convertToMiliseconds(a['startTime']) -
-            this.convertToMiliseconds(b['startTime'])
-          );
+          return a['startTime'] - b['startTime'];
         });
         break;
       case 'endTime':
         shiftsToSort.sort((a: Shift, b: Shift) => {
-          return (
-            this.convertToMiliseconds(a['endTime']) -
-            this.convertToMiliseconds(b['endTime'])
-          );
+          return a['endTime'] - b['endTime'];
         });
         break;
       case 'wagePerHour':
