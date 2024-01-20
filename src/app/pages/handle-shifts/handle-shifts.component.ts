@@ -245,7 +245,11 @@ export class HandleShiftsComponent implements OnInit {
 
       await this.firestore.setFirestoreDoc(
         firestoreConfig.dev.shiftsDB.base,
-        [firestoreConfig.dev.shiftsDB.subColl, this.currentUser.id, shiftID],
+        [
+          firestoreConfig.dev.shiftsDB.shiftsSubColl,
+          this.currentUser.id,
+          shiftID,
+        ],
         shiftData
       );
 

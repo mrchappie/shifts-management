@@ -1,6 +1,6 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { SearchFilters, Shift, State } from 'src/app/utils/Interfaces';
-import { Filter, sortShiftsBy, sortUsersBy } from './formData';
+import { SearchFilters, State } from 'src/app/utils/Interfaces';
+import { Filter, UsersSelect, sortShiftsBy, sortUsersBy } from './formData';
 import { StateService } from 'src/app/utils/services/state/state.service';
 import { Subscription } from 'rxjs';
 import {
@@ -13,6 +13,7 @@ import { FirestoreService } from 'src/app/utils/services/firestore/firestore.ser
 import { CustomFnService } from 'src/app/utils/services/customFn/custom-fn.service';
 import { NgFor, NgIf } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
+import { firestoreConfig } from 'firebase.config';
 
 @Component({
   standalone: true,
@@ -26,10 +27,7 @@ export class NewSearchComponent implements OnInit, OnDestroy {
   // html data
   sortBy: Filter[] = sortShiftsBy;
   orderBy: string = '';
-
-  // component data
-  allShifts: Shift[] = [];
-  shiftsCount: number = 0;
+  userNames: UsersSelect[] = [];
 
   currentState!: State;
   searchForm!: FormGroup;
@@ -46,10 +44,16 @@ export class NewSearchComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
+    // init state
+    this.currentState = this.state.getState();
+    // init all shifts users options
+    this.initUsersSearchOptions();
+    // init sorting options
     this.sortBy = this.parent != 'all-users' ? sortShiftsBy : sortUsersBy;
 
     this.searchForm = this.fb.group({
       nameQuery: [''],
+      userNames: [this.currentState.currentLoggedFireUser?.id],
       startDateQuery: [''],
       endDateQuery: [''],
       sortByQuery: [`${this.parent === 'all-users' ? 'name' : 'shiftDate'}`],
@@ -72,7 +76,15 @@ export class NewSearchComponent implements OnInit, OnDestroy {
         this.getShiftsByDate(value);
       });
 
-    this.currentState = this.state.getState();
+    // fetch shifts by user
+    this.searchForm
+      .get('userNames')
+      ?.valueChanges.subscribe((value: string) => {
+        console.log(value);
+        if (value) {
+          this.getAllShifts(value, this.searchForm.get('queryLimit')?.value);
+        }
+      });
 
     // setting the default year-month to my form input
     this.searchForm.patchValue({
@@ -84,12 +96,31 @@ export class NewSearchComponent implements OnInit, OnDestroy {
       this.currentState = newState;
       this.filters = this.currentState.searchForm;
     });
+
+    if (this.currentState.shifts.length === 0) {
+      this.getAllShifts(
+        this.currentState.currentLoggedFireUser!.id,
+        this.searchForm.get('queryLimit')?.value
+      );
+    }
   }
 
   ngOnDestroy(): void {
     if (this.stateSubscription) {
       this.stateSubscription.unsubscribe();
     }
+  }
+
+  // fetching users info from DB
+  async initUsersSearchOptions() {
+    const tempArr = (await this.firestore.getFirestoreDoc(
+      firestoreConfig.dev.shiftsDB.base,
+      [firestoreConfig.dev.shiftsDB.usersSubColl]
+    )) as {
+      info: { userID: string; firstName: string; lastName: string }[];
+    };
+
+    this.userNames.push(...tempArr.info);
   }
 
   getShiftsByDate(limit: number) {
@@ -99,8 +130,12 @@ export class NewSearchComponent implements OnInit, OnDestroy {
         limit
       );
     } else if (this.parent === 'all-shifts') {
-      this.firestore.handleGetAllShifts(limit as number);
+      // this.firestore.handleGetAllShifts(limit as number);
     }
+  }
+
+  async getAllShifts(userID: string, queryLimit: number) {
+    await this.firestore.handleGetAllShifts(userID, queryLimit);
   }
 
   searchShiftsByWorkplace() {

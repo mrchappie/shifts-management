@@ -2,14 +2,15 @@
   class="relative justify-between gap-4 p-2 mb-4 rounded-md center bg-lightBgSecondary dark:bg-darkBgPrimary shadow-all-sides"
 >
   <form class="gap-6 center" [formGroup]="searchForm">
-    <div class="flex-1 min-w-max custom-search-label center">
+    <div
+      *ngIf="parent === 'my-shifts'"
+      class="flex-1 min-w-max custom-search-label center"
+    >
       <label class="min-w-max">
         <input
           type="text"
           name="workplace"
-          [placeholder]="
-            parent === 'all-users' ? 'Search by name' : 'Search by workplace'
-          "
+          [placeholder]="'Search by workplace'"
           formControlName="nameQuery"
           class="w-full custom-search-input"
         />
@@ -18,6 +19,22 @@
         <mat-icon fontIcon="search "></mat-icon>
       </div>
     </div>
+    <label
+      *ngIf="parent === 'all-shifts'"
+      class="min-w-max custom-search-label"
+    >
+      <select
+        name="userNames"
+        id="userNames"
+        formControlName="userNames"
+        class="custom-search-input"
+      >
+        <option value="">-- select a user --</option>
+        <option *ngFor="let user of userNames" value="{{ user.userID }}">
+          {{ user.firstName }} {{ user.lastName }}
+        </option>
+      </select>
+    </label>
     <label
       *ngIf="parent === 'my-shifts' || parent === 'all-shifts'"
       class="flex-1 custom-search-label"

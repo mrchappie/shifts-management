@@ -15,11 +15,12 @@ import { calculateAge } from '../../functions';
 import { userProfile } from '../../userProfile';
 import { StateService, initialState } from '../state/state.service';
 import { FirestoreService } from '../firestore/firestore.service';
-import { FirebaseConfigI, firestoreConfig } from 'firebase.config';
+import { firestoreConfig } from 'firebase.config';
 import { Router } from '@angular/router';
 import { State } from '../../Interfaces';
 import { ToastService } from '../toast/toast.service';
 import { errorMessages, successMessages } from '../../toastMessages';
+import { arrayRemove, arrayUnion } from '@angular/fire/firestore';
 
 @Injectable({
   providedIn: 'root',
@@ -27,9 +28,6 @@ import { errorMessages, successMessages } from '../../toastMessages';
 export class AuthService {
   // state init
   currentState!: State;
-
-  // firestore Config
-  fbConfig: FirebaseConfigI = firestoreConfig;
 
   constructor(
     private auth: Auth,
@@ -54,7 +52,7 @@ export class AuthService {
       // add user information to firestore
       if (userCredential) {
         this.firestore.setFirestoreDoc(
-          this.fbConfig.dev.usersDB,
+          firestoreConfig.dev.usersDB,
           [userCredential.user.uid],
           {
             firstName,
@@ -68,10 +66,23 @@ export class AuthService {
           }
         );
 
+        // set basic user info in shiftsDB
+        this.firestore.updateFirestoreDoc(
+          firestoreConfig.dev.shiftsDB.base,
+          [firestoreConfig.dev.shiftsDB.usersSubColl],
+          {
+            info: arrayUnion({
+              userID: userCredential.user.uid,
+              firstName,
+              lastName,
+            }),
+          }
+        );
+
         // add user information to state
         this.state.setState({
           currentLoggedFireUser: this.firestore.getFirestoreDoc(
-            this.fbConfig.dev.usersDB,
+            firestoreConfig.dev.usersDB,
             [userCredential.user.uid]
           ),
           currentUserCred: userCredential,
@@ -107,7 +118,7 @@ export class AuthService {
         // add user information to state
         this.state.setState({
           currentLoggedFireUser: await this.firestore.getFirestoreDoc(
-            this.fbConfig.dev.usersDB,
+            firestoreConfig.dev.usersDB,
             [userCredential.user.uid]
           ),
           currentUserCred: userCredential,
@@ -143,10 +154,14 @@ export class AuthService {
   }
 
   //! DELETE USER
-  async deleteUserFromFirebase(email: string, password: string) {
+  async deleteUserFromFirebase(
+    email: string,
+    password: string,
+    firstName: string,
+    lastName: string
+  ) {
     try {
       const user = this.auth.currentUser as User;
-      const userID = user.uid;
 
       // get user credentials
       const credentials = EmailAuthProvider.credential(email, password);
@@ -155,11 +170,26 @@ export class AuthService {
       await reauthenticateWithCredential(user, credentials);
 
       // delete user info from firestore
-      this.firestore.deleteFirestoreDoc(firestoreConfig.dev.usersDB, [userID]);
+      this.firestore.deleteFirestoreDoc(firestoreConfig.dev.usersDB, [
+        user.uid,
+      ]);
       // this.firestore.deleteUserShiftsOnAccountDelete(
       //   firestoreConfig.dev.shiftsDB,
-      //   [userID]
+      //   [user.uid]
       // );
+
+      // set basic user info in shiftsDB
+      this.firestore.updateFirestoreDoc(
+        firestoreConfig.dev.shiftsDB.base,
+        [firestoreConfig.dev.shiftsDB.usersSubColl],
+        {
+          info: arrayRemove({
+            userID: user.uid,
+            firstName,
+            lastName,
+          }),
+        }
+      );
 
       // delete user
       await deleteUser(user);
@@ -183,7 +213,7 @@ export class AuthService {
           // User is signed in
           this.state.setState({
             currentLoggedFireUser: await this.firestore.getFirestoreDoc(
-              this.fbConfig.dev.usersDB,
+              firestoreConfig.dev.usersDB,
               [user.uid]
             ),
             emailVerified: user.emailVerified,

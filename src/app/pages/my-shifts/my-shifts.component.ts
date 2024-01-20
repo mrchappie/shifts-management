@@ -33,7 +33,7 @@ import { errorMessages, successMessages } from 'src/app/utils/toastMessages';
   ],
 })
 export class MyShiftsComponent implements OnInit, OnDestroy {
-  @Input() parent: string = 'single_user';
+  @Input() parent: string = 'my-shifts';
   @Input() userIDFromURL: string = '';
   @Input() isAdminPath: boolean = false;
 
@@ -66,15 +66,15 @@ export class MyShiftsComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.currentState = this.state.getState();
 
-    // fetch shifts based on opened page - All Shifts / Single User Shifts / Edit User Info
-    if (!this.userIDFromURL && this.parent === 'single_user') {
+    // fetch shifts for single user
+    if (!this.userIDFromURL && this.parent === 'my-shifts') {
       this.userID = this.currentState.currentLoggedFireUser!.id;
       this.getShifts(this.userID, this.filters.queryLimit);
-    } else if (this.userIDFromURL) {
+    }
+    // fetch shifts when an admin loads a user edit page
+    if (this.userIDFromURL && this.parent === 'edit-user') {
       this.getShifts(this.userIDFromURL, this.filters.queryLimit);
       this.getEditedUserData(this.userIDFromURL);
-    } else {
-      this.getAllShifts(this.filters.queryLimit);
     }
 
     if (this.currentState.shifts) {
@@ -104,10 +104,6 @@ export class MyShiftsComponent implements OnInit, OnDestroy {
     );
   }
 
-  async getAllShifts(queryLimit: number) {
-    this.myShifts = await this.firestore.handleGetAllShifts(queryLimit);
-  }
-
   async getEditedUserData(userID: string) {
     const data = (await this.firestore.getFirestoreDoc(
       firestoreConfig.dev.usersDB,
@@ -120,7 +116,7 @@ export class MyShiftsComponent implements OnInit, OnDestroy {
   async editShift(shift: Shift) {
     this.currentState.shiftToEdit = (await this.firestore.getFirestoreDoc(
       firestoreConfig.dev.shiftsDB.base,
-      [firestoreConfig.dev.shiftsDB.subColl, this.userID, shift.shiftID]
+      [firestoreConfig.dev.shiftsDB.shiftsSubColl, this.userID, shift.shiftID]
     )) as Shift;
 
     if (this.parent === 'edit-user') {
@@ -141,7 +137,7 @@ export class MyShiftsComponent implements OnInit, OnDestroy {
   deleteShift(shift: Shift) {
     try {
       this.firestore.deleteFirestoreDoc(firestoreConfig.dev.shiftsDB.base, [
-        firestoreConfig.dev.shiftsDB.subColl,
+        firestoreConfig.dev.shiftsDB.shiftsSubColl,
         shift.userID,
         shift.shiftID,
       ]);

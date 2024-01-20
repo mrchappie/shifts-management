@@ -3,7 +3,8 @@ export const firestoreConfig: FirebaseConfigI = {
     usersDB: 'shiftAppUsers',
     shiftsDB: {
       base: 'shiftAppShifts',
-      subColl: 'users',
+      shiftsSubColl: 'shifts',
+      usersSubColl: 'users',
     },
     statistics: 'statistics',
   },
@@ -11,7 +12,8 @@ export const firestoreConfig: FirebaseConfigI = {
     usersDB: 'shiftAppUsers',
     shiftsDB: {
       base: 'shiftAppShifts',
-      subColl: 'users',
+      shiftsSubColl: 'shifts',
+      usersSubColl: 'users',
     },
     statistics: 'statistics',
   },

@@ -18,3 +18,9 @@ export interface Filter {
   value: string;
   name: string;
 }
+
+export interface UsersSelect {
+  userID: string;
+  firstName: string;
+  lastName: string;
+}

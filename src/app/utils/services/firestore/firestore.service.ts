@@ -16,7 +16,7 @@ import {
 } from '@angular/fire/firestore';
 import { StateService } from '../state/state.service';
 import { ToastService } from '../toast/toast.service';
-import { FirebaseConfigI, firestoreConfig } from 'firebase.config';
+import { firestoreConfig } from 'firebase.config';
 import { CustomFnService } from '../customFn/custom-fn.service';
 import { errorMessages } from '../../toastMessages';
 
@@ -61,12 +61,12 @@ export class FirestoreService {
       if (docSnap.exists()) {
         return docSnap.data();
       } else {
-        return null;
+        return [];
       }
     } catch (error) {
       this.toast.error(errorMessages.firestore);
     }
-    return null;
+    return [];
   }
 
   //! GET DOCS
@@ -126,6 +126,7 @@ export class FirestoreService {
       );
       await setDoc(docRef, data);
     } catch (error) {
+      console.log(error);
       this.toast.error(errorMessages.firestore);
     }
   }
@@ -177,7 +178,7 @@ export class FirestoreService {
     const docRef = collection(
       this.firestore,
       firestoreConfig.dev.shiftsDB.base,
-      ...[firestoreConfig.dev.shiftsDB.subColl, userID]
+      ...[firestoreConfig.dev.shiftsDB.shiftsSubColl, userID]
     );
 
     const q = query(docRef, limit(queryLimit as number));
@@ -191,18 +192,17 @@ export class FirestoreService {
   }
 
   //! GET ALL SHIFTS
-  async handleGetAllShifts(queryLimit: number) {
-    const [currentYear, currentMonth] = this.customFN.getCurrentYearMonth();
-
+  async handleGetAllShifts(userID: string, queryLimit: number) {
     const docRef = collection(
       this.firestore,
       firestoreConfig.dev.shiftsDB.base,
-      ...[currentYear, currentMonth]
+      ...[firestoreConfig.dev.shiftsDB.shiftsSubColl, userID]
     );
 
     const q = query(docRef, limit(queryLimit));
 
     const shifts = await this.getFirestoreDocsByQuery(q);
+    console.log(shifts);
 
     if (shifts) {
       this.state.setState({ shifts: shifts });

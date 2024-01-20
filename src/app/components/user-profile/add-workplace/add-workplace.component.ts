@@ -7,7 +7,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { FormsModule } from '@angular/forms';
 import { ToastService } from 'src/app/utils/services/toast/toast.service';
 import { errorMessages, successMessages } from 'src/app/utils/toastMessages';
-import { State } from 'src/app/utils/Interfaces';
+import { State, UserSettings } from 'src/app/utils/Interfaces';
 import { StateService } from 'src/app/utils/services/state/state.service';
 import { FirestoreService } from 'src/app/utils/services/firestore/firestore.service';
 
@@ -122,10 +122,10 @@ export class AddWorkplaceComponent {
 
   // fetch user workplaces if a user information is modified from admin panel
   async getUserWorkplaces(userID: string) {
-    const userData = await this.firestore.getFirestoreDoc(
+    const userData = (await this.firestore.getFirestoreDoc(
       this.fbConfig.dev.usersDB,
       [userID]
-    );
+    )) as UserSettings;
 
     this.userWorkplaces = userData?.userWorkplaces;
   }

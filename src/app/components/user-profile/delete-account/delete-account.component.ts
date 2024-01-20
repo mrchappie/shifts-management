@@ -1,5 +1,5 @@
 import { NgFor, NgIf } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -11,6 +11,7 @@ import { AuthService } from 'src/app/utils/services/auth/auth.service';
 import { DeleteAccount, deleteAccount } from './formData';
 import { ValidationService } from './validationService/validation.service';
 import { validationPatterns } from 'src/app/utils/validationData';
+import { UserSettings } from 'src/app/utils/Interfaces';
 
 @Component({
   standalone: true,
@@ -22,6 +23,7 @@ export class DeleteAccountComponent implements OnInit {
   deleteAccountForm!: FormGroup;
   showModal: boolean = false;
   deleteAccount: DeleteAccount[] = deleteAccount;
+  @Input() userSettings!: UserSettings;
 
   constructor(
     private fb: FormBuilder,
@@ -72,7 +74,9 @@ export class DeleteAccountComponent implements OnInit {
     event.stopPropagation();
     this.auth.deleteUserFromFirebase(
       this.deleteAccountForm.value.email,
-      this.deleteAccountForm.value.password
+      this.deleteAccountForm.value.password,
+      this.userSettings.firstName,
+      this.userSettings.lastName
     );
 
     this.showModal = !this.showModal;
