@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -11,7 +11,7 @@ import { StateService } from 'src/app/utils/services/state/state.service';
 import { FirestoreService } from 'src/app/utils/services/firestore/firestore.service';
 import { Subscription } from 'rxjs';
 import { v4 as uuidv4 } from 'uuid';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Shift, State, UserSettings } from 'src/app/utils/Interfaces';
 import { firestoreConfig } from 'firebase.config';
 import { MatIconModule } from '@angular/material/icon';
@@ -41,7 +41,7 @@ import { MilisecondsToTimePipe } from 'src/app/utils/pipes/milisecondsToTime/mil
 })
 export class HandleShiftsComponent implements OnInit {
   // parent component
-  @Input() parent: string = 'my-shifts';
+  parent: string = 'add-shift';
 
   currentState!: State;
   currentUser!: UserSettings;
@@ -49,6 +49,10 @@ export class HandleShiftsComponent implements OnInit {
   shiftInputs: InputType[] = formData;
   userWorkplaces: string[] = [];
   isEditing: boolean = false;
+  shiftToEdit!: Shift;
+
+  userIDParams!: string;
+  shiftIDParams!: string;
 
   private stateSubscription: Subscription | undefined;
 
@@ -57,11 +61,22 @@ export class HandleShiftsComponent implements OnInit {
     private state: StateService,
     private firestore: FirestoreService,
     private router: Router,
+    private route: ActivatedRoute,
     private toast: ToastService,
     private validation: ValidationService
   ) {}
 
   ngOnInit(): void {
+    // extracting params from url
+    this.route.queryParams.subscribe((params) => {
+      if (params.userID) {
+        this.userIDParams = params.userID;
+      }
+      if (params.shiftID) {
+        this.shiftIDParams = params.shiftID;
+      }
+    });
+
     this.shiftForm = this.fb.group({
       shiftID: [uuidv4()],
       shiftDate: ['', [Validators.required]],
@@ -75,26 +90,36 @@ export class HandleShiftsComponent implements OnInit {
     this.currentState = this.state.getState();
     this.currentUser = this.currentState.currentLoggedFireUser as UserSettings;
 
-    // check if url contains 'admin' || 'edit-shift' || 'all-shifts' keyword and sets isEditing state and userWorkplaces
-    if (
-      this.router.url.split('/').includes('admin') &&
-      this.router.url.split('/').includes('edit-shift')
-    ) {
-      this.userWorkplaces =
-        this.currentState.editedUserData?.userWorkplaces ?? [];
-      this.isEditing = true;
-    } else if (this.router.url.split('/').includes('edit-shift')) {
-      this.userWorkplaces =
-        this.currentState.currentLoggedFireUser?.userWorkplaces ?? [];
-      this.isEditing = true;
-    } else if (this.router.url.split('/').includes('all-shifts')) {
-      this.userWorkplaces =
-        this.currentState.editedUserData?.userWorkplaces ?? [];
-      this.isEditing = true;
-    } else {
-      this.userWorkplaces =
-        this.currentState.currentLoggedFireUser?.userWorkplaces ?? [];
-      this.isEditing = false;
+    // check if component is loaded from regular user pages
+    if (!this.router.url.split('/').includes('admin')) {
+      if (this.shiftIDParams) {
+        this.userWorkplaces =
+          this.currentState.currentLoggedFireUser?.userWorkplaces ?? [];
+        this.isEditing = true;
+        this.parent = 'my-shifts';
+      } else {
+        this.userWorkplaces =
+          this.currentState.currentLoggedFireUser?.userWorkplaces ?? [];
+        this.isEditing = false;
+        this.parent = 'add-shift';
+      }
+    }
+    // check if component is loaded from admin pages
+    if (this.router.url.split('/').includes('admin')) {
+      if (this.router.url.split('/').includes('all-shifts')) {
+        this.getEditedUserData(this.shiftToEdit.userID);
+        this.isEditing = true;
+        this.parent = 'all-shifts';
+      }
+      if (this.router.url.split('/').includes('edit-user')) {
+        this.getEditedUserData(this.userIDParams);
+        this.isEditing = true;
+        this.parent = 'edit-user';
+      }
+    }
+
+    if (this.parent != 'add-shift') {
+      this.loadShiftData();
     }
 
     this.stateSubscription = this.state.stateChanged.subscribe((newState) => {
@@ -102,18 +127,6 @@ export class HandleShiftsComponent implements OnInit {
       this.currentUser = this.currentState
         .currentLoggedFireUser as UserSettings;
     });
-
-    // if a shift is edited, patch the form with the shift values
-    if (this.currentState.shiftToEdit) {
-      this.shiftForm.patchValue({
-        ...this.currentState.shiftToEdit,
-        shiftDate: this.formatDate(this.currentState.shiftToEdit.shiftDate),
-        startTime: this.formatTime(this.currentState.shiftToEdit.startTime),
-        endTime: this.formatTime(this.currentState.shiftToEdit.endTime),
-      });
-    } else {
-      this.shiftForm.patchValue({ shiftDate: this.getTodayDate() });
-    }
 
     // observables for each form input that we need to calculate revenue
     this.shiftForm
@@ -165,6 +178,48 @@ export class HandleShiftsComponent implements OnInit {
   ngOnDestroy(): void {
     if (this.stateSubscription) {
       this.stateSubscription.unsubscribe();
+    }
+  }
+
+  async loadShiftData() {
+    const shiftToBeEdited = await this.firestore.getFirestoreDoc(
+      firestoreConfig.dev.shiftsDB.base,
+      [
+        firestoreConfig.dev.shiftsDB.shiftsSubColl,
+        this.userIDParams ? this.userIDParams : this.currentUser.id,
+        this.shiftIDParams,
+      ]
+    );
+
+    console.log(shiftToBeEdited);
+    this.shiftToEdit = shiftToBeEdited as Shift;
+
+    // if a shift is edited, patch the form with the shift values
+    if (this.shiftToEdit) {
+      console.log('patch');
+      this.shiftForm.patchValue({
+        ...this.shiftToEdit,
+        shiftDate: this.formatDate(this.shiftToEdit.shiftDate),
+        startTime: this.formatTime(this.shiftToEdit.startTime),
+        endTime: this.formatTime(this.shiftToEdit.endTime),
+      });
+    } else {
+      this.shiftForm.patchValue({ shiftDate: this.getTodayDate() });
+    }
+
+    // if (this.parent === 'edit-user' || this.parent === 'all-shifts') {
+    //   this.getEditedUserData(shift.userID);
+    // }
+  }
+
+  async getEditedUserData(userID: string) {
+    const data = (await this.firestore.getFirestoreDoc(
+      firestoreConfig.dev.usersDB,
+      [userID]
+    )) as UserSettings;
+
+    if (data) {
+      this.userWorkplaces = data.userWorkplaces;
     }
   }
 
@@ -243,26 +298,38 @@ export class HandleShiftsComponent implements OnInit {
         },
       };
 
-      await this.firestore.setFirestoreDoc(
-        firestoreConfig.dev.shiftsDB.base,
-        [
-          firestoreConfig.dev.shiftsDB.shiftsSubColl,
-          this.currentUser.id,
-          shiftID,
-        ],
-        shiftData
-      );
+      console.log(this.parent);
 
-      if (!this.isEditing) {
-        this.toast.success(successMessages.firestore.shift.add);
-      } else {
-        this.toast.success(successMessages.firestore.shift.update);
-        this.state.setState({ shiftToEdit: undefined });
-      }
+      // await this.firestore.setFirestoreDoc(
+      //   firestoreConfig.dev.shiftsDB.base,
+      //   [
+      //     firestoreConfig.dev.shiftsDB.shiftsSubColl,
+      //     this.parent === 'my-shifts'
+      //       ? this.currentUser.id
+      //       : this.currentState.editedUserData?.id,
+      //     shiftID,
+      //   ],
+      //   shiftData
+      // );
 
-      this.router.navigate(['my-shifts']).then(() => {
-        this.shiftForm.patchValue(this.initialFormValue);
-      });
+      // if (!this.isEditing) {
+      //   this.toast.success(successMessages.firestore.shift.add);
+      // } else {
+      //   this.toast.success(successMessages.firestore.shift.update);
+      //   this.state.setState({ shiftToEdit: undefined });
+      // }
+
+      // this.router
+      //   .navigate([
+      //     this.parent === 'my-shifts'
+      //       ? 'my-shifts'
+      //       : this.parent === 'all-shifts'
+      //       ? 'admin/all-shifts'
+      //       : `admin/all-users`,
+      //   ])
+      //   .then(() => {
+      //     this.shiftForm.patchValue(this.initialFormValue);
+      //   });
     } catch (error) {
       this.toast.error(errorMessages.firestore);
     }

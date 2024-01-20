@@ -140,7 +140,10 @@ export class NewSearchComponent implements OnInit, OnDestroy {
 
   searchShiftsByWorkplace() {
     const query: string = this.searchForm.get('nameQuery')?.value;
-    this.firestore.handleGetShiftsBySearch(query.toLowerCase());
+    this.firestore.handleGetShiftsBySearch(
+      this.currentState.currentLoggedFireUser!.id,
+      query.toLowerCase()
+    );
   }
 
   resetFilters() {

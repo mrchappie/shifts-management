@@ -1,5 +1,5 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Subscription, merge } from 'rxjs';
 import { FirestoreService } from 'src/app/utils/services/firestore/firestore.service';
 import { StateService } from 'src/app/utils/services/state/state.service';
 import { Router, RouterLink } from '@angular/router';
@@ -74,7 +74,6 @@ export class MyShiftsComponent implements OnInit, OnDestroy {
     // fetch shifts when an admin loads a user edit page
     if (this.userIDFromURL && this.parent === 'edit-user') {
       this.getShifts(this.userIDFromURL, this.filters.queryLimit);
-      this.getEditedUserData(this.userIDFromURL);
     }
 
     if (this.currentState.shifts) {
@@ -104,34 +103,24 @@ export class MyShiftsComponent implements OnInit, OnDestroy {
     );
   }
 
-  async getEditedUserData(userID: string) {
-    const data = (await this.firestore.getFirestoreDoc(
-      firestoreConfig.dev.usersDB,
-      [userID]
-    )) as UserSettings;
-
-    this.currentState.editedUserData = data;
-  }
-
   async editShift(shift: Shift) {
-    this.currentState.shiftToEdit = (await this.firestore.getFirestoreDoc(
-      firestoreConfig.dev.shiftsDB.base,
-      [firestoreConfig.dev.shiftsDB.shiftsSubColl, this.userID, shift.shiftID]
-    )) as Shift;
-
-    if (this.parent === 'edit-user') {
-      this.getEditedUserData(shift.userID);
+    // handle navigation depending from where the function is called
+    if (this.parent === 'my-shifts') {
+      this.router.navigate(['my-shifts/edit-shift'], {
+        queryParams: { shiftID: shift.shiftID },
+      });
     }
-
-    this.router.navigate([
-      `${
-        this.isAdminPath
-          ? this.parent === 'all-shifts'
-            ? `admin/all-shifts/edit-shift/${shift.shiftID}`
-            : `admin/all-users/edit-user/${this.userIDFromURL}/edit-shift/${shift.shiftID}`
-          : `my-shifts/edit-shift/${shift.shiftID}`
-      }`,
-    ]);
+    if (this.parent === 'all-shifts' && this.isAdminPath) {
+      this.router.navigate(['admin/all-shifts/edit-shift'], {
+        queryParams: { userID: shift.userID, shiftID: shift.shiftID },
+      });
+    }
+    if (this.parent === 'edit-user' && this.isAdminPath) {
+      this.router.navigate(['admin/all-users/edit-user-shift'], {
+        queryParams: { userID: shift.userID, shiftID: shift.shiftID },
+        queryParamsHandling: 'merge',
+      });
+    }
   }
 
   deleteShift(shift: Shift) {

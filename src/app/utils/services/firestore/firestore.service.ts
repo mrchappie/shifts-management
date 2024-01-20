@@ -64,6 +64,7 @@ export class FirestoreService {
         return [];
       }
     } catch (error) {
+      console.log(error);
       this.toast.error(errorMessages.firestore);
     }
     return [];
@@ -212,13 +213,11 @@ export class FirestoreService {
   }
 
   //! GET SHIFTS BY SEARCH QUERY
-  async handleGetShiftsBySearch(queryName: string) {
-    const [currentYear, currentMonth] = this.customFN.getCurrentYearMonth();
-
+  async handleGetShiftsBySearch(userID: string, queryName: string) {
     const docRef = collection(
       this.firestore,
       firestoreConfig.dev.shiftsDB.base,
-      ...[currentYear, currentMonth]
+      ...[firestoreConfig.dev.shiftsDB.shiftsSubColl, userID]
     );
 
     const q = query(docRef, where('workplace', '==', queryName), limit(10));

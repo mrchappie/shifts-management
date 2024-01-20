@@ -51,7 +51,7 @@ const routes: Routes = [
     canActivate: [isLoggedInGuard],
   },
   {
-    path: 'my-shifts/edit-shift/:shiftID',
+    path: 'my-shifts/edit-shift',
     loadComponent: () =>
       import('../pages/handle-shifts/handle-shifts.component').then(
         (comp) => comp.HandleShiftsComponent
@@ -85,7 +85,7 @@ const routes: Routes = [
     canActivate: [isLoggedInGuard, isAdminGuard],
   },
   {
-    path: 'admin/all-shifts/edit-shift/:shiftID',
+    path: 'admin/all-shifts/edit-shift',
     loadComponent: () =>
       import('../pages/handle-shifts/handle-shifts.component').then(
         (comp) => comp.HandleShiftsComponent
@@ -101,7 +101,7 @@ const routes: Routes = [
     canActivate: [isLoggedInGuard, isAdminGuard],
   },
   {
-    path: 'admin/all-users/edit-user/:userID',
+    path: 'admin/all-users/edit-user',
     loadComponent: () =>
       import('../pages/admin/edit-user/edit-user.component').then(
         (comp) => comp.EditUserComponent
@@ -109,7 +109,7 @@ const routes: Routes = [
     canActivate: [isLoggedInGuard, isAdminGuard],
   },
   {
-    path: 'admin/all-users/edit-user/:userID/edit-shift/:shiftID',
+    path: 'admin/all-users/edit-user-shift',
     loadComponent: () =>
       import('../pages/handle-shifts/handle-shifts.component').then(
         (comp) => comp.HandleShiftsComponent
