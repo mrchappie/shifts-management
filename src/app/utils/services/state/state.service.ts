@@ -28,7 +28,6 @@ export class StateService {
       endDateQuery: '',
       sortByQuery: '',
       orderByQuery: '',
-      // setting the default year-month to current year-month
       yearMonthQuery: `${new Date().getFullYear()}-${
         new Date().getMonth() + 1
       }`,

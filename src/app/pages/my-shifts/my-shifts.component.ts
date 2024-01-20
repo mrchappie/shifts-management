@@ -15,7 +15,7 @@ import { CustomShiftsSortPipe } from '../../utils/pipes/customSort/custom-shifts
 import { MatIconModule } from '@angular/material/icon';
 import { ShiftCardComponent } from '../../components/shift-card/shift-card.component';
 import { NgIf, NgFor } from '@angular/common';
-import { NewSearchComponent } from '../../components/new-search/new-search.component';
+import { NewSearchComponent } from '../../components/search/search.component';
 import { ToastService } from 'src/app/utils/services/toast/toast.service';
 import { errorMessages, successMessages } from 'src/app/utils/toastMessages';
 
@@ -43,8 +43,8 @@ export class MyShiftsComponent implements OnInit, OnDestroy {
     nameQuery: '',
     startDateQuery: '',
     endDateQuery: '',
-    sortByQuery: '',
-    orderByQuery: '',
+    sortByQuery: 'shiftDate',
+    orderByQuery: 'dsc',
     yearMonthQuery: '',
     queryLimit: 10,
   };

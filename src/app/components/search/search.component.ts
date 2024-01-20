@@ -11,21 +11,21 @@ import {
 } from '@angular/forms';
 import { FirestoreService } from 'src/app/utils/services/firestore/firestore.service';
 import { CustomFnService } from 'src/app/utils/services/customFn/custom-fn.service';
+import { NgFor, NgIf } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
-import { NgIf, NgFor } from '@angular/common';
 
 @Component({
-  selector: 'app-search',
-  templateUrl: './search.component.html',
   standalone: true,
-  imports: [FormsModule, ReactiveFormsModule, NgIf, NgFor, MatIconModule],
+  selector: 'app-new-search',
+  templateUrl: './search.component.html',
+  imports: [FormsModule, ReactiveFormsModule, MatIconModule, NgFor, NgIf],
 })
-export class SearchComponent implements OnInit, OnDestroy {
+export class NewSearchComponent implements OnInit, OnDestroy {
   @Input() parent: string = '';
 
   // html data
   sortBy: Filter[] = sortShiftsBy;
-  orderBy: string = 'asc';
+  orderBy: string = '';
 
   // component data
   allShifts: Shift[] = [];
@@ -34,6 +34,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   currentState!: State;
   searchForm!: FormGroup;
   filters?: SearchFilters;
+  showMoreFilters: boolean = false;
 
   private stateSubscription: Subscription | undefined;
 
@@ -51,16 +52,20 @@ export class SearchComponent implements OnInit, OnDestroy {
       nameQuery: [''],
       startDateQuery: [''],
       endDateQuery: [''],
-      sortByQuery: [''],
-      orderByQuery: ['asc'],
+      sortByQuery: [`${this.parent === 'all-users' ? 'name' : 'shiftDate'}`],
+      orderByQuery: ['dsc'],
       yearMonthQuery: [''],
       queryLimit: [10],
     });
+
+    // set default sort order icon
+    this.orderBy = this.searchForm.get('orderByQuery')?.value;
 
     this.searchForm.valueChanges.subscribe((value) => {
       this.state.setState({ searchForm: value });
     });
 
+    // fetch shifts by query limit
     this.searchForm
       .get('queryLimit')
       ?.valueChanges.subscribe((value: number) => {
@@ -98,6 +103,11 @@ export class SearchComponent implements OnInit, OnDestroy {
     }
   }
 
+  searchShiftsByWorkplace() {
+    const query: string = this.searchForm.get('nameQuery')?.value;
+    this.firestore.handleGetShiftsBySearch(query.toLowerCase());
+  }
+
   resetFilters() {
     this.searchForm.patchValue(defaultFormValues);
 
@@ -116,6 +126,10 @@ export class SearchComponent implements OnInit, OnDestroy {
       this.orderBy = 'asc';
       this.searchForm.patchValue({ orderByQuery: 'asc' });
     }
+  }
+
+  toggleMoreFilters() {
+    this.showMoreFilters = !this.showMoreFilters;
   }
 }
 

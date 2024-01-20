@@ -4,12 +4,12 @@ import { FirestoreService } from 'src/app/utils/services/firestore/firestore.ser
 import { Subscription } from 'rxjs';
 import { State } from 'src/app/utils/Interfaces';
 import { FirebaseConfigI, firestoreConfig } from 'firebase.config';
-import { AddWorkplaceComponent } from '../../components/add-workplace/add-workplace.component';
-import { ChangeCredentialsComponent } from '../../components/change-credentials/change-credentials.component';
 import { DividerComponent } from '../../components/UI/divider/divider.component';
 import { UserProfileComponent } from '../../components/user-profile/user-profile.component';
 import { SectionHeadingComponent } from '../../components/UI/section-heading/section-heading.component';
 import { DeleteAccountComponent } from 'src/app/components/user-profile/delete-account/delete-account.component';
+import { ChangeCredentialsComponent } from 'src/app/components/user-profile/change-credentials/change-credentials.component';
+import { AddWorkplaceComponent } from 'src/app/components/user-profile/add-workplace/add-workplace.component';
 
 @Component({
   selector: 'app-profile',

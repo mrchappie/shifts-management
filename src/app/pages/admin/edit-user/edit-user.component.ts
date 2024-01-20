@@ -6,10 +6,10 @@ import { FirestoreService } from 'src/app/utils/services/firestore/firestore.ser
 import { MyShiftsComponent } from '../../my-shifts/my-shifts.component';
 import { NgIf } from '@angular/common';
 import { AdminRightsComponent } from '../components/admin-rights/admin-rights.component';
-import { AddWorkplaceComponent } from '../../../components/add-workplace/add-workplace.component';
 import { DividerComponent } from '../../../components/UI/divider/divider.component';
 import { UserProfileComponent } from '../../../components/user-profile/user-profile.component';
 import { SectionHeadingComponent } from '../../../components/UI/section-heading/section-heading.component';
+import { AddWorkplaceComponent } from 'src/app/components/user-profile/add-workplace/add-workplace.component';
 
 @Component({
   selector: 'app-edit-user',

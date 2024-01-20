@@ -6,7 +6,7 @@ import { FirestoreService } from 'src/app/utils/services/firestore/firestore.ser
 import { FirebaseConfigI, firestoreConfig } from 'firebase.config';
 import { CustomShiftsFilterPipe } from '../../../utils/pipes/customFilter/custom-shifts-filter.pipe';
 import { UserCardComponent } from './user-card/user-card.component';
-import { NewSearchComponent } from '../../../components/new-search/new-search.component';
+import { NewSearchComponent } from '../../../components/search/search.component';
 import { NgClass, NgFor } from '@angular/common';
 import { ConfirmationModalComponent } from '../../../components/UI/confirmation-modal/confirmation-modal.component';
 import { ToastService } from 'src/app/utils/services/toast/toast.service';

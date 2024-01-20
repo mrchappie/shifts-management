@@ -1,5 +1,5 @@
 export const sortShiftsBy: Filter[] = [
-  { value: '', name: 'Sort by' },
+  { value: '', name: '-- Sort by --' },
   { value: 'workplace', name: 'By workplace' },
   { value: 'shiftDate', name: 'By date' },
   { value: 'startTime', name: 'By start time' },
@@ -8,14 +8,8 @@ export const sortShiftsBy: Filter[] = [
   { value: 'shiftRevenue', name: 'By revenue' },
 ];
 
-// export const orderBy: Filter[] = [
-//   { value: '', name: '--select--' },
-//   { value: 'asc', name: 'Ascending' },
-//   { value: 'dsc', name: 'Descending' },
-// ];
-
 export const sortUsersBy: Filter[] = [
-  { value: '', name: 'Sort by' },
+  { value: '', name: '-- Sort by --' },
   { value: 'name', name: 'By name' },
   { value: 'age', name: 'By age' },
 ];

@@ -18,18 +18,6 @@ export class CustomShiftsSortPipe implements PipeTransform {
     const orderByQuery: string = args[1];
 
     switch (sortByQuery) {
-      //! CASE FOR SORTING SHIFTS BY TIMESTAMP AT LOAD
-      // case '':
-      //   shiftsToSort.sort((a: Shift, b: Shift) => {
-      //     const { seconds: secondsA } = a['timeStamp'] as any;
-      //     const { seconds: secondsB } = b['timeStamp'] as any;
-      //     console.log(
-      //       new Date(secondsA).getDate(),
-      //       new Date(secondsB).getDate()
-      //     );
-      //     return new Date(secondsA).getTime() - new Date(secondsB).getTime();
-      //   });
-      //   break;
       case 'workplace':
         shiftsToSort.sort((a: Shift, b: Shift) => {
           return a['workplace'].localeCompare(b['workplace']);
