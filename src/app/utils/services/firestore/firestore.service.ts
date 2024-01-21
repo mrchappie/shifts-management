@@ -27,7 +27,6 @@ export class FirestoreService {
   constructor(
     private state: StateService,
     private firestore: Firestore,
-    private customFN: CustomFnService,
     private toast: ToastService
   ) {}
 
@@ -128,6 +127,7 @@ export class FirestoreService {
       await setDoc(docRef, data);
     } catch (error) {
       console.log(error);
+      console.log(collectionPath, documentPath);
       this.toast.error(errorMessages.firestore);
     }
   }

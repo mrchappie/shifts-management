@@ -71,9 +71,11 @@ export class HandleShiftsComponent implements OnInit {
     this.route.queryParams.subscribe((params) => {
       if (params.userID) {
         this.userIDParams = params.userID;
+        console.log(this.userIDParams);
       }
       if (params.shiftID) {
         this.shiftIDParams = params.shiftID;
+        console.log(this.shiftIDParams);
       }
     });
 
@@ -107,11 +109,11 @@ export class HandleShiftsComponent implements OnInit {
     // check if component is loaded from admin pages
     if (this.router.url.split('/').includes('admin')) {
       if (this.router.url.split('/').includes('all-shifts')) {
-        this.getEditedUserData(this.shiftToEdit.userID);
+        this.getEditedUserData(this.userIDParams);
         this.isEditing = true;
         this.parent = 'all-shifts';
       }
-      if (this.router.url.split('/').includes('edit-user')) {
+      if (this.router.url.split('/').includes('all-users')) {
         this.getEditedUserData(this.userIDParams);
         this.isEditing = true;
         this.parent = 'edit-user';
@@ -120,6 +122,8 @@ export class HandleShiftsComponent implements OnInit {
 
     if (this.parent != 'add-shift') {
       this.loadShiftData();
+    } else {
+      this.shiftForm.patchValue({ shiftDate: this.getTodayDate() });
     }
 
     this.stateSubscription = this.state.stateChanged.subscribe((newState) => {
@@ -196,20 +200,14 @@ export class HandleShiftsComponent implements OnInit {
 
     // if a shift is edited, patch the form with the shift values
     if (this.shiftToEdit) {
-      console.log('patch');
+      console.log(this.parent);
       this.shiftForm.patchValue({
         ...this.shiftToEdit,
         shiftDate: this.formatDate(this.shiftToEdit.shiftDate),
         startTime: this.formatTime(this.shiftToEdit.startTime),
         endTime: this.formatTime(this.shiftToEdit.endTime),
       });
-    } else {
-      this.shiftForm.patchValue({ shiftDate: this.getTodayDate() });
     }
-
-    // if (this.parent === 'edit-user' || this.parent === 'all-shifts') {
-    //   this.getEditedUserData(shift.userID);
-    // }
   }
 
   async getEditedUserData(userID: string) {
@@ -287,49 +285,72 @@ export class HandleShiftsComponent implements OnInit {
         workplace: this.shiftForm.value.workplace,
         wagePerHour: Number(this.shiftForm.value.wagePerHour),
         shiftRevenue: Number(this.shiftForm.value.shiftRevenue),
-        creationDate: this.currentState.shiftToEdit
-          ? this.currentState.shiftToEdit.creationDate
+        creationDate: this.shiftToEdit
+          ? this.shiftToEdit.creationDate
           : new Date(),
         lastUpdateDate: new Date(),
-        userID: this.currentState.currentLoggedFireUser!.id,
+        userID:
+          this.parent === 'my-shifts' || this.parent === 'add-shift'
+            ? this.currentUser.id
+            : this.userIDParams,
         userInfo: {
-          firstName: this.currentState.currentLoggedFireUser!.firstName,
-          lastName: this.currentState.currentLoggedFireUser!.lastName,
+          firstName:
+            this.parent === 'my-shifts' || this.parent === 'add-shift'
+              ? this.currentUser.firstName
+              : this.shiftToEdit.userInfo.firstName,
+          lastName:
+            this.parent === 'my-shifts' || this.parent === 'add-shift'
+              ? this.currentUser.lastName
+              : this.shiftToEdit.userInfo.lastName,
         },
       };
 
       console.log(this.parent);
 
-      // await this.firestore.setFirestoreDoc(
-      //   firestoreConfig.dev.shiftsDB.base,
-      //   [
-      //     firestoreConfig.dev.shiftsDB.shiftsSubColl,
-      //     this.parent === 'my-shifts'
-      //       ? this.currentUser.id
-      //       : this.currentState.editedUserData?.id,
-      //     shiftID,
-      //   ],
-      //   shiftData
-      // );
+      await this.firestore
+        .setFirestoreDoc(
+          firestoreConfig.dev.shiftsDB.base,
+          [
+            firestoreConfig.dev.shiftsDB.shiftsSubColl,
+            this.parent === 'my-shifts' || this.parent === 'add-shift'
+              ? this.currentUser.id
+              : this.userIDParams,
+            shiftID,
+          ],
+          shiftData
+        )
+        .then(() => {
+          if (!this.isEditing) {
+            this.toast.success(successMessages.firestore.shift.add);
+          } else {
+            this.toast.success(successMessages.firestore.shift.update);
+            this.state.setState({ shiftToEdit: undefined });
+          }
+        });
 
-      // if (!this.isEditing) {
-      //   this.toast.success(successMessages.firestore.shift.add);
-      // } else {
-      //   this.toast.success(successMessages.firestore.shift.update);
-      //   this.state.setState({ shiftToEdit: undefined });
-      // }
+      const getRouteToNavigate = () => {
+        if (this.parent === 'my-shifts') {
+          return ['my-shifts'];
+        }
+        // redirect to all-shifts page after an admin edits a shift from all-shifts page
+        if (this.parent === 'all-shifts') {
+          return ['admin/all-shifts'];
+        }
+        // redirect to edit-user page for that particular user after an admin edits a user shift
+        if (this.parent === 'edit-user') {
+          return ['admin/all-users/edit-user', this.userIDParams];
+        }
+        // default route when an user adds a shifts
+        return ['my-shifts'];
+      };
 
-      // this.router
-      //   .navigate([
-      //     this.parent === 'my-shifts'
-      //       ? 'my-shifts'
-      //       : this.parent === 'all-shifts'
-      //       ? 'admin/all-shifts'
-      //       : `admin/all-users`,
-      //   ])
-      //   .then(() => {
-      //     this.shiftForm.patchValue(this.initialFormValue);
-      //   });
+      this.router
+        .navigate([getRouteToNavigate()[0]], {
+          queryParams: { userID: getRouteToNavigate()[1] },
+        })
+        .then(() => {
+          this.shiftForm.patchValue(this.initialFormValue);
+        });
     } catch (error) {
       this.toast.error(errorMessages.firestore);
     }

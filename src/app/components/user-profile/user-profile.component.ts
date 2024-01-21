@@ -12,7 +12,7 @@ import { Subscription } from 'rxjs';
 import { FirestoreService } from 'src/app/utils/services/firestore/firestore.service';
 import { StateService } from 'src/app/utils/services/state/state.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FirebaseConfigI, firestoreConfig } from 'firebase.config';
+import { firestoreConfig } from 'firebase.config';
 import { AgeValidation } from 'src/app/utils/customValidators/ageValidation';
 import { MatIconModule } from '@angular/material/icon';
 import { NgFor, NgIf } from '@angular/common';
@@ -64,7 +64,9 @@ export class UserProfileComponent {
 
   ngOnInit(): void {
     // get the user ID from URL if an admin edits a user
-    this.route.params.subscribe((param) => (this.userID = param['userID']));
+    this.route.queryParams.subscribe(
+      (param) => (this.userID = param['userID'])
+    );
 
     this.userProfileForm = this.fb.group({
       userName: [''],
@@ -112,6 +114,7 @@ export class UserProfileComponent {
       firestoreConfig.dev.usersDB,
       [userID]
     )) as UserSettings;
+    console.log(this.userSettings);
     this.profileImage = this.userSettings.profileImage;
 
     if (!this.userSettings) {

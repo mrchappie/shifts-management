@@ -36,7 +36,7 @@ export class EditUserComponent {
   ) {}
 
   ngOnInit(): void {
-    this.route.params.subscribe(
+    this.route.queryParams.subscribe(
       (param) => (this.userIDFromURL = param['userID'])
     );
 

@@ -1,9 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { StateService } from 'src/app/utils/services/state/state.service';
-import { FirestoreService } from 'src/app/utils/services/firestore/firestore.service';
 import { Subscription } from 'rxjs';
 import { State, UserSettings } from 'src/app/utils/Interfaces';
-import { FirebaseConfigI, firestoreConfig } from 'firebase.config';
 import { DividerComponent } from '../../components/UI/divider/divider.component';
 import { UserProfileComponent } from '../../components/user-profile/user-profile.component';
 import { SectionHeadingComponent } from '../../components/UI/section-heading/section-heading.component';
