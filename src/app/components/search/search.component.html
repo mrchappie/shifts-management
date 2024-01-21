@@ -3,7 +3,7 @@
 >
   <form class="gap-6 center" [formGroup]="searchForm">
     <div
-      *ngIf="parent === 'my-shifts'"
+      *ngIf="parent === 'my-shifts' || parent === 'edit-user'"
       class="flex-1 min-w-max custom-search-label center"
     >
       <label class="min-w-max">

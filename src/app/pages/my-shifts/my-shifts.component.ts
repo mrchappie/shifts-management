@@ -76,10 +76,6 @@ export class MyShiftsComponent implements OnInit, OnDestroy {
       this.getShifts(this.userIDFromURL, this.filters.queryLimit);
     }
 
-    if (this.currentState.shifts) {
-      this.myShifts = this.currentState.shifts;
-    }
-
     this.stateSubscription = this.state.stateChanged.subscribe((newState) => {
       this.currentState = newState;
       this.filters = this.currentState.searchForm;
@@ -98,7 +94,7 @@ export class MyShiftsComponent implements OnInit, OnDestroy {
 
   async getShifts(userID: string, queryLimit: number) {
     this.myShifts = await this.firestore.handleGetShiftsByUserID(
-      userID,
+      !this.userIDFromURL ? userID : this.userIDFromURL,
       queryLimit
     );
   }

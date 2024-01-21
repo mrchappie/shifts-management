@@ -97,7 +97,7 @@ export class NewSearchComponent implements OnInit, OnDestroy {
       this.filters = this.currentState.searchForm;
     });
 
-    if (this.currentState.shifts.length === 0) {
+    if (this.currentState.shifts.length === 0 && this.parent === 'all-shifts') {
       this.getAllShifts(
         this.currentState.currentLoggedFireUser!.id,
         this.searchForm.get('queryLimit')?.value

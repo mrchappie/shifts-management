@@ -43,7 +43,7 @@ export class UserProfileComponent {
   settingsFormInputs: SettingsForm[] = settingsFormData;
   userSettings!: UserSettings;
   profileImage: string = '';
-  userID!: string;
+  userIDFromParams!: string;
   userProfileForm!: FormGroup;
   showPhotosModal: boolean = false;
 
@@ -65,9 +65,13 @@ export class UserProfileComponent {
   ngOnInit(): void {
     // get the user ID from URL if an admin edits a user
     this.route.queryParams.subscribe(
-      (param) => (this.userID = param['userID'])
+      (params) => (this.userIDFromParams = params.userID)
     );
 
+    // init state
+    this.currentState = this.state.getState();
+
+    // init form
     this.userProfileForm = this.fb.group({
       userName: [''],
       firstName: ['', [Validators.required, Validators.minLength(3)]],
@@ -83,21 +87,23 @@ export class UserProfileComponent {
       ],
     });
 
-    // init state
-    this.currentState = this.state.getState();
-
     // get current logged user data
-    if (!this.userID) {
+    if (!this.userIDFromParams) {
       this.getUserData(this.currentState.currentLoggedFireUser!.id);
       this.profileImage = this.currentState.currentLoggedFireUser!.profileImage;
-      this.userID = this.currentState.currentLoggedFireUser!.id;
+      this.userIDFromParams = this.currentState.currentLoggedFireUser!.id;
     } else {
-      this.getUserData(this.userID);
+      this.getUserData(this.userIDFromParams);
     }
 
     this.stateSubscription = this.state.stateChanged.subscribe((newState) => {
       this.currentState = newState;
-      this.profileImage = this.currentState.currentLoggedFireUser!.profileImage;
+      if (
+        this.userIDFromParams === this.currentState.currentLoggedFireUser?.id
+      ) {
+        this.profileImage =
+          this.currentState.currentLoggedFireUser!.profileImage;
+      }
     });
 
     this.getAvatarsFromDB();
@@ -109,10 +115,10 @@ export class UserProfileComponent {
     }
   }
 
-  async getUserData(userID: string) {
+  async getUserData(userIDFromParams: string) {
     this.userSettings = (await this.firestore.getFirestoreDoc(
       firestoreConfig.dev.usersDB,
-      [userID]
+      [userIDFromParams]
     )) as UserSettings;
     console.log(this.userSettings);
     this.profileImage = this.userSettings.profileImage;
@@ -121,8 +127,8 @@ export class UserProfileComponent {
       this.router.navigate(['404']);
     }
 
-    // update the state only when there is no userID param
-    if (!this.userID) {
+    // update the state only when there is no userIDFromParams param
+    if (!this.userIDFromParams) {
       // update state with user info
       this.state.setState({
         currentLoggedFireUser: this.userSettings,
@@ -171,13 +177,13 @@ export class UserProfileComponent {
       // update de user profile picture in firestore
       this.firestore.updateFirestoreDoc(
         firestoreConfig.dev.usersDB,
-        [this.userID],
+        [this.userIDFromParams],
         {
           profileImage: imageUrl,
         }
       );
 
-      if (!this.userID) {
+      if (!this.userIDFromParams) {
         // update de user profile picture in state
         this.state.setState({
           currentLoggedFireUser: {
@@ -214,19 +220,22 @@ export class UserProfileComponent {
   changeProfileAvatar(avatar: string) {
     this.firestore.updateFirestoreDoc(
       firestoreConfig.dev.usersDB,
-      [this.userID],
+      [this.userIDFromParams],
       {
         profileImage: avatar,
       }
     );
-    //! BUG
-    if (!this.userID) {
+
+    // update the state if userID coresponds to userID from existing state
+    // this is made to update in real time the photo from navigation also
+    if (this.userIDFromParams === this.currentState.currentLoggedFireUser?.id) {
       this.state.setState({
         currentLoggedFireUser: {
           ...this.userSettings,
           profileImage: avatar,
         },
       });
+      console.log(this.currentState.currentLoggedFireUser?.profileImage);
     }
 
     this.profileImage = avatar as string;
@@ -245,7 +254,7 @@ export class UserProfileComponent {
 
   async onSubmit() {
     try {
-      if (!this.userID) {
+      if (!this.userIDFromParams) {
         await this.firestore.updateFirestoreDoc(
           firestoreConfig.dev.usersDB,
           [this.currentState.currentLoggedFireUser!.id],
@@ -258,7 +267,7 @@ export class UserProfileComponent {
       } else {
         await this.firestore.updateFirestoreDoc(
           firestoreConfig.dev.usersDB,
-          [this.userID],
+          [this.userIDFromParams],
           {
             ...this.userProfileForm.value,
             age: calculateAge(this.userProfileForm.get('dob')?.value),

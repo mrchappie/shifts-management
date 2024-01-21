@@ -11,7 +11,7 @@
     [secHeading]="''"
     class="my-[40px]"
   ></app-section-heading>
-  <app-add-workplace [userIDFromURL]="userIDFromURL"></app-add-workplace>
+  <app-add-workplace [userIDFromURL]="userIDFromParams"></app-add-workplace>
   <app-divider />
   <app-section-heading
     [heading]="'Add new admin rights for this user'"
@@ -19,7 +19,7 @@
     class="my-[40px]"
   ></app-section-heading>
   <app-admin-rights
-    [userID]="userIDFromURL"
+    [userID]="userIDFromParams"
     [userData]="userData"
   ></app-admin-rights>
   <app-divider />
@@ -31,7 +31,7 @@
   </button>
   <section *ngIf="loadShifts">
     <app-my-shifts
-      [userIDFromURL]="userIDFromURL"
+      [userIDFromURL]="userIDFromParams"
       [isAdminPath]="true"
       [parent]="'edit-user'"
       class="w-full"

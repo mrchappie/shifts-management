@@ -27,7 +27,7 @@ import { AddWorkplaceComponent } from 'src/app/components/user-profile/add-workp
 })
 export class EditUserComponent {
   loadShifts: boolean = false;
-  userIDFromURL: string = '';
+  userIDFromParams: string = '';
   userData!: UserSettings | null;
 
   constructor(
@@ -37,13 +37,13 @@ export class EditUserComponent {
 
   ngOnInit(): void {
     this.route.queryParams.subscribe(
-      (param) => (this.userIDFromURL = param['userID'])
+      (params) => (this.userIDFromParams = params.userID)
     );
 
     (async () => {
       this.userData = (await this.firestore.getFirestoreDoc(
         firestoreConfig.dev.usersDB,
-        [this.userIDFromURL]
+        [this.userIDFromParams]
       )) as UserSettings;
     })();
   }
