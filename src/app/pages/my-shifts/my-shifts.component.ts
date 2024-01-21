@@ -1,14 +1,9 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { Subscription, merge } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { FirestoreService } from 'src/app/utils/services/firestore/firestore.service';
 import { StateService } from 'src/app/utils/services/state/state.service';
 import { Router, RouterLink } from '@angular/router';
-import {
-  SearchFilters,
-  Shift,
-  State,
-  UserSettings,
-} from 'src/app/utils/Interfaces';
+import { SearchFilters, Shift, State } from 'src/app/utils/Interfaces';
 import { firestoreConfig } from 'firebase.config';
 import { CustomShiftsSortPipe } from '../../utils/pipes/customSort/custom-shifts-sort.pipe';
 import { MatIconModule } from '@angular/material/icon';

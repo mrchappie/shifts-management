@@ -59,7 +59,7 @@
         {{ route.name }}
       </li>
     </ng-container>
-    <ng-container *ngIf="isAdmin">
+    <ng-container *ngIf="isAdmin === 'admin'">
       <app-divider class="opacity-30" />
       <li
         *ngFor="let route of navbarAdminRoutes"

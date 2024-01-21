@@ -120,7 +120,6 @@ export class UserProfileComponent {
       firestoreConfig.dev.usersDB,
       [userIDFromParams]
     )) as UserSettings;
-    console.log(this.userSettings);
     this.profileImage = this.userSettings.profileImage;
 
     if (!this.userSettings) {
@@ -235,7 +234,6 @@ export class UserProfileComponent {
           profileImage: avatar,
         },
       });
-      console.log(this.currentState.currentLoggedFireUser?.profileImage);
     }
 
     this.profileImage = avatar as string;

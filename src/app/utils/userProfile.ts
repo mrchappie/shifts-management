@@ -3,9 +3,7 @@ export const userProfile = {
   userName: '',
   phoneNumber: '',
   accountCreationDate: new Date(),
-  adminPanel: {
-    isAdmin: false,
-  },
+  role: 'user',
   emailVerified: false,
 
   userWorkplaces: [],

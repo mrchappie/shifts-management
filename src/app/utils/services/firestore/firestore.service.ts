@@ -63,7 +63,6 @@ export class FirestoreService {
         return [];
       }
     } catch (error) {
-      console.log(error);
       this.toast.error(errorMessages.firestore);
     }
     return [];
@@ -154,19 +153,6 @@ export class FirestoreService {
   //! DELETE DOC
 
   async deleteFirestoreDoc(collectionName: string, documentPath: string[]) {
-    try {
-      await deleteDoc(doc(this.firestore, collectionName, ...documentPath));
-    } catch (error) {
-      this.toast.error(errorMessages.firestore);
-    }
-  }
-
-  //! DELETE ALL USER SHIFST
-  //! WORK IN PROGRESS
-  async deleteUserShiftsOnAccountDelete(
-    collectionName: string,
-    documentPath: string[]
-  ) {
     try {
       await deleteDoc(doc(this.firestore, collectionName, ...documentPath));
     } catch (error) {

@@ -47,7 +47,9 @@ export class NewSearchComponent implements OnInit, OnDestroy {
     // init state
     this.currentState = this.state.getState();
     // init all shifts users options
-    this.initUsersSearchOptions();
+    if (this.parent === 'all-shifts') {
+      this.initUsersSearchOptions();
+    }
     // init sorting options
     this.sortBy = this.parent != 'all-users' ? sortShiftsBy : sortUsersBy;
 

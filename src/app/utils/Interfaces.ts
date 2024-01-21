@@ -6,7 +6,7 @@ export interface State {
   currentLoggedFireUser?: UserSettings;
   currentUserShifts?: Shift[];
   isLoggedIn: boolean;
-  isAdmin: boolean;
+  role: string | undefined;
   activeComponent: string;
   isEditing: boolean;
   shiftToEdit: Shift | undefined;
@@ -29,9 +29,7 @@ export interface UserSettings {
   id: string;
   phoneNumber: string;
   profileImage: string;
-  adminPanel: {
-    isAdmin: boolean;
-  };
+  role: string;
   userWorkplaces: string[];
 }
 

@@ -51,56 +51,59 @@ export class AuthService {
 
       // add user information to firestore
       if (userCredential) {
-        this.firestore.setFirestoreDoc(
-          firestoreConfig.dev.usersDB,
-          [userCredential.user.uid],
-          {
-            firstName,
-            lastName,
-            email,
-            dob,
-            age: calculateAge(dob),
-            termsAndConditions,
-            id: userCredential.user.uid,
-            ...userProfile,
-          }
-        );
-
-        // set basic user info in shiftsDB
-        this.firestore.updateFirestoreDoc(
-          firestoreConfig.dev.shiftsDB.base,
-          [firestoreConfig.dev.shiftsDB.usersSubColl],
-          {
-            info: arrayUnion({
-              userID: userCredential.user.uid,
+        this.firestore
+          .setFirestoreDoc(
+            firestoreConfig.dev.usersDB,
+            [userCredential.user.uid],
+            {
               firstName,
               lastName,
-            }),
-          }
-        );
+              email,
+              dob,
+              age: calculateAge(dob),
+              termsAndConditions,
+              id: userCredential.user.uid,
+              ...userProfile,
+            }
+          )
+          .then(() => {
+            // set basic user info in shiftsDB
+            this.firestore.updateFirestoreDoc(
+              firestoreConfig.dev.shiftsDB.base,
+              [firestoreConfig.dev.shiftsDB.usersSubColl],
+              {
+                info: arrayUnion({
+                  userID: userCredential.user.uid,
+                  firstName,
+                  lastName,
+                }),
+              }
+            );
 
-        // add user information to state
-        this.state.setState({
-          currentLoggedFireUser: this.firestore.getFirestoreDoc(
-            firestoreConfig.dev.usersDB,
-            [userCredential.user.uid]
-          ),
-          currentUserCred: userCredential,
-          isLoggedIn: true,
-          loggedUserID: userCredential.user.uid,
-        });
-        this.currentState = this.state.getState();
+            // add user information to state
+            this.state.setState({
+              currentLoggedFireUser: this.firestore.getFirestoreDoc(
+                firestoreConfig.dev.usersDB,
+                [userCredential.user.uid]
+              ),
+              currentUserCred: userCredential,
+              isLoggedIn: true,
+              loggedUserID: userCredential.user.uid,
+            });
+            this.currentState = this.state.getState();
 
-        // add user information to localStorage
-        this.firestore.setLocalStorage(
-          'currentLoggedFireUser',
-          this.currentState.currentLoggedFireUser
-        );
-
+            // add user information to localStorage
+            this.firestore.setLocalStorage(
+              'currentLoggedFireUser',
+              this.currentState.currentLoggedFireUser
+            );
+          });
         return;
       }
       this.toast.success(successMessages.register);
     } catch (error) {
+      console.log(error);
+
       this.toast.error(errorMessages.register);
     }
   }
@@ -173,12 +176,12 @@ export class AuthService {
       this.firestore.deleteFirestoreDoc(firestoreConfig.dev.usersDB, [
         user.uid,
       ]);
-      // this.firestore.deleteUserShiftsOnAccountDelete(
-      //   firestoreConfig.dev.shiftsDB,
-      //   [user.uid]
-      // );
-
-      // set basic user info in shiftsDB
+      // delete user shifts from firestore
+      this.firestore.deleteFirestoreDoc(firestoreConfig.dev.shiftsDB.base, [
+        firestoreConfig.dev.shiftsDB.shiftsSubColl,
+        user.uid,
+      ]);
+      // remove basic user info from shifts BD
       this.firestore.updateFirestoreDoc(
         firestoreConfig.dev.shiftsDB.base,
         [firestoreConfig.dev.shiftsDB.usersSubColl],
