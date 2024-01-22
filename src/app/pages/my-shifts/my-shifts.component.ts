@@ -129,13 +129,15 @@ export class MyShiftsComponent implements OnInit, OnDestroy {
         ['shiftCountByMonth', 'january'],
         1,
         'subtract',
-        'shift'
+        'shift',
+        this.currentState.currentLoggedFireUser!.id
       );
       this.statsService.updateUserStatistics(
         ['earnedRevenueByMonth', 'january'],
         shift.shiftRevenue,
         'subtract',
-        'revenue'
+        'revenue',
+        this.currentState.currentLoggedFireUser!.id
       );
 
       this.toast.success(successMessages.firestore.shift.delete);

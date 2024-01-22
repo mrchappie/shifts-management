@@ -336,13 +336,39 @@ export class HandleShiftsComponent implements OnInit {
           ['shiftCountByMonth', 'january'],
           1,
           'add',
-          'shift'
+          'shift',
+          this.currentState.currentLoggedFireUser!.id
         );
         this.statsService.updateUserStatistics(
           ['earnedRevenueByMonth', 'january'],
           shiftData.shiftRevenue,
           'add',
-          'revenue'
+          'revenue',
+          this.currentState.currentLoggedFireUser!.id
+        );
+        this.statsService.updateUserStatistics(
+          [
+            'statsPerMonth',
+            'earnedRevenueByShift',
+            'january',
+            shiftData.workplace,
+          ],
+          shiftData.shiftRevenue,
+          'add',
+          'earnedRevenue',
+          this.currentState.currentLoggedFireUser!.id
+        );
+        this.statsService.updateUserStatistics(
+          [
+            'statsPerMonth',
+            'workedHoursByShift',
+            'january',
+            shiftData.workplace,
+          ],
+          shiftData.shiftRevenue / shiftData.wagePerHour,
+          'add',
+          'workedHours',
+          this.currentState.currentLoggedFireUser!.id
         );
       } else {
         const newRevenue = shiftData.shiftRevenue;
@@ -355,13 +381,15 @@ export class HandleShiftsComponent implements OnInit {
             ['shiftCountByMonth', 'january'],
             0,
             'add',
-            'shift'
+            'shift',
+            this.currentState.currentLoggedFireUser!.id
           );
           this.statsService.updateUserStatistics(
             ['earnedRevenueByMonth', 'january'],
             diff,
             'add',
-            'revenue'
+            'revenue',
+            this.currentState.currentLoggedFireUser!.id
           );
         }
       }

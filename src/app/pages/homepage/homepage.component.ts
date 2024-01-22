@@ -66,7 +66,9 @@ export class HomepageComponent {
     });
 
     if (this.currentState.updateStats) {
-      this.statsService.updateStatistics();
+      this.statsService.getStatisticsFromDB(
+        this.currentState.currentLoggedFireUser!.id
+      );
       this.state.setState({ updateStats: false });
     }
 
