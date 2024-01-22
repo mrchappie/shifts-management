@@ -12,6 +12,7 @@ import { NgIf, NgFor } from '@angular/common';
 import { NewSearchComponent } from '../../components/search/search.component';
 import { ToastService } from 'src/app/utils/services/toast/toast.service';
 import { errorMessages, successMessages } from 'src/app/utils/toastMessages';
+import { StatisticsService } from 'src/app/utils/services/statistics/statistics.service';
 
 @Component({
   selector: 'app-my-shifts',
@@ -55,7 +56,8 @@ export class MyShiftsComponent implements OnInit, OnDestroy {
     private firestore: FirestoreService,
     private state: StateService,
     private router: Router,
-    private toast: ToastService
+    private toast: ToastService,
+    private statsService: StatisticsService
   ) {}
 
   ngOnInit(): void {
@@ -121,6 +123,20 @@ export class MyShiftsComponent implements OnInit, OnDestroy {
         shift.userID,
         shift.shiftID,
       ]);
+
+      // update statistics in DB if a new shift is added
+      this.statsService.updateUserStatistics(
+        ['shiftCountByMonth', 'january'],
+        1,
+        'subtract',
+        'shift'
+      );
+      this.statsService.updateUserStatistics(
+        ['earnedRevenueByMonth', 'january'],
+        shift.shiftRevenue,
+        'subtract',
+        'revenue'
+      );
 
       this.toast.success(successMessages.firestore.shift.delete);
 

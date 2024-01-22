@@ -22,6 +22,7 @@ import { errorMessages, successMessages } from 'src/app/utils/toastMessages';
 import { ValidationService } from './validationService/validation.service';
 import { timeStringToMilliseconds } from 'src/app/utils/functions';
 import { MilisecondsToTimePipe } from 'src/app/utils/pipes/milisecondsToTime/miliseconds-to-time.pipe';
+import { StatisticsService } from 'src/app/utils/services/statistics/statistics.service';
 
 @Component({
   selector: 'app-handle-shifts',
@@ -63,7 +64,8 @@ export class HandleShiftsComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private toast: ToastService,
-    private validation: ValidationService
+    private validation: ValidationService,
+    private statsService: StatisticsService
   ) {}
 
   ngOnInit(): void {
@@ -82,11 +84,11 @@ export class HandleShiftsComponent implements OnInit {
     this.shiftForm = this.fb.group({
       shiftID: [uuidv4()],
       shiftDate: ['', [Validators.required]],
-      startTime: ['', [Validators.required]],
-      endTime: ['', [Validators.required]],
-      workplace: ['', [Validators.required]],
-      wagePerHour: ['', [Validators.required]],
-      shiftRevenue: [''],
+      startTime: ['12:00', [Validators.required]],
+      endTime: ['20:00', [Validators.required]],
+      workplace: ['Penny', [Validators.required]],
+      wagePerHour: ['10', [Validators.required]],
+      shiftRevenue: ['80'],
     });
 
     this.currentState = this.state.getState();
@@ -305,8 +307,7 @@ export class HandleShiftsComponent implements OnInit {
         },
       };
 
-      console.log(this.parent);
-
+      // setting the shift in DB
       await this.firestore
         .setFirestoreDoc(
           firestoreConfig.dev.shiftsDB.base,
@@ -320,6 +321,7 @@ export class HandleShiftsComponent implements OnInit {
           shiftData
         )
         .then(() => {
+          // after the setFirestoreDoc function call is done, a toast is generated
           if (!this.isEditing) {
             this.toast.success(successMessages.firestore.shift.add);
           } else {
@@ -327,6 +329,42 @@ export class HandleShiftsComponent implements OnInit {
             this.state.setState({ shiftToEdit: undefined });
           }
         });
+
+      if (!this.isEditing) {
+        // update statistics in DB if a new shift is added
+        this.statsService.updateUserStatistics(
+          ['shiftCountByMonth', 'january'],
+          1,
+          'add',
+          'shift'
+        );
+        this.statsService.updateUserStatistics(
+          ['earnedRevenueByMonth', 'january'],
+          shiftData.shiftRevenue,
+          'add',
+          'revenue'
+        );
+      } else {
+        const newRevenue = shiftData.shiftRevenue;
+        const oldRevenue = this.shiftToEdit.shiftRevenue;
+        const diff = newRevenue - oldRevenue;
+        console.log(newRevenue, oldRevenue, diff);
+
+        if (diff) {
+          this.statsService.updateUserStatistics(
+            ['shiftCountByMonth', 'january'],
+            0,
+            'add',
+            'shift'
+          );
+          this.statsService.updateUserStatistics(
+            ['earnedRevenueByMonth', 'january'],
+            diff,
+            'add',
+            'revenue'
+          );
+        }
+      }
 
       const getRouteToNavigate = () => {
         if (this.parent === 'my-shifts') {

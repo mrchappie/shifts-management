@@ -1,3 +1,17 @@
+<!-- STATISTICS -->
+<section class="gap-4 mb-4 center">
+  <app-count-card
+    [item]="statistics.totalShifts"
+    [title]="'Your total shifts'"
+    class="flex-1"
+  ></app-count-card>
+  <app-count-card
+    [item]="statistics.shiftCountByMonth.january"
+    [title]="'This month total shifts'"
+    class="flex-1"
+  ></app-count-card>
+</section>
+<!-- CHARTS -->
 <section class="grid w-full h-full grid-cols-6 gap-4 grid-rows-12">
   <app-chart
     #pieChart

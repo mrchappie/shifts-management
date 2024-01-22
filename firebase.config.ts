@@ -6,7 +6,11 @@ export const firestoreConfig: FirebaseConfigI = {
       shiftsSubColl: 'shifts',
       usersSubColl: 'users',
     },
-    statistics: 'statistics',
+    statistics: {
+      base: 'statistics',
+      users: 'users',
+      admin: 'admin',
+    },
   },
   dev: {
     usersDB: 'shiftAppUsers',
@@ -15,7 +19,11 @@ export const firestoreConfig: FirebaseConfigI = {
       shiftsSubColl: 'shifts',
       usersSubColl: 'users',
     },
-    statistics: 'statistics',
+    statistics: {
+      base: 'statistics',
+      users: 'users',
+      admin: 'admin',
+    },
   },
   storage: {
     profileImages: 'profile_images',
@@ -23,7 +31,7 @@ export const firestoreConfig: FirebaseConfigI = {
   },
 };
 
-export const firebaseAPIConfig = {
+export const firebaseAPIConfig: { [key: string]: string } = {
   projectId: 'learn-ang-3a987',
   appId: '1:192008310003:web:dfc33509f0f2bb7083fb86',
   storageBucket: 'learn-ang-3a987.appspot.com',
@@ -39,14 +47,18 @@ export interface FirebaseConfigI {
     shiftsDB: {
       [key: string]: string;
     };
-    statistics: string;
+    statistics: {
+      [key: string]: string;
+    };
   };
   dev: {
     usersDB: string;
     shiftsDB: {
       [key: string]: string;
     };
-    statistics: string;
+    statistics: {
+      [key: string]: string;
+    };
   };
   storage: {
     profileImages: string;

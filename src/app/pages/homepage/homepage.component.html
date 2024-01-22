@@ -12,21 +12,6 @@
     </form>
   </div>
 </div>
-<section class="gap-4 mb-4 center">
-  <!-- STATISTICS -->
 
-  <app-count-card
-    [item]="statistics.totalShifts"
-    [title]="'Your total shifts'"
-    class="flex-1"
-  ></app-count-card>
-  <app-count-card
-    [item]="statistics.shiftCountByMonth.january"
-    [title]="'This month total shifts'"
-    class="flex-1"
-  ></app-count-card>
-</section>
-<ng-container></ng-container>
-
-<!-- CHARTS -->
+<!-- CHARTS & STATS -->
 <app-chart-group></app-chart-group>

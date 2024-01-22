@@ -33,6 +33,8 @@ export class StateService {
       }`,
       queryLimit: 10,
     },
+
+    updateStats: true,
   };
 
   private stateSubject = new Subject<State>();
@@ -46,6 +48,10 @@ export class StateService {
     this.state = { ...this.state, ...data };
 
     this.stateSubject.next(this.state);
+  }
+
+  resetState() {
+    this.stateSubject.next(initialState);
   }
 }
 
@@ -73,4 +79,6 @@ export const initialState = {
     yearMonthQuery: '',
     queryLimit: 10,
   },
+
+  updateStats: true,
 };

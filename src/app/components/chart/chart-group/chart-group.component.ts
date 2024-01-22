@@ -1,16 +1,23 @@
 import { Component, ViewChild } from '@angular/core';
 import { ChartConfiguration, ChartData, ChartType } from 'chart.js';
 import { ChartComponent } from '../chart.component';
+import { Statistics } from 'src/app/utils/services/statistics/defaultStatsObject';
+import { StatisticsService } from 'src/app/utils/services/statistics/statistics.service';
+import { CountCardComponent } from '../../count-card/count-card.component';
 
 @Component({
   standalone: true,
   selector: 'app-chart-group',
   templateUrl: './chart-group.component.html',
-  imports: [ChartComponent],
+  imports: [ChartComponent, CountCardComponent],
 })
 export class ChartGroupComponent {
-  chartBorder: any = { borderColor: 'black', borderWidth: 0.5 };
+  statistics!: Statistics;
 
+  constructor(private statsService: StatisticsService) {}
+
+  //? INIT CHARTS DATA
+  chartBorder: any = { borderColor: 'black', borderWidth: 0.5 };
   // //! PIE CHART
   @ViewChild('pieChart') pieChart!: ChartComponent;
   public pieChartData: ChartData<ChartType, number[], string | string[]> = {
@@ -130,4 +137,48 @@ export class ChartGroupComponent {
       },
     },
   };
+
+  ngOnInit(): void {
+    this.statsService.statistics.subscribe((value) => {
+      this.statistics = value;
+
+      this.updateCharts();
+    });
+  }
+
+  updateCharts() {
+    //? PIE CHART
+    this.pieChartData.labels = Object.keys(
+      this.statistics.statsPerMonth.earnedRevenueByShift.january
+    );
+    this.pieChartData.datasets[0].data = Object.values(
+      this.statistics.statsPerMonth.earnedRevenueByShift.january
+    );
+    this.pieChart.updateChart();
+
+    //? BAR CHART
+    this.barChartData.labels = Object.keys(
+      this.statistics.earnedRevenueByMonth
+    );
+    this.barChartData.datasets[0].data = Object.values(
+      this.statistics.earnedRevenueByMonth
+    );
+    this.barChart.updateChart();
+
+    //? LINE CHART
+    this.lineChartData.labels = Object.keys(this.statistics.shiftCountByMonth);
+    this.lineChartData.datasets[0].data = Object.values(
+      this.statistics.shiftCountByMonth
+    );
+    this.lineChart.updateChart();
+
+    //? POLAR CHART
+    this.polarAreaChartData.labels = Object.keys(
+      this.statistics.statsPerMonth.workedHoursByShift.january
+    );
+    this.polarAreaChartData.datasets[0].data = Object.values(
+      this.statistics.statsPerMonth.workedHoursByShift.january
+    );
+    this.polarArea.updateChart();
+  }
 }
