@@ -15,10 +15,6 @@ import { NgFor } from '@angular/common';
 import { SectionHeadingComponent } from '../../components/UI/section-heading/section-heading.component';
 import { StatisticsService } from 'src/app/utils/services/statistics/statistics.service';
 import { ChartGroupComponent } from 'src/app/components/chart/chart-group/chart-group.component';
-import {
-  Statistics,
-  defaultStatsObject,
-} from 'src/app/utils/services/statistics/defaultStatsObject';
 import { firestoreConfig } from 'firebase.config';
 
 @Component({
@@ -44,7 +40,6 @@ export class HomepageComponent {
 
   constructor(
     private state: StateService,
-    private firestore: FirestoreService,
     private fb: FormBuilder,
     private customFN: CustomFnService,
     private statsService: StatisticsService
@@ -66,19 +61,13 @@ export class HomepageComponent {
     });
 
     if (this.currentState.updateStats) {
-      this.statsService.getStatisticsFromDB(
-        this.currentState.currentLoggedFireUser!.id
-      );
+      this.statsService.getStatisticsFromDB([
+        firestoreConfig.dev.statistics.users,
+        this.currentState.currentLoggedFireUser!.id,
+        '2024',
+      ]);
       this.state.setState({ updateStats: false });
     }
-
-    // this.firestore.setFirestoreDoc(
-    //   'statistics',
-    //   ['admin', 'year', '2024'],
-    //   defaultStatsObject
-    // );
-
-    // this.statsService.updateUserStatistics();
   }
 
   ngOnDestroy(): void {

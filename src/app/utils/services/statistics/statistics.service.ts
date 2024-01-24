@@ -29,13 +29,13 @@ export class StatisticsService {
     return this._statistics.next(newStatistics);
   }
 
-  async getStatisticsFromDB(userID: string) {
-    const stats = await this.firestore.getFirestoreDoc(
-      firestoreConfig.dev.statistics.base,
-      [firestoreConfig.dev.statistics.users, userID, '2024']
-    );
-    this.setStatistics(stats as Statistics);
-    console.log('update');
+  async getStatisticsFromDB(documentPath: string[]) {
+    await this.firestore
+      .getFirestoreDoc(firestoreConfig.dev.statistics.base, documentPath)
+      .then((data) => {
+        this.setStatistics(data as Statistics);
+        console.log('update');
+      });
   }
 
   // handle statistics update
@@ -47,7 +47,11 @@ export class StatisticsService {
     type: string,
     userID: string
   ) {
-    this.getStatisticsFromDB(userID).then(() => {
+    this.getStatisticsFromDB([
+      firestoreConfig.dev.statistics.users,
+      userID,
+      '2024',
+    ]).then(() => {
       //?
       //? if a shift or a value is added, update the correct statistic
       if (action === 'add') {
@@ -55,7 +59,12 @@ export class StatisticsService {
         const dbPath: string = path?.join('.');
         // calculate new value ( add the new value to the existing one )
         const getNewValue = () => {
-          if (type === 'shift') {
+          if (type === 'totalShifts') {
+            // save the existing value into a variable
+            const existingValue = this.statisticsAsValue.totalShifts;
+            // before addition, it checks that the existing value is truthy
+            return value + (!isNaN(existingValue) ? existingValue : 0);
+          } else if (type === 'shift') {
             // save the existing value into a variable
             const existingValue =
               this.statisticsAsValue.shiftCountByMonth[path[1]];
@@ -90,7 +99,7 @@ export class StatisticsService {
           updateObject
         );
         // update statistics for admin dashboard
-        this.updateAdminStatistics(updateObject);
+        this.updateAdminStatistics(path, value, action, type);
       }
       //?
       //? if a shift or a value is deleted, update the correct statistic
@@ -101,8 +110,10 @@ export class StatisticsService {
         const getNewValue = () => {
           if (type === 'shift') {
             return this.statisticsAsValue.shiftCountByMonth[path[1]] - value;
-          } else {
+          } else if (type === 'revenue') {
             return this.statisticsAsValue.earnedRevenueByMonth[path[1]] - value;
+          } else {
+            return this.statisticsAsValue.totalShifts - value;
           }
         };
         // temporary object
@@ -116,17 +127,96 @@ export class StatisticsService {
           updateObject
         );
         // update statistics for admin dashboard
-        this.updateAdminStatistics(updateObject);
+        this.updateAdminStatistics(path, value, action, type);
       }
     });
   }
 
-  updateAdminStatistics(data: any) {
-    // update the user statistic
-    this.firestore.updateFirestoreDoc(
-      firestoreConfig.dev.statistics.base,
-      [firestoreConfig.dev.statistics.admin, 'year', '2024'],
-      data
-    );
+  updateAdminStatistics(
+    path: string[],
+    value: number,
+    action: string,
+    type: string
+  ) {
+    // update the admin statistic
+    this.getStatisticsFromDB([
+      firestoreConfig.dev.statistics.admin,
+      'year',
+      '2024',
+    ]).then(() => {
+      //?
+      //? if a shift or a value is added, update the correct statistic
+      if (action === 'add') {
+        // create path
+        const dbPath: string = path?.join('.');
+        // calculate new value ( add the new value to the existing one )
+        const getNewValue = () => {
+          if (type === 'totalShifts') {
+            // save the existing value into a variable
+            const existingValue = this.statisticsAsValue.totalShifts;
+            // before addition, it checks that the existing value is truthy
+            return value + (!isNaN(existingValue) ? existingValue : 0);
+          } else if (type === 'shift') {
+            // save the existing value into a variable
+            const existingValue =
+              this.statisticsAsValue.shiftCountByMonth[path[1]];
+            // before addition, it checks that the existing value is truthy
+            return value + (!isNaN(existingValue) ? existingValue : 0);
+          } else if (type === 'revenue') {
+            const existingValue =
+              this.statisticsAsValue.earnedRevenueByMonth[path[1]];
+            return value + (!isNaN(existingValue) ? existingValue : 0);
+          } else if (type === 'earnedRevenue') {
+            const existingValue =
+              this.statisticsAsValue.statsPerMonth.earnedRevenueByShift[
+                path[2]
+              ][path[3]];
+            return value + (!isNaN(existingValue) ? existingValue : 0);
+          } else {
+            const existingValue =
+              this.statisticsAsValue.statsPerMonth.workedHoursByShift[path[2]][
+                path[3]
+              ];
+            return value + (!isNaN(existingValue) ? existingValue : 0);
+          }
+        };
+        // temporary object
+        const updateObject: { [key: string]: number } = {};
+        updateObject[dbPath] = getNewValue();
+
+        // update the user statistics
+        this.firestore.updateFirestoreDoc(
+          firestoreConfig.dev.statistics.base,
+          [firestoreConfig.dev.statistics.admin, 'year', '2024'],
+          updateObject
+        );
+      }
+      //?
+      //? if a shift or a value is deleted, update the correct statistic
+      if (action === 'subtract') {
+        // create path
+        const dbPath: string = path?.join('.');
+        // calculate new value ( add the new value to the existing one )
+        const getNewValue = () => {
+          if (type === 'shift') {
+            return this.statisticsAsValue.shiftCountByMonth[path[1]] - value;
+          } else if (type === 'revenue') {
+            return this.statisticsAsValue.earnedRevenueByMonth[path[1]] - value;
+          } else {
+            return this.statisticsAsValue.totalShifts - value;
+          }
+        };
+        // temporary object
+        const updateObject: { [key: string]: number } = {};
+        updateObject[dbPath] = getNewValue();
+
+        // update the user statistics
+        this.firestore.updateFirestoreDoc(
+          firestoreConfig.dev.statistics.base,
+          [firestoreConfig.dev.statistics.admin, 'year', '2024'],
+          updateObject
+        );
+      }
+    });
   }
 }

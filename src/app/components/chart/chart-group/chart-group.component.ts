@@ -21,8 +21,8 @@ export class ChartGroupComponent {
   // //! PIE CHART
   @ViewChild('pieChart') pieChart!: ChartComponent;
   public pieChartData: ChartData<ChartType, number[], string | string[]> = {
-    labels: [],
-    datasets: [{ ...this.chartBorder, data: [], label: 'Revenue' }],
+    labels: ['Test'],
+    datasets: [{ ...this.chartBorder, data: [100], label: 'Revenue' }],
   };
 
   public pieChartOptions: ChartConfiguration['options'] = {
@@ -141,7 +141,7 @@ export class ChartGroupComponent {
   ngOnInit(): void {
     this.statsService.statistics.subscribe((value) => {
       this.statistics = value;
-
+      console.log(this.statistics);
       this.updateCharts();
     });
   }

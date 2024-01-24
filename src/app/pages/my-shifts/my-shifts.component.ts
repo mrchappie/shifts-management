@@ -133,6 +133,13 @@ export class MyShiftsComponent implements OnInit, OnDestroy {
         this.currentState.currentLoggedFireUser!.id
       );
       this.statsService.updateUserStatistics(
+        ['totalShifts'],
+        1,
+        'subtract',
+        'totalShifts',
+        this.currentState.currentLoggedFireUser!.id
+      );
+      this.statsService.updateUserStatistics(
         ['earnedRevenueByMonth', 'january'],
         shift.shiftRevenue,
         'subtract',

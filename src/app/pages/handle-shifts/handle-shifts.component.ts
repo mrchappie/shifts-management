@@ -22,7 +22,8 @@ import { errorMessages, successMessages } from 'src/app/utils/toastMessages';
 import { ValidationService } from './validationService/validation.service';
 import { timeStringToMilliseconds } from 'src/app/utils/functions';
 import { MilisecondsToTimePipe } from 'src/app/utils/pipes/milisecondsToTime/miliseconds-to-time.pipe';
-import { StatisticsService } from 'src/app/utils/services/statistics/statistics.service';
+import { UpdateStatsService } from './updateStatsService/update-stats.service';
+import { getRouteToNavigate, getTodayDate } from './helpers';
 
 @Component({
   selector: 'app-handle-shifts',
@@ -65,7 +66,7 @@ export class HandleShiftsComponent implements OnInit {
     private route: ActivatedRoute,
     private toast: ToastService,
     private validation: ValidationService,
-    private statsService: StatisticsService
+    private updateStats: UpdateStatsService
   ) {}
 
   ngOnInit(): void {
@@ -125,7 +126,7 @@ export class HandleShiftsComponent implements OnInit {
     if (this.parent != 'add-shift') {
       this.loadShiftData();
     } else {
-      this.shiftForm.patchValue({ shiftDate: this.getTodayDate() });
+      this.shiftForm.patchValue({ shiftDate: getTodayDate() });
     }
 
     this.stateSubscription = this.state.stateChanged.subscribe((newState) => {
@@ -258,15 +259,6 @@ export class HandleShiftsComponent implements OnInit {
     }
   }
 
-  getTodayDate() {
-    const today = new Date();
-    const year = today.getFullYear().toString();
-    const month = (today.getMonth() + 1).toString().padStart(2, '0');
-    const day = today.getDate().toString().padStart(2, '0');
-
-    return `${year}-${month}-${day}`;
-  }
-
   // form validation service
   formInputStatus(control: string): boolean {
     return this.validation.getFormInputStatus(this.shiftForm, control);
@@ -330,89 +322,25 @@ export class HandleShiftsComponent implements OnInit {
           }
         });
 
+      // update statistics
       if (!this.isEditing) {
-        // update statistics in DB if a new shift is added
-        this.statsService.updateUserStatistics(
-          ['shiftCountByMonth', 'january'],
-          1,
-          'add',
-          'shift',
-          this.currentState.currentLoggedFireUser!.id
-        );
-        this.statsService.updateUserStatistics(
-          ['earnedRevenueByMonth', 'january'],
-          shiftData.shiftRevenue,
-          'add',
-          'revenue',
-          this.currentState.currentLoggedFireUser!.id
-        );
-        this.statsService.updateUserStatistics(
-          [
-            'statsPerMonth',
-            'earnedRevenueByShift',
-            'january',
-            shiftData.workplace,
-          ],
-          shiftData.shiftRevenue,
-          'add',
-          'earnedRevenue',
-          this.currentState.currentLoggedFireUser!.id
-        );
-        this.statsService.updateUserStatistics(
-          [
-            'statsPerMonth',
-            'workedHoursByShift',
-            'january',
-            shiftData.workplace,
-          ],
-          shiftData.shiftRevenue / shiftData.wagePerHour,
-          'add',
-          'workedHours',
-          this.currentState.currentLoggedFireUser!.id
+        this.updateStats.addNewShiftStats(
+          this.currentState.currentLoggedFireUser!.id,
+          shiftData
         );
       } else {
-        const newRevenue = shiftData.shiftRevenue;
-        const oldRevenue = this.shiftToEdit.shiftRevenue;
-        const diff = newRevenue - oldRevenue;
-        console.log(newRevenue, oldRevenue, diff);
-
-        if (diff) {
-          this.statsService.updateUserStatistics(
-            ['shiftCountByMonth', 'january'],
-            0,
-            'add',
-            'shift',
-            this.currentState.currentLoggedFireUser!.id
-          );
-          this.statsService.updateUserStatistics(
-            ['earnedRevenueByMonth', 'january'],
-            diff,
-            'add',
-            'revenue',
-            this.currentState.currentLoggedFireUser!.id
-          );
-        }
+        this.updateStats.updateExistingShiftStats(
+          this.currentState.currentLoggedFireUser!.id,
+          shiftData,
+          this.shiftToEdit
+        );
       }
 
-      const getRouteToNavigate = () => {
-        if (this.parent === 'my-shifts') {
-          return ['my-shifts'];
-        }
-        // redirect to all-shifts page after an admin edits a shift from all-shifts page
-        if (this.parent === 'all-shifts') {
-          return ['admin/all-shifts'];
-        }
-        // redirect to edit-user page for that particular user after an admin edits a user shift
-        if (this.parent === 'edit-user') {
-          return ['admin/all-users/edit-user', this.userIDParams];
-        }
-        // default route when an user adds a shifts
-        return ['my-shifts'];
-      };
-
       this.router
-        .navigate([getRouteToNavigate()[0]], {
-          queryParams: { userID: getRouteToNavigate()[1] },
+        .navigate([getRouteToNavigate(this.parent)[0]], {
+          queryParams: {
+            userID: getRouteToNavigate(this.parent, this.userIDParams)[1],
+          },
         })
         .then(() => {
           this.shiftForm.patchValue(this.initialFormValue);
@@ -425,7 +353,7 @@ export class HandleShiftsComponent implements OnInit {
   private initialFormValue = {
     shiftID: [uuidv4()],
     shiftDate: '',
-    startTime: this.getTodayDate(),
+    startTime: getTodayDate(),
     endTime: '',
     workplace: '',
     wagePerHour: '',
