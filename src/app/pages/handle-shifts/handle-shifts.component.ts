@@ -22,6 +22,7 @@ import { errorMessages, successMessages } from 'src/app/utils/toastMessages';
 import { ValidationService } from './validationService/validation.service';
 import { timeStringToMilliseconds } from 'src/app/utils/functions';
 import { MilisecondsToTimePipe } from 'src/app/utils/pipes/milisecondsToTime/miliseconds-to-time.pipe';
+import { WeekShiftsComponent } from './week-shifts/week-shifts.component';
 
 @Component({
   selector: 'app-handle-shifts',
@@ -37,6 +38,7 @@ import { MilisecondsToTimePipe } from 'src/app/utils/pipes/milisecondsToTime/mil
     LowerCasePipe,
     DatePipe,
     MilisecondsToTimePipe,
+    WeekShiftsComponent,
   ],
 })
 export class HandleShiftsComponent implements OnInit {

@@ -215,4 +215,30 @@ export class FirestoreService {
       return shifts;
     }
   }
+
+  //! GET SHIFTS BY SEARCH QUERY
+  async handleGetShiftsByWeek(
+    userID: string,
+    startDate: number,
+    endDate: number
+  ) {
+    const docRef = collection(
+      this.firestore,
+      firestoreConfig.dev.shiftsDB.base,
+      ...[firestoreConfig.dev.shiftsDB.shiftsSubColl, userID]
+    );
+
+    const q = query(
+      docRef,
+      where('shiftDate', '>=', startDate),
+      where('shiftDate', '<=', endDate)
+    );
+
+    const shifts = await this.getFirestoreDocsByQuery(q);
+
+    if (shifts) {
+      this.state.setState({ shifts: shifts });
+      return shifts;
+    }
+  }
 }

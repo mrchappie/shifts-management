@@ -1,4 +1,4 @@
-<div class="justify-start h-full center">
+<div class="gap-[50px] center justify-evenly">
   <form
     [formGroup]="shiftForm"
     (ngSubmit)="onSubmit()"
@@ -91,11 +91,5 @@
       <span *ngIf="!isEditing">Add new</span> shift
     </button>
   </form>
-  <!-- <div class="w-[400px]">
-    <img
-      src="assets/illustrations/add_shift.jpg"
-      alt="add shift form illustration"
-      class="object-cover"
-    />
-  </div> -->
+  <app-week-shifts></app-week-shifts>
 </div>

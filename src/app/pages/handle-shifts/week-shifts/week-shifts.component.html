@@ -1,0 +1,36 @@
+<section class="items-start gap-[35px] center-col">
+  <!-- <app-section-heading
+    [heading]="'Select a week to see shifts'"
+    [secHeading]="'See last, this and next week shifts with ease.'"
+  ></app-section-heading> -->
+  <section class="gap-4 center-col">
+    <header class="w-full gap-0 overflow-hidden rounded-md center">
+      <button
+        (click)="setActiveWeek('last')"
+        class="flex-1 p-4 font-bold bg-slate-500 center min-w-max"
+        [ngClass]="active === 'last' ? 'active' : 'inactive'"
+      >
+        Last week
+      </button>
+      <button
+        (click)="setActiveWeek('this')"
+        class="flex-1 p-4 font-bold bg-slate-500 center min-w-max"
+        [ngClass]="active === 'this' ? 'active' : 'inactive'"
+      >
+        This week
+      </button>
+      <button
+        (click)="setActiveWeek('next')"
+        class="flex-1 p-4 font-bold bg-slate-500 center min-w-max"
+        [ngClass]="active === 'next' ? 'active' : 'inactive'"
+      >
+        Next week
+      </button>
+    </header>
+    <main class="grid grid-cols-3 gap-4">
+      <ng-container *ngFor="let shift of shifts">
+        <app-shift-card [shift]="shift"></app-shift-card>
+      </ng-container>
+    </main>
+  </section>
+</section>
