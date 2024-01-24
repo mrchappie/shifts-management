@@ -1,8 +1,5 @@
-import { Component, ViewChild } from '@angular/core';
-import { ChartComponent } from 'src/app/components/chart/chart.component';
-import { ChartConfiguration, ChartData, ChartType } from 'chart.js';
+import { Component } from '@angular/core';
 import { Shift } from 'src/app/utils/Interfaces';
-import { firestoreConfig } from 'firebase.config';
 import { FirestoreService } from 'src/app/utils/services/firestore/firestore.service';
 import {
   FormGroup,
@@ -16,6 +13,8 @@ import { CountCardComponent } from '../../../components/count-card/count-card.co
 import { NgFor } from '@angular/common';
 import { SectionHeadingComponent } from '../../../components/UI/section-heading/section-heading.component';
 import { ChartGroupComponent } from 'src/app/components/chart/chart-group/chart-group.component';
+import { StatisticsService } from 'src/app/utils/services/statistics/statistics.service';
+import { firestoreConfig } from 'firebase.config';
 
 @Component({
   selector: 'app-dashboard',
@@ -34,12 +33,18 @@ export class DashboardComponent {
   // Comp data
   shiftsCurrentMonth: Shift[] = [];
   statsDateForm!: FormGroup;
+  updateCharts: boolean = false;
+
+  protected statsHeadings: string[] = [
+    'Total users.',
+    'Total shifts.',
+    'Total shifts this month.',
+  ];
 
   constructor(
-    private firestore: FirestoreService,
     private fb: FormBuilder,
     private customFN: CustomFnService,
-    private aggQueries: AggQueriesService
+    private statsService: StatisticsService
   ) {}
 
   ngOnInit(): void {
@@ -48,6 +53,17 @@ export class DashboardComponent {
         `${this.customFN.getCurrentYear()}-${this.customFN.getCurrentMonth()}-${this.customFN.getCurrentDay()}`,
       ],
     });
+
+    this.statsService
+      .getStatisticsFromDB([
+        firestoreConfig.dev.statistics.admin,
+        'year',
+        '2024',
+      ])
+      .then(() => {
+        this.updateCharts = true;
+        // this.state.setState({ updateStats: true });
+      });
   }
 }
 

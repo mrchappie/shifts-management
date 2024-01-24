@@ -112,8 +112,20 @@ export class StatisticsService {
             return this.statisticsAsValue.shiftCountByMonth[path[1]] - value;
           } else if (type === 'revenue') {
             return this.statisticsAsValue.earnedRevenueByMonth[path[1]] - value;
-          } else {
+          } else if (type === 'totalShifts') {
             return this.statisticsAsValue.totalShifts - value;
+          } else if (type === 'earnedRevenue') {
+            return (
+              this.statisticsAsValue.statsPerMonth.earnedRevenueByShift[
+                path[2]
+              ][path[3]] - value
+            );
+          } else {
+            return (
+              this.statisticsAsValue.statsPerMonth.workedHoursByShift[path[2]][
+                path[3]
+              ] - value
+            );
           }
         };
         // temporary object
@@ -154,6 +166,11 @@ export class StatisticsService {
           if (type === 'totalShifts') {
             // save the existing value into a variable
             const existingValue = this.statisticsAsValue.totalShifts;
+            // before addition, it checks that the existing value is truthy
+            return value + (!isNaN(existingValue) ? existingValue : 0);
+          } else if (type === 'totalUsers') {
+            // save the existing value into a variable
+            const existingValue = this.statisticsAsValue.totalUsers;
             // before addition, it checks that the existing value is truthy
             return value + (!isNaN(existingValue) ? existingValue : 0);
           } else if (type === 'shift') {
@@ -202,8 +219,20 @@ export class StatisticsService {
             return this.statisticsAsValue.shiftCountByMonth[path[1]] - value;
           } else if (type === 'revenue') {
             return this.statisticsAsValue.earnedRevenueByMonth[path[1]] - value;
-          } else {
+          } else if (type === 'totalShifts') {
             return this.statisticsAsValue.totalShifts - value;
+          } else if (type === 'earnedRevenue') {
+            return (
+              this.statisticsAsValue.statsPerMonth.earnedRevenueByShift[
+                path[2]
+              ][path[3]] - value
+            );
+          } else {
+            return (
+              this.statisticsAsValue.statsPerMonth.workedHoursByShift[path[2]][
+                path[3]
+              ] - value
+            );
           }
         };
         // temporary object

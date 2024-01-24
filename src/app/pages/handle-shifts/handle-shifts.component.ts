@@ -328,12 +328,15 @@ export class HandleShiftsComponent implements OnInit {
           this.currentState.currentLoggedFireUser!.id,
           shiftData
         );
+        // set updateStats to true so the app know to refetch de data
+        // this.state.setState({ updateStats: true });
       } else {
         this.updateStats.updateExistingShiftStats(
           this.currentState.currentLoggedFireUser!.id,
           shiftData,
           this.shiftToEdit
         );
+        // this.state.setState({ updateStats: true });
       }
 
       this.router

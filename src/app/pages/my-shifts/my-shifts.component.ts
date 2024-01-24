@@ -13,6 +13,7 @@ import { NewSearchComponent } from '../../components/search/search.component';
 import { ToastService } from 'src/app/utils/services/toast/toast.service';
 import { errorMessages, successMessages } from 'src/app/utils/toastMessages';
 import { StatisticsService } from 'src/app/utils/services/statistics/statistics.service';
+import { UpdateStatsService } from '../handle-shifts/updateStatsService/update-stats.service';
 
 @Component({
   selector: 'app-my-shifts',
@@ -57,7 +58,7 @@ export class MyShiftsComponent implements OnInit, OnDestroy {
     private state: StateService,
     private router: Router,
     private toast: ToastService,
-    private statsService: StatisticsService
+    private updateStats: UpdateStatsService
   ) {}
 
   ngOnInit(): void {
@@ -124,28 +125,13 @@ export class MyShiftsComponent implements OnInit, OnDestroy {
         shift.shiftID,
       ]);
 
-      // update statistics in DB if a new shift is added
-      this.statsService.updateUserStatistics(
-        ['shiftCountByMonth', 'january'],
-        1,
-        'subtract',
-        'shift',
-        this.currentState.currentLoggedFireUser!.id
+      this.updateStats.deleteShiftStats(
+        this.currentState.currentLoggedFireUser!.id,
+        shift
       );
-      this.statsService.updateUserStatistics(
-        ['totalShifts'],
-        1,
-        'subtract',
-        'totalShifts',
-        this.currentState.currentLoggedFireUser!.id
-      );
-      this.statsService.updateUserStatistics(
-        ['earnedRevenueByMonth', 'january'],
-        shift.shiftRevenue,
-        'subtract',
-        'revenue',
-        this.currentState.currentLoggedFireUser!.id
-      );
+
+      // set updateStats to true so the app know to refetch de data
+      // this.state.setState({ updateStats: true });
 
       this.toast.success(successMessages.firestore.shift.delete);
 

@@ -1,17 +1,21 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, Input, SimpleChanges, ViewChild } from '@angular/core';
 import { ChartConfiguration, ChartData, ChartType } from 'chart.js';
 import { ChartComponent } from '../chart.component';
 import { Statistics } from 'src/app/utils/services/statistics/defaultStatsObject';
 import { StatisticsService } from 'src/app/utils/services/statistics/statistics.service';
 import { CountCardComponent } from '../../count-card/count-card.component';
+import { NgFor } from '@angular/common';
 
 @Component({
   standalone: true,
   selector: 'app-chart-group',
   templateUrl: './chart-group.component.html',
-  imports: [ChartComponent, CountCardComponent],
+  imports: [ChartComponent, CountCardComponent, NgFor],
 })
 export class ChartGroupComponent {
+  @Input() setUpdateCharts!: boolean;
+  @Input() statsHeadings!: string[];
+
   statistics!: Statistics;
 
   constructor(private statsService: StatisticsService) {}
@@ -141,9 +145,19 @@ export class ChartGroupComponent {
   ngOnInit(): void {
     this.statsService.statistics.subscribe((value) => {
       this.statistics = value;
-      console.log(this.statistics);
-      this.updateCharts();
+      console.log('on_init', this.statistics);
     });
+  }
+
+  // ngAfterViewInit(): void {
+  //   console.log('after_init', this.statistics);
+  //   this.updateCharts();
+  // }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.setUpdateCharts && this.setUpdateCharts === true) {
+      this.updateCharts();
+    }
   }
 
   updateCharts() {

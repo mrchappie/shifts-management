@@ -12,10 +12,9 @@
     </form>
   </div>
 </div>
-<section class="gap-4 mb-4 center">
-  <!-- STATISTICS -->
-  <app-count-card [item]="10" [title]="'Users'" class="flex-1"></app-count-card>
-</section>
 
-<!-- CHARTS -->
-<app-chart-group></app-chart-group>
+<!-- CHARTS & STATS -->
+<app-chart-group
+  [setUpdateCharts]="updateCharts"
+  [statsHeadings]="statsHeadings"
+></app-chart-group>

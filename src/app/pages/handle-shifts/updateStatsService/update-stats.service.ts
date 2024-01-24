@@ -116,4 +116,43 @@ export class UpdateStatsService {
       );
     }
   }
+
+  deleteShiftStats(userID: string, shiftData: Shift) {
+    // substract stats when a shift is deleted
+    this.statsService.updateUserStatistics(
+      ['shiftCountByMonth', 'january'],
+      1,
+      'subtract',
+      'shift',
+      userID
+    );
+    this.statsService.updateUserStatistics(
+      ['totalShifts'],
+      1,
+      'subtract',
+      'totalShifts',
+      userID
+    );
+    this.statsService.updateUserStatistics(
+      ['earnedRevenueByMonth', 'january'],
+      shiftData.shiftRevenue,
+      'subtract',
+      'revenue',
+      userID
+    );
+    this.statsService.updateUserStatistics(
+      ['statsPerMonth', 'earnedRevenueByShift', 'january', shiftData.workplace],
+      shiftData.shiftRevenue,
+      'subtract',
+      'earnedRevenue',
+      userID
+    );
+    this.statsService.updateUserStatistics(
+      ['statsPerMonth', 'workedHoursByShift', 'january', shiftData.workplace],
+      shiftData.shiftRevenue / shiftData.wagePerHour,
+      'subtract',
+      'workedHours',
+      userID
+    );
+  }
 }

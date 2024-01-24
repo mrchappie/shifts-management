@@ -1,4 +1,5 @@
 export interface Statistics {
+  totalUsers: number;
   totalShifts: number;
   statsPerMonth: {
     workedHoursByShift: {
@@ -21,6 +22,7 @@ export interface Statistics {
 }
 
 export const defaultStatsObject: Statistics = {
+  totalUsers: 0,
   totalShifts: 0,
   statsPerMonth: {
     workedHoursByShift: {

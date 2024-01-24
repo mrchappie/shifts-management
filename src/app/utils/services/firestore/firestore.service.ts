@@ -156,6 +156,7 @@ export class FirestoreService {
     try {
       await deleteDoc(doc(this.firestore, collectionName, ...documentPath));
     } catch (error) {
+      console.log(error);
       this.toast.error(errorMessages.firestore);
     }
   }

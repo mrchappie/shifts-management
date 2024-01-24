@@ -11,6 +11,7 @@
 8. If an admin edits a user shift, loaded workplaces are not for the edited user, they are the workplaces of the cuurent logged user ✅
 9. Refetch data after refresh for all siblings components that use data saved in state from other components
 10. Limit image size or compress images before upload to firebase storage
+11. Update admin stats when a user is deleted
 
 ## FEATURES
 

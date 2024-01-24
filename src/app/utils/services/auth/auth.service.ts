@@ -22,6 +22,7 @@ import { ToastService } from '../toast/toast.service';
 import { errorMessages, successMessages } from '../../toastMessages';
 import { arrayRemove, arrayUnion } from '@angular/fire/firestore';
 import { defaultStatsObject } from '../statistics/defaultStatsObject';
+import { StatisticsService } from '../statistics/statistics.service';
 
 @Injectable({
   providedIn: 'root',
@@ -35,7 +36,8 @@ export class AuthService {
     private state: StateService,
     private firestore: FirestoreService,
     private toast: ToastService,
-    private router: Router
+    private router: Router,
+    private statsService: StatisticsService
   ) {}
 
   //! CREATE ACCOUNT
@@ -90,6 +92,13 @@ export class AuthService {
                 new Date().getFullYear().toString(),
               ],
               defaultStatsObject
+            );
+
+            this.statsService.updateAdminStatistics(
+              ['totalUsers'],
+              1,
+              'add',
+              'totalUsers'
             );
 
             // add user information to state
@@ -206,11 +215,19 @@ export class AuthService {
         }
       );
 
-      // init statistics
+      // delete statistics
       this.firestore.deleteFirestoreDoc(firestoreConfig.dev.statistics.base, [
         firestoreConfig.dev.statistics.users,
         user.uid,
       ]);
+
+      // decrese total users count
+      this.statsService.updateAdminStatistics(
+        ['totalUsers'],
+        1,
+        'substract',
+        'totalUsers'
+      );
 
       // delete user
       await deleteUser(user);

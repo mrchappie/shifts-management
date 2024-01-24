@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { Shift, State } from 'src/app/utils/Interfaces';
-import { FirestoreService } from 'src/app/utils/services/firestore/firestore.service';
 import { StateService } from 'src/app/utils/services/state/state.service';
 
 import {
@@ -18,9 +17,9 @@ import { ChartGroupComponent } from 'src/app/components/chart/chart-group/chart-
 import { firestoreConfig } from 'firebase.config';
 
 @Component({
+  standalone: true,
   selector: 'app-homepage',
   templateUrl: './homepage.component.html',
-  standalone: true,
   imports: [
     SectionHeadingComponent,
     FormsModule,
@@ -35,8 +34,13 @@ export class HomepageComponent {
   loggedUserID!: string;
   userShifts: Shift[] = [];
   statsDateForm!: FormGroup;
+  updateCharts: boolean = false;
 
   private stateSubscription: Subscription | undefined;
+  protected statsHeadings: string[] = [
+    'Your total shifts.',
+    'Total shifts this month.',
+  ];
 
   constructor(
     private state: StateService,
@@ -60,14 +64,18 @@ export class HomepageComponent {
       this.loggedUserID = this.currentState.currentLoggedFireUser!.id;
     });
 
-    if (this.currentState.updateStats) {
-      this.statsService.getStatisticsFromDB([
+    // if (this.currentState.updateStats) {
+    this.statsService
+      .getStatisticsFromDB([
         firestoreConfig.dev.statistics.users,
         this.currentState.currentLoggedFireUser!.id,
         '2024',
-      ]);
-      this.state.setState({ updateStats: false });
-    }
+      ])
+      .then(() => {
+        this.updateCharts = true;
+        // this.state.setState({ updateStats: true });
+      });
+    // }
   }
 
   ngOnDestroy(): void {
