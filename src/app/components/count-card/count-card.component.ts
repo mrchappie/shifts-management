@@ -1,5 +1,4 @@
 import { Component, Input } from '@angular/core';
-import { CountI } from 'src/app/pages/admin/dashboard/dashboard.component';
 
 @Component({
   standalone: true,
@@ -7,5 +6,6 @@ import { CountI } from 'src/app/pages/admin/dashboard/dashboard.component';
   templateUrl: './count-card.component.html',
 })
 export class CountCardComponent {
-  @Input() item!: CountI;
+  @Input() item!: number;
+  @Input() title!: string;
 }

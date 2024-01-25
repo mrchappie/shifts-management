@@ -13,7 +13,7 @@ export class StateService {
     currentUserCred: undefined,
     currentLoggedFireUser: undefined,
     isLoggedIn: false,
-    isAdmin: false,
+    role: undefined,
     activeComponent: 'Dashboard',
     isEditing: false,
     shiftToEdit: undefined,
@@ -28,12 +28,13 @@ export class StateService {
       endDateQuery: '',
       sortByQuery: '',
       orderByQuery: '',
-      // setting the default year-month to current year-month
       yearMonthQuery: `${new Date().getFullYear()}-${
         new Date().getMonth() + 1
       }`,
       queryLimit: 10,
     },
+
+    updateStats: true,
   };
 
   private stateSubject = new Subject<State>();
@@ -48,6 +49,10 @@ export class StateService {
 
     this.stateSubject.next(this.state);
   }
+
+  resetState() {
+    this.stateSubject.next(initialState);
+  }
 }
 
 export const initialState = {
@@ -56,7 +61,7 @@ export const initialState = {
   currentLoggedFireUser: undefined,
   currentUserShifts: undefined,
   isLoggedIn: false,
-  isAdmin: false,
+  role: undefined,
   activeComponent: 'Dashboard',
   isEditing: false,
   shiftToEdit: undefined,
@@ -74,4 +79,6 @@ export const initialState = {
     yearMonthQuery: '',
     queryLimit: 10,
   },
+
+  updateStats: true,
 };

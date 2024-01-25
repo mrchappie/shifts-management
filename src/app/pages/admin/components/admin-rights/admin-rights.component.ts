@@ -41,18 +41,17 @@ export class AdminRightsComponent implements OnInit {
   }
 
   private setFormValue() {
-    if (this.userData) {
-      this.adminRightsForm
-        .get('isAdmin')
-        ?.setValue(this.userData.adminPanel.isAdmin);
+    if (this.userData?.role === 'admin') {
+      this.adminRightsForm.get('isAdmin')?.setValue(true);
     }
   }
 
-  async onSubmit(isAdminF: boolean) {
+  async onSubmit(isAdmin: boolean) {
+    const role = isAdmin ? 'admin' : 'user';
     await this.firestore.updateFirestoreDoc(
       firestoreConfig.dev.usersDB,
       [this.userID],
-      { adminPanel: { isAdmin: isAdminF } }
+      { role }
     );
   }
 }

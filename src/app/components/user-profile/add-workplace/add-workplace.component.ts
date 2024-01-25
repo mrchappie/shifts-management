@@ -2,14 +2,14 @@ import { Component, Input } from '@angular/core';
 import { arrayUnion, arrayRemove } from '@angular/fire/firestore';
 import { FirebaseConfigI, firestoreConfig } from 'firebase.config';
 import { Subscription } from 'rxjs';
-import { State } from '../../utils/Interfaces';
-import { FirestoreService } from '../../utils/services/firestore/firestore.service';
-import { StateService } from '../../utils/services/state/state.service';
 import { NgFor } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { FormsModule } from '@angular/forms';
 import { ToastService } from 'src/app/utils/services/toast/toast.service';
 import { errorMessages, successMessages } from 'src/app/utils/toastMessages';
+import { State, UserSettings } from 'src/app/utils/Interfaces';
+import { StateService } from 'src/app/utils/services/state/state.service';
+import { FirestoreService } from 'src/app/utils/services/firestore/firestore.service';
 
 @Component({
   selector: 'app-add-workplace',
@@ -122,10 +122,10 @@ export class AddWorkplaceComponent {
 
   // fetch user workplaces if a user information is modified from admin panel
   async getUserWorkplaces(userID: string) {
-    const userData = await this.firestore.getFirestoreDoc(
+    const userData = (await this.firestore.getFirestoreDoc(
       this.fbConfig.dev.usersDB,
       [userID]
-    );
+    )) as UserSettings;
 
     this.userWorkplaces = userData?.userWorkplaces;
   }

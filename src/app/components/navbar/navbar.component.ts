@@ -27,7 +27,7 @@ import { ToastService } from 'src/app/utils/services/toast/toast.service';
 })
 export class NavbarComponent implements OnInit, OnDestroy {
   currentState!: State;
-  isAdmin: boolean | undefined = false;
+  isAdmin: string | undefined = 'user ';
   navbarUserRoutes: NavbarRoutes[] = userRoutes;
   navbarAdminRoutes: NavbarRoutes[] = adminRoutes;
   isLoggedIn: boolean = false;
@@ -44,8 +44,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
     private state: StateService,
     private firestore: FirestoreService,
     private authService: AuthService,
-    private router: Router,
-    private toastService: ToastService
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -61,8 +60,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
         firstName: this.currentState.currentLoggedFireUser?.firstName,
         lastName: this.currentState.currentLoggedFireUser?.lastName,
       };
-      this.isAdmin =
-        this.currentState.currentLoggedFireUser?.adminPanel.isAdmin;
+      this.isAdmin = this.currentState.currentLoggedFireUser?.role;
     });
   }
 

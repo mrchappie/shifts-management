@@ -80,4 +80,26 @@ export class ValidationService {
 
     return '';
   }
+
+  getDeleteAccountErrorMessage(form: FormGroup, control: string): string {
+    // return error if field was touched but not completed
+    if (form.get(control)?.hasError('required')) {
+      return errorMessages.required;
+    }
+
+    if (control === 'email') {
+      if (form.get(control)?.hasError('pattern')) {
+        return errorMessages.credentials.email;
+      }
+    }
+
+    // return error for every input if inputed data is not valid
+    if (control === 'password') {
+      if (form.get(control)?.hasError('minlength')) {
+        return errorMessages.credentials.password.short;
+      }
+    }
+
+    return '';
+  }
 }

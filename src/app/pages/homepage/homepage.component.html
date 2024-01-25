@@ -12,41 +12,9 @@
     </form>
   </div>
 </div>
-<section class="gap-4 mb-4 center">
-  <!-- STATISTICS -->
-  <ng-container *ngFor="let item of shiftsCountData"
-    ><app-count-card [item]="item" class="flex-1"></app-count-card
-  ></ng-container>
-</section>
-<ng-container></ng-container>
-<section class="grid w-full h-full grid-cols-6 gap-4 grid-rows-12">
-  <!-- CHARTS -->
-  <app-chart
-    #pieChart
-    [pieChartData]="pieChartData"
-    [pieChartOptions]="pieChartOptions"
-    [chartType]="'pie'"
-    class="col-span-2 row-span-6"
-  ></app-chart>
-  <app-chart
-    #barChart
-    [barChartData]="barChartData"
-    [barChartOptions]="barChartOptions"
-    [chartType]="'bar'"
-    class="col-span-4 row-span-6"
-  ></app-chart>
-  <app-chart
-    #lineChart
-    [lineChartData]="lineChartData"
-    [lineChartOptions]="lineChartOptions"
-    [chartType]="'line'"
-    class="col-span-4 row-span-6"
-  ></app-chart>
-  <app-chart
-    #polarArea
-    [polarAreaChartData]="polarAreaChartData"
-    [polarAreaChartOptions]="polarAreaChartOptions"
-    [chartType]="'polarArea'"
-    class="col-span-2 row-span-6"
-  ></app-chart>
-</section>
+
+<!-- CHARTS & STATS -->
+<app-chart-group
+  [setUpdateCharts]="updateCharts"
+  [statsHeadings]="statsHeadings"
+></app-chart-group>

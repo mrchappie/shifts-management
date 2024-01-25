@@ -3,6 +3,7 @@ export const errorMessages = {
   login: 'Invalid credentials, please try again!',
   logout: '',
   firestore: 'Something went wrong, please try again!',
+  deleteAccount: 'Something went wrong, please try again!',
 };
 
 export const successMessages = {
@@ -26,6 +27,7 @@ export const successMessages = {
       delete: 'User deleted successfully!',
     },
   },
+  deleteAccount: 'Account deleted successfully!',
 };
 export const warningMessages = {};
 export const infoMessages = {};

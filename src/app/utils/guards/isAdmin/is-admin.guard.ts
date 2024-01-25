@@ -11,8 +11,8 @@ export const isAdminGuard: CanActivateFn = async (route, state) => {
   await authService.getUserState();
   const user = stateService.getState().currentLoggedFireUser;
 
-  if (user?.adminPanel.isAdmin) {
-    stateService.setState({ isAdmin: true });
+  if (user?.role === 'admin') {
+    stateService.setState({ role: 'admin' });
     return true;
   } else {
     router.navigate(['']);

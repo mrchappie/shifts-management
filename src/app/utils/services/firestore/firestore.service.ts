@@ -16,7 +16,7 @@ import {
 } from '@angular/fire/firestore';
 import { StateService } from '../state/state.service';
 import { ToastService } from '../toast/toast.service';
-import { FirebaseConfigI, firestoreConfig } from 'firebase.config';
+import { firestoreConfig } from 'firebase.config';
 import { CustomFnService } from '../customFn/custom-fn.service';
 import { errorMessages } from '../../toastMessages';
 
@@ -24,13 +24,9 @@ import { errorMessages } from '../../toastMessages';
   providedIn: 'root',
 })
 export class FirestoreService {
-  // firestore Config
-  fbConfig: FirebaseConfigI = firestoreConfig;
-
   constructor(
     private state: StateService,
     private firestore: Firestore,
-    private customFN: CustomFnService,
     private toast: ToastService
   ) {}
 
@@ -62,14 +58,15 @@ export class FirestoreService {
       const docSnap = await getDoc(docRef);
 
       if (docSnap.exists()) {
+        // console.log(docSnap.data());
         return docSnap.data();
       } else {
-        return null;
+        return [];
       }
     } catch (error) {
       this.toast.error(errorMessages.firestore);
     }
-    return null;
+    return [];
   }
 
   //! GET DOCS
@@ -129,6 +126,7 @@ export class FirestoreService {
       );
       await setDoc(docRef, data);
     } catch (error) {
+      console.log(error);
       this.toast.error(errorMessages.firestore);
     }
   }
@@ -158,26 +156,20 @@ export class FirestoreService {
     try {
       await deleteDoc(doc(this.firestore, collectionName, ...documentPath));
     } catch (error) {
+      console.log(error);
       this.toast.error(errorMessages.firestore);
     }
   }
 
   //! GET SHIFTS
   async handleGetShiftsByUserID(userID: string, queryLimit?: number) {
-    const [currentYear, currentMonth] = this.customFN.getCurrentYearMonth();
-
     const docRef = collection(
       this.firestore,
-      this.fbConfig.dev.shiftsDB,
-      ...[currentYear, currentMonth]
+      firestoreConfig.dev.shiftsDB.base,
+      ...[firestoreConfig.dev.shiftsDB.shiftsSubColl, userID]
     );
 
-    const q = query(
-      docRef,
-      where('userID', '==', userID),
-      limit(queryLimit as number)
-    );
-
+    const q = query(docRef, limit(queryLimit as number));
     const shifts = await this.getFirestoreDocsByQuery(q);
 
     if (shifts) {
@@ -188,18 +180,17 @@ export class FirestoreService {
   }
 
   //! GET ALL SHIFTS
-  async handleGetAllShifts(queryLimit: number) {
-    const [currentYear, currentMonth] = this.customFN.getCurrentYearMonth();
-
+  async handleGetAllShifts(userID: string, queryLimit: number) {
     const docRef = collection(
       this.firestore,
-      this.fbConfig.dev.shiftsDB,
-      ...[currentYear, currentMonth]
+      firestoreConfig.dev.shiftsDB.base,
+      ...[firestoreConfig.dev.shiftsDB.shiftsSubColl, userID]
     );
 
     const q = query(docRef, limit(queryLimit));
 
     const shifts = await this.getFirestoreDocsByQuery(q);
+    console.log(shifts);
 
     if (shifts) {
       this.state.setState({ shifts: shifts });
@@ -209,16 +200,40 @@ export class FirestoreService {
   }
 
   //! GET SHIFTS BY SEARCH QUERY
-  async handleGetShiftsBySearch(queryName: string) {
-    const [currentYear, currentMonth] = this.customFN.getCurrentYearMonth();
-
+  async handleGetShiftsBySearch(userID: string, queryName: string) {
     const docRef = collection(
       this.firestore,
-      this.fbConfig.dev.shiftsDB,
-      ...[currentYear, currentMonth]
+      firestoreConfig.dev.shiftsDB.base,
+      ...[firestoreConfig.dev.shiftsDB.shiftsSubColl, userID]
     );
 
     const q = query(docRef, where('workplace', '==', queryName), limit(10));
+
+    const shifts = await this.getFirestoreDocsByQuery(q);
+
+    if (shifts) {
+      this.state.setState({ shifts: shifts });
+      return shifts;
+    }
+  }
+
+  //! GET SHIFTS BY WEEK
+  async handleGetShiftsByWeek(
+    userID: string,
+    startDate: number,
+    endDate: number
+  ) {
+    const docRef = collection(
+      this.firestore,
+      firestoreConfig.dev.shiftsDB.base,
+      ...[firestoreConfig.dev.shiftsDB.shiftsSubColl, userID]
+    );
+
+    const q = query(
+      docRef,
+      where('shiftDate', '>=', startDate),
+      where('shiftDate', '<=', endDate)
+    );
 
     const shifts = await this.getFirestoreDocsByQuery(q);
 

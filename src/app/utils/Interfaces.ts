@@ -6,7 +6,7 @@ export interface State {
   currentLoggedFireUser?: UserSettings;
   currentUserShifts?: Shift[];
   isLoggedIn: boolean;
-  isAdmin: boolean;
+  role: string | undefined;
   activeComponent: string;
   isEditing: boolean;
   shiftToEdit: Shift | undefined;
@@ -16,6 +16,8 @@ export interface State {
   shifts: Shift[];
 
   searchForm: SearchFilters;
+
+  updateStats: boolean;
 }
 
 export interface UserSettings {
@@ -29,21 +31,21 @@ export interface UserSettings {
   id: string;
   phoneNumber: string;
   profileImage: string;
-  adminPanel: {
-    isAdmin: boolean;
-  };
+  role: string;
   userWorkplaces: string[];
 }
 
 export interface Shift {
   shiftID: string;
-  shiftDate: string;
-  startTime: string;
-  endTime: string;
+  userID: string;
+  shiftDate: number;
+  startTime: number;
+  endTime: number;
   workplace: string;
   wagePerHour: number;
   shiftRevenue: number;
-  timeStamp: Date;
+  creationDate: Date;
+  lastUpdateDate: Date;
   [key: string]: any;
   userInfo: {
     firstName: string;
