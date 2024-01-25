@@ -13,7 +13,7 @@ import {
 import { RegisterFormData } from 'src/app/pages/register/register.component';
 import { calculateAge } from '../../functions';
 import { userProfile } from '../../userProfile';
-import { StateService, initialState } from '../state/state.service';
+import { StateService } from '../state/state.service';
 import { FirestoreService } from '../firestore/firestore.service';
 import { firestoreConfig } from 'firebase.config';
 import { Router } from '@angular/router';
@@ -21,6 +21,8 @@ import { State } from '../../Interfaces';
 import { ToastService } from '../toast/toast.service';
 import { errorMessages, successMessages } from '../../toastMessages';
 import { arrayRemove, arrayUnion } from '@angular/fire/firestore';
+import { defaultStatsObject } from '../statistics/defaultStatsObject';
+import { StatisticsService } from '../statistics/statistics.service';
 
 @Injectable({
   providedIn: 'root',
@@ -34,7 +36,8 @@ export class AuthService {
     private state: StateService,
     private firestore: FirestoreService,
     private toast: ToastService,
-    private router: Router
+    private router: Router,
+    private statsService: StatisticsService
   ) {}
 
   //! CREATE ACCOUNT
@@ -78,6 +81,24 @@ export class AuthService {
                   lastName,
                 }),
               }
+            );
+
+            // init statistics
+            this.firestore.setFirestoreDoc(
+              firestoreConfig.dev.statistics.base,
+              [
+                firestoreConfig.dev.statistics.users,
+                userCredential.user.uid,
+                new Date().getFullYear().toString(),
+              ],
+              defaultStatsObject
+            );
+
+            this.statsService.updateAdminStatistics(
+              ['totalUsers'],
+              1,
+              'add',
+              'totalUsers'
             );
 
             // add user information to state
@@ -148,7 +169,7 @@ export class AuthService {
   //! LOGOUT
   async logout() {
     await signOut(this.auth);
-    this.state.setState(initialState);
+    this.state.resetState();
     this.firestore.clearLocalStorage();
 
     this.router.navigate(['/login']);
@@ -194,6 +215,20 @@ export class AuthService {
         }
       );
 
+      // delete statistics
+      this.firestore.deleteFirestoreDoc(firestoreConfig.dev.statistics.base, [
+        firestoreConfig.dev.statistics.users,
+        user.uid,
+      ]);
+
+      // decrese total users count
+      this.statsService.updateAdminStatistics(
+        ['totalUsers'],
+        1,
+        'substract',
+        'totalUsers'
+      );
+
       // delete user
       await deleteUser(user);
 
@@ -201,6 +236,7 @@ export class AuthService {
       // logout the user end return in to login page
       this.toast.success(successMessages.deleteAccount);
       setTimeout(() => {
+        this.state.resetState();
         this.router.navigate(['/login']);
       }, 1000);
     } catch (error) {

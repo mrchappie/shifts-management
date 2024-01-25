@@ -22,6 +22,8 @@ import { errorMessages, successMessages } from 'src/app/utils/toastMessages';
 import { ValidationService } from './validationService/validation.service';
 import { timeStringToMilliseconds } from 'src/app/utils/functions';
 import { MilisecondsToTimePipe } from 'src/app/utils/pipes/milisecondsToTime/miliseconds-to-time.pipe';
+import { UpdateStatsService } from './updateStatsService/update-stats.service';
+import { getRouteToNavigate, getTodayDate } from './helpers';
 import { WeekShiftsComponent } from './week-shifts/week-shifts.component';
 
 @Component({
@@ -65,7 +67,8 @@ export class HandleShiftsComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private toast: ToastService,
-    private validation: ValidationService
+    private validation: ValidationService,
+    private updateStats: UpdateStatsService
   ) {}
 
   ngOnInit(): void {
@@ -84,11 +87,11 @@ export class HandleShiftsComponent implements OnInit {
     this.shiftForm = this.fb.group({
       shiftID: [uuidv4()],
       shiftDate: ['', [Validators.required]],
-      startTime: ['', [Validators.required]],
-      endTime: ['', [Validators.required]],
-      workplace: ['', [Validators.required]],
-      wagePerHour: ['', [Validators.required]],
-      shiftRevenue: [''],
+      startTime: ['12:00', [Validators.required]],
+      endTime: ['20:00', [Validators.required]],
+      workplace: ['Penny', [Validators.required]],
+      wagePerHour: ['10', [Validators.required]],
+      shiftRevenue: ['80'],
     });
 
     this.currentState = this.state.getState();
@@ -125,7 +128,7 @@ export class HandleShiftsComponent implements OnInit {
     if (this.parent != 'add-shift') {
       this.loadShiftData();
     } else {
-      this.shiftForm.patchValue({ shiftDate: this.getTodayDate() });
+      this.shiftForm.patchValue({ shiftDate: getTodayDate() });
     }
 
     this.stateSubscription = this.state.stateChanged.subscribe((newState) => {
@@ -258,15 +261,6 @@ export class HandleShiftsComponent implements OnInit {
     }
   }
 
-  getTodayDate() {
-    const today = new Date();
-    const year = today.getFullYear().toString();
-    const month = (today.getMonth() + 1).toString().padStart(2, '0');
-    const day = today.getDate().toString().padStart(2, '0');
-
-    return `${year}-${month}-${day}`;
-  }
-
   // form validation service
   formInputStatus(control: string): boolean {
     return this.validation.getFormInputStatus(this.shiftForm, control);
@@ -307,8 +301,7 @@ export class HandleShiftsComponent implements OnInit {
         },
       };
 
-      console.log(this.parent);
-
+      // setting the shift in DB
       await this.firestore
         .setFirestoreDoc(
           firestoreConfig.dev.shiftsDB.base,
@@ -322,6 +315,7 @@ export class HandleShiftsComponent implements OnInit {
           shiftData
         )
         .then(() => {
+          // after the setFirestoreDoc function call is done, a toast is generated
           if (!this.isEditing) {
             this.toast.success(successMessages.firestore.shift.add);
           } else {
@@ -330,25 +324,28 @@ export class HandleShiftsComponent implements OnInit {
           }
         });
 
-      const getRouteToNavigate = () => {
-        if (this.parent === 'my-shifts') {
-          return ['my-shifts'];
-        }
-        // redirect to all-shifts page after an admin edits a shift from all-shifts page
-        if (this.parent === 'all-shifts') {
-          return ['admin/all-shifts'];
-        }
-        // redirect to edit-user page for that particular user after an admin edits a user shift
-        if (this.parent === 'edit-user') {
-          return ['admin/all-users/edit-user', this.userIDParams];
-        }
-        // default route when an user adds a shifts
-        return ['my-shifts'];
-      };
+      // update statistics
+      if (!this.isEditing) {
+        this.updateStats.addNewShiftStats(
+          this.currentState.currentLoggedFireUser!.id,
+          shiftData
+        );
+        // set updateStats to true so the app know to refetch de data
+        // this.state.setState({ updateStats: true });
+      } else {
+        this.updateStats.updateExistingShiftStats(
+          this.currentState.currentLoggedFireUser!.id,
+          shiftData,
+          this.shiftToEdit
+        );
+        // this.state.setState({ updateStats: true });
+      }
 
       this.router
-        .navigate([getRouteToNavigate()[0]], {
-          queryParams: { userID: getRouteToNavigate()[1] },
+        .navigate([getRouteToNavigate(this.parent)[0]], {
+          queryParams: {
+            userID: getRouteToNavigate(this.parent, this.userIDParams)[1],
+          },
         })
         .then(() => {
           this.shiftForm.patchValue(this.initialFormValue);
@@ -361,7 +358,7 @@ export class HandleShiftsComponent implements OnInit {
   private initialFormValue = {
     shiftID: [uuidv4()],
     shiftDate: '',
-    startTime: this.getTodayDate(),
+    startTime: getTodayDate(),
     endTime: '',
     workplace: '',
     wagePerHour: '',

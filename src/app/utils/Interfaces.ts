@@ -16,6 +16,8 @@ export interface State {
   shifts: Shift[];
 
   searchForm: SearchFilters;
+
+  updateStats: boolean;
 }
 
 export interface UserSettings {

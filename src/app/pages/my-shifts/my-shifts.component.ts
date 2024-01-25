@@ -12,6 +12,8 @@ import { NgIf, NgFor } from '@angular/common';
 import { NewSearchComponent } from '../../components/search/search.component';
 import { ToastService } from 'src/app/utils/services/toast/toast.service';
 import { errorMessages, successMessages } from 'src/app/utils/toastMessages';
+import { StatisticsService } from 'src/app/utils/services/statistics/statistics.service';
+import { UpdateStatsService } from '../handle-shifts/updateStatsService/update-stats.service';
 
 @Component({
   selector: 'app-my-shifts',
@@ -55,7 +57,8 @@ export class MyShiftsComponent implements OnInit, OnDestroy {
     private firestore: FirestoreService,
     private state: StateService,
     private router: Router,
-    private toast: ToastService
+    private toast: ToastService,
+    private updateStats: UpdateStatsService
   ) {}
 
   ngOnInit(): void {
@@ -121,6 +124,14 @@ export class MyShiftsComponent implements OnInit, OnDestroy {
         shift.userID,
         shift.shiftID,
       ]);
+
+      this.updateStats.deleteShiftStats(
+        this.currentState.currentLoggedFireUser!.id,
+        shift
+      );
+
+      // set updateStats to true so the app know to refetch de data
+      // this.state.setState({ updateStats: true });
 
       this.toast.success(successMessages.firestore.shift.delete);
 

@@ -58,6 +58,7 @@ export class FirestoreService {
       const docSnap = await getDoc(docRef);
 
       if (docSnap.exists()) {
+        // console.log(docSnap.data());
         return docSnap.data();
       } else {
         return [];
@@ -126,7 +127,6 @@ export class FirestoreService {
       await setDoc(docRef, data);
     } catch (error) {
       console.log(error);
-      console.log(collectionPath, documentPath);
       this.toast.error(errorMessages.firestore);
     }
   }
@@ -156,6 +156,7 @@ export class FirestoreService {
     try {
       await deleteDoc(doc(this.firestore, collectionName, ...documentPath));
     } catch (error) {
+      console.log(error);
       this.toast.error(errorMessages.firestore);
     }
   }
