@@ -56,7 +56,7 @@ export class AuthService {
       if (userCredential) {
         this.firestore
           .setFirestoreDoc(
-            firestoreConfig.dev.usersDB,
+            firestoreConfig.firestore.usersDB,
             [userCredential.user.uid],
             {
               firstName,
@@ -72,8 +72,8 @@ export class AuthService {
           .then(() => {
             // set basic user info in shiftsDB
             this.firestore.updateFirestoreDoc(
-              firestoreConfig.dev.shiftsDB.base,
-              [firestoreConfig.dev.shiftsDB.usersSubColl],
+              firestoreConfig.firestore.shiftsDB.base,
+              [firestoreConfig.firestore.shiftsDB.usernames],
               {
                 info: arrayUnion({
                   userID: userCredential.user.uid,
@@ -85,14 +85,25 @@ export class AuthService {
 
             // init statistics
             this.firestore.setFirestoreDoc(
-              firestoreConfig.dev.statistics.base,
+              firestoreConfig.firestore.statistics.base,
               [
-                firestoreConfig.dev.statistics.users,
-                userCredential.user.uid,
+                firestoreConfig.firestore.statistics.users,
                 new Date().getFullYear().toString(),
+                userCredential.user.uid,
               ],
               defaultStatsObject
             );
+
+            //! init statistics for admin test only
+            // this.firestore.setFirestoreDoc(
+            //   firestoreConfig.firestore.statistics.base,
+            //   [
+            //     firestoreConfig.firestore.statistics.admin,
+            //     'year',
+            //     new Date().getFullYear().toString(),
+            //   ],
+            //   defaultStatsObject
+            // );
 
             this.statsService.updateAdminStatistics(
               ['totalUsers'],
@@ -104,7 +115,7 @@ export class AuthService {
             // add user information to state
             this.state.setState({
               currentLoggedFireUser: this.firestore.getFirestoreDoc(
-                firestoreConfig.dev.usersDB,
+                firestoreConfig.firestore.usersDB,
                 [userCredential.user.uid]
               ),
               currentUserCred: userCredential,
@@ -119,7 +130,6 @@ export class AuthService {
               this.currentState.currentLoggedFireUser
             );
           });
-        return;
       }
       this.toast.success(successMessages.register);
     } catch (error) {
@@ -142,7 +152,7 @@ export class AuthService {
         // add user information to state
         this.state.setState({
           currentLoggedFireUser: await this.firestore.getFirestoreDoc(
-            firestoreConfig.dev.usersDB,
+            firestoreConfig.firestore.usersDB,
             [userCredential.user.uid]
           ),
           currentUserCred: userCredential,
@@ -194,18 +204,18 @@ export class AuthService {
       await reauthenticateWithCredential(user, credentials);
 
       // delete user info from firestore
-      this.firestore.deleteFirestoreDoc(firestoreConfig.dev.usersDB, [
+      this.firestore.deleteFirestoreDoc(firestoreConfig.firestore.usersDB, [
         user.uid,
       ]);
-      // delete user shifts from firestore
-      this.firestore.deleteFirestoreDoc(firestoreConfig.dev.shiftsDB.base, [
-        firestoreConfig.dev.shiftsDB.shiftsSubColl,
-        user.uid,
-      ]);
+      //! BUG delete user shifts from firestore
+      // this.firestore.deleteFirestoreDoc(
+      //   firestoreConfig.firestore.shiftsDB.base,
+      //   [firestoreConfig.firestore.shiftsDB.shifts, 'users', user.uid]
+      // );
       // remove basic user info from shifts BD
       this.firestore.updateFirestoreDoc(
-        firestoreConfig.dev.shiftsDB.base,
-        [firestoreConfig.dev.shiftsDB.usersSubColl],
+        firestoreConfig.firestore.shiftsDB.base,
+        [firestoreConfig.firestore.shiftsDB.usernames],
         {
           info: arrayRemove({
             userID: user.uid,
@@ -216,10 +226,10 @@ export class AuthService {
       );
 
       // delete statistics
-      this.firestore.deleteFirestoreDoc(firestoreConfig.dev.statistics.base, [
-        firestoreConfig.dev.statistics.users,
-        user.uid,
-      ]);
+      this.firestore.deleteFirestoreDoc(
+        firestoreConfig.firestore.statistics.base,
+        [firestoreConfig.firestore.statistics.users, '2024', user.uid]
+      );
 
       // decrese total users count
       this.statsService.updateAdminStatistics(
@@ -252,7 +262,7 @@ export class AuthService {
           // User is signed in
           this.state.setState({
             currentLoggedFireUser: await this.firestore.getFirestoreDoc(
-              firestoreConfig.dev.usersDB,
+              firestoreConfig.firestore.usersDB,
               [user.uid]
             ),
             emailVerified: user.emailVerified,
@@ -261,7 +271,7 @@ export class AuthService {
           });
           resolve(user);
 
-          // this.updateFirestoreDoc(firestoreConfig.dev.usersDB, [user.uid], {
+          // this.updateFirestoreDoc(firestoreConfig.firestore.usersDB, [user.uid], {
           //   emailVerified: user.emailVerified,
           // });
         } else {

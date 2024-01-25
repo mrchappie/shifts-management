@@ -127,17 +127,17 @@ export class UpdateStatsService {
       userID
     );
     this.statsService.updateUserStatistics(
-      ['totalShifts'],
-      1,
-      'subtract',
-      'totalShifts',
-      userID
-    );
-    this.statsService.updateUserStatistics(
       ['earnedRevenueByMonth', 'january'],
       shiftData.shiftRevenue,
       'subtract',
       'revenue',
+      userID
+    );
+    this.statsService.updateUserStatistics(
+      ['totalShifts'],
+      1,
+      'subtract',
+      'totalShifts',
       userID
     );
     this.statsService.updateUserStatistics(

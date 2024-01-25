@@ -93,5 +93,8 @@
       </button>
     </form>
   </div>
-  <app-week-shifts class="flex-1"></app-week-shifts>
+  <app-week-shifts
+    [shiftID]="currentState.currentLoggedFireUser!.id"
+    class="flex-1"
+  ></app-week-shifts>
 </div>

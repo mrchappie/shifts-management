@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { arrayUnion, arrayRemove } from '@angular/fire/firestore';
-import { FirebaseConfigI, firestoreConfig } from 'firebase.config';
+import { firestoreConfig } from 'firebase.config';
 import { Subscription } from 'rxjs';
 import { NgFor } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
@@ -22,9 +22,6 @@ export class AddWorkplaceComponent {
   currentState!: State;
   newWorkplace: string = '';
   userWorkplaces: string[] = [];
-
-  // firestore Config
-  fbConfig: FirebaseConfigI = firestoreConfig;
 
   private stateSubscription: Subscription | undefined;
 
@@ -68,7 +65,7 @@ export class AddWorkplaceComponent {
     if (this.newWorkplace === '') return;
     try {
       this.firestore.updateFirestoreDoc(
-        this.fbConfig.dev.usersDB,
+        firestoreConfig.firestore.usersDB,
         [this.userIDFromURL ?? this.currentState.currentLoggedFireUser!.id],
         { userWorkplaces: arrayUnion(this.newWorkplace) }
       );
@@ -97,7 +94,7 @@ export class AddWorkplaceComponent {
   removeWorkplace(workplace: string) {
     try {
       this.firestore.updateFirestoreDoc(
-        this.fbConfig.dev.usersDB,
+        firestoreConfig.firestore.usersDB,
         [this.userIDFromURL ?? this.currentState.currentLoggedFireUser!.id],
         { userWorkplaces: arrayRemove(workplace) }
       );
@@ -123,7 +120,7 @@ export class AddWorkplaceComponent {
   // fetch user workplaces if a user information is modified from admin panel
   async getUserWorkplaces(userID: string) {
     const userData = (await this.firestore.getFirestoreDoc(
-      this.fbConfig.dev.usersDB,
+      firestoreConfig.firestore.usersDB,
       [userID]
     )) as UserSettings;
 
@@ -133,7 +130,7 @@ export class AddWorkplaceComponent {
   // update state only if the user profile page is accessed
   async updateState() {
     const userSettings = await this.firestore.getFirestoreDoc(
-      this.fbConfig.dev.usersDB,
+      firestoreConfig.firestore.usersDB,
       [this.currentState.currentLoggedFireUser!.id]
     );
 
