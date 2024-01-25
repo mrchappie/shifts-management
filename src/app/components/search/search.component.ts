@@ -116,8 +116,8 @@ export class NewSearchComponent implements OnInit, OnDestroy {
   // fetching users info from DB
   async initUsersSearchOptions() {
     const tempArr = (await this.firestore.getFirestoreDoc(
-      firestoreConfig.dev.shiftsDB.base,
-      [firestoreConfig.dev.shiftsDB.usersSubColl]
+      firestoreConfig.firestore.shiftsDB.base,
+      [firestoreConfig.firestore.shiftsDB.usernames]
     )) as {
       info: { userID: string; firstName: string; lastName: string }[];
     };

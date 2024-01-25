@@ -192,9 +192,9 @@ export class HandleShiftsComponent implements OnInit {
 
   async loadShiftData() {
     const shiftToBeEdited = await this.firestore.getFirestoreDoc(
-      firestoreConfig.dev.shiftsDB.base,
+      firestoreConfig.firestore.shiftsDB.base,
       [
-        firestoreConfig.dev.shiftsDB.shiftsSubColl,
+        firestoreConfig.firestore.shiftsDB.shifts,
         this.userIDParams ? this.userIDParams : this.currentUser.id,
         this.shiftIDParams,
       ]
@@ -217,7 +217,7 @@ export class HandleShiftsComponent implements OnInit {
 
   async getEditedUserData(userID: string) {
     const data = (await this.firestore.getFirestoreDoc(
-      firestoreConfig.dev.usersDB,
+      firestoreConfig.firestore.usersDB,
       [userID]
     )) as UserSettings;
 
@@ -304,9 +304,9 @@ export class HandleShiftsComponent implements OnInit {
       // setting the shift in DB
       await this.firestore
         .setFirestoreDoc(
-          firestoreConfig.dev.shiftsDB.base,
+          firestoreConfig.firestore.shiftsDB.base,
           [
-            firestoreConfig.dev.shiftsDB.shiftsSubColl,
+            firestoreConfig.firestore.shiftsDB.shifts,
             this.parent === 'my-shifts' || this.parent === 'add-shift'
               ? this.currentUser.id
               : this.userIDParams,

@@ -31,7 +31,7 @@ export class StatisticsService {
 
   async getStatisticsFromDB(documentPath: string[]) {
     await this.firestore
-      .getFirestoreDoc(firestoreConfig.dev.statistics.base, documentPath)
+      .getFirestoreDoc(firestoreConfig.firestore.statistics.base, documentPath)
       .then((data) => {
         this.setStatistics(data as Statistics);
         console.log('update');
@@ -48,9 +48,9 @@ export class StatisticsService {
     userID: string
   ) {
     this.getStatisticsFromDB([
-      firestoreConfig.dev.statistics.users,
-      userID,
+      firestoreConfig.firestore.statistics.users,
       '2024',
+      userID,
     ]).then(() => {
       //?
       //? if a shift or a value is added, update the correct statistic
@@ -94,8 +94,8 @@ export class StatisticsService {
 
         // update the user statistics
         this.firestore.updateFirestoreDoc(
-          firestoreConfig.dev.statistics.base,
-          [firestoreConfig.dev.statistics.users, userID, '2024'],
+          firestoreConfig.firestore.statistics.base,
+          [firestoreConfig.firestore.statistics.users, '2024', userID],
           updateObject
         );
         // update statistics for admin dashboard
@@ -134,8 +134,8 @@ export class StatisticsService {
 
         // update the user statistics
         this.firestore.updateFirestoreDoc(
-          firestoreConfig.dev.statistics.base,
-          [firestoreConfig.dev.statistics.users, userID, '2024'],
+          firestoreConfig.firestore.statistics.base,
+          [firestoreConfig.firestore.statistics.users, '2024', userID],
           updateObject
         );
         // update statistics for admin dashboard
@@ -152,7 +152,7 @@ export class StatisticsService {
   ) {
     // update the admin statistic
     this.getStatisticsFromDB([
-      firestoreConfig.dev.statistics.admin,
+      firestoreConfig.firestore.statistics.admin,
       'year',
       '2024',
     ]).then(() => {
@@ -203,8 +203,8 @@ export class StatisticsService {
 
         // update the user statistics
         this.firestore.updateFirestoreDoc(
-          firestoreConfig.dev.statistics.base,
-          [firestoreConfig.dev.statistics.admin, 'year', '2024'],
+          firestoreConfig.firestore.statistics.base,
+          [firestoreConfig.firestore.statistics.admin, 'year', '2024'],
           updateObject
         );
       }
@@ -241,8 +241,8 @@ export class StatisticsService {
 
         // update the user statistics
         this.firestore.updateFirestoreDoc(
-          firestoreConfig.dev.statistics.base,
-          [firestoreConfig.dev.statistics.admin, 'year', '2024'],
+          firestoreConfig.firestore.statistics.base,
+          [firestoreConfig.firestore.statistics.admin, 'year', '2024'],
           updateObject
         );
       }

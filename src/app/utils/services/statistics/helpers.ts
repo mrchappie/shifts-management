@@ -36,7 +36,7 @@
 //       const queryOptions = {
 //         month: '',
 //         year: '',
-//         collectionName: firestoreConfig.dev.shiftsDB,
+//         collectionName: firestoreConfig.firestore.shiftsDB,
 //         collectionPath: [new Date().getFullYear().toString(), month],
 //         queryName: 'userID',
 //         queryValue: this.loggedUserID,

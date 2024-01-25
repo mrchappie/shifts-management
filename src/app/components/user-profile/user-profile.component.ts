@@ -117,7 +117,7 @@ export class UserProfileComponent {
 
   async getUserData(userIDFromParams: string) {
     this.userSettings = (await this.firestore.getFirestoreDoc(
-      firestoreConfig.dev.usersDB,
+      firestoreConfig.firestore.usersDB,
       [userIDFromParams]
     )) as UserSettings;
     this.profileImage = this.userSettings.profileImage;
@@ -175,7 +175,7 @@ export class UserProfileComponent {
 
       // update de user profile picture in firestore
       this.firestore.updateFirestoreDoc(
-        firestoreConfig.dev.usersDB,
+        firestoreConfig.firestore.usersDB,
         [this.userIDFromParams],
         {
           profileImage: imageUrl,
@@ -218,7 +218,7 @@ export class UserProfileComponent {
   // change profile avatar
   changeProfileAvatar(avatar: string) {
     this.firestore.updateFirestoreDoc(
-      firestoreConfig.dev.usersDB,
+      firestoreConfig.firestore.usersDB,
       [this.userIDFromParams],
       {
         profileImage: avatar,
@@ -254,7 +254,7 @@ export class UserProfileComponent {
     try {
       if (!this.userIDFromParams) {
         await this.firestore.updateFirestoreDoc(
-          firestoreConfig.dev.usersDB,
+          firestoreConfig.firestore.usersDB,
           [this.currentState.currentLoggedFireUser!.id],
           {
             ...this.userProfileForm.value,
@@ -264,7 +264,7 @@ export class UserProfileComponent {
         this.state.setState(this.userProfileForm.value);
       } else {
         await this.firestore.updateFirestoreDoc(
-          firestoreConfig.dev.usersDB,
+          firestoreConfig.firestore.usersDB,
           [this.userIDFromParams],
           {
             ...this.userProfileForm.value,

@@ -1,23 +1,10 @@
 export const firestoreConfig: FirebaseConfigI = {
-  prod: {
+  firestore: {
     usersDB: 'shiftAppUsers',
     shiftsDB: {
       base: 'shiftAppShifts',
-      shiftsSubColl: 'shifts',
-      usersSubColl: 'users',
-    },
-    statistics: {
-      base: 'statistics',
-      users: 'users',
-      admin: 'admin',
-    },
-  },
-  dev: {
-    usersDB: 'shiftAppUsers',
-    shiftsDB: {
-      base: 'shiftAppShifts',
-      shiftsSubColl: 'shifts',
-      usersSubColl: 'users',
+      shifts: 'shifts',
+      usernames: 'usernames',
     },
     statistics: {
       base: 'statistics',
@@ -42,16 +29,7 @@ export const firebaseAPIConfig: { [key: string]: string } = {
 };
 
 export interface FirebaseConfigI {
-  prod: {
-    usersDB: string;
-    shiftsDB: {
-      [key: string]: string;
-    };
-    statistics: {
-      [key: string]: string;
-    };
-  };
-  dev: {
+  firestore: {
     usersDB: string;
     shiftsDB: {
       [key: string]: string;

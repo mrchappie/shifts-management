@@ -3,7 +3,7 @@ import { SearchFilters, State, UserSettings } from 'src/app/utils/Interfaces';
 import { Subscription } from 'rxjs';
 import { StateService } from 'src/app/utils/services/state/state.service';
 import { FirestoreService } from 'src/app/utils/services/firestore/firestore.service';
-import { FirebaseConfigI, firestoreConfig } from 'firebase.config';
+import { firestoreConfig } from 'firebase.config';
 import { CustomShiftsFilterPipe } from '../../../utils/pipes/customFilter/custom-shifts-filter.pipe';
 import { UserCardComponent } from './user-card/user-card.component';
 import { NewSearchComponent } from '../../../components/search/search.component';
@@ -40,9 +40,6 @@ export class AllUsersComponent implements OnInit, OnDestroy {
     queryLimit: 10,
   };
 
-  // firestore Config
-  fbConfig: FirebaseConfigI = firestoreConfig;
-
   // component data
   allUsers: UserSettings[] = [];
   showModal: boolean = false;
@@ -75,7 +72,7 @@ export class AllUsersComponent implements OnInit, OnDestroy {
 
   async getAllUsers() {
     this.allUsers = await this.firestore.getFirestoreDocs(
-      this.fbConfig.dev.usersDB,
+      firestoreConfig.firestore.usersDB,
       []
     );
   }
@@ -88,7 +85,7 @@ export class AllUsersComponent implements OnInit, OnDestroy {
   confirmModal(event: Event) {
     event.stopPropagation();
     try {
-      this.firestore.deleteFirestoreDoc(firestoreConfig.dev.usersDB, [
+      this.firestore.deleteFirestoreDoc(firestoreConfig.firestore.usersDB, [
         this.userID,
       ]);
       this.showModal = !this.showModal;

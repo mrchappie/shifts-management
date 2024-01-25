@@ -49,7 +49,7 @@ export class AdminRightsComponent implements OnInit {
   async onSubmit(isAdmin: boolean) {
     const role = isAdmin ? 'admin' : 'user';
     await this.firestore.updateFirestoreDoc(
-      firestoreConfig.dev.usersDB,
+      firestoreConfig.firestore.usersDB,
       [this.userID],
       { role }
     );
