@@ -56,7 +56,7 @@ export class DashboardComponent {
 
     this.statsService
       .getStatisticsFromDB([
-        firestoreConfig.dev.statistics.admin,
+        firestoreConfig.firestore.statistics.admin,
         'year',
         '2024',
       ])

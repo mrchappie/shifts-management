@@ -165,8 +165,8 @@ export class FirestoreService {
   async handleGetShiftsByUserID(userID: string, queryLimit?: number) {
     const docRef = collection(
       this.firestore,
-      firestoreConfig.dev.shiftsDB.base,
-      ...[firestoreConfig.dev.shiftsDB.shiftsSubColl, userID]
+      firestoreConfig.firestore.shiftsDB.base,
+      ...[firestoreConfig.firestore.shiftsDB.shifts, userID]
     );
 
     const q = query(docRef, limit(queryLimit as number));
@@ -183,8 +183,8 @@ export class FirestoreService {
   async handleGetAllShifts(userID: string, queryLimit: number) {
     const docRef = collection(
       this.firestore,
-      firestoreConfig.dev.shiftsDB.base,
-      ...[firestoreConfig.dev.shiftsDB.shiftsSubColl, userID]
+      firestoreConfig.firestore.shiftsDB.base,
+      ...[firestoreConfig.firestore.shiftsDB.shifts, userID]
     );
 
     const q = query(docRef, limit(queryLimit));
@@ -203,8 +203,8 @@ export class FirestoreService {
   async handleGetShiftsBySearch(userID: string, queryName: string) {
     const docRef = collection(
       this.firestore,
-      firestoreConfig.dev.shiftsDB.base,
-      ...[firestoreConfig.dev.shiftsDB.shiftsSubColl, userID]
+      firestoreConfig.firestore.shiftsDB.base,
+      ...[firestoreConfig.firestore.shiftsDB.shifts, userID]
     );
 
     const q = query(docRef, where('workplace', '==', queryName), limit(10));

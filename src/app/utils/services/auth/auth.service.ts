@@ -56,7 +56,7 @@ export class AuthService {
       if (userCredential) {
         this.firestore
           .setFirestoreDoc(
-            firestoreConfig.dev.usersDB,
+            firestoreConfig.firestore.usersDB,
             [userCredential.user.uid],
             {
               firstName,
@@ -72,8 +72,8 @@ export class AuthService {
           .then(() => {
             // set basic user info in shiftsDB
             this.firestore.updateFirestoreDoc(
-              firestoreConfig.dev.shiftsDB.base,
-              [firestoreConfig.dev.shiftsDB.usersSubColl],
+              firestoreConfig.firestore.shiftsDB.base,
+              [firestoreConfig.firestore.shiftsDB.usersSubColl],
               {
                 info: arrayUnion({
                   userID: userCredential.user.uid,
@@ -85,9 +85,9 @@ export class AuthService {
 
             // init statistics
             this.firestore.setFirestoreDoc(
-              firestoreConfig.dev.statistics.base,
+              firestoreConfig.firestore.statistics.base,
               [
-                firestoreConfig.dev.statistics.users,
+                firestoreConfig.firestore.statistics.users,
                 userCredential.user.uid,
                 new Date().getFullYear().toString(),
               ],
@@ -104,7 +104,7 @@ export class AuthService {
             // add user information to state
             this.state.setState({
               currentLoggedFireUser: this.firestore.getFirestoreDoc(
-                firestoreConfig.dev.usersDB,
+                firestoreConfig.firestore.usersDB,
                 [userCredential.user.uid]
               ),
               currentUserCred: userCredential,
@@ -142,7 +142,7 @@ export class AuthService {
         // add user information to state
         this.state.setState({
           currentLoggedFireUser: await this.firestore.getFirestoreDoc(
-            firestoreConfig.dev.usersDB,
+            firestoreConfig.firestore.usersDB,
             [userCredential.user.uid]
           ),
           currentUserCred: userCredential,
@@ -194,18 +194,18 @@ export class AuthService {
       await reauthenticateWithCredential(user, credentials);
 
       // delete user info from firestore
-      this.firestore.deleteFirestoreDoc(firestoreConfig.dev.usersDB, [
+      this.firestore.deleteFirestoreDoc(firestoreConfig.firestore.usersDB, [
         user.uid,
       ]);
       // delete user shifts from firestore
-      this.firestore.deleteFirestoreDoc(firestoreConfig.dev.shiftsDB.base, [
-        firestoreConfig.dev.shiftsDB.shiftsSubColl,
-        user.uid,
-      ]);
+      this.firestore.deleteFirestoreDoc(
+        firestoreConfig.firestore.shiftsDB.base,
+        [firestoreConfig.firestore.shiftsDB.shifts, user.uid]
+      );
       // remove basic user info from shifts BD
       this.firestore.updateFirestoreDoc(
-        firestoreConfig.dev.shiftsDB.base,
-        [firestoreConfig.dev.shiftsDB.usersSubColl],
+        firestoreConfig.firestore.shiftsDB.base,
+        [firestoreConfig.firestore.shiftsDB.usersSubColl],
         {
           info: arrayRemove({
             userID: user.uid,
@@ -216,10 +216,10 @@ export class AuthService {
       );
 
       // delete statistics
-      this.firestore.deleteFirestoreDoc(firestoreConfig.dev.statistics.base, [
-        firestoreConfig.dev.statistics.users,
-        user.uid,
-      ]);
+      this.firestore.deleteFirestoreDoc(
+        firestoreConfig.firestore.statistics.base,
+        [firestoreConfig.firestore.statistics.users, user.uid]
+      );
 
       // decrese total users count
       this.statsService.updateAdminStatistics(
@@ -252,7 +252,7 @@ export class AuthService {
           // User is signed in
           this.state.setState({
             currentLoggedFireUser: await this.firestore.getFirestoreDoc(
-              firestoreConfig.dev.usersDB,
+              firestoreConfig.firestore.usersDB,
               [user.uid]
             ),
             emailVerified: user.emailVerified,
@@ -261,7 +261,7 @@ export class AuthService {
           });
           resolve(user);
 
-          // this.updateFirestoreDoc(firestoreConfig.dev.usersDB, [user.uid], {
+          // this.updateFirestoreDoc(firestoreConfig.firestore.usersDB, [user.uid], {
           //   emailVerified: user.emailVerified,
           // });
         } else {

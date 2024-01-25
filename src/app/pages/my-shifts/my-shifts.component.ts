@@ -119,11 +119,10 @@ export class MyShiftsComponent implements OnInit, OnDestroy {
 
   deleteShift(shift: Shift) {
     try {
-      this.firestore.deleteFirestoreDoc(firestoreConfig.dev.shiftsDB.base, [
-        firestoreConfig.dev.shiftsDB.shiftsSubColl,
-        shift.userID,
-        shift.shiftID,
-      ]);
+      this.firestore.deleteFirestoreDoc(
+        firestoreConfig.firestore.shiftsDB.base,
+        [firestoreConfig.firestore.shiftsDB.shifts, shift.userID, shift.shiftID]
+      );
 
       this.updateStats.deleteShiftStats(
         this.currentState.currentLoggedFireUser!.id,
