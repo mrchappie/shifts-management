@@ -225,8 +225,8 @@ export class FirestoreService {
   ) {
     const docRef = collection(
       this.firestore,
-      firestoreConfig.dev.shiftsDB.base,
-      ...[firestoreConfig.dev.shiftsDB.shiftsSubColl, userID]
+      firestoreConfig.firestore.shiftsDB.base,
+      ...[firestoreConfig.firestore.shiftsDB.shifts, userID]
     );
 
     const q = query(

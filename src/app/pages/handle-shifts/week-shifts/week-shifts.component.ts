@@ -1,5 +1,5 @@
 import { NgClass, NgFor } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { SectionHeadingComponent } from 'src/app/components/UI/section-heading/section-heading.component';
 import { ShiftCardComponent } from 'src/app/components/shift-card/shift-card.component';
 import { Shift } from 'src/app/utils/Interfaces';
@@ -19,6 +19,7 @@ import { FirestoreService } from 'src/app/utils/services/firestore/firestore.ser
   imports: [ShiftCardComponent, SectionHeadingComponent, NgFor, NgClass],
 })
 export class WeekShiftsComponent {
+  @Input() shiftID: string = '';
   shifts: Shift[] = [];
   active: string = 'this';
 
@@ -28,7 +29,7 @@ export class WeekShiftsComponent {
     // fetch the shifts for current week
     (async () => {
       this.shifts = await this.firestore.handleGetShiftsByWeek(
-        'LYuxAYp42lg1HUeofYC4mHRfd7q2',
+        this.shiftID,
         dateToMiliseconds(getCurrentWeekDates().start),
         dateToMiliseconds(getCurrentWeekDates().end)
       );
@@ -41,21 +42,21 @@ export class WeekShiftsComponent {
       switch (week) {
         case 'last':
           this.shifts = await this.firestore.handleGetShiftsByWeek(
-            'LYuxAYp42lg1HUeofYC4mHRfd7q2',
+            this.shiftID,
             dateToMiliseconds(getLastWeekDates().start),
             dateToMiliseconds(getLastWeekDates().end)
           );
           break;
         case 'next':
           this.shifts = await this.firestore.handleGetShiftsByWeek(
-            'LYuxAYp42lg1HUeofYC4mHRfd7q2',
+            this.shiftID,
             dateToMiliseconds(getNextWeekDates().start),
             dateToMiliseconds(getNextWeekDates().end)
           );
           break;
         default:
           this.shifts = await this.firestore.handleGetShiftsByWeek(
-            'LYuxAYp42lg1HUeofYC4mHRfd7q2',
+            this.shiftID,
             dateToMiliseconds(getCurrentWeekDates().start),
             dateToMiliseconds(getCurrentWeekDates().end)
           );
