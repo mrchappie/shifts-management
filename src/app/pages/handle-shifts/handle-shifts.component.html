@@ -1,95 +1,97 @@
-<div class="gap-[50px] center justify-evenly">
-  <form
-    [formGroup]="shiftForm"
-    (ngSubmit)="onSubmit()"
-    class="gap-[35px] p-12 center-col items-start"
-  >
-    <app-section-heading
-      *ngIf="isEditing"
-      [heading]="'Update shift'"
-      [secHeading]="'Rapidly modify schedules with ease.'"
-    ></app-section-heading>
-    <app-section-heading
-      *ngIf="!isEditing"
-      [heading]="'Add new shift'"
-      [secHeading]="'Seamlessly add new shifts with ease.'"
-    ></app-section-heading>
+<div class="gap-[50px] center justify-evenly items-start">
+  <div class="flex-1">
+    <form
+      [formGroup]="shiftForm"
+      (ngSubmit)="onSubmit()"
+      class="gap-[35px] py-12 center-col items-start"
+    >
+      <app-section-heading
+        *ngIf="isEditing"
+        [heading]="'Update shift'"
+        [secHeading]="'Rapidly modify schedules with ease.'"
+      ></app-section-heading>
+      <app-section-heading
+        *ngIf="!isEditing"
+        [heading]="'Add new shift'"
+        [secHeading]="'Seamlessly add new shifts with ease.'"
+      ></app-section-heading>
 
-    <ng-container *ngFor="let shift of shiftInputs">
-      <ng-container *ngIf="shift.inputType === 'input'">
-        <label class="custom-label">
-          <div class="center">
-            <mat-icon fontIcon="{{ shift.icon }}"></mat-icon>
-          </div>
-          <!-- render inputs is they are not disabled -->
-          <ng-container *ngIf="!shift.disabled">
-            <input
-              type="{{ shift.type }}"
-              placeholder="{{ shift.placeholder }}"
+      <ng-container *ngFor="let shift of shiftInputs">
+        <ng-container *ngIf="shift.inputType === 'input'">
+          <label class="custom-label">
+            <div class="center">
+              <mat-icon fontIcon="{{ shift.icon }}"></mat-icon>
+            </div>
+            <!-- render inputs is they are not disabled -->
+            <ng-container *ngIf="!shift.disabled">
+              <input
+                type="{{ shift.type }}"
+                placeholder="{{ shift.placeholder }}"
+                formControlName="{{ shift.formControl }}"
+                class="custom-input w-[400px]"
+              />
+              <div
+                *ngIf="formInputStatus(shift.formControl)"
+                class="absolute bottom-[-25px] left-0 text-red-500"
+              >
+                {{ getErrorMessage(shift.formControl) }}
+              </div>
+            </ng-container>
+            <!-- render divs is the inputs are disabled -->
+            <ng-container *ngIf="shift.disabled">
+              <div class="opacity-25 cursor-not-allowed custom-input">
+                {{
+                  shiftForm.get(shift.formControl)?.value
+                    ? shiftForm.get(shift.formControl)?.value
+                    : shift.placeholder
+                }}
+              </div></ng-container
+            >
+          </label>
+        </ng-container>
+        <ng-container *ngIf="shift.inputType === 'select'">
+          <label class="custom-label">
+            <div class="center">
+              <mat-icon fontIcon="{{ shift.icon }}"></mat-icon>
+            </div>
+            <select
+              name="{{ shift.type }}"
+              id="{{ shift.inputType }}"
               formControlName="{{ shift.formControl }}"
-              class="custom-input w-[400px]"
-            />
+              class="custom-input"
+            >
+              <option value="" *ngIf="userWorkplaces!.length === 0">
+                -- go to profile to set workplaces --
+              </option>
+              <option value="" *ngIf="userWorkplaces!.length != 0">
+                -- select --
+              </option>
+              <option
+                *ngFor="let workplace of userWorkplaces"
+                value="{{ workplace | lowercase }}"
+              >
+                {{ workplace }}
+              </option>
+            </select>
             <div
               *ngIf="formInputStatus(shift.formControl)"
               class="absolute bottom-[-25px] left-0 text-red-500"
             >
               {{ getErrorMessage(shift.formControl) }}
             </div>
-          </ng-container>
-          <!-- render divs is the inputs are disabled -->
-          <ng-container *ngIf="shift.disabled">
-            <div class="opacity-25 cursor-not-allowed custom-input">
-              {{
-                shiftForm.get(shift.formControl)?.value
-                  ? shiftForm.get(shift.formControl)?.value
-                  : shift.placeholder
-              }}
-            </div></ng-container
-          >
-        </label>
+          </label>
+        </ng-container>
       </ng-container>
-      <ng-container *ngIf="shift.inputType === 'select'">
-        <label class="custom-label">
-          <div class="center">
-            <mat-icon fontIcon="{{ shift.icon }}"></mat-icon>
-          </div>
-          <select
-            name="{{ shift.type }}"
-            id="{{ shift.inputType }}"
-            formControlName="{{ shift.formControl }}"
-            class="custom-input"
-          >
-            <option value="" *ngIf="userWorkplaces!.length === 0">
-              -- go to profile to set workplaces --
-            </option>
-            <option value="" *ngIf="userWorkplaces!.length != 0">
-              -- select --
-            </option>
-            <option
-              *ngFor="let workplace of userWorkplaces"
-              value="{{ workplace | lowercase }}"
-            >
-              {{ workplace }}
-            </option>
-          </select>
-          <div
-            *ngIf="formInputStatus(shift.formControl)"
-            class="absolute bottom-[-25px] left-0 text-red-500"
-          >
-            {{ getErrorMessage(shift.formControl) }}
-          </div>
-        </label>
-      </ng-container>
-    </ng-container>
 
-    <button
-      [disabled]="shiftForm.invalid"
-      type="submit"
-      class="w-full submit-btn"
-    >
-      <span *ngIf="isEditing">Update</span>
-      <span *ngIf="!isEditing">Add new</span> shift
-    </button>
-  </form>
-  <app-week-shifts></app-week-shifts>
+      <button
+        [disabled]="shiftForm.invalid"
+        type="submit"
+        class="w-full submit-btn"
+      >
+        <span *ngIf="isEditing">Update</span>
+        <span *ngIf="!isEditing">Add new</span> shift
+      </button>
+    </form>
+  </div>
+  <app-week-shifts class="flex-1"></app-week-shifts>
 </div>

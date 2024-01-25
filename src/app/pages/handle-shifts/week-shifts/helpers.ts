@@ -1,12 +1,17 @@
+const now = new Date();
+const dayOfWeek = now.getDay(); // 0 (Sunday) to 6 (Saturday)
+const currentWeekStartDay = now.getDate() - dayOfWeek + 1;
+const currentWeekEndDay = now.getDate() - dayOfWeek + 7;
+
 export function getLastWeekDates() {
-  const now = new Date();
-  const dayOfWeek = now.getDay(); // 0 (Sunday) to 6 (Saturday)
+  const NUM_OF_DAYS_TILL_WEEK_START = 7;
+  const NUM_OF_DAYS_TILL_WEEK_END = 1;
 
   const startOfLastWeek = new Date(now); // Create a new date object to avoid modifying the original date
-  startOfLastWeek.setDate(now.getDate() - dayOfWeek - 5); // Move to the first day (Sunday) of the previous week
+  startOfLastWeek.setDate(currentWeekStartDay - NUM_OF_DAYS_TILL_WEEK_START); // Move to the first day (Monday) of the previous week
 
   const endOfLastWeek = new Date(now);
-  endOfLastWeek.setDate(now.getDate() - dayOfWeek + 1); // Move to the last day (Saturday) of the previous week
+  endOfLastWeek.setDate(currentWeekStartDay - NUM_OF_DAYS_TILL_WEEK_END); // Move to the last day (Sunday) of the previous week
 
   // Format dates as strings in 'YYYY-MM-DD' format
   const startDateString = formatDate(startOfLastWeek);
@@ -19,14 +24,11 @@ export function getLastWeekDates() {
 }
 
 export function getCurrentWeekDates() {
-  const now = new Date();
-  const dayOfWeek = now.getDay(); // 0 (Sunday) to 6 (Saturday)
-
   const startOfWeek = new Date(now); // Create a new date object to avoid modifying the original date
-  startOfWeek.setDate(now.getDate() - dayOfWeek + 2); // Move to the first day (Sunday) of the current week
+  startOfWeek.setDate(currentWeekStartDay); // Move to the first day (Monday) of the current week
 
   const endOfWeek = new Date(now);
-  endOfWeek.setDate(now.getDate() + (8 - dayOfWeek)); // Move to the last day (Saturday) of the current week
+  endOfWeek.setDate(currentWeekEndDay); // Move to the last day (Sunday) of the current week
 
   // Format dates as strings in 'YYYY-MM-DD' format
   const startDateString = formatDate(startOfWeek);
@@ -39,14 +41,14 @@ export function getCurrentWeekDates() {
 }
 
 export function getNextWeekDates() {
-  const now = new Date();
-  const dayOfWeek = now.getDay(); // 0 (Sunday) to 6 (Saturday)
+  const NUM_OF_DAYS_TILL_WEEK_START = 1;
+  const NUM_OF_DAYS_TILL_WEEK_END = 7;
 
   const startOfNextWeek = new Date(now); // Create a new date object to avoid modifying the original date
-  startOfNextWeek.setDate(now.getDate() - dayOfWeek + 9); // Move to the first day (Sunday) of the next week
+  startOfNextWeek.setDate(currentWeekEndDay + NUM_OF_DAYS_TILL_WEEK_START); // Move to the first day (Monday) of the next week
 
   const endOfNextWeek = new Date(now);
-  endOfNextWeek.setDate(now.getDate() + (16 - dayOfWeek)); // Move to the last day (Saturday) of the next week
+  endOfNextWeek.setDate(currentWeekEndDay + NUM_OF_DAYS_TILL_WEEK_END); // Move to the last day (Sunday) of the next week
 
   // Format dates as strings in 'YYYY-MM-DD' format
   const startDateString = formatDate(startOfNextWeek);

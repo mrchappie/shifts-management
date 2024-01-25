@@ -216,7 +216,7 @@ export class FirestoreService {
     }
   }
 
-  //! GET SHIFTS BY SEARCH QUERY
+  //! GET SHIFTS BY WEEK
   async handleGetShiftsByWeek(
     userID: string,
     startDate: number,

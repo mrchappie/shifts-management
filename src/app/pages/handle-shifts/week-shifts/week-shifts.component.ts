@@ -25,10 +25,7 @@ export class WeekShiftsComponent {
   constructor(private firestore: FirestoreService) {}
 
   ngOnInit(): void {
-    // console.log(getLastWeekDates());
-    // console.log(getCurrentWeekDates());
-    // console.log(getNextWeekDates());
-
+    // fetch the shifts for current week
     (async () => {
       this.shifts = await this.firestore.handleGetShiftsByWeek(
         'LYuxAYp42lg1HUeofYC4mHRfd7q2',
