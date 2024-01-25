@@ -55,7 +55,7 @@ export class HomepageComponent {
 
     this.statsDateForm = this.fb.group({
       statsDate: [
-        `${this.customFN.getCurrentYear()}-${this.customFN.getCurrentMonth()}-${this.customFN.getCurrentDay()}`,
+        `${this.customFN.getCurrentYear()}-${this.customFN.getCurrentMonth()}`,
       ],
     });
 

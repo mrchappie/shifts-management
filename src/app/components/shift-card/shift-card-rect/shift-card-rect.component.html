@@ -1,0 +1,48 @@
+<div
+  class="gap-4 p-4 rounded-lg center shadow-all-sides bg-lightBgPrimary dark:bg-darkBgPrimary dark:text-darkTextSecondary"
+>
+  <div class="items-start flex-1 center-col">
+    <div class="flex gap-2">
+      <span class="font-bold">{{
+        parentName != "all-shifts" ? "ID:" : "Name:"
+      }}</span>
+      <span *ngIf="parentName != 'all-shifts'"
+        >{{ shift?.shiftID | slice : 0 : 12 }}...</span
+      >
+      <span *ngIf="parentName === 'all-shifts'"
+        >{{ shift?.userInfo?.firstName }} {{ shift?.userInfo?.lastName }}</span
+      >
+    </div>
+    <div [ngClass]="sortQuery === 'shiftDate' ? 'active-query' : null">
+      <span class="font-bold">Date: </span
+      ><span>{{ shift!.shiftDate | date }}</span>
+    </div>
+  </div>
+  <div class="items-start flex-1 center-col">
+    <div>
+      <span class="font-bold">Interval: </span
+      ><span [ngClass]="sortQuery === 'startTime' ? 'active-query' : null">{{
+        shift!.startTime | milisecondsToTime
+      }}</span
+      >&nbsp;-&nbsp;<span
+        [ngClass]="sortQuery === 'endTime' ? 'active-query' : null"
+        >{{ shift!.endTime | milisecondsToTime }}
+      </span>
+    </div>
+
+    <div [ngClass]="sortQuery === 'workplace' ? 'active-query' : null">
+      <span class="font-bold">Workplace: </span
+      ><span>{{ shift?.workplace | titlecase }} </span>
+    </div>
+  </div>
+  <div class="items-start flex-1 center-col">
+    <div [ngClass]="sortQuery === 'wagePerHour' ? 'active-query' : null">
+      <span class="font-bold">Wage / hour: </span
+      ><span>{{ shift?.wagePerHour | currency }}</span>
+    </div>
+    <div [ngClass]="sortQuery === 'shiftRevenue' ? 'active-query' : null">
+      <span class="font-bold">Revenue / shift: </span
+      ><span>{{ shift?.shiftRevenue | currency }}</span>
+    </div>
+  </div>
+</div>

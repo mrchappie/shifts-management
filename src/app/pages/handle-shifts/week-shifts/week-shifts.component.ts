@@ -1,7 +1,7 @@
 import { NgClass, NgFor } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { SectionHeadingComponent } from 'src/app/components/UI/section-heading/section-heading.component';
-import { ShiftCardComponent } from 'src/app/components/shift-card/shift-card.component';
+import { ShiftCardRectComponent } from 'src/app/components/shift-card/shift-card-rect/shift-card-rect.component';
 import { Shift } from 'src/app/utils/Interfaces';
 import {
   dateToMiliseconds,
@@ -16,7 +16,7 @@ import { FirestoreService } from 'src/app/utils/services/firestore/firestore.ser
   selector: 'app-week-shifts',
   templateUrl: './week-shifts.component.html',
   styleUrls: ['./week-shifts.component.scss'],
-  imports: [ShiftCardComponent, SectionHeadingComponent, NgFor, NgClass],
+  imports: [ShiftCardRectComponent, SectionHeadingComponent, NgFor, NgClass],
 })
 export class WeekShiftsComponent {
   @Input() shiftID: string = '';
