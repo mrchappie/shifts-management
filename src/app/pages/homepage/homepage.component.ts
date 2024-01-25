@@ -68,8 +68,8 @@ export class HomepageComponent {
     this.statsService
       .getStatisticsFromDB([
         firestoreConfig.firestore.statistics.users,
-        this.currentState.currentLoggedFireUser!.id,
         '2024',
+        this.currentState.currentLoggedFireUser!.id,
       ])
       .then(() => {
         this.updateCharts = true;

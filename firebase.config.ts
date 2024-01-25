@@ -4,7 +4,7 @@ export const firestoreConfig: FirebaseConfigI = {
     shiftsDB: {
       base: 'shiftAppShifts',
       shifts: 'shifts',
-      users: 'users',
+      usernames: 'usernames',
     },
     statistics: {
       base: 'statistics',

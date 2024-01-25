@@ -49,8 +49,8 @@ export class StatisticsService {
   ) {
     this.getStatisticsFromDB([
       firestoreConfig.firestore.statistics.users,
-      userID,
       '2024',
+      userID,
     ]).then(() => {
       //?
       //? if a shift or a value is added, update the correct statistic
@@ -95,7 +95,7 @@ export class StatisticsService {
         // update the user statistics
         this.firestore.updateFirestoreDoc(
           firestoreConfig.firestore.statistics.base,
-          [firestoreConfig.firestore.statistics.users, userID, '2024'],
+          [firestoreConfig.firestore.statistics.users, '2024', userID],
           updateObject
         );
         // update statistics for admin dashboard
@@ -135,7 +135,7 @@ export class StatisticsService {
         // update the user statistics
         this.firestore.updateFirestoreDoc(
           firestoreConfig.firestore.statistics.base,
-          [firestoreConfig.firestore.statistics.users, userID, '2024'],
+          [firestoreConfig.firestore.statistics.users, '2024', userID],
           updateObject
         );
         // update statistics for admin dashboard

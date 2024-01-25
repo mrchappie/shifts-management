@@ -12,7 +12,6 @@ import { NgIf, NgFor } from '@angular/common';
 import { NewSearchComponent } from '../../components/search/search.component';
 import { ToastService } from 'src/app/utils/services/toast/toast.service';
 import { errorMessages, successMessages } from 'src/app/utils/toastMessages';
-import { StatisticsService } from 'src/app/utils/services/statistics/statistics.service';
 import { UpdateStatsService } from '../handle-shifts/updateStatsService/update-stats.service';
 
 @Component({

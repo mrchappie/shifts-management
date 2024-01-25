@@ -73,7 +73,7 @@ export class AuthService {
             // set basic user info in shiftsDB
             this.firestore.updateFirestoreDoc(
               firestoreConfig.firestore.shiftsDB.base,
-              [firestoreConfig.firestore.shiftsDB.usersSubColl],
+              [firestoreConfig.firestore.shiftsDB.usernames],
               {
                 info: arrayUnion({
                   userID: userCredential.user.uid,
@@ -88,11 +88,22 @@ export class AuthService {
               firestoreConfig.firestore.statistics.base,
               [
                 firestoreConfig.firestore.statistics.users,
-                userCredential.user.uid,
                 new Date().getFullYear().toString(),
+                userCredential.user.uid,
               ],
               defaultStatsObject
             );
+
+            //! init statistics for admin test only
+            // this.firestore.setFirestoreDoc(
+            //   firestoreConfig.firestore.statistics.base,
+            //   [
+            //     firestoreConfig.firestore.statistics.admin,
+            //     'year',
+            //     new Date().getFullYear().toString(),
+            //   ],
+            //   defaultStatsObject
+            // );
 
             this.statsService.updateAdminStatistics(
               ['totalUsers'],
@@ -119,7 +130,6 @@ export class AuthService {
               this.currentState.currentLoggedFireUser
             );
           });
-        return;
       }
       this.toast.success(successMessages.register);
     } catch (error) {
@@ -197,15 +207,15 @@ export class AuthService {
       this.firestore.deleteFirestoreDoc(firestoreConfig.firestore.usersDB, [
         user.uid,
       ]);
-      // delete user shifts from firestore
-      this.firestore.deleteFirestoreDoc(
-        firestoreConfig.firestore.shiftsDB.base,
-        [firestoreConfig.firestore.shiftsDB.shifts, user.uid]
-      );
+      //! BUG delete user shifts from firestore
+      // this.firestore.deleteFirestoreDoc(
+      //   firestoreConfig.firestore.shiftsDB.base,
+      //   [firestoreConfig.firestore.shiftsDB.shifts, 'users', user.uid]
+      // );
       // remove basic user info from shifts BD
       this.firestore.updateFirestoreDoc(
         firestoreConfig.firestore.shiftsDB.base,
-        [firestoreConfig.firestore.shiftsDB.usersSubColl],
+        [firestoreConfig.firestore.shiftsDB.usernames],
         {
           info: arrayRemove({
             userID: user.uid,
@@ -218,7 +228,7 @@ export class AuthService {
       // delete statistics
       this.firestore.deleteFirestoreDoc(
         firestoreConfig.firestore.statistics.base,
-        [firestoreConfig.firestore.statistics.users, user.uid]
+        [firestoreConfig.firestore.statistics.users, '2024', user.uid]
       );
 
       // decrese total users count

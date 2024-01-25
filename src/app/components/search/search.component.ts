@@ -117,7 +117,7 @@ export class NewSearchComponent implements OnInit, OnDestroy {
   async initUsersSearchOptions() {
     const tempArr = (await this.firestore.getFirestoreDoc(
       firestoreConfig.firestore.shiftsDB.base,
-      [firestoreConfig.firestore.shiftsDB.usersSubColl]
+      [firestoreConfig.firestore.shiftsDB.usernames]
     )) as {
       info: { userID: string; firstName: string; lastName: string }[];
     };

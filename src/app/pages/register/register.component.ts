@@ -47,19 +47,19 @@ export class RegisterComponent {
   ngOnInit(): void {
     this.registerForm = this.fb.group(
       {
-        firstName: ['', [Validators.required, Validators.minLength(3)]],
-        lastName: ['', [Validators.required, Validators.minLength(3)]],
+        firstName: ['Alex', [Validators.required, Validators.minLength(3)]],
+        lastName: ['Chappie', [Validators.required, Validators.minLength(3)]],
         //! BUG PASS CONFIRM
         password: [
-          '',
+          'Alex2023!',
           [
             Validators.required,
             Validators.pattern(validationPatterns.register.password),
           ],
         ],
-        confPass: ['', [Validators.required]],
-        email: ['firstName.lastName@shift.app'],
-        dob: ['', [Validators.required, AgeValidation]],
+        confPass: ['Alex2023!', [Validators.required]],
+        email: ['alex.chappie@shift.app'],
+        dob: ['2000-12-12', [Validators.required, AgeValidation]],
         termsAndConditions: [false],
       },
       {
