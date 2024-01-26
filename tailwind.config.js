@@ -38,7 +38,8 @@ module.exports = {
       },
       // shadows
       boxShadow: {
-        "all-sides": "0 2px 5px 0 rgba(0, 0, 0, 0.2)",
+        light: "0 2px 5px 0 rgba(0, 0, 0, 0.2)",
+        dark: "0 2px 5px 0 rgba(230, 230, 230, 0.15)",
       },
 
       // sizes

@@ -3,14 +3,6 @@
 @tailwind components;
 @tailwind utilities;
 
-// @import "tailwindcss/base";
-// @import "tailwindcss/components";
-// @import "tailwindcss/utilities";
-
-// body {
-//   overflow-x: hidden;
-// }
-
 :disabled {
   opacity: 0.5;
   filter: grayscale(1);
@@ -40,7 +32,7 @@
   }
 
   .custom-search-label {
-    @apply bg-lightBgPrimary dark:bg-darkBgSecondary text-lightTextPrimary dark:text-darkTextPrimary border-none p-2 rounded-md justify-between relative h-full cursor-text shadow-all-sides;
+    @apply bg-lightBgPrimary dark:bg-darkBgSecondary text-lightTextPrimary dark:text-darkTextPrimary border-none p-2 rounded-md justify-between relative h-full cursor-text shadow-light dark:shadow-dark;
   }
 
   .custom-search-input {
@@ -48,11 +40,11 @@
   }
 
   .custom-label-text-r {
-    @apply absolute top-[-15px] right-2 px-2 bg-lightBgPrimary dark:bg-darkBgPrimary  rounded-md shadow-sm shadow-black/25;
+    @apply absolute top-[-15px] right-2 px-2 bg-lightBgPrimary dark:bg-darkBgPrimary  rounded-md shadow-light dark:shadow-dark;
   }
 
   .custom-label-text-l {
-    @apply absolute top-[-15px] left-2 px-2 bg-lightBgPrimary dark:bg-darkBgPrimary rounded-md shadow-sm shadow-black/25;
+    @apply absolute top-[-15px] left-2 px-2 bg-lightBgPrimary dark:bg-darkBgPrimary rounded-md shadow-light dark:shadow-dark;
   }
 
   .custom-link {
