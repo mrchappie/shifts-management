@@ -36,7 +36,7 @@
   }
 
   .custom-search-input {
-    @apply outline-none  text-lightTextPrimary  dark:bg-darkTextPrimary  min-w-[50%] border-b-[1px] border-lightAccent/75 cursor-text bg-transparent dark:text-darkTextPrimary dark:bg-darkBgSecondary;
+    @apply outline-none  text-lightTextPrimary    min-w-[50%] border-b-[1px] border-lightAccent/75 cursor-text bg-transparent dark:text-darkTextPrimary;
   }
 
   .custom-label-text-r {

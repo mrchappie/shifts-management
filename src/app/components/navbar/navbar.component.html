@@ -7,10 +7,15 @@
         class="w-[40px] h-[40px] rounded-[50%] bg-black overflow-hidden flex-shrink-0"
       >
         <img
+          *ngIf="currentState.currentLoggedFireUser!.profileImage"
           src="{{ currentState.currentLoggedFireUser?.profileImage }}"
           alt="{{ currentName.firstName }} profile picture"
           class="object-fill"
         />
+        <mat-icon
+          *ngIf="!currentState.currentLoggedFireUser!.profileImage"
+          fontIcon="person"
+        ></mat-icon>
       </div>
       <div class="text-lg">
         <span class="font-bold text-accentColor"

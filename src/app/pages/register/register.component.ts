@@ -49,7 +49,6 @@ export class RegisterComponent {
       {
         firstName: ['Alex', [Validators.required, Validators.minLength(3)]],
         lastName: ['Chappie', [Validators.required, Validators.minLength(3)]],
-        //! BUG PASS CONFIRM
         password: [
           'Alex2023!',
           [

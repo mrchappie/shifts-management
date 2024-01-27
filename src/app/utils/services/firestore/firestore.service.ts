@@ -162,14 +162,29 @@ export class FirestoreService {
   }
 
   //! GET SHIFTS
-  async handleGetShiftsByUserID(userID: string, queryLimit?: number) {
+  async handleGetShiftsByUserID(
+    userID: string,
+    queryLimit?: number,
+    queryDateStart?: number,
+    queryDateEnd?: number
+  ) {
     const docRef = collection(
       this.firestore,
       firestoreConfig.firestore.shiftsDB.base,
       ...[firestoreConfig.firestore.shiftsDB.shifts, userID]
     );
 
-    const q = query(docRef, limit(queryLimit as number));
+    let q;
+    if (queryDateStart && queryDateEnd) {
+      q = query(
+        docRef,
+        limit(queryLimit as number),
+        where('shiftDate', '>=', queryDateStart),
+        where('shiftDate', '<=', queryDateEnd)
+      );
+    } else {
+      q = query(docRef, limit(queryLimit as number));
+    }
     const shifts = await this.getFirestoreDocsByQuery(q);
 
     if (shifts) {

@@ -1,44 +1,11 @@
 <div
-  class="relative justify-between gap-4 px-2 py-4 mb-4 rounded-md center bg-lightBgSecondary dark:bg-darkBgPrimary shadow-light dark:shadow-dark"
+  class="relative justify-between gap-4 p-6 mb-4 rounded-md center bg-lightBgSecondary dark:bg-darkBgPrimary shadow-light dark:shadow-dark"
 >
-  <form class="relative flex-wrap w-full gap-6 center" [formGroup]="searchForm">
-    <div class="w-[50%] min-w-max custom-search-label center">
-      <label class="w-full">
-        <input
-          type="text"
-          name="workplace"
-          [placeholder]="
-            parent != 'all-users' ? 'Search by workplace' : 'Search by name'
-          "
-          formControlName="nameQuery"
-          class="w-full custom-search-input"
-        />
-      </label>
-      <div (click)="searchShiftsByWorkplace()" class="cursor-pointer center">
-        <mat-icon fontIcon="search "></mat-icon>
-      </div>
-    </div>
-    <div>
-      <button
-        (click)="toggleMoreFilters()"
-        class="cursor-pointer center custom-search-label"
-      >
-        More<mat-icon fontIcon="expand_more"></mat-icon>
-      </button>
-    </div>
-    <div>
-      <button
-        type="button"
-        (click)="resetFilters()"
-        class="cursor-pointer center custom-search-label"
-      >
-        Reset<mat-icon fontIcon="restart_alt"></mat-icon>
-      </button>
-    </div>
-    <div
-      *ngIf="showMoreFilters"
-      class="absolute z-50 px-4 py-12 bg-lightBgSecondary dark:bg-darkBgPrimary top-[150%] center gap-4 flex rounded-md shadow-light dark:shadow-dark flex-wrap"
-    >
+  <form
+    class="flex-wrap w-full gap-6 transition-all center-col"
+    [formGroup]="searchForm"
+  >
+    <div class="center">
       <label
         *ngIf="parent === 'all-shifts'"
         class="min-w-max custom-search-label"
@@ -56,6 +23,41 @@
           </option>
         </select>
       </label>
+      <div class="w-[50%] min-w-max custom-search-label center">
+        <label class="w-full">
+          <input
+            type="text"
+            name="workplace"
+            [placeholder]="
+              parent != 'all-users' ? 'Search by workplace' : 'Search by name'
+            "
+            formControlName="nameQuery"
+            class="w-full custom-search-input"
+          />
+        </label>
+        <div (click)="searchShiftsByWorkplace()" class="cursor-pointer center">
+          <mat-icon fontIcon="search "></mat-icon>
+        </div>
+      </div>
+      <div>
+        <button
+          type="button"
+          (click)="resetFilters()"
+          class="cursor-pointer center custom-search-label"
+        >
+          Reset<mat-icon fontIcon="restart_alt"></mat-icon>
+        </button>
+      </div>
+      <div>
+        <button
+          (click)="toggleMoreFilters()"
+          class="cursor-pointer center custom-search-label"
+        >
+          More<mat-icon fontIcon="expand_more"></mat-icon>
+        </button>
+      </div>
+    </div>
+    <div *ngIf="showMoreFilters" class="center">
       <label *ngIf="parent != 'all-users'" class="flex-1 custom-search-label">
         <div class="custom-label-text-r">Shifts Period</div>
         <input

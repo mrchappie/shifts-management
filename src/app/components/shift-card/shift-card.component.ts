@@ -27,6 +27,6 @@ import { MilisecondsToTimePipe } from 'src/app/utils/pipes/milisecondsToTime/mil
 })
 export class ShiftCardComponent {
   @Input() shift?: Shift;
-  @Input() parentName!: string;
   @Input() sortQuery!: string;
+  @Input() parentName!: string;
 }

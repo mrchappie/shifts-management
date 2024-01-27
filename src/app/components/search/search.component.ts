@@ -14,6 +14,7 @@ import { CustomFnService } from 'src/app/utils/services/customFn/custom-fn.servi
 import { NgFor, NgIf } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { firestoreConfig } from 'firebase.config';
+import { defaultFormValues, getMonthStartToEnd } from './helpers';
 
 @Component({
   standalone: true,
@@ -22,6 +23,7 @@ import { firestoreConfig } from 'firebase.config';
   imports: [FormsModule, ReactiveFormsModule, MatIconModule, NgFor, NgIf],
 })
 export class NewSearchComponent implements OnInit, OnDestroy {
+  @Input() userID: string = '';
   @Input() parent: string = '';
 
   // html data
@@ -55,10 +57,10 @@ export class NewSearchComponent implements OnInit, OnDestroy {
 
     this.searchForm = this.fb.group({
       nameQuery: [''],
-      userNames: [this.currentState.currentLoggedFireUser?.id],
+      userNames: [this.userID],
       startDateQuery: [''],
       endDateQuery: [''],
-      sortByQuery: [`${this.parent === 'all-users' ? 'name' : 'shiftDate'}`],
+      sortByQuery: [`${this.parent != 'all-users' ? 'shiftDate' : 'name'}`],
       orderByQuery: ['dsc'],
       yearMonthQuery: [''],
       queryLimit: [10],
@@ -71,11 +73,26 @@ export class NewSearchComponent implements OnInit, OnDestroy {
       this.state.setState({ searchForm: value });
     });
 
+    // setting the default year-month to my form input
+    this.searchForm.patchValue({
+      yearMonthQuery: `${this.customFN.getCurrentYear()}-${this.customFN.getCurrentMonth()}`,
+    });
+
     // fetch shifts by query limit
     this.searchForm
       .get('queryLimit')
       ?.valueChanges.subscribe((value: number) => {
-        this.getShiftsByDate(value);
+        this.getShiftsByDate(
+          value,
+          this.searchForm.get('yearMonthQuery')?.value
+        );
+      });
+    // fetch shifts by month and year
+    this.searchForm
+      .get('yearMonthQuery')
+      ?.valueChanges.subscribe((value: string) => {
+        this.getShiftsByDate(this.searchForm.get('queryLimit')?.value, value);
+        console.log(value);
       });
 
     // fetch shifts by user
@@ -87,11 +104,6 @@ export class NewSearchComponent implements OnInit, OnDestroy {
           this.getAllShifts(value, this.searchForm.get('queryLimit')?.value);
         }
       });
-
-    // setting the default year-month to my form input
-    this.searchForm.patchValue({
-      yearMonthQuery: `${this.customFN.getCurrentYear()}-${this.customFN.getCurrentMonth()}`,
-    });
     this.filters = this.currentState.searchForm;
 
     this.stateSubscription = this.state.stateChanged.subscribe((newState) => {
@@ -100,10 +112,7 @@ export class NewSearchComponent implements OnInit, OnDestroy {
     });
 
     if (this.currentState.shifts.length === 0 && this.parent === 'all-shifts') {
-      this.getAllShifts(
-        this.currentState.currentLoggedFireUser!.id,
-        this.searchForm.get('queryLimit')?.value
-      );
+      this.getAllShifts(this.userID, this.searchForm.get('queryLimit')?.value);
     }
   }
 
@@ -125,11 +134,15 @@ export class NewSearchComponent implements OnInit, OnDestroy {
     this.userNames.push(...tempArr.info);
   }
 
-  getShiftsByDate(limit: number) {
+  getShiftsByDate(limit: number, yearMonth?: string) {
+    const queryDate = getMonthStartToEnd(yearMonth as string);
+    console.log(queryDate);
     if (this.parent === 'my-shifts') {
       this.firestore.handleGetShiftsByUserID(
-        this.currentState.currentLoggedFireUser!.id,
-        limit
+        this.userID,
+        limit,
+        queryDate.start,
+        queryDate.end
       );
     } else if (this.parent === 'all-shifts') {
       // this.firestore.handleGetAllShifts(limit as number);
@@ -142,17 +155,14 @@ export class NewSearchComponent implements OnInit, OnDestroy {
 
   searchShiftsByWorkplace() {
     const query: string = this.searchForm.get('nameQuery')?.value;
-    this.firestore.handleGetShiftsBySearch(
-      this.currentState.currentLoggedFireUser!.id,
-      query.toLowerCase()
-    );
+    this.firestore.handleGetShiftsBySearch(this.userID, query.toLowerCase());
   }
 
   resetFilters() {
-    this.searchForm.patchValue(defaultFormValues);
+    this.searchForm.patchValue(defaultFormValues(this.parent));
 
     this.state.setState({
-      searchForm: defaultFormValues,
+      searchForm: defaultFormValues(this.parent),
     });
 
     this.getShiftsByDate(10);
@@ -172,15 +182,3 @@ export class NewSearchComponent implements OnInit, OnDestroy {
     this.showMoreFilters = !this.showMoreFilters;
   }
 }
-
-export const defaultFormValues = {
-  nameQuery: '',
-  startDateQuery: '',
-  endDateQuery: '',
-  sortByQuery: '',
-  orderByQuery: '',
-  yearMonthQuery: `${new Date().getFullYear()}-${(new Date().getMonth() + 1)
-    .toString()
-    .padStart(2, '0')}`,
-  queryLimit: 10,
-};

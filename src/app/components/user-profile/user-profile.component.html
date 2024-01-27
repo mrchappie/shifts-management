@@ -53,14 +53,15 @@
         class="center w-[350px] aspect-square rounded-[50%] overflow-hidden border-[3px] border-lighbg-lightPrimary shadow-2xl"
       >
         <img
-          [src]="
-            profileImage
-              ? profileImage
-              : 'assets/illustrations/no_image_user.jpg'
-          "
-          alt=""
+          *ngIf="userSettings?.profileImage"
+          [src]="profileImage ? profileImage : ''"
+          alt="{{ userSettings.firstName }} photo"
           class="object-cover"
         />
+        <mat-icon
+          *ngIf="!userSettings?.profileImage"
+          fontIcon="person"
+        ></mat-icon>
       </div>
     </label>
   </div>
