@@ -1,4 +1,6 @@
-<section class="h-full max-w-[1200px] m-auto center-col">
+<section
+  class="h-full max-w-[1200px] m-auto center-col text-lightTextPrimary y dark:text-darkTextPrimary"
+>
   <header class="center justify-between w-full p-4 h-[100px]">
     <div class="w-[200px]">
       <img
@@ -10,7 +12,7 @@
     <button routerLink="/login" class="submit-btn">Sign Up</button>
   </header>
   <main class="flex-1 w-full center">
-    <section class="items-start flex-1 gap-6 center-col">
+    <section class="z-10 items-start flex-1 gap-6 center-col">
       <div class="text-[50px] font-bold">
         ShiftEase - Streamlining Your Workforce
       </div>
@@ -21,7 +23,11 @@
       <button routerLink="/register" class="submit-btn">Get Started</button>
     </section>
     <section class="items-end flex-1">
-      <img src="/assets/images/landing_page.png" alt="ShiftEase homepage" />
+      <img
+        src="/assets/images/landing_page.png"
+        alt="ShiftEase homepage"
+        class="opacity-80 dark:opacity-50"
+      />
     </section>
   </main>
 </section>

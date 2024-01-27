@@ -5,7 +5,7 @@ import { isNotLoggedInGuard } from '../utils/guards/isNotLoggedIn/is-not-logged-
 import { isAdminGuard } from '../utils/guards/isAdmin/is-admin.guard';
 
 const routes: Routes = [
-  // main routes
+  // landing page
   {
     path: '',
     loadComponent: () =>
@@ -13,16 +13,6 @@ const routes: Routes = [
         (comp) => comp.LandingPageComponent
       ),
     canActivate: [isNotLoggedInGuard],
-  },
-
-  // main routes
-  {
-    path: 'home',
-    loadComponent: () =>
-      import('../pages/homepage/homepage.component').then(
-        (comp) => comp.HomepageComponent
-      ),
-    canActivate: [isLoggedInGuard],
   },
 
   // login / register routes
@@ -44,6 +34,15 @@ const routes: Routes = [
   },
 
   // user routes
+
+  {
+    path: 'home',
+    loadComponent: () =>
+      import('../pages/homepage/homepage.component').then(
+        (comp) => comp.HomepageComponent
+      ),
+    canActivate: [isLoggedInGuard],
+  },
   {
     path: 'my-shifts',
     loadComponent: () =>
