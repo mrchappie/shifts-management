@@ -165,8 +165,8 @@ export class FirestoreService {
   async handleGetShiftsByUserID(
     userID: string,
     queryLimit?: number,
-    queryDateStart?: number,
-    queryDateEnd?: number
+    shiftsDateStart?: number,
+    shiftsDateEnd?: number
   ) {
     const docRef = collection(
       this.firestore,
@@ -174,13 +174,14 @@ export class FirestoreService {
       ...[firestoreConfig.firestore.shiftsDB.shifts, userID]
     );
 
+    // create the query based on what user inputs
     let q;
-    if (queryDateStart && queryDateEnd) {
+    if (shiftsDateStart && shiftsDateEnd) {
       q = query(
         docRef,
         limit(queryLimit as number),
-        where('shiftDate', '>=', queryDateStart),
-        where('shiftDate', '<=', queryDateEnd)
+        where('shiftDate', '>=', shiftsDateStart),
+        where('shiftDate', '<=', shiftsDateEnd)
       );
     } else {
       q = query(docRef, limit(queryLimit as number));

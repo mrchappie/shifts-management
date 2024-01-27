@@ -2,14 +2,13 @@ export const getMonthStartToEnd = (date: string) => {
   //   if (!date) return;
   console.log(date);
   const startDate = new Date(date);
-  const ednDate = new Date(
+  const endDate = new Date(
     startDate.getFullYear(),
     startDate.getMonth() + 1,
     0
   );
-  console.log(startDate, ednDate);
 
-  return { start: startDate.getMilliseconds(), end: ednDate.getMilliseconds() };
+  return { start: startDate.getTime(), end: endDate.getTime() };
 };
 
 export const defaultFormValues = (parent: string) => {

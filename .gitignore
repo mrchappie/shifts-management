@@ -37,6 +37,7 @@ yarn-error.log
 testem.log
 /typings
 scriptForShifts.ts
+BUGS.md
 
 # System files
 .DS_Store

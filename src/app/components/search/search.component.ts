@@ -15,6 +15,7 @@ import { NgFor, NgIf } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { firestoreConfig } from 'firebase.config';
 import { defaultFormValues, getMonthStartToEnd } from './helpers';
+import { ShiftsService } from 'src/app/utils/services/shifts/shifts.service';
 
 @Component({
   standalone: true,
@@ -42,7 +43,8 @@ export class NewSearchComponent implements OnInit, OnDestroy {
     private state: StateService,
     private fb: FormBuilder,
     private firestore: FirestoreService,
-    private customFN: CustomFnService
+    private customFN: CustomFnService,
+    private shiftsService: ShiftsService
   ) {}
 
   ngOnInit(): void {
@@ -78,22 +80,14 @@ export class NewSearchComponent implements OnInit, OnDestroy {
       yearMonthQuery: `${this.customFN.getCurrentYear()}-${this.customFN.getCurrentMonth()}`,
     });
 
-    // fetch shifts by query limit
-    this.searchForm
-      .get('queryLimit')
-      ?.valueChanges.subscribe((value: number) => {
-        this.getShiftsByDate(
-          value,
-          this.searchForm.get('yearMonthQuery')?.value
-        );
-      });
-    // fetch shifts by month and year
-    this.searchForm
-      .get('yearMonthQuery')
-      ?.valueChanges.subscribe((value: string) => {
-        this.getShiftsByDate(this.searchForm.get('queryLimit')?.value, value);
-        console.log(value);
-      });
+    // // fetch shifts by query limit
+    // this.searchForm.get('queryLimit')?.valueChanges.subscribe(() => {
+    //   this.getShiftsByDate();
+    // });
+    // // fetch shifts by month and year
+    // this.searchForm.get('yearMonthQuery')?.valueChanges.subscribe(() => {
+    //   this.getShiftsByDate();
+    // });
 
     // fetch shifts by user
     this.searchForm
@@ -101,9 +95,17 @@ export class NewSearchComponent implements OnInit, OnDestroy {
       ?.valueChanges.subscribe((value: string) => {
         console.log(value);
         if (value) {
-          this.getAllShifts(value, this.searchForm.get('queryLimit')?.value);
+          this.shiftsService.getAllShifts(
+            value,
+            this.searchForm.get('queryLimit')?.value
+          );
+          this.userID = value;
         }
       });
+
+    // update the state after all default inputs init
+    this.state.setState({ searchForm: this.searchForm.value });
+
     this.filters = this.currentState.searchForm;
 
     this.stateSubscription = this.state.stateChanged.subscribe((newState) => {
@@ -111,8 +113,11 @@ export class NewSearchComponent implements OnInit, OnDestroy {
       this.filters = this.currentState.searchForm;
     });
 
-    if (this.currentState.shifts.length === 0 && this.parent === 'all-shifts') {
-      this.getAllShifts(this.userID, this.searchForm.get('queryLimit')?.value);
+    if (this.parent === 'all-shifts') {
+      this.shiftsService.getAllShifts(
+        this.userID,
+        this.searchForm.get('queryLimit')?.value
+      );
     }
   }
 
@@ -134,38 +139,46 @@ export class NewSearchComponent implements OnInit, OnDestroy {
     this.userNames.push(...tempArr.info);
   }
 
-  getShiftsByDate(limit: number, yearMonth?: string) {
-    const queryDate = getMonthStartToEnd(yearMonth as string);
-    console.log(queryDate);
+  async getShiftsByDate() {
+    const limit = this.searchForm.get('queryLimit')?.value;
+    const date = this.searchForm.get('yearMonthQuery')?.value;
+
+    const queryDate = getMonthStartToEnd(date as string);
     if (this.parent === 'my-shifts') {
-      this.firestore.handleGetShiftsByUserID(
+      await this.shiftsService.getShiftsByMultipleQueries(
         this.userID,
         limit,
         queryDate.start,
         queryDate.end
       );
-    } else if (this.parent === 'all-shifts') {
-      // this.firestore.handleGetAllShifts(limit as number);
     }
-  }
-
-  async getAllShifts(userID: string, queryLimit: number) {
-    await this.firestore.handleGetAllShifts(userID, queryLimit);
   }
 
   searchShiftsByWorkplace() {
     const query: string = this.searchForm.get('nameQuery')?.value;
-    this.firestore.handleGetShiftsBySearch(this.userID, query.toLowerCase());
+    if (query != '') {
+      this.shiftsService.getShiftsByWorkplace(this.userID, query.toLowerCase());
+    }
   }
 
+  // reset filter to default value but keeps the selected user
+  // shifts after reset will be for selected user
   resetFilters() {
+    const shiftsDate = getMonthStartToEnd(
+      this.filters!.yearMonthQuery as string
+    );
     this.searchForm.patchValue(defaultFormValues(this.parent));
 
     this.state.setState({
       searchForm: defaultFormValues(this.parent),
     });
 
-    this.getShiftsByDate(10);
+    this.shiftsService.getShiftsByUserID(
+      this.userID,
+      this.filters!.queryLimit,
+      shiftsDate.start,
+      shiftsDate.end
+    );
   }
 
   changeSortOrder() {
@@ -180,5 +193,30 @@ export class NewSearchComponent implements OnInit, OnDestroy {
 
   toggleMoreFilters() {
     this.showMoreFilters = !this.showMoreFilters;
+  }
+
+  searchByYearMonth() {
+    const shiftsDate = getMonthStartToEnd(
+      this.filters!.yearMonthQuery as string
+    );
+
+    this.shiftsService.getShiftsByMultipleQueries(
+      this.userID,
+      this.filters!.queryLimit,
+      shiftsDate.start,
+      shiftsDate.end
+    );
+  }
+
+  searchByPeriod() {
+    const startDate = new Date(this.filters!.startDateQuery).getTime();
+    const endDate = new Date(this.filters!.endDateQuery).getTime();
+
+    this.shiftsService.getShiftsByMultipleQueries(
+      this.userID,
+      this.filters!.queryLimit,
+      startDate,
+      endDate
+    );
   }
 }

@@ -36,15 +36,15 @@
   }
 
   .custom-search-input {
-    @apply outline-none  text-lightTextPrimary    min-w-[50%] border-b-[1px] border-lightAccent/75 cursor-text bg-transparent dark:text-darkTextPrimary;
+    @apply outline-none  text-inherit  min-w-[50%] border-b-[1px] border-lightAccent/75 cursor-text bg-inherit;
   }
 
   .custom-label-text-r {
-    @apply absolute top-[-15px] right-2 px-2 bg-lightBgPrimary dark:bg-darkBgPrimary  rounded-md shadow-light dark:shadow-dark;
+    @apply absolute top-[-15px] right-2 px-2 bg-lightBgPrimary dark:bg-darkBgSecondary  rounded-md shadow-light dark:shadow-dark;
   }
 
   .custom-label-text-l {
-    @apply absolute top-[-15px] left-2 px-2 bg-lightBgPrimary dark:bg-darkBgPrimary rounded-md shadow-light dark:shadow-dark;
+    @apply absolute top-[-15px] left-2 px-2 bg-lightBgPrimary dark:bg-darkBgSecondary rounded-md shadow-light dark:shadow-dark;
   }
 
   .custom-link {
