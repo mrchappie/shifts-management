@@ -72,7 +72,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   async onSubmit() {
     await this.authService.logout();
-    this.router.navigate(['/login']);
+    this.router.navigate(['']);
   }
 
   toggleTheme() {

@@ -11,7 +11,7 @@ export const isNotLoggedInGuard: CanActivateFn = async (route, state) => {
   if (!user) {
     return true;
   } else {
-    router.navigate(['']);
+    router.navigate(['/home']);
     return false;
   }
 };

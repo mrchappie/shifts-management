@@ -13,7 +13,7 @@ export const isLoggedInGuard: CanActivateFn = async (route, state) => {
   if (user) {
     return true;
   } else {
-    router.navigate(['/login']);
+    router.navigate(['']);
     firestore.clearLocalStorage();
     return false;
   }

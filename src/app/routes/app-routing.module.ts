@@ -9,6 +9,16 @@ const routes: Routes = [
   {
     path: '',
     loadComponent: () =>
+      import('../pages/landing-page/landing-page.component').then(
+        (comp) => comp.LandingPageComponent
+      ),
+    canActivate: [isNotLoggedInGuard],
+  },
+
+  // main routes
+  {
+    path: 'home',
+    loadComponent: () =>
       import('../pages/homepage/homepage.component').then(
         (comp) => comp.HomepageComponent
       ),

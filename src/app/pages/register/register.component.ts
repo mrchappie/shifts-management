@@ -103,7 +103,7 @@ export class RegisterComponent {
       this.registerForm.get('termsAndConditions')?.value === true
     ) {
       await this.authService.register(this.registerForm.value);
-      this.router.navigate(['/']);
+      this.router.navigate(['/home']);
     } else {
       this.termsAndConditions = true;
     }
