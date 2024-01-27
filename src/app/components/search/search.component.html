@@ -5,6 +5,7 @@
     class="flex-wrap w-full gap-12 transition-all center-col"
     [formGroup]="searchForm"
   >
+    <!-- main row of filters -->
     <div class="flex-wrap gap-6 center">
       <label
         *ngIf="parent === 'all-shifts'"
@@ -72,11 +73,9 @@
       *ngIf="showMoreFilters"
       class="flex-wrap w-full gap-12 center justify-evenly"
     >
-      <div class="flex-wrap gap-6 center">
-        <label
-          *ngIf="parent != 'all-users'"
-          class="flex-1 center custom-search-label"
-        >
+      <!-- second row of advanced filters -->
+      <div *ngIf="parent != 'all-users'" class="flex-wrap gap-6 center">
+        <label class="flex-1 center custom-search-label">
           <div class="custom-label-text-r">Start date</div>
           <input
             type="date"
@@ -85,10 +84,7 @@
             class="custom-search-input"
           />
         </label>
-        <label
-          *ngIf="parent != 'all-users'"
-          class="flex-1 center custom-search-label"
-        >
+        <label class="flex-1 center custom-search-label">
           <div class="custom-label-text-r">End date</div>
           <input
             type="date"
@@ -107,6 +103,7 @@
           </button>
         </div>
       </div>
+      <!-- fetch options -->
       <div class="flex-wrap gap-6 center">
         <label class="flex-1 min-w-max center custom-search-label">
           <div class="custom-label-text-r">Sort</div>
