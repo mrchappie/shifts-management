@@ -5,7 +5,8 @@ import { Statistics } from 'src/app/utils/services/statistics/defaultStatsObject
 import { StatisticsService } from 'src/app/utils/services/statistics/statistics.service';
 import { CountCardComponent } from '../../count-card/count-card.component';
 import { NgFor } from '@angular/common';
-import { sortByMonth, sortByValue } from '../helpers';
+import { getBestJob, getBestMonth, sortByMonth, sortByValue } from '../helpers';
+import { monthToString } from 'src/app/utils/functions';
 
 @Component({
   standalone: true,
@@ -15,9 +16,11 @@ import { sortByMonth, sortByValue } from '../helpers';
 })
 export class ChartGroupComponent {
   @Input() setUpdateCharts!: boolean;
-  @Input() statsHeadings!: string[];
+  @Input() countersHeading!: string[];
+  @Input() parent: string = '';
 
   statistics!: Statistics;
+  countersData: CountersData[] = [];
 
   constructor(private statsService: StatisticsService) {}
 
@@ -153,16 +156,21 @@ export class ChartGroupComponent {
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.setUpdateCharts && this.setUpdateCharts === true) {
       this.updateCharts();
+      this.updateCounters();
     }
   }
 
   updateCharts() {
     //? PIE CHART
     this.pieChartData.labels = sortByValue(
-      this.statistics.statsPerMonth.earnedRevenueByShift.january
+      this.statistics.statsPerMonth.earnedRevenueByShift[
+        monthToString(new Date().getMonth())
+      ]
     ).labels;
     this.pieChartData.datasets[0].data = sortByValue(
-      this.statistics.statsPerMonth.earnedRevenueByShift.january
+      this.statistics.statsPerMonth.earnedRevenueByShift[
+        monthToString(new Date().getMonth())
+      ]
     ).data;
     this.pieChart.updateChart();
 
@@ -193,4 +201,87 @@ export class ChartGroupComponent {
     ).data;
     this.polarArea.updateChart();
   }
+
+  updateCounters() {
+    if (this.parent === 'homepage') {
+      const totalShifts = this.statistics.totalShifts;
+      const shiftsThisMonth =
+        this.statistics.shiftCountByMonth[monthToString(new Date().getMonth())];
+      const revenueByMonths = sortByValue(this.statistics.earnedRevenueByMonth);
+      const revenueByJobs = sortByValue(
+        this.statistics.statsPerMonth.earnedRevenueByShift[
+          monthToString(new Date().getMonth())
+        ]
+      );
+      console.log(revenueByMonths);
+
+      console.log(revenueByJobs);
+
+      this.countersData.push({
+        title: this.countersHeading[0],
+        value: totalShifts,
+      });
+      this.countersData.push({
+        title: this.countersHeading[1],
+        value: shiftsThisMonth,
+      });
+      this.countersData.push({
+        title: this.countersHeading[2],
+        subtitle: revenueByMonths.labels[0],
+        value: revenueByMonths.data[0],
+      });
+      this.countersData.push({
+        title: this.countersHeading[3],
+        subtitle: revenueByJobs.labels[0],
+        value: revenueByJobs.data[0],
+      });
+    } else {
+      const totalUsers = this.statistics.totalUsers;
+      const totalShifts = this.statistics.totalShifts;
+      const shiftsThisMonth =
+        this.statistics.shiftCountByMonth[monthToString(new Date().getMonth())];
+      const revenueByMonths = sortByValue(this.statistics.earnedRevenueByMonth);
+      const revenueByJobs = sortByValue(
+        this.statistics.statsPerMonth.earnedRevenueByShift[
+          monthToString(new Date().getMonth())
+        ]
+      );
+
+      const bestWorkers = 0;
+
+      console.log(revenueByMonths);
+
+      console.log(revenueByJobs);
+
+      this.countersData.push({
+        title: this.countersHeading[0],
+        value: totalUsers,
+      });
+      this.countersData.push({
+        title: this.countersHeading[1],
+        value: totalShifts,
+      });
+      this.countersData.push({
+        title: this.countersHeading[2],
+        value: shiftsThisMonth,
+      });
+      this.countersData.push({
+        title: this.countersHeading[3],
+        subtitle: revenueByMonths.labels[0],
+        value: revenueByMonths.data[0],
+      });
+      this.countersData.push({
+        title: this.countersHeading[4],
+        subtitle: revenueByJobs.labels[0],
+        value: revenueByJobs.data[0],
+      });
+      this.countersData.push({
+        title: this.countersHeading[5],
+        subtitle: 'Alexandru',
+        value: 1000,
+      });
+    }
+  }
 }
+
+type CountersData = { value: number; title: string; subtitle?: string };

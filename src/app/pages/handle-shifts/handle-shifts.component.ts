@@ -340,15 +340,15 @@ export class HandleShiftsComponent implements OnInit {
         );
       }
 
-      // this.router
-      //   .navigate([getRouteToNavigate(this.parent)[0]], {
-      //     queryParams: {
-      //       userID: getRouteToNavigate(this.parent, this.userIDParams)[1],
-      //     },
-      //   })
-      //   .then(() => {
-      //     this.shiftForm.patchValue(this.initialFormValue);
-      //   });
+      this.router
+        .navigate([getRouteToNavigate(this.parent)[0]], {
+          queryParams: {
+            userID: getRouteToNavigate(this.parent, this.userIDParams)[1],
+          },
+        })
+        .then(() => {
+          this.shiftForm.patchValue(this.initialFormValue);
+        });
     } catch (error) {
       this.toast.error(errorMessages.firestore);
     }

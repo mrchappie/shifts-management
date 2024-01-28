@@ -1,9 +1,13 @@
 <div
-  class="w-full gap-4 p-4 center-col shadow-light dark:shadow-dark bg-lightBgPrimary dark:bg-darkBgPrimary"
+  class="w-full gap-4 p-4 rounded-md center-col shadow-light dark:shadow-dark bg-lightBgPrimary dark:bg-darkBgPrimary"
 >
-  <span
-    class="center w-20 aspect-square rounded-[50%] shadow-light dark:shadow-dark shadow-lightPrimary bg-lightPrimary text-lightTextPrimary text-2xl font-bold"
-    >{{ item }}</span
+  <div
+    class="p-4 text-2xl font-bold rounded-xl min-w-20 center shadow-light dark:shadow-dark shadow-lightPrimary bg-lightPrimary text-lightTextPrimary"
   >
-  <p class="font-semibold">{{ title }}</p>
+    <span *ngIf="subtitle">{{ value | currency }}</span
+    ><span *ngIf="!subtitle">{{ value }}</span>
+  </div>
+  <p class="font-semibold">
+    {{ title }} <span *ngIf="subtitle" class="italic"> - {{ subtitle }}</span>
+  </p>
 </div>

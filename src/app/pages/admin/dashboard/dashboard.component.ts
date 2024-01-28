@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { Shift } from 'src/app/utils/Interfaces';
-import { FirestoreService } from 'src/app/utils/services/firestore/firestore.service';
 import {
   FormGroup,
   FormBuilder,
@@ -8,7 +7,6 @@ import {
   ReactiveFormsModule,
 } from '@angular/forms';
 import { CustomFnService } from 'src/app/utils/services/customFn/custom-fn.service';
-import { AggQueriesService } from 'src/app/utils/services/aggQueries/agg-queries.service';
 import { CountCardComponent } from '../../../components/count-card/count-card.component';
 import { NgFor } from '@angular/common';
 import { SectionHeadingComponent } from '../../../components/UI/section-heading/section-heading.component';
@@ -35,10 +33,13 @@ export class DashboardComponent {
   statsDateForm!: FormGroup;
   updateCharts: boolean = false;
 
-  protected statsHeadings: string[] = [
-    'Total users.',
-    'Total shifts.',
-    'Total shifts this month.',
+  protected statsHeading: string[] = [
+    'Total users',
+    'Total shifts',
+    'Total shifts this month',
+    'Best month',
+    'Best Job',
+    'Best Worker',
   ];
 
   constructor(

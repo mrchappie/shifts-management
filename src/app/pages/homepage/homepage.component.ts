@@ -37,8 +37,8 @@ export class HomepageComponent {
   updateCharts: boolean = false;
 
   private stateSubscription: Subscription | undefined;
-  protected statsHeadings: string[] = [
-    'Total shifts',
+  protected statsHeading: string[] = [
+    'Total shifts this year',
     'Total shifts this month',
     'Best month',
     'Best job',

@@ -1,5 +1,5 @@
 export const userRoutes = [
-  { path: '', name: 'homepage', icon: 'home' },
+  { path: 'home', name: 'homepage', icon: 'home' },
   { path: 'my-shifts', name: 'my shifts', icon: 'list_alt' },
   { path: 'add-shift', name: 'add shift', icon: 'add_box' },
   { path: 'profile', name: 'profile', icon: 'person' },

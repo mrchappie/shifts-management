@@ -44,3 +44,29 @@ export const sortByValue = (chartData: Data) => {
 function capitalize(label: string) {
   return label.charAt(0).toUpperCase() + label.slice(1, label.length);
 }
+
+export const getBestMonth = (chartData: Data) => {
+  const sortedData = Object.entries(chartData)
+    .filter((workplace) => workplace[1] != 0)
+    .sort((a, b) => {
+      return b[1] - a[1];
+    });
+
+  const labels = sortedData.map((value) => capitalize(value[0])).slice(0, 5);
+  const data = sortedData.map((value) => value[1]).slice(0, 5);
+
+  return { labels, data };
+};
+
+export const getBestJob = (chartData: Data) => {
+  const sortedData = Object.entries(chartData)
+    .filter((workplace) => workplace[1] != 0)
+    .sort((a, b) => {
+      return b[1] - a[1];
+    });
+
+  const labels = sortedData.map((value) => capitalize(value[0])).slice(0, 5);
+  const data = sortedData.map((value) => value[1]).slice(0, 5);
+
+  return { labels, data };
+};
