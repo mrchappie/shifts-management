@@ -28,7 +28,7 @@ export class StatisticsService {
       .getFirestoreDoc(firestoreConfig.firestore.statistics.base, documentPath)
       .then((data) => {
         this.setStatistics(data as Statistics);
-        console.log('update');
+        // console.log('update');
       });
   }
 

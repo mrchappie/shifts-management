@@ -5,7 +5,7 @@ import { Statistics } from 'src/app/utils/services/statistics/defaultStatsObject
 import { StatisticsService } from 'src/app/utils/services/statistics/statistics.service';
 import { CountCardComponent } from '../../count-card/count-card.component';
 import { NgFor } from '@angular/common';
-import { getBestJob, getBestMonth, sortByMonth, sortByValue } from '../helpers';
+import { sortByMonth, sortByValue } from '../helpers';
 import { monthToString } from 'src/app/utils/functions';
 
 @Component({
@@ -149,7 +149,7 @@ export class ChartGroupComponent {
   ngOnInit(): void {
     this.statsService.statistics.subscribe((value) => {
       this.statistics = value;
-      console.log('on_init', this.statistics);
+      // console.log('on_init', this.statistics);
     });
   }
 
@@ -213,9 +213,9 @@ export class ChartGroupComponent {
           monthToString(new Date().getMonth())
         ]
       );
-      console.log(revenueByMonths);
+      // console.log(revenueByMonths);
 
-      console.log(revenueByJobs);
+      // console.log(revenueByJobs);
 
       this.countersData.push({
         title: this.countersHeading[0],
@@ -247,11 +247,11 @@ export class ChartGroupComponent {
         ]
       );
 
-      const bestWorkers = 0;
+      // const bestWorker = 0;
 
-      console.log(revenueByMonths);
+      // console.log(revenueByMonths);
 
-      console.log(revenueByJobs);
+      // console.log(revenueByJobs);
 
       this.countersData.push({
         title: this.countersHeading[0],
@@ -275,11 +275,11 @@ export class ChartGroupComponent {
         subtitle: revenueByJobs.labels[0],
         value: revenueByJobs.data[0],
       });
-      this.countersData.push({
-        title: this.countersHeading[5],
-        subtitle: 'Alexandru',
-        value: 1000,
-      });
+      // this.countersData.push({
+      //   title: this.countersHeading[5],
+      //   subtitle: 'Alexandru',
+      //   value: bestWorker,
+      // });
     }
   }
 }

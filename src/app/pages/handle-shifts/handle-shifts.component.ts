@@ -78,22 +78,22 @@ export class HandleShiftsComponent implements OnInit {
     this.route.queryParams.subscribe((params) => {
       if (params.userID) {
         this.userIDParams = params.userID;
-        console.log(this.userIDParams);
+        // console.log(this.userIDParams);
       }
       if (params.shiftID) {
         this.shiftIDParams = params.shiftID;
-        console.log(this.shiftIDParams);
+        // console.log(this.shiftIDParams);
       }
     });
 
     this.shiftForm = this.fb.group({
       shiftID: [uuidv4()],
       shiftDate: ['', [Validators.required]],
-      startTime: ['12:00', [Validators.required]],
-      endTime: ['20:00', [Validators.required]],
-      workplace: ['Penny', [Validators.required]],
-      wagePerHour: ['10', [Validators.required]],
-      shiftRevenue: ['80'],
+      startTime: ['', [Validators.required]],
+      endTime: ['', [Validators.required]],
+      workplace: ['', [Validators.required]],
+      wagePerHour: ['', [Validators.required]],
+      shiftRevenue: [''],
     });
 
     this.currentState = this.state.getState();
@@ -202,12 +202,12 @@ export class HandleShiftsComponent implements OnInit {
       ]
     );
 
-    console.log(shiftToBeEdited);
+    // console.log(shiftToBeEdited);
     this.shiftToEdit = shiftToBeEdited as Shift;
 
     // if a shift is edited, patch the form with the shift values
     if (this.shiftToEdit) {
-      console.log(this.parent);
+      // console.log(this.parent);
       this.shiftForm.patchValue({
         ...this.shiftToEdit,
         shiftDate: this.formatDate(this.shiftToEdit.shiftDate),

@@ -126,7 +126,7 @@ export class FirestoreService {
       );
       await setDoc(docRef, data);
     } catch (error) {
-      console.log(error);
+      // console.log(error);
       this.toast.error(errorMessages.firestore);
     }
   }
@@ -145,7 +145,7 @@ export class FirestoreService {
       );
       await updateDoc(docRef, data);
     } catch (error) {
-      console.log(error);
+      // console.log(error);
       this.toast.error(errorMessages.firestore);
     }
   }
@@ -156,7 +156,7 @@ export class FirestoreService {
     try {
       await deleteDoc(doc(this.firestore, collectionName, ...documentPath));
     } catch (error) {
-      console.log(error);
+      // console.log(error);
       this.toast.error(errorMessages.firestore);
     }
   }
@@ -206,7 +206,7 @@ export class FirestoreService {
     const q = query(docRef, limit(queryLimit));
 
     const shifts = await this.getFirestoreDocsByQuery(q);
-    console.log(shifts);
+    // console.log(shifts);
 
     if (shifts) {
       this.state.setState({ shifts: shifts });

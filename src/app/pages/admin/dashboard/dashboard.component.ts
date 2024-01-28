@@ -39,7 +39,7 @@ export class DashboardComponent {
     'Total shifts this month',
     'Best month',
     'Best Job',
-    'Best Worker',
+    // 'Best Worker',
   ];
 
   constructor(

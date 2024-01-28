@@ -1,6 +1,6 @@
 export const getMonthStartToEnd = (date: string) => {
   //   if (!date) return;
-  console.log(date);
+  // console.log(date);
   const startDate = new Date(date);
   const endDate = new Date(
     startDate.getFullYear(),

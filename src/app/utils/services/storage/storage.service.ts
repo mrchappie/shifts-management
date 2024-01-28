@@ -23,7 +23,7 @@ export class StorageService {
       const storageRef = ref(storage, path);
       await uploadBytes(storageRef, file);
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   }
 
@@ -37,7 +37,7 @@ export class StorageService {
         return avatarUrl;
       }
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
     return null;
   }
@@ -54,7 +54,7 @@ export class StorageService {
       const avatarsUrls = await Promise.all(avatarsUrlsPromises);
       return avatarsUrls;
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
     return [];
   }
@@ -65,7 +65,7 @@ export class StorageService {
       const storageRef = ref(storage, path);
       await deleteObject(storageRef);
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   }
 }

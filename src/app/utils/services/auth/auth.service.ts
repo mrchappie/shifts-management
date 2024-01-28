@@ -133,7 +133,7 @@ export class AuthService {
       }
       this.toast.success(successMessages.register);
     } catch (error) {
-      console.log(error);
+      // console.log(error);
 
       this.toast.error(errorMessages.register);
     }

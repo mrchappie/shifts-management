@@ -93,7 +93,7 @@ export class NewSearchComponent implements OnInit, OnDestroy {
     this.searchForm
       .get('userNames')
       ?.valueChanges.subscribe((value: string) => {
-        console.log(value);
+        // console.log(value);
         if (value) {
           this.shiftsService.getAllShifts(
             value,

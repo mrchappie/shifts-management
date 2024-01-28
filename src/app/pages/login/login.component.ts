@@ -111,7 +111,7 @@ export class LoginComponent implements OnInit {
       await this.changeCred.resetPasswordEmail(email);
       this.toggleModal();
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   }
 

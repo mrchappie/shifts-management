@@ -85,7 +85,7 @@ export class UpdateStatsService {
       shiftRevenue = newShiftData.shiftRevenue;
       workedHours = newShiftData.shiftRevenue / newShiftData.wagePerHour;
     }
-    console.log(diff, month, shiftCount, shiftRevenue, workedHours);
+    // console.log(diff, month, shiftCount, shiftRevenue, workedHours);
 
     if (diff && newMonth === oldMonth) {
       // update statistics in DB for edited shift  for user
