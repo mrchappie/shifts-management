@@ -15,7 +15,7 @@ export const isAdminGuard: CanActivateFn = async (route, state) => {
     stateService.setState({ role: 'admin' });
     return true;
   } else {
-    router.navigate(['']);
+    router.navigate(['/home']);
     return false;
   }
 };

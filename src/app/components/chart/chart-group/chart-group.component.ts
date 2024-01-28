@@ -5,6 +5,8 @@ import { Statistics } from 'src/app/utils/services/statistics/defaultStatsObject
 import { StatisticsService } from 'src/app/utils/services/statistics/statistics.service';
 import { CountCardComponent } from '../../count-card/count-card.component';
 import { NgFor } from '@angular/common';
+import { sortByMonth, sortByValue } from '../helpers';
+import { monthToString } from 'src/app/utils/functions';
 
 @Component({
   standalone: true,
@@ -14,9 +16,11 @@ import { NgFor } from '@angular/common';
 })
 export class ChartGroupComponent {
   @Input() setUpdateCharts!: boolean;
-  @Input() statsHeadings!: string[];
+  @Input() countersHeading!: string[];
+  @Input() parent: string = '';
 
   statistics!: Statistics;
+  countersData: CountersData[] = [];
 
   constructor(private statsService: StatisticsService) {}
 
@@ -145,54 +149,139 @@ export class ChartGroupComponent {
   ngOnInit(): void {
     this.statsService.statistics.subscribe((value) => {
       this.statistics = value;
-      console.log('on_init', this.statistics);
+      // console.log('on_init', this.statistics);
     });
   }
-
-  // ngAfterViewInit(): void {
-  //   console.log('after_init', this.statistics);
-  //   this.updateCharts();
-  // }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.setUpdateCharts && this.setUpdateCharts === true) {
       this.updateCharts();
+      this.updateCounters();
     }
   }
 
   updateCharts() {
     //? PIE CHART
-    this.pieChartData.labels = Object.keys(
-      this.statistics.statsPerMonth.earnedRevenueByShift.january
-    );
-    this.pieChartData.datasets[0].data = Object.values(
-      this.statistics.statsPerMonth.earnedRevenueByShift.january
-    );
+    this.pieChartData.labels = sortByValue(
+      this.statistics.statsPerMonth.earnedRevenueByShift[
+        monthToString(new Date().getMonth())
+      ]
+    ).labels;
+    this.pieChartData.datasets[0].data = sortByValue(
+      this.statistics.statsPerMonth.earnedRevenueByShift[
+        monthToString(new Date().getMonth())
+      ]
+    ).data;
     this.pieChart.updateChart();
 
     //? BAR CHART
-    this.barChartData.labels = Object.keys(
+    this.barChartData.labels = sortByMonth(
       this.statistics.earnedRevenueByMonth
-    );
-    this.barChartData.datasets[0].data = Object.values(
+    ).labels;
+    this.barChartData.datasets[0].data = sortByMonth(
       this.statistics.earnedRevenueByMonth
-    );
+    ).data;
     this.barChart.updateChart();
 
     //? LINE CHART
-    this.lineChartData.labels = Object.keys(this.statistics.shiftCountByMonth);
-    this.lineChartData.datasets[0].data = Object.values(
+    this.lineChartData.labels = sortByMonth(
       this.statistics.shiftCountByMonth
-    );
+    ).labels;
+    this.lineChartData.datasets[0].data = sortByMonth(
+      this.statistics.shiftCountByMonth
+    ).data;
     this.lineChart.updateChart();
 
     //? POLAR CHART
-    this.polarAreaChartData.labels = Object.keys(
+    this.polarAreaChartData.labels = sortByValue(
       this.statistics.statsPerMonth.workedHoursByShift.january
-    );
-    this.polarAreaChartData.datasets[0].data = Object.values(
+    ).labels;
+    this.polarAreaChartData.datasets[0].data = sortByValue(
       this.statistics.statsPerMonth.workedHoursByShift.january
-    );
+    ).data;
     this.polarArea.updateChart();
   }
+
+  updateCounters() {
+    if (this.parent === 'homepage') {
+      const totalShifts = this.statistics.totalShifts;
+      const shiftsThisMonth =
+        this.statistics.shiftCountByMonth[monthToString(new Date().getMonth())];
+      const revenueByMonths = sortByValue(this.statistics.earnedRevenueByMonth);
+      const revenueByJobs = sortByValue(
+        this.statistics.statsPerMonth.earnedRevenueByShift[
+          monthToString(new Date().getMonth())
+        ]
+      );
+      // console.log(revenueByMonths);
+
+      // console.log(revenueByJobs);
+
+      this.countersData.push({
+        title: this.countersHeading[0],
+        value: totalShifts,
+      });
+      this.countersData.push({
+        title: this.countersHeading[1],
+        value: shiftsThisMonth,
+      });
+      this.countersData.push({
+        title: this.countersHeading[2],
+        subtitle: revenueByMonths.labels[0],
+        value: revenueByMonths.data[0],
+      });
+      this.countersData.push({
+        title: this.countersHeading[3],
+        subtitle: revenueByJobs.labels[0],
+        value: revenueByJobs.data[0],
+      });
+    } else {
+      const totalUsers = this.statistics.totalUsers;
+      const totalShifts = this.statistics.totalShifts;
+      const shiftsThisMonth =
+        this.statistics.shiftCountByMonth[monthToString(new Date().getMonth())];
+      const revenueByMonths = sortByValue(this.statistics.earnedRevenueByMonth);
+      const revenueByJobs = sortByValue(
+        this.statistics.statsPerMonth.earnedRevenueByShift[
+          monthToString(new Date().getMonth())
+        ]
+      );
+
+      // const bestWorker = 0;
+
+      // console.log(revenueByMonths);
+
+      // console.log(revenueByJobs);
+
+      this.countersData.push({
+        title: this.countersHeading[0],
+        value: totalUsers,
+      });
+      this.countersData.push({
+        title: this.countersHeading[1],
+        value: totalShifts,
+      });
+      this.countersData.push({
+        title: this.countersHeading[2],
+        value: shiftsThisMonth,
+      });
+      this.countersData.push({
+        title: this.countersHeading[3],
+        subtitle: revenueByMonths.labels[0],
+        value: revenueByMonths.data[0],
+      });
+      this.countersData.push({
+        title: this.countersHeading[4],
+        subtitle: revenueByJobs.labels[0],
+        value: revenueByJobs.data[0],
+      });
+      // this.countersData.push({
+      //   title: this.countersHeading[5],
+      //   subtitle: 'Alexandru',
+      //   value: bestWorker,
+      // });
+    }
+  }
 }
+
+type CountersData = { value: number; title: string; subtitle?: string };

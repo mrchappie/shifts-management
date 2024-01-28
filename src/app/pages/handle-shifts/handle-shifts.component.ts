@@ -25,6 +25,7 @@ import { MilisecondsToTimePipe } from 'src/app/utils/pipes/milisecondsToTime/mil
 import { UpdateStatsService } from './updateStatsService/update-stats.service';
 import { getRouteToNavigate, getTodayDate } from './helpers';
 import { WeekShiftsComponent } from './week-shifts/week-shifts.component';
+import { ButtonSubmitComponent } from 'src/app/components/UI/button/button-submit/button-submit.component';
 
 @Component({
   selector: 'app-handle-shifts',
@@ -41,6 +42,7 @@ import { WeekShiftsComponent } from './week-shifts/week-shifts.component';
     DatePipe,
     MilisecondsToTimePipe,
     WeekShiftsComponent,
+    ButtonSubmitComponent,
   ],
 })
 export class HandleShiftsComponent implements OnInit {
@@ -76,22 +78,22 @@ export class HandleShiftsComponent implements OnInit {
     this.route.queryParams.subscribe((params) => {
       if (params.userID) {
         this.userIDParams = params.userID;
-        console.log(this.userIDParams);
+        // console.log(this.userIDParams);
       }
       if (params.shiftID) {
         this.shiftIDParams = params.shiftID;
-        console.log(this.shiftIDParams);
+        // console.log(this.shiftIDParams);
       }
     });
 
     this.shiftForm = this.fb.group({
       shiftID: [uuidv4()],
       shiftDate: ['', [Validators.required]],
-      startTime: ['12:00', [Validators.required]],
-      endTime: ['20:00', [Validators.required]],
-      workplace: ['Penny', [Validators.required]],
-      wagePerHour: ['10', [Validators.required]],
-      shiftRevenue: ['80'],
+      startTime: ['', [Validators.required]],
+      endTime: ['', [Validators.required]],
+      workplace: ['', [Validators.required]],
+      wagePerHour: ['', [Validators.required]],
+      shiftRevenue: [''],
     });
 
     this.currentState = this.state.getState();
@@ -200,12 +202,12 @@ export class HandleShiftsComponent implements OnInit {
       ]
     );
 
-    console.log(shiftToBeEdited);
+    // console.log(shiftToBeEdited);
     this.shiftToEdit = shiftToBeEdited as Shift;
 
     // if a shift is edited, patch the form with the shift values
     if (this.shiftToEdit) {
-      console.log(this.parent);
+      // console.log(this.parent);
       this.shiftForm.patchValue({
         ...this.shiftToEdit,
         shiftDate: this.formatDate(this.shiftToEdit.shiftDate),
@@ -330,15 +332,12 @@ export class HandleShiftsComponent implements OnInit {
           this.currentState.currentLoggedFireUser!.id,
           shiftData
         );
-        // set updateStats to true so the app know to refetch de data
-        // this.state.setState({ updateStats: true });
       } else {
         this.updateStats.updateExistingShiftStats(
           this.currentState.currentLoggedFireUser!.id,
           shiftData,
           this.shiftToEdit
         );
-        // this.state.setState({ updateStats: true });
       }
 
       this.router

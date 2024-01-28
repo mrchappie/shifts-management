@@ -22,14 +22,6 @@ export class CustomUsersSortPipe implements PipeTransform {
           return a['lastName'].localeCompare(b['lastName']);
         });
         break;
-      case 'shiftDate':
-        shiftsToSort.sort((a: UserSettings, b: UserSettings) => {
-          return Number(a.age) - Number(b.age);
-        });
-        break;
-
-      default:
-        break;
     }
 
     return orderByQuery === 'asc' ? shiftsToSort : [...shiftsToSort].reverse();

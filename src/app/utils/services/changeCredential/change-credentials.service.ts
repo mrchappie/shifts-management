@@ -35,7 +35,7 @@ export class ChangeCredentialsService {
       await updatePassword(user, newPass);
       this.authService.logout();
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   }
 
@@ -46,7 +46,7 @@ export class ChangeCredentialsService {
       this.toast.success('Reset password email was sent.');
     } catch (error) {
       this.toast.error('Invalid email, please try again.');
-      console.log(error);
+      // console.log(error);
     }
   }
 
@@ -81,7 +81,7 @@ export class ChangeCredentialsService {
       await sendEmailVerification(user);
       this.toast.warning('Email verification sent!');
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   }
 }

@@ -1,6 +1,6 @@
 <section class="h-full center">
   <div
-    class="center-col w-[900px] bg-lightBgPrimary dark:bg-darkBgPrimary shadow-all-sides p-8 rounded-2xl"
+    class="center-col w-[900px] bg-lightBgPrimary dark:bg-darkBgPrimary shadow-light dark:shadow-dark p-8 rounded-2xl"
   >
     <h1 class="text-3xl font-extrabold">Welcome back! Let's get started.</h1>
     <div class="center-col">
@@ -47,16 +47,16 @@
           <a (click)="openModal($event)" class="text-sm custom-link"
             >Reset password</a
           >
-          <button
-            type="submit"
-            [disabled]="loginForm.invalid"
-            class="w-full center submit-btn"
-          >
-            <div>Log in</div>
-            <div class="center">
-              <mat-icon fontIcon="login"></mat-icon>
-            </div>
-          </button>
+          <div class="w-full center">
+            <app-button-icon
+              [disabled]="loginForm.invalid"
+              type="submit"
+              [parent]="'Log In'"
+              [style]="['bg-lightPrimary', 'dark:bg-lightPrimary']"
+              [icon]="'login'"
+              class="p-2 w-max"
+            ></app-button-icon>
+          </div>
         </form>
         <!-- RESET PASSWORD -->
         <div *ngIf="showResetModal" (click)="closeModal($event)" class="modal">
@@ -94,13 +94,13 @@
                     )
                   "
                   [disabled]="resetPassword.invalid"
-                  class="flex-1 px-6 py-3 rounded-md cursor-pointer shadow-all-sides bg-lightSucces"
+                  class="flex-1 px-6 py-3 rounded-md cursor-pointer shadow-light dark:shadow-dark bg-lightSucces"
                 >
                   Send reset link
                 </button>
                 <button
                   (click)="closeModal($event)"
-                  class="flex-1 px-6 py-3 rounded-md cursor-pointer shadow-all-sides bg-lightError"
+                  class="flex-1 px-6 py-3 rounded-md cursor-pointer shadow-light dark:shadow-dark bg-lightError"
                 >
                   Cancel
                 </button>
@@ -113,7 +113,7 @@
           <p>Or continue with</p>
           <div class="w-full center">
             <button
-              class="flex-1 px-8 py-2 rounded-lg center shadow-all-sides bg-lightBgSecondary dark:bg-darkBgSecondary"
+              class="flex-1 px-8 py-2 rounded-lg center shadow-light dark:shadow-dark bg-lightBgSecondary dark:bg-darkBgSecondary"
             >
               <img
                 src="assets/icons/google.svg"
@@ -122,7 +122,7 @@
               />
             </button>
             <button
-              class="flex-1 px-8 py-2 rounded-lg center shadow-all-sides bg-lightBgSecondary dark:bg-darkBgSecondary"
+              class="flex-1 px-8 py-2 rounded-lg center shadow-light dark:shadow-dark bg-lightBgSecondary dark:bg-darkBgSecondary"
             >
               <img
                 src="assets/icons/github.svg"

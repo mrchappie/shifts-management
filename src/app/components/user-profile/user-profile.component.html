@@ -33,19 +33,25 @@
         </ng-container>
       </label>
     </div>
-    <button
+    <!-- <button
+      type="submit"
       [disabled]="userProfileForm.invalid"
       type="submit"
       class="px-4 py-2 rounded-sm bg-lightPrimary text-lightTextPrimary"
     >
       Update information
-    </button>
+    </button> -->
+    <app-button-submit
+      [disabled]="userProfileForm.invalid"
+      [type]="'submit'"
+      [parent]="'Update information'"
+    ></app-button-submit>
   </form>
   <div class="flex items-center justify-center flex-1">
     <label for="changeProfilePicture" class="relative center"
       ><div
         (click)="openAvatarsModal($event)"
-        class="center absolute bottom-[5%] right-[15%] p-2 bg-lightBgPrimary dark:bg-darkBgPrimary rounded-[50%] shadow-all-sides cursor-pointer"
+        class="center absolute bottom-[5%] right-[15%] p-2 bg-lightBgPrimary dark:bg-darkBgPrimary rounded-[50%] shadow-light dark:shadow-dark cursor-pointer"
       >
         <mat-icon fontIcon="add_a_photo"></mat-icon>
       </div>
@@ -53,14 +59,15 @@
         class="center w-[350px] aspect-square rounded-[50%] overflow-hidden border-[3px] border-lighbg-lightPrimary shadow-2xl"
       >
         <img
-          [src]="
-            profileImage
-              ? profileImage
-              : 'assets/illustrations/no_image_user.jpg'
-          "
-          alt=""
+          *ngIf="userSettings?.profileImage"
+          [src]="profileImage ? profileImage : ''"
+          alt="{{ userSettings.firstName }} photo"
           class="object-cover"
         />
+        <mat-icon
+          *ngIf="!userSettings?.profileImage"
+          fontIcon="person"
+        ></mat-icon>
       </div>
     </label>
   </div>

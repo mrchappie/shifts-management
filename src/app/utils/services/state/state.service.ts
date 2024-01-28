@@ -20,7 +20,6 @@ export class StateService {
     editedUserData: undefined,
     shiftsCount: 0,
     // fetched shifts
-    shifts: [],
 
     searchForm: {
       nameQuery: '',
@@ -68,7 +67,6 @@ export const initialState = {
   editedUserData: undefined,
   shiftsCount: 0,
   // fetched shifts
-  shifts: [],
 
   searchForm: {
     nameQuery: '',

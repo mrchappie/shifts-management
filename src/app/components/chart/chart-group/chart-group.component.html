@@ -1,13 +1,10 @@
 <!-- STATISTICS -->
 <section class="gap-4 mb-4 center">
-  <ng-container *ngFor="let heading of statsHeadings">
+  <ng-container *ngFor="let item of countersData">
     <app-count-card
-      [item]="
-        heading === 'Total users.'
-          ? statistics.totalUsers
-          : statistics.totalShifts
-      "
-      [title]="heading"
+      [title]="item.title"
+      [subtitle]="item.subtitle"
+      [value]="item.value"
       class="flex-1"
     ></app-count-card>
   </ng-container>

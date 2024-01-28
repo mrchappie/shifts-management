@@ -126,7 +126,7 @@ export class FirestoreService {
       );
       await setDoc(docRef, data);
     } catch (error) {
-      console.log(error);
+      // console.log(error);
       this.toast.error(errorMessages.firestore);
     }
   }
@@ -145,7 +145,7 @@ export class FirestoreService {
       );
       await updateDoc(docRef, data);
     } catch (error) {
-      console.log(error);
+      // console.log(error);
       this.toast.error(errorMessages.firestore);
     }
   }
@@ -156,20 +156,36 @@ export class FirestoreService {
     try {
       await deleteDoc(doc(this.firestore, collectionName, ...documentPath));
     } catch (error) {
-      console.log(error);
+      // console.log(error);
       this.toast.error(errorMessages.firestore);
     }
   }
 
   //! GET SHIFTS
-  async handleGetShiftsByUserID(userID: string, queryLimit?: number) {
+  async handleGetShiftsByUserID(
+    userID: string,
+    queryLimit?: number,
+    shiftsDateStart?: number,
+    shiftsDateEnd?: number
+  ) {
     const docRef = collection(
       this.firestore,
       firestoreConfig.firestore.shiftsDB.base,
       ...[firestoreConfig.firestore.shiftsDB.shifts, userID]
     );
 
-    const q = query(docRef, limit(queryLimit as number));
+    // create the query based on what user inputs
+    let q;
+    if (shiftsDateStart && shiftsDateEnd) {
+      q = query(
+        docRef,
+        limit(queryLimit as number),
+        where('shiftDate', '>=', shiftsDateStart),
+        where('shiftDate', '<=', shiftsDateEnd)
+      );
+    } else {
+      q = query(docRef, limit(queryLimit as number));
+    }
     const shifts = await this.getFirestoreDocsByQuery(q);
 
     if (shifts) {
@@ -190,7 +206,7 @@ export class FirestoreService {
     const q = query(docRef, limit(queryLimit));
 
     const shifts = await this.getFirestoreDocsByQuery(q);
-    console.log(shifts);
+    // console.log(shifts);
 
     if (shifts) {
       this.state.setState({ shifts: shifts });

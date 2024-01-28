@@ -12,12 +12,6 @@ export class StatisticsService {
   private _statistics$ = this._statistics.asObservable();
   private statisticsAsValue!: Statistics;
 
-  //prettier-ignore
-  private months: string[] = [
-    "january","february","march","april","may","june","july",
-    "august", "september", "october", "november", "december"
-  ];
-
   constructor(private firestore: FirestoreService) {}
 
   get statistics(): Observable<Statistics> {
@@ -34,7 +28,7 @@ export class StatisticsService {
       .getFirestoreDoc(firestoreConfig.firestore.statistics.base, documentPath)
       .then((data) => {
         this.setStatistics(data as Statistics);
-        console.log('update');
+        // console.log('update');
       });
   }
 

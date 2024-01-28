@@ -133,7 +133,7 @@ export class AuthService {
       }
       this.toast.success(successMessages.register);
     } catch (error) {
-      console.log(error);
+      // console.log(error);
 
       this.toast.error(errorMessages.register);
     }
@@ -182,7 +182,7 @@ export class AuthService {
     this.state.resetState();
     this.firestore.clearLocalStorage();
 
-    this.router.navigate(['/login']);
+    this.router.navigate(['']);
 
     return;
   }
@@ -247,7 +247,7 @@ export class AuthService {
       this.toast.success(successMessages.deleteAccount);
       setTimeout(() => {
         this.state.resetState();
-        this.router.navigate(['/login']);
+        this.router.navigate(['']);
       }, 1000);
     } catch (error) {
       this.toast.error(errorMessages.deleteAccount);

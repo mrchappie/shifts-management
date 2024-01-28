@@ -1,16 +1,21 @@
 <nav
-  class="items-stretch justify-start w-full h-full p-4 overflow-hidden center-col bg-lightBgSecondary dark:bg-darkBgSecondary dark:text-darkTextSecondary shadow-all-sides rounded-xl"
+  class="items-stretch justify-start w-full h-full p-4 overflow-hidden center-col bg-lightBgSecondary dark:bg-darkBgSecondary dark:text-darkTextSecondary shadow-light dark:shadow-dark rounded-xl"
 >
   <div class="items-start p-2 mb-4 center-col">
     <div class="center">
       <div
-        class="w-[40px] h-[40px] rounded-[50%] bg-black overflow-hidden flex-shrink-0"
+        class="w-[40px] h-[40px] rounded-[50%] bg-black overflow-hidden flex-shrink-0 center"
       >
         <img
+          *ngIf="currentState.currentLoggedFireUser!.profileImage"
           src="{{ currentState.currentLoggedFireUser?.profileImage }}"
           alt="{{ currentName.firstName }} profile picture"
           class="object-fill"
         />
+        <mat-icon
+          *ngIf="!currentState.currentLoggedFireUser!.profileImage"
+          fontIcon="person"
+        ></mat-icon>
       </div>
       <div class="text-lg">
         <span class="font-bold text-accentColor"
@@ -32,7 +37,7 @@
         />
 
         <div
-          class="checkbox__checkmark bg-lightBgPrimary dark:bg-darkBgPrimary shadow-all-sides"
+          class="checkbox__checkmark bg-lightBgPrimary dark:bg-darkBgPrimary shadow-light dark:shadow-dark"
         >
           <div class="light center">
             <mat-icon fontIcon="light_mode"></mat-icon>

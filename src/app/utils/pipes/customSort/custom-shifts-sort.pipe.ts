@@ -25,10 +25,7 @@ export class CustomShiftsSortPipe implements PipeTransform {
         break;
       case 'shiftDate':
         shiftsToSort.sort((a: Shift, b: Shift) => {
-          return (
-            new Date(a['shiftDate']).getTime() -
-            new Date(b['shiftDate']).getTime()
-          );
+          return a['shiftDate'] - b['shiftDate'];
         });
         break;
       case 'startTime':

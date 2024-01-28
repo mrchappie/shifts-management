@@ -15,12 +15,20 @@ import { NgIf } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { ValidationService } from './validationService/validation.service';
 import { validationPatterns } from 'src/app/utils/validationData';
+import { ButtonIconComponent } from 'src/app/components/UI/button/button-icon/button-icon.component';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   standalone: true,
-  imports: [FormsModule, ReactiveFormsModule, MatIconModule, NgIf, RouterLink],
+  imports: [
+    FormsModule,
+    ReactiveFormsModule,
+    MatIconModule,
+    NgIf,
+    RouterLink,
+    ButtonIconComponent,
+  ],
 })
 export class LoginComponent implements OnInit {
   loginForm!: FormGroup;
@@ -83,7 +91,7 @@ export class LoginComponent implements OnInit {
       this.loginForm.value.email,
       this.loginForm.value.password
     );
-    this.router.navigate(['/']);
+    this.router.navigate(['/home']);
   }
 
   openModal(event: Event) {
@@ -103,7 +111,7 @@ export class LoginComponent implements OnInit {
       await this.changeCred.resetPasswordEmail(email);
       this.toggleModal();
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   }
 

@@ -13,6 +13,9 @@ import { NewSearchComponent } from '../../components/search/search.component';
 import { ToastService } from 'src/app/utils/services/toast/toast.service';
 import { errorMessages, successMessages } from 'src/app/utils/toastMessages';
 import { UpdateStatsService } from '../handle-shifts/updateStatsService/update-stats.service';
+import { ShiftCardRectComponent } from 'src/app/components/shift-card/shift-card-rect/shift-card-rect.component';
+import { ShiftsService } from 'src/app/utils/services/shifts/shifts.service';
+import { getMonthStartToEnd } from 'src/app/components/search/helpers';
 
 @Component({
   selector: 'app-my-shifts',
@@ -24,6 +27,7 @@ import { UpdateStatsService } from '../handle-shifts/updateStatsService/update-s
     RouterLink,
     NgFor,
     ShiftCardComponent,
+    ShiftCardRectComponent,
     MatIconModule,
     CustomShiftsSortPipe,
   ],
@@ -57,43 +61,56 @@ export class MyShiftsComponent implements OnInit, OnDestroy {
     private state: StateService,
     private router: Router,
     private toast: ToastService,
-    private updateStats: UpdateStatsService
+    private updateStats: UpdateStatsService,
+    private shiftsService: ShiftsService
   ) {}
 
   ngOnInit(): void {
     this.currentState = this.state.getState();
+    this.filters = this.currentState.searchForm;
 
-    // fetch shifts for single user
-    if (!this.userIDFromURL && this.parent === 'my-shifts') {
-      this.userID = this.currentState.currentLoggedFireUser!.id;
-      this.getShifts(this.userID, this.filters.queryLimit);
-    }
-    // fetch shifts when an admin loads a user edit page
-    if (this.userIDFromURL && this.parent === 'edit-user') {
-      this.getShifts(this.userIDFromURL, this.filters.queryLimit);
-    }
+    this.shiftsService.shifts.subscribe((value) => {
+      this.myShifts = value;
+    });
 
     this.stateSubscription = this.state.stateChanged.subscribe((newState) => {
       this.currentState = newState;
       this.filters = this.currentState.searchForm;
-
-      if (this.currentState.shifts) {
-        this.myShifts = this.currentState.shifts;
-      }
     });
+
+    // fetch shifts for single user
+    if (!this.userIDFromURL && this.parent === 'my-shifts') {
+      const queryDate = getMonthStartToEnd(
+        this.filters.yearMonthQuery as string
+      );
+
+      this.userID = this.currentState.currentLoggedFireUser!.id;
+      this.shiftsService.getShiftsByMultipleQueries(
+        this.userID,
+        this.filters.queryLimit,
+        queryDate.start,
+        queryDate.end
+      );
+    }
+    // fetch shifts when an admin loads a user edit page
+    if (this.userIDFromURL && this.parent === 'edit-user') {
+      const queryDate = getMonthStartToEnd(
+        this.filters.yearMonthQuery as string
+      );
+
+      this.shiftsService.getShiftsByMultipleQueries(
+        this.userIDFromURL,
+        this.filters.queryLimit,
+        queryDate.start,
+        queryDate.end
+      );
+    }
   }
 
   ngOnDestroy(): void {
     if (this.stateSubscription) {
       this.stateSubscription.unsubscribe();
     }
-  }
-
-  async getShifts(userID: string, queryLimit: number) {
-    this.myShifts = await this.firestore.handleGetShiftsByUserID(
-      !this.userIDFromURL ? userID : this.userIDFromURL,
-      queryLimit
-    );
   }
 
   async editShift(shift: Shift) {
@@ -127,9 +144,6 @@ export class MyShiftsComponent implements OnInit, OnDestroy {
         this.currentState.currentLoggedFireUser!.id,
         shift
       );
-
-      // set updateStats to true so the app know to refetch de data
-      // this.state.setState({ updateStats: true });
 
       this.toast.success(successMessages.firestore.shift.delete);
 

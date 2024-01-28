@@ -71,7 +71,7 @@ export class ValidationService {
     }
 
     if (control === 'confNewPass') {
-      console.log(form.errors);
+      // console.log(form.errors);
 
       if (form.hasError('passwordsMisMatch')) {
         return errorMessages.credentials.password.notMatch;

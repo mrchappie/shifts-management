@@ -37,9 +37,11 @@ export class HomepageComponent {
   updateCharts: boolean = false;
 
   private stateSubscription: Subscription | undefined;
-  protected statsHeadings: string[] = [
-    'Your total shifts.',
-    'Total shifts this month.',
+  protected statsHeading: string[] = [
+    'Total shifts this year',
+    'Total shifts this month',
+    'Best month',
+    'Best job',
   ];
 
   constructor(
@@ -55,7 +57,7 @@ export class HomepageComponent {
 
     this.statsDateForm = this.fb.group({
       statsDate: [
-        `${this.customFN.getCurrentYear()}-${this.customFN.getCurrentMonth()}-${this.customFN.getCurrentDay()}`,
+        `${this.customFN.getCurrentYear()}-${this.customFN.getCurrentMonth()}`,
       ],
     });
 

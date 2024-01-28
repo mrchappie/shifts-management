@@ -17,12 +17,13 @@ import {
   changePassFormInputs,
 } from './formData';
 import { AuthService } from 'src/app/utils/services/auth/auth.service';
+import { ButtonIconComponent } from '../../UI/button/button-icon/button-icon.component';
 
 @Component({
   standalone: true,
   selector: 'app-change-credentials',
   templateUrl: './change-credentials.component.html',
-  imports: [NgIf, NgFor, FormsModule, ReactiveFormsModule],
+  imports: [NgIf, NgFor, FormsModule, ReactiveFormsModule, ButtonIconComponent],
 })
 export class ChangeCredentialsComponent implements OnInit {
   changePasswordForm!: FormGroup;

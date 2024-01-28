@@ -26,104 +26,32 @@ export const defaultStatsObject: Statistics = {
   totalShifts: 0,
   statsPerMonth: {
     workedHoursByShift: {
-      january: {
-        lidl: 0,
-        penny: 0,
-      },
-      february: {
-        lidl: 0,
-        penny: 0,
-      },
-      march: {
-        lidl: 0,
-        penny: 0,
-      },
-      april: {
-        lidl: 0,
-        penny: 0,
-      },
-      may: {
-        lidl: 0,
-        penny: 0,
-      },
-      june: {
-        lidl: 0,
-        penny: 0,
-      },
-      july: {
-        lidl: 0,
-        penny: 0,
-      },
-      august: {
-        lidl: 0,
-        penny: 0,
-      },
-      september: {
-        lidl: 0,
-        penny: 0,
-      },
-      october: {
-        lidl: 0,
-        penny: 0,
-      },
-      november: {
-        lidl: 0,
-        penny: 0,
-      },
-      december: {
-        lidl: 0,
-        penny: 0,
-      },
+      january: {},
+      february: {},
+      march: {},
+      april: {},
+      may: {},
+      june: {},
+      july: {},
+      august: {},
+      september: {},
+      october: {},
+      november: {},
+      december: {},
     },
     earnedRevenueByShift: {
-      january: {
-        lidl: 0,
-        penny: 0,
-      },
-      february: {
-        lidl: 0,
-        penny: 0,
-      },
-      march: {
-        lidl: 0,
-        penny: 0,
-      },
-      april: {
-        lidl: 0,
-        penny: 0,
-      },
-      may: {
-        lidl: 0,
-        penny: 0,
-      },
-      june: {
-        lidl: 0,
-        penny: 0,
-      },
-      july: {
-        lidl: 0,
-        penny: 0,
-      },
-      august: {
-        lidl: 0,
-        penny: 0,
-      },
-      september: {
-        lidl: 0,
-        penny: 0,
-      },
-      october: {
-        lidl: 0,
-        penny: 0,
-      },
-      november: {
-        lidl: 0,
-        penny: 0,
-      },
-      december: {
-        lidl: 0,
-        penny: 0,
-      },
+      january: {},
+      february: {},
+      march: {},
+      april: {},
+      may: {},
+      june: {},
+      july: {},
+      august: {},
+      september: {},
+      october: {},
+      november: {},
+      december: {},
     },
   },
   earnedRevenueByMonth: {

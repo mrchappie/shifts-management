@@ -13,7 +13,6 @@ export interface State {
   editedUserData?: UserSettings;
   shiftsCount: number;
   // fetched shifts
-  shifts: Shift[];
 
   searchForm: SearchFilters;
 
@@ -61,4 +60,5 @@ export interface SearchFilters {
   orderByQuery: string;
   yearMonthQuery: string;
   queryLimit: number;
+  userNames?: string;
 }

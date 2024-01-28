@@ -22,12 +22,8 @@ export const calculateAge = (dateString: Date): number | null => {
 };
 
 export const getCurrentYearMonth = (): string[] => {
-  // prettier-ignore
-  const months: string[]=["january","february","march","april","may","june","july",
-    "august", "september", "october", "november", "december"];
-
   const currentYear: string = new Date().getFullYear().toString();
-  const currentMonth: string = months[new Date().getMonth()];
+  const currentMonth: string = monthToString(new Date().getMonth());
 
   return [currentYear, currentMonth];
 };
@@ -47,3 +43,22 @@ export function timeStringToMilliseconds(timeString: string): number {
 
   return totalMilliseconds;
 }
+
+export const monthToString = (month: number) => {
+  const months: string[] = [
+    'january',
+    'february',
+    'march',
+    'april',
+    'may',
+    'june',
+    'july',
+    'august',
+    'september',
+    'october',
+    'november',
+    'december',
+  ];
+
+  return months[month];
+};

@@ -1,0 +1,36 @@
+<section
+  class="h-full max-w-[1200px] m-auto center-col text-lightTextPrimary dark:text-darkTextPrimary"
+>
+  <header class="center justify-between w-full p-4 h-[100px]">
+    <div class="w-[200px]">
+      <img
+        src="/assets/images/logo_text.png"
+        alt="ShiftEase logo"
+        class="object-cover"
+      />
+    </div>
+    <app-button-cta routerLink="/login" [parent]="'Log In'"></app-button-cta>
+  </header>
+  <main class="flex-1 w-full center">
+    <section class="z-10 items-start flex-1 gap-6 center-col">
+      <div class="text-[50px] font-bold">
+        ShiftEase - Streamlining Your Workforce
+      </div>
+      <div class="text-xl text-lightTextSecondary dark:text-darkTextSecondary">
+        Revolutionize workforce scheduling with ShiftEase - simplifying,
+        optimizing, and empowering your team for peak productivity.
+      </div>
+      <app-button-cta-style2
+        routerLink="/register"
+        [parent]="'Join Us'"
+      ></app-button-cta-style2>
+    </section>
+    <section class="items-end flex-1">
+      <img
+        src="/assets/images/landing_page.png"
+        alt="ShiftEase homepage"
+        class="opacity-80 dark:opacity-50"
+      />
+    </section>
+  </main>
+</section>

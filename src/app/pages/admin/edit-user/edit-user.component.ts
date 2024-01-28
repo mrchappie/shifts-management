@@ -10,6 +10,7 @@ import { DividerComponent } from '../../../components/UI/divider/divider.compone
 import { UserProfileComponent } from '../../../components/user-profile/user-profile.component';
 import { SectionHeadingComponent } from '../../../components/UI/section-heading/section-heading.component';
 import { AddWorkplaceComponent } from 'src/app/components/user-profile/add-workplace/add-workplace.component';
+import { ButtonIconComponent } from 'src/app/components/UI/button/button-icon/button-icon.component';
 
 @Component({
   selector: 'app-edit-user',
@@ -23,6 +24,7 @@ import { AddWorkplaceComponent } from 'src/app/components/user-profile/add-workp
     AdminRightsComponent,
     NgIf,
     MyShiftsComponent,
+    ButtonIconComponent,
   ],
 })
 export class EditUserComponent {

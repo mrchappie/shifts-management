@@ -15,6 +15,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { NgFor, NgIf } from '@angular/common';
 import { ValidationService } from './validationService/validation.service';
 import { validationPatterns } from 'src/app/utils/validationData';
+import { ButtonIconComponent } from 'src/app/components/UI/button/button-icon/button-icon.component';
 
 @Component({
   selector: 'app-register',
@@ -27,6 +28,7 @@ import { validationPatterns } from 'src/app/utils/validationData';
     NgIf,
     MatIconModule,
     RouterLink,
+    ButtonIconComponent,
   ],
 })
 export class RegisterComponent {
@@ -47,19 +49,18 @@ export class RegisterComponent {
   ngOnInit(): void {
     this.registerForm = this.fb.group(
       {
-        firstName: ['Alex', [Validators.required, Validators.minLength(3)]],
-        lastName: ['Chappie', [Validators.required, Validators.minLength(3)]],
-        //! BUG PASS CONFIRM
+        firstName: ['', [Validators.required, Validators.minLength(3)]],
+        lastName: ['', [Validators.required, Validators.minLength(3)]],
         password: [
-          'Alex2023!',
+          '',
           [
             Validators.required,
             Validators.pattern(validationPatterns.register.password),
           ],
         ],
-        confPass: ['Alex2023!', [Validators.required]],
-        email: ['alex.chappie@shift.app'],
-        dob: ['2000-12-12', [Validators.required, AgeValidation]],
+        confPass: ['', [Validators.required]],
+        email: ['firstname.lastname@shift.app'],
+        dob: ['', [Validators.required, AgeValidation]],
         termsAndConditions: [false],
       },
       {
@@ -104,7 +105,7 @@ export class RegisterComponent {
       this.registerForm.get('termsAndConditions')?.value === true
     ) {
       await this.authService.register(this.registerForm.value);
-      this.router.navigate(['/']);
+      this.router.navigate(['/home']);
     } else {
       this.termsAndConditions = true;
     }
