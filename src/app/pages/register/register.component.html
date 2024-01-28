@@ -56,13 +56,16 @@
               </div>
             </label>
           </ng-container>
-          <button
-            type="submit"
-            [disabled]="registerForm.invalid"
-            class="w-full center submit-btn"
-          >
-            Create Account
-          </button>
+          <div class="w-full center">
+            <app-button-icon
+              [disabled]="registerForm.invalid"
+              type="submit"
+              [parent]="'Create Account'"
+              [style]="['bg-lightPrimary', 'dark:bg-lightPrimary']"
+              [icon]="'login'"
+              class="p-2 w-max"
+            ></app-button-icon>
+          </div>
         </form>
       </div>
       <a routerLink="/login" class="underline">Already have an account?</a>

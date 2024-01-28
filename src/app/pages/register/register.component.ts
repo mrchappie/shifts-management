@@ -15,6 +15,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { NgFor, NgIf } from '@angular/common';
 import { ValidationService } from './validationService/validation.service';
 import { validationPatterns } from 'src/app/utils/validationData';
+import { ButtonIconComponent } from 'src/app/components/UI/button/button-icon/button-icon.component';
 
 @Component({
   selector: 'app-register',
@@ -27,6 +28,7 @@ import { validationPatterns } from 'src/app/utils/validationData';
     NgIf,
     MatIconModule,
     RouterLink,
+    ButtonIconComponent,
   ],
 })
 export class RegisterComponent {

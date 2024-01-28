@@ -1,0 +1,11 @@
+<button
+  [ngClass]="style.join(' ')"
+  [disabled]="disabled"
+  [type]="type"
+  class="noselect"
+>
+  <span class="text">{{ parent != "" ? parent : "Edit" }}</span
+  ><span class="icon">
+    <mat-icon fontIcon="{{ icon }}"></mat-icon>
+  </span>
+</button>

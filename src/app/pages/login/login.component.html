@@ -47,16 +47,16 @@
           <a (click)="openModal($event)" class="text-sm custom-link"
             >Reset password</a
           >
-          <button
-            type="submit"
-            [disabled]="loginForm.invalid"
-            class="w-full center submit-btn"
-          >
-            <div>Log in</div>
-            <div class="center">
-              <mat-icon fontIcon="login"></mat-icon>
-            </div>
-          </button>
+          <div class="w-full center">
+            <app-button-icon
+              [disabled]="loginForm.invalid"
+              type="submit"
+              [parent]="'Log In'"
+              [style]="['bg-lightPrimary', 'dark:bg-lightPrimary']"
+              [icon]="'login'"
+              class="p-2 w-max"
+            ></app-button-icon>
+          </div>
         </form>
         <!-- RESET PASSWORD -->
         <div *ngIf="showResetModal" (click)="closeModal($event)" class="modal">

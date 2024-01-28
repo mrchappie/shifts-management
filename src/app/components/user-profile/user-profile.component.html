@@ -33,13 +33,18 @@
         </ng-container>
       </label>
     </div>
-    <button
+    <!-- <button
       type="submit"
       [disabled]="userProfileForm.invalid"
       class="submit-btn"
     >
       Update information
-    </button>
+    </button> -->
+    <app-button-submit
+      [disabled]="userProfileForm.invalid"
+      [type]="'submit'"
+      [parent]="'Update information'"
+    ></app-button-submit>
   </form>
   <div class="flex items-center justify-center flex-1">
     <label for="changeProfilePicture" class="relative center"

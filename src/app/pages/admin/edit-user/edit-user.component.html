@@ -23,12 +23,13 @@
     [userData]="userData"
   ></app-admin-rights>
   <app-divider />
-  <button
+  <app-button-icon
     (click)="loadShifts = !loadShifts"
-    class="p-2 my-10 font-bold bg-lightBgPrimary text-lightTextSecondary dark:bg-darkBgPrimary dark:text-darkTextSecondary shadow-light dark:shadow-dark"
-  >
-    Toggle user shifts
-  </button>
+    [parent]="'Toggle user shifts'"
+    [style]="['bg-lightPrimary', 'dark:bg-lightPrimary']"
+    [icon]="'refresh'"
+    class="p-2 my-10 w-max"
+  ></app-button-icon>
   <section *ngIf="loadShifts">
     <app-my-shifts
       [userIDFromURL]="userIDFromParams"

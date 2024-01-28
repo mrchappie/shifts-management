@@ -25,6 +25,7 @@ import { MilisecondsToTimePipe } from 'src/app/utils/pipes/milisecondsToTime/mil
 import { UpdateStatsService } from './updateStatsService/update-stats.service';
 import { getRouteToNavigate, getTodayDate } from './helpers';
 import { WeekShiftsComponent } from './week-shifts/week-shifts.component';
+import { ButtonSubmitComponent } from 'src/app/components/UI/button/button-submit/button-submit.component';
 
 @Component({
   selector: 'app-handle-shifts',
@@ -41,6 +42,7 @@ import { WeekShiftsComponent } from './week-shifts/week-shifts.component';
     DatePipe,
     MilisecondsToTimePipe,
     WeekShiftsComponent,
+    ButtonSubmitComponent,
   ],
 })
 export class HandleShiftsComponent implements OnInit {

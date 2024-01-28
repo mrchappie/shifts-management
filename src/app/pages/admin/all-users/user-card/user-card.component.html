@@ -42,13 +42,24 @@
     >
   </div>
   <div class="gap-2 center">
-    <button
+    <app-button-icon
+      [routerLink]="['/admin', 'all-users', 'edit-user']"
+      [queryParams]="{ userID: userInfo?.id }"
+      [style]="[
+        'bg-lightSucces',
+        'hover:bg-lightSucces',
+        'dark:bg-darkSucces',
+        'dark:hover:bg-darkSucces'
+      ]"
+      [icon]="'edit'"
+    ></app-button-icon>
+    <!-- <button
       [routerLink]="['/admin', 'all-users', 'edit-user']"
       [queryParams]="{ userID: userInfo?.id }"
       class="gap-1 px-6 py-2 font-bold rounded-md center bg-lightSucces text-darkTextPrimary"
     >
       <div class="center"><mat-icon fontIcon="edit"></mat-icon></div>
-    </button>
+    </button> -->
     <!-- <button
       (click)="openModal(userInfo!.id)"
       class="gap-1 px-6 py-2 font-bold rounded-md center bg-lightError text-darkTextPrimary"

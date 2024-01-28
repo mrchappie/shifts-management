@@ -82,15 +82,12 @@
           </label>
         </ng-container>
       </ng-container>
-
-      <button
+      <app-button-submit
         [disabled]="shiftForm.invalid"
-        type="submit"
-        class="w-full submit-btn"
-      >
-        <span *ngIf="isEditing">Update</span>
-        <span *ngIf="!isEditing">Add new</span> shift
-      </button>
+        [type]="'submit'"
+        [parent]="isEditing ? 'Update shift' : 'Add shift'"
+        class="w-full"
+      ></app-button-submit>
     </form>
   </div>
   <app-week-shifts

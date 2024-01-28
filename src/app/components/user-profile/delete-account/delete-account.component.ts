@@ -12,12 +12,13 @@ import { DeleteAccount, deleteAccount } from './formData';
 import { ValidationService } from './validationService/validation.service';
 import { validationPatterns } from 'src/app/utils/validationData';
 import { UserSettings } from 'src/app/utils/Interfaces';
+import { ButtonIconComponent } from '../../UI/button/button-icon/button-icon.component';
 
 @Component({
   standalone: true,
   selector: 'app-delete-account',
   templateUrl: './delete-account.component.html',
-  imports: [NgIf, NgFor, FormsModule, ReactiveFormsModule],
+  imports: [NgIf, NgFor, FormsModule, ReactiveFormsModule, ButtonIconComponent],
 })
 export class DeleteAccountComponent implements OnInit {
   deleteAccountForm!: FormGroup;

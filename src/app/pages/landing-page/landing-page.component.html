@@ -1,5 +1,5 @@
 <section
-  class="h-full max-w-[1200px] m-auto center-col text-lightTextPrimary y dark:text-darkTextPrimary"
+  class="h-full max-w-[1200px] m-auto center-col text-lightTextPrimary dark:text-darkTextPrimary"
 >
   <header class="center justify-between w-full p-4 h-[100px]">
     <div class="w-[200px]">
@@ -9,7 +9,7 @@
         class="object-cover"
       />
     </div>
-    <button routerLink="/login" class="submit-btn">Sign Up</button>
+    <app-button-cta routerLink="/login" [parent]="'Log In'"></app-button-cta>
   </header>
   <main class="flex-1 w-full center">
     <section class="z-10 items-start flex-1 gap-6 center-col">
@@ -20,7 +20,10 @@
         Revolutionize workforce scheduling with ShiftEase - simplifying,
         optimizing, and empowering your team for peak productivity.
       </div>
-      <button routerLink="/register" class="submit-btn">Get Started</button>
+      <app-button-cta-style2
+        routerLink="/register"
+        [parent]="'Join Us'"
+      ></app-button-cta-style2>
     </section>
     <section class="items-end flex-1">
       <img

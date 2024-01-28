@@ -23,6 +23,7 @@ import { ValidationService } from './validationService/validation.service';
 import { validationPatterns } from 'src/app/utils/validationData';
 import { BackdropComponent } from '../UI/backdrop/backdrop.component';
 import { StorageService } from 'src/app/utils/services/storage/storage.service';
+import { ButtonSubmitComponent } from '../UI/button/button-submit/button-submit.component';
 
 @Component({
   selector: 'app-user-profile',
@@ -35,6 +36,7 @@ import { StorageService } from 'src/app/utils/services/storage/storage.service';
     NgIf,
     MatIconModule,
     BackdropComponent,
+    ButtonSubmitComponent,
   ],
 })
 export class UserProfileComponent {

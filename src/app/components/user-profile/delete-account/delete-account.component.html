@@ -1,5 +1,15 @@
 <section class="min-h-[150px] my-[50px] center-col gap-4 items-start">
-  <button class="submit-btn" (click)="openModal($event)">Delete Account</button>
+  <app-button-icon
+    (click)="openModal($event)"
+    [parent]="'Delete Account'"
+    [style]="[
+      'bg-lightError',
+      'hover:bg-lightError',
+      'dark:bg-darkError',
+      'dark:hover:bg-darkError'
+    ]"
+    [icon]="'delete'"
+  ></app-button-icon>
   <div *ngIf="showModal" (click)="closeModal($event)" class="modal center">
     <div class="p-8 rounded-md bg-lightBgSecondary dark:bg-darkBgSecondary">
       <!-- DELETE ACCOUNT FORM-->
@@ -29,14 +39,14 @@
             (click)="deleteAccountFn($event)"
             [disabled]="deleteAccountForm.invalid"
             type="submit"
-            class="submit-btn bg-lightSucces"
+            class="submit-btn bg-lightError"
           >
             Delete
           </button>
           <button
             (click)="closeModal($event)"
             type="submit"
-            class="submit-btn bg-lightError"
+            class="submit-btn bg-lightSucces"
           >
             Cancel
           </button>
