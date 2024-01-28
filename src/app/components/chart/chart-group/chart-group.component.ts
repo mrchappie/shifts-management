@@ -5,6 +5,7 @@ import { Statistics } from 'src/app/utils/services/statistics/defaultStatsObject
 import { StatisticsService } from 'src/app/utils/services/statistics/statistics.service';
 import { CountCardComponent } from '../../count-card/count-card.component';
 import { NgFor } from '@angular/common';
+import { sortByMonth, sortByValue } from '../helpers';
 
 @Component({
   standalone: true,
@@ -149,11 +150,6 @@ export class ChartGroupComponent {
     });
   }
 
-  // ngAfterViewInit(): void {
-  //   console.log('after_init', this.statistics);
-  //   this.updateCharts();
-  // }
-
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.setUpdateCharts && this.setUpdateCharts === true) {
       this.updateCharts();
@@ -162,37 +158,39 @@ export class ChartGroupComponent {
 
   updateCharts() {
     //? PIE CHART
-    this.pieChartData.labels = Object.keys(
+    this.pieChartData.labels = sortByValue(
       this.statistics.statsPerMonth.earnedRevenueByShift.january
-    );
-    this.pieChartData.datasets[0].data = Object.values(
+    ).labels;
+    this.pieChartData.datasets[0].data = sortByValue(
       this.statistics.statsPerMonth.earnedRevenueByShift.january
-    );
+    ).data;
     this.pieChart.updateChart();
 
     //? BAR CHART
-    this.barChartData.labels = Object.keys(
+    this.barChartData.labels = sortByMonth(
       this.statistics.earnedRevenueByMonth
-    );
-    this.barChartData.datasets[0].data = Object.values(
+    ).labels;
+    this.barChartData.datasets[0].data = sortByMonth(
       this.statistics.earnedRevenueByMonth
-    );
+    ).data;
     this.barChart.updateChart();
 
     //? LINE CHART
-    this.lineChartData.labels = Object.keys(this.statistics.shiftCountByMonth);
-    this.lineChartData.datasets[0].data = Object.values(
+    this.lineChartData.labels = sortByMonth(
       this.statistics.shiftCountByMonth
-    );
+    ).labels;
+    this.lineChartData.datasets[0].data = sortByMonth(
+      this.statistics.shiftCountByMonth
+    ).data;
     this.lineChart.updateChart();
 
     //? POLAR CHART
-    this.polarAreaChartData.labels = Object.keys(
+    this.polarAreaChartData.labels = sortByValue(
       this.statistics.statsPerMonth.workedHoursByShift.january
-    );
-    this.polarAreaChartData.datasets[0].data = Object.values(
+    ).labels;
+    this.polarAreaChartData.datasets[0].data = sortByValue(
       this.statistics.statsPerMonth.workedHoursByShift.january
-    );
+    ).data;
     this.polarArea.updateChart();
   }
 }

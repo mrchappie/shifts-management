@@ -38,8 +38,10 @@ export class HomepageComponent {
 
   private stateSubscription: Subscription | undefined;
   protected statsHeadings: string[] = [
-    'Your total shifts.',
-    'Total shifts this month.',
+    'Total shifts',
+    'Total shifts this month',
+    'Best month',
+    'Best job',
   ];
 
   constructor(
