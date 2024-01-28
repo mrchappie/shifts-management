@@ -11,7 +11,7 @@
   <!-- nav -->
   <app-navbar
     *ngIf="isLoggedIn"
-    class="col-span-2 col-start-1 row-span-2"
+    class="col-span-2 col-start-1 row-span-2 xl:col-span-1 lg:hidden"
   ></app-navbar>
 
   <!-- main content container -->
@@ -19,8 +19,8 @@
     class="h-full p-4 overflow-y-scroll rounded-md shadow-light dark:shadow-dark bg-lightBgSecondary dark:bg-darkBgSecondary"
     [ngClass]="
       isLoggedIn
-        ? 'col-start-3 col-span-10 row-span-2 shadow-light dark:shadow-dark rounded-md'
-        : 'col-start-1 col-span-12 row-span-3'
+        ? 'col-start-3 xl:col-start-2 lg:col-start-1 col-span-full row-span-2 shadow-light dark:shadow-dark rounded-md'
+        : 'col-start-1 col-span-full row-span-3'
     "
   >
     <router-outlet></router-outlet>

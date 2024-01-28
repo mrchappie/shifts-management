@@ -1,5 +1,5 @@
 <nav
-  class="items-stretch justify-start w-full h-full p-4 overflow-hidden center-col bg-lightBgSecondary dark:bg-darkBgSecondary dark:text-darkTextSecondary shadow-light dark:shadow-dark rounded-xl"
+  class="items-stretch justify-start w-full h-full p-4 overflow-hidden xl:p-2 center-col bg-lightBgSecondary dark:bg-darkBgSecondary dark:text-darkTextSecondary shadow-light dark:shadow-dark rounded-xl"
 >
   <div class="items-start p-2 mb-4 center-col">
     <div class="center">
@@ -18,14 +18,14 @@
         ></mat-icon>
       </div>
       <div class="text-lg">
-        <span class="font-bold text-accentColor"
-          >{{ currentName.firstName
-          }}<mat-icon
+        <span class="font-bold text-accentColor xl:hidden"
+          >{{ currentName.firstName }}
+          <!-- <mat-icon
             *ngIf="currentState.emailVerified"
             fontIcon="check_circle"
             class="text-baseColor"
-          ></mat-icon
-        ></span>
+          ></mat-icon> -->
+        </span>
       </div>
     </div>
     <div>
@@ -61,7 +61,7 @@
         <div class="center">
           <mat-icon fontIcon="{{ route.icon }}"></mat-icon>
         </div>
-        {{ route.name }}
+        <span class="xl:hidden">{{ route.name }}</span>
       </li>
     </ng-container>
     <ng-container *ngIf="isAdmin === 'admin'">
@@ -76,7 +76,7 @@
         <div class="center">
           <mat-icon fontIcon="{{ route.icon }}"></mat-icon>
         </div>
-        {{ route.name }}
+        <span class="xl:hidden">{{ route.name }}</span>
       </li>
     </ng-container>
   </ul>
@@ -85,6 +85,6 @@
     (click)="onSubmit()"
   >
     <div class="center"><mat-icon fontIcon="logout"></mat-icon></div>
-    Log Out
+    <span class="xl:hidden">Log Out</span>
   </button>
 </nav>
