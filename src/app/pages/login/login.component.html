@@ -18,7 +18,7 @@
               type="email"
               placeholder="Email"
               formControlName="email"
-              class="custom-input w-[400px]"
+              class="custom-input w-[400px] max-md:w-[200px]"
             />
             <div
               *ngIf="formInputStatus('email')"
@@ -35,7 +35,7 @@
               type="password"
               placeholder="Password"
               formControlName="password"
-              class="custom-input w-[400px]"
+              class="custom-input w-[400px] max-md:w-[200px]"
             />
             <div
               *ngIf="formInputStatus('password')"
@@ -111,7 +111,7 @@
         <!-- ALTERNATIVE LOG IN PROVIDERS -->
         <div class="w-full center-col">
           <p>Or continue with</p>
-          <div class="w-full center">
+          <div class="w-full center max-md:flex-col">
             <button
               class="flex-1 px-8 py-2 rounded-lg center shadow-light dark:shadow-dark bg-lightBgSecondary dark:bg-darkBgSecondary"
             >

@@ -24,7 +24,7 @@
   }
 
   .custom-input {
-    @apply flex-1 p-3 outline-none bg-transparent dark:bg-darkBgPrimary cursor-text;
+    @apply flex-1 p-3 max-md:p-2 outline-none bg-transparent dark:bg-darkBgPrimary cursor-text;
   }
 
   .custom-label {

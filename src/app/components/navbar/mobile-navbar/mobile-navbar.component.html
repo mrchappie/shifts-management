@@ -28,13 +28,6 @@
         </span>
       </div>
     </div>
-    <!-- <div class="mobile_nav_menu">
-      <button (click)="toggleMobileNav()" class="menu__icon">
-        <span></span>
-        <span></span>
-        <span></span>
-      </button>
-    </div> -->
     <div>
       <button (click)="toggleMobileNav($event)">
         <mat-icon fontIcon="menu"></mat-icon>
@@ -46,7 +39,7 @@
     class="absolute p-4 top-0 left-0 z-50 w-[300px] h-full bg-lightBgSecondary dark:bg-darkBgSecondary dark:text-darkTextSecondary shadow-light dark:shadow-dark flex flex-col justify-between"
   >
     <div>
-      <div class="w-full p-2 mb-4 center-col">
+      <div class="justify-between w-full p-2 mb-4 center">
         <div>
           <label class="checkbox">
             <input
@@ -66,6 +59,13 @@
               </div>
             </div>
           </label>
+        </div>
+        <div
+          class="rounded-[50%] bg-lightError dark:bg-darkError text-darkTextPrimary p-1"
+        >
+          <button (click)="toggleMobileNav($event)" class="center">
+            <mat-icon fontIcon="close"></mat-icon>
+          </button>
         </div>
       </div>
       <app-divider class="opacity-30" />

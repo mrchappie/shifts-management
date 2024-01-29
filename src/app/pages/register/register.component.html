@@ -1,6 +1,6 @@
 <section class="h-full center">
   <div
-    class="center-col w-[900px] bg-lightBgPrimary dark:bg-darkBgPrimary shadow-light dark:shadow-dark p-8 rounded-2xl"
+    class="p-8 center-col bg-lightBgPrimary dark:bg-darkBgPrimary shadow-light dark:shadow-dark rounded-2xl"
   >
     <h1 class="text-3xl font-extrabold">Join us! Create your account today.</h1>
     <div class="center-col">
@@ -35,7 +35,7 @@
               </ng-container>
               <ng-container *ngIf="input.disabled"
                 ><div
-                  class="opacity-25 cursor-not-allowed custom-input w-[400px]"
+                  class="opacity-25 cursor-not-allowed custom-input w-[400px] max-md:w-[200px]"
                 >
                   {{
                     registerForm.get(input.formControl)?.value
