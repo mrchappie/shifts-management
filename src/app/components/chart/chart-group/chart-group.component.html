@@ -1,42 +1,44 @@
 <!-- STATISTICS -->
-<section class="flex-wrap gap-4 mb-4 center">
+<section
+  class="grid grid-cols-4 gap-4 mb-4 max-lg:grid-cols-2 max-sm:grid-cols-1"
+>
   <ng-container *ngFor="let item of countersData">
     <app-count-card
       [title]="item.title"
       [subtitle]="item.subtitle"
       [value]="item.value"
-      class="flex-1"
+      class="col-span-1"
     ></app-count-card>
   </ng-container>
 </section>
 <!-- CHARTS -->
-<section class="grid w-full h-full grid-cols-6 gap-4 sm:hidden">
+<section class="grid w-full h-full grid-cols-6 gap-4 max-sm:hidden">
   <app-chart
     #pieChart
     [pieChartData]="pieChartData"
     [pieChartOptions]="pieChartOptions"
     [chartType]="'pie'"
-    class="col-span-2 xl:col-span-4 xl:col-start-2 h-[400px]"
+    class="col-span-2 max-xl:col-span-4 max-xl:col-start-2 h-[400px]"
   ></app-chart>
   <app-chart
     #barChart
     [barChartData]="barChartData"
     [barChartOptions]="barChartOptions"
     [chartType]="'bar'"
-    class="col-span-4 xl:col-span-6 h-[400px]"
+    class="col-span-4 max-xl:col-span-6 h-[400px]"
   ></app-chart>
   <app-chart
     #lineChart
     [lineChartData]="lineChartData"
     [lineChartOptions]="lineChartOptions"
     [chartType]="'line'"
-    class="col-span-4 xl:col-span-6 h-[400px]"
+    class="col-span-4 max-xl:col-span-6 h-[400px]"
   ></app-chart>
   <app-chart
     #polarArea
     [polarAreaChartData]="polarAreaChartData"
     [polarAreaChartOptions]="polarAreaChartOptions"
     [chartType]="'polarArea'"
-    class="col-span-2 xl:col-span-4 xl:col-start-2 h-[400px]"
+    class="col-span-2 max-xl:col-span-4 max-xl:col-start-2 h-[400px]"
   ></app-chart>
 </section>

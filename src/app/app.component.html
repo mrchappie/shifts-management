@@ -1,4 +1,4 @@
-<div class="grid w-full h-full grid-cols-12 gap-4 p-4 custom-grid-rows">
+<div class="grid w-full h-full grid-cols-12 gap-4 p-4">
   <!-- toasts container -->
   <div class="fixed z-10 items-end gap-4 right-4 top-4 center-col">
     <app-toast
@@ -11,15 +11,19 @@
   <!-- nav -->
   <app-navbar
     *ngIf="isLoggedIn"
-    class="col-span-2 col-start-1 row-span-2 xl:col-span-1 lg:hidden"
+    class="col-span-2 col-start-1 row-span-2 max-xl:col-span-1 max-lg:hidden"
   ></app-navbar>
+  <app-mobile-navbar
+    *ngIf="isLoggedIn"
+    class="col-start-1 row-span-1 col-span-full xl:col-span-1 lg:hidden"
+  ></app-mobile-navbar>
 
   <!-- main content container -->
   <div
     class="h-full p-4 overflow-y-scroll rounded-md shadow-light dark:shadow-dark bg-lightBgSecondary dark:bg-darkBgSecondary"
     [ngClass]="
       isLoggedIn
-        ? 'col-start-3 xl:col-start-2 lg:col-start-1 col-span-full row-span-2 shadow-light dark:shadow-dark rounded-md'
+        ? 'col-start-3 max-lg:col-start-1 max-xl:col-start-2 col-span-full row-span-2 shadow-light dark:shadow-dark rounded-md'
         : 'col-start-1 col-span-full row-span-3'
     "
   >

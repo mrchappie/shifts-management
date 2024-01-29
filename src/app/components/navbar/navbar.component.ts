@@ -9,7 +9,6 @@ import { AuthService } from 'src/app/utils/services/auth/auth.service';
 import { DividerComponent } from '../UI/divider/divider.component';
 import { MatIconModule } from '@angular/material/icon';
 import { NgIf, NgFor } from '@angular/common';
-import { ToastService } from 'src/app/utils/services/toast/toast.service';
 
 @Component({
   standalone: true,

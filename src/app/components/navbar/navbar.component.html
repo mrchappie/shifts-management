@@ -61,7 +61,7 @@
         <div class="center">
           <mat-icon fontIcon="{{ route.icon }}"></mat-icon>
         </div>
-        <span class="xl:hidden">{{ route.name }}</span>
+        <span class="max-xl:hidden">{{ route.name }}</span>
       </li>
     </ng-container>
     <ng-container *ngIf="isAdmin === 'admin'">
@@ -76,7 +76,7 @@
         <div class="center">
           <mat-icon fontIcon="{{ route.icon }}"></mat-icon>
         </div>
-        <span class="xl:hidden">{{ route.name }}</span>
+        <span class="max-xl:hidden">{{ route.name }}</span>
       </li>
     </ng-container>
   </ul>
@@ -85,6 +85,6 @@
     (click)="onSubmit()"
   >
     <div class="center"><mat-icon fontIcon="logout"></mat-icon></div>
-    <span class="xl:hidden">Log Out</span>
+    <span class="max-xl:hidden">Log Out</span>
   </button>
 </nav>

@@ -8,20 +8,20 @@ module.exports = {
   darkMode: "class",
   theme: {
     screens: {
-      sm: { max: "640px" },
-      // => @media (max-width: 640px) { ... }
+      sm: "640px",
+      // => @media (max/min-width: 640px) { ... }
 
-      md: { max: "768px" },
-      // => @media (max-width: 768px) { ... }
+      md: "768px",
+      // => @media (max/min-width: 768px) { ... }
 
-      lg: { max: "1024px" },
-      // => @media (max-width: 1024px) { ... }
+      lg: "1024px",
+      // => @media (max/min-width: 1024px) { ... }
 
-      xl: { max: "1280px" },
-      // => @media (max-width: 1280px) { ... }
+      xl: "1280px",
+      // => @media (max/min-width: 1280px) { ... }
 
-      "2xl": { max: "1536px" },
-      // => @media (max-width: 1536px) { ... }
+      "2xl": "1536px",
+      // => @media (max/min-width: 1536px) { ... }
     },
     extend: {
       // colors
