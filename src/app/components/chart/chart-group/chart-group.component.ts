@@ -18,6 +18,7 @@ export class ChartGroupComponent {
   @Input() setUpdateCharts!: boolean;
   @Input() countersHeading!: string[];
   @Input() parent: string = '';
+  @Input() activeDate: string = '';
 
   statistics!: Statistics;
   countersData: CountersData[] = [];
@@ -155,22 +156,24 @@ export class ChartGroupComponent {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.setUpdateCharts && this.setUpdateCharts === true) {
-      this.updateCharts();
-      this.updateCounters();
+      const currentMonth = monthToString(new Date().getMonth());
+      this.updateCharts(currentMonth);
+      this.updateCounters(currentMonth);
+    }
+    if (changes.activeDate && !changes.activeDate.firstChange) {
+      const month = monthToString(Number(this.activeDate.split('-')[1]) - 1);
+      this.updateCharts(month);
+      this.updateCounters(month);
     }
   }
 
-  updateCharts() {
+  updateCharts(month?: string) {
     //? PIE CHART
     this.pieChartData.labels = sortByValue(
-      this.statistics.statsPerMonth.earnedRevenueByShift[
-        monthToString(new Date().getMonth())
-      ]
+      this.statistics.statsPerMonth.earnedRevenueByShift[month as string]
     ).labels;
     this.pieChartData.datasets[0].data = sortByValue(
-      this.statistics.statsPerMonth.earnedRevenueByShift[
-        monthToString(new Date().getMonth())
-      ]
+      this.statistics.statsPerMonth.earnedRevenueByShift[month as string]
     ).data;
     this.pieChart.updateChart();
 
@@ -194,28 +197,25 @@ export class ChartGroupComponent {
 
     //? POLAR CHART
     this.polarAreaChartData.labels = sortByValue(
-      this.statistics.statsPerMonth.workedHoursByShift.january
+      this.statistics.statsPerMonth.workedHoursByShift[month as string]
     ).labels;
     this.polarAreaChartData.datasets[0].data = sortByValue(
-      this.statistics.statsPerMonth.workedHoursByShift.january
+      this.statistics.statsPerMonth.workedHoursByShift[month as string]
     ).data;
     this.polarArea.updateChart();
   }
 
-  updateCounters() {
+  updateCounters(month?: string) {
     if (this.parent === 'homepage') {
       const totalShifts = this.statistics.totalShifts;
       const shiftsThisMonth =
-        this.statistics.shiftCountByMonth[monthToString(new Date().getMonth())];
+        this.statistics.shiftCountByMonth[month as string];
       const revenueByMonths = sortByValue(this.statistics.earnedRevenueByMonth);
       const revenueByJobs = sortByValue(
-        this.statistics.statsPerMonth.earnedRevenueByShift[
-          monthToString(new Date().getMonth())
-        ]
+        this.statistics.statsPerMonth.earnedRevenueByShift[month as string]
       );
-      // console.log(revenueByMonths);
 
-      // console.log(revenueByJobs);
+      this.countersData = [];
 
       this.countersData.push({
         title: this.countersHeading[0],
@@ -239,19 +239,15 @@ export class ChartGroupComponent {
       const totalUsers = this.statistics.totalUsers;
       const totalShifts = this.statistics.totalShifts;
       const shiftsThisMonth =
-        this.statistics.shiftCountByMonth[monthToString(new Date().getMonth())];
+        this.statistics.shiftCountByMonth[month as string];
       const revenueByMonths = sortByValue(this.statistics.earnedRevenueByMonth);
       const revenueByJobs = sortByValue(
-        this.statistics.statsPerMonth.earnedRevenueByShift[
-          monthToString(new Date().getMonth())
-        ]
+        this.statistics.statsPerMonth.earnedRevenueByShift[month as string]
       );
 
       // const bestWorker = 0;
 
-      // console.log(revenueByMonths);
-
-      // console.log(revenueByJobs);
+      this.countersData = [];
 
       this.countersData.push({
         title: this.countersHeading[0],

@@ -17,4 +17,6 @@
 <app-chart-group
   [setUpdateCharts]="updateCharts"
   [countersHeading]="statsHeading"
+  [activeDate]="statsDateForm.get('statsDate')?.value"
+  [parent]="'homepage'"
 ></app-chart-group>

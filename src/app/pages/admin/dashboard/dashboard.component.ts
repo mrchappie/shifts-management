@@ -36,7 +36,7 @@ export class DashboardComponent {
   protected statsHeading: string[] = [
     'Total users',
     'Total shifts',
-    'Total shifts this month',
+    // 'Total shifts this month',
     'Best month',
     'Best Job',
     // 'Best Worker',
