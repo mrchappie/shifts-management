@@ -1,8 +1,10 @@
-<section class="center gap-12 my-[50px] xl:flex-col xl:items-center">
+<section
+  class="center gap-[100px] my-[50px] max-xl:flex-col xl:items-center max-xl:flex-wrap"
+>
   <form
     [formGroup]="userProfileForm"
     (ngSubmit)="onSubmit()"
-    class="items-start flex-1 gap-8 ml-8 center-col"
+    class="items-start flex-1 gap-8 center-col"
   >
     <div *ngFor="let input of settingsFormInputs" class="items-start center">
       <label *ngIf="input.formControl" class="relative custom-label">
@@ -13,17 +15,16 @@
           <input
             formControlName="{{ input.formControl }}"
             type="{{ input.type }}"
-            class="custom-input w-[400px]"
+            class="custom-input w-[400px] max-md:w-[200px]"
           />
-          <div
-            *ngIf="formInputStatus(input.formControl)"
-            class="absolute bottom-[-25px] left-0 text-red-500"
-          >
+          <div *ngIf="formInputStatus(input.formControl)" class="error-message">
             {{ getErrorMessage(input.formControl) }}
           </div>
         </ng-container>
         <ng-container *ngIf="input.disabled">
-          <div class="opacity-25 cursor-not-allowed custom-input w-[400px]">
+          <div
+            class="opacity-25 cursor-not-allowed custom-input w-[400px] max-md:w-[200px]"
+          >
             {{
               userProfileForm.get(input.formControl)?.value
                 ? userProfileForm.get(input.formControl)?.value
@@ -55,7 +56,7 @@
         <mat-icon fontIcon="add_a_photo"></mat-icon>
       </div>
       <div
-        class="center w-[350px] aspect-square rounded-[50%] overflow-hidden border-[3px] border-lighbg-lightPrimary shadow-2xl"
+        class="center w-[350px] max-lg:w-[200px] aspect-square rounded-[50%] overflow-hidden border-[3px] border-lighbg-lightPrimary shadow-2xl"
       >
         <img
           *ngIf="userSettings?.profileImage"
@@ -81,7 +82,7 @@
     class="absolute top-0 left-0 z-50 w-full h-full bg-black/25 center"
   >
     <div
-      class="max-w-[600px] bg-darkBgSecondary text-darkTextPrimary grid grid-cols-3 gap-4 p-4 rounded-md"
+      class="max-w-[600px] bg-darkBgSecondary text-darkTextPrimary grid grid-cols-3 max-md:grid-cols-2 gap-4 p-4 m-4 rounded-md"
     >
       <div
         *ngFor="let avatar of profileAvatars"

@@ -1,10 +1,12 @@
 <section class="h-full center">
   <div
-    class="p-8 center-col bg-lightBgPrimary dark:bg-darkBgPrimary shadow-light dark:shadow-dark rounded-2xl"
+    class="p-8 max-sm:p-4 center-col bg-lightBgPrimary dark:bg-darkBgPrimary shadow-light dark:shadow-dark rounded-2xl"
   >
-    <h1 class="text-3xl font-extrabold">Join us! Create your account today.</h1>
+    <h1 class="text-3xl font-extrabold max-sm:text-xl">
+      Join us! Create your account today.
+    </h1>
     <div class="center-col">
-      <div class="flex flex-col items-start flex-1 gap-10 p-12">
+      <div class="flex flex-col items-start flex-1 gap-10 p-12 max-sm:p-2">
         <form
           [formGroup]="registerForm"
           (ngSubmit)="onSubmit()"
@@ -28,7 +30,7 @@
                 />
                 <div
                   *ngIf="formInputStatus(input.formControl)"
-                  class="absolute bottom-[-25px] left-0 text-red-500"
+                  class="error-message"
                 >
                   {{ getErrorMessage(input.formControl) }}
                 </div>
@@ -42,16 +44,13 @@
                       ? registerForm.get(input.formControl)?.value
                       : input.name
                   }}
-                </div></ng-container
-              >
+                </div>
+              </ng-container>
             </label>
             <label *ngIf="input.type === 'checkbox'" class="relative w-full">
               <input type="checkbox" formControlName="termsAndConditions" />
               {{ input.name }}
-              <div
-                *ngIf="termsAndConditions"
-                class="absolute bottom-[-25px] left-0 text-red-500"
-              >
+              <div *ngIf="termsAndConditions" class="error-message">
                 {{ input.name }}
               </div>
             </label>

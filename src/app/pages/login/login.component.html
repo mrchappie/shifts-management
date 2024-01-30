@@ -1,10 +1,12 @@
 <section class="h-full center">
   <div
-    class="center-col w-[900px] bg-lightBgPrimary dark:bg-darkBgPrimary shadow-light dark:shadow-dark p-8 rounded-2xl"
+    class="center-col w-[900px] bg-lightBgPrimary dark:bg-darkBgPrimary shadow-light dark:shadow-dark p-8 rounded-2xl max-sm:p-4"
   >
-    <h1 class="text-3xl font-extrabold">Welcome back! Let's get started.</h1>
+    <h1 class="text-3xl font-extrabold max-sm:text-xl">
+      Welcome back! Let's get started.
+    </h1>
     <div class="center-col">
-      <div class="flex flex-col items-start flex-1 gap-10 p-12">
+      <div class="flex flex-col items-start flex-1 gap-10 p-12 max-sm:p-2">
         <form
           [formGroup]="loginForm"
           (ngSubmit)="onSubmit()"
@@ -20,10 +22,7 @@
               formControlName="email"
               class="custom-input w-[400px] max-md:w-[200px]"
             />
-            <div
-              *ngIf="formInputStatus('email')"
-              class="absolute bottom-[-25px] left-0 text-red-500"
-            >
+            <div *ngIf="formInputStatus('email')" class="error-message">
               {{ getErrorMessage("email") }}
             </div>
           </label>
@@ -37,10 +36,7 @@
               formControlName="password"
               class="custom-input w-[400px] max-md:w-[200px]"
             />
-            <div
-              *ngIf="formInputStatus('password')"
-              class="absolute bottom-[-25px] left-0 text-red-500"
-            >
+            <div *ngIf="formInputStatus('password')" class="error-message">
               {{ getErrorMessage("password") }}
             </div>
           </label>
@@ -61,7 +57,7 @@
         <!-- RESET PASSWORD -->
         <div *ngIf="showResetModal" (click)="closeModal($event)" class="modal">
           <div
-            class="p-4 rounded-md bg-lightBgSecondary dark:bg-darkBgSecondary center-col"
+            class="p-4 rounded-md bg-lightBgSecondary dark:bg-darkBgSecondary center-col max-sm:m-4"
           >
             <h1 class="p-4 text-2xl font-bold">Recover Password</h1>
             <p class="text-xl text-center p-4 max-w-[500px]">
@@ -80,13 +76,13 @@
                   />
                   <div
                     *ngIf="formResetStatus('resetPasswordEmail')"
-                    class="absolute bottom-[-25px] left-0 text-red-500"
+                    class="error-message"
                   >
                     {{ getResetErrorMessage("resetPasswordEmail") }}
                   </div>
                 </label>
               </form>
-              <div class="w-full center">
+              <div class="w-full center max-sm:flex-col">
                 <button
                   (click)="
                     sendResetEmail(
@@ -94,13 +90,13 @@
                     )
                   "
                   [disabled]="resetPassword.invalid"
-                  class="flex-1 px-6 py-3 rounded-md cursor-pointer shadow-light dark:shadow-dark bg-lightSucces"
+                  class="flex-1 px-6 py-3 rounded-md cursor-pointer max-sm:w-full shadow-light dark:shadow-dark bg-lightSucces"
                 >
                   Send reset link
                 </button>
                 <button
                   (click)="closeModal($event)"
-                  class="flex-1 px-6 py-3 rounded-md cursor-pointer shadow-light dark:shadow-dark bg-lightError"
+                  class="flex-1 px-6 py-3 rounded-md cursor-pointer max-sm:w-full shadow-light dark:shadow-dark bg-lightError"
                 >
                   Cancel
                 </button>
@@ -111,9 +107,9 @@
         <!-- ALTERNATIVE LOG IN PROVIDERS -->
         <div class="w-full center-col">
           <p>Or continue with</p>
-          <div class="w-full center max-md:flex-col">
+          <div class="w-full gap-4 center max-md:flex-col">
             <button
-              class="flex-1 px-8 py-2 rounded-lg center shadow-light dark:shadow-dark bg-lightBgSecondary dark:bg-darkBgSecondary"
+              class="flex-1 px-8 py-2 rounded-lg max-sm:w-full center shadow-light dark:shadow-dark bg-lightBgSecondary dark:bg-darkBgSecondary"
             >
               <img
                 src="assets/icons/google.svg"
@@ -122,7 +118,7 @@
               />
             </button>
             <button
-              class="flex-1 px-8 py-2 rounded-lg center shadow-light dark:shadow-dark bg-lightBgSecondary dark:bg-darkBgSecondary"
+              class="flex-1 px-8 py-2 rounded-lg max-sm:w-full center shadow-light dark:shadow-dark bg-lightBgSecondary dark:bg-darkBgSecondary"
             >
               <img
                 src="assets/icons/github.svg"

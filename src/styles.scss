@@ -28,7 +28,7 @@
   }
 
   .custom-label {
-    @apply flex w-full border-b-2 border-lightBorder/50 bg-lightBgPrimary dark:bg-darkBgPrimary dark:text-darkTextSecondary dark:border-darkAccent px-2 relative;
+    @apply flex w-full border-b-2 border-lightBorder/50 bg-lightBgPrimary dark:bg-darkBgPrimary dark:text-darkTextSecondary dark:border-darkAccent px-4 relative;
   }
 
   .custom-search-label {
@@ -68,6 +68,10 @@
 
   .modal {
     @apply center absolute top-0 left-0 w-full h-full bg-black/50 z-10;
+  }
+
+  .error-message {
+    @apply absolute bottom-[-25px] left-0 text-red-500 max-md:text-sm;
   }
 }
 

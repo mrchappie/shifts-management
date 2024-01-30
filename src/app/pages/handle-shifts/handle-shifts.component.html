@@ -1,5 +1,5 @@
 <div
-  class="gap-[50px] center justify-evenly items-start xl:flex-col xl:items-center"
+  class="gap-[50px] center justify-evenly items-start max-xl:flex-col max-xl:items-center"
 >
   <div class="flex-1">
     <form
@@ -30,11 +30,11 @@
                 type="{{ shift.type }}"
                 placeholder="{{ shift.placeholder }}"
                 formControlName="{{ shift.formControl }}"
-                class="custom-input w-[400px]"
+                class="custom-input w-[400px] max-md:w-[200px]"
               />
               <div
                 *ngIf="formInputStatus(shift.formControl)"
-                class="absolute bottom-[-25px] left-0 text-red-500"
+                class="error-message"
               >
                 {{ getErrorMessage(shift.formControl) }}
               </div>
@@ -77,7 +77,7 @@
             </select>
             <div
               *ngIf="formInputStatus(shift.formControl)"
-              class="absolute bottom-[-25px] left-0 text-red-500"
+              class="error-message"
             >
               {{ getErrorMessage(shift.formControl) }}
             </div>

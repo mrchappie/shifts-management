@@ -11,7 +11,7 @@
     [icon]="'delete'"
   ></app-button-icon>
   <div *ngIf="showModal" (click)="closeModal($event)" class="modal center">
-    <div class="p-8 rounded-md bg-lightBgSecondary dark:bg-darkBgSecondary">
+    <div class="p-8 m-4 rounded-md bg-lightBgSecondary dark:bg-darkBgSecondary">
       <!-- DELETE ACCOUNT FORM-->
       <form [formGroup]="deleteAccountForm" class="gap-10 center-col">
         <p class="text-xl">
@@ -25,12 +25,9 @@
           <input
             formControlName="{{ input.formControl }}"
             type="{{ input.type }}"
-            class="custom-input w-[300px]"
+            class="custom-input w-[300px] max-md:w-[200px]"
           />
-          <div
-            *ngIf="formStatus(input.formControl)"
-            class="absolute bottom-[-25px] left-0 text-red-500"
-          >
+          <div *ngIf="formStatus(input.formControl)" class="error-message">
             {{ getErrorMessage(input.formControl) }}
           </div>
         </label>
