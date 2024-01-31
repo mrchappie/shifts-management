@@ -1,30 +1,30 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { NavbarRoutes, adminRoutes, userRoutes } from './navbarData';
-import { StateService } from 'src/app/utils/services/state/state.service';
-import { FirestoreService } from 'src/app/utils/services/firestore/firestore.service';
+import { Component } from '@angular/core';
+import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { State } from 'src/app/utils/Interfaces';
-import { Router, RouterLinkActive, RouterLink } from '@angular/router';
 import { AuthService } from 'src/app/utils/services/auth/auth.service';
-import { DividerComponent } from '../UI/divider/divider.component';
+import { FirestoreService } from 'src/app/utils/services/firestore/firestore.service';
+import { StateService } from 'src/app/utils/services/state/state.service';
+import { NavbarRoutes, userRoutes, adminRoutes } from '../navbarData';
 import { MatIconModule } from '@angular/material/icon';
-import { NgIf, NgFor } from '@angular/common';
+import { NgFor, NgIf } from '@angular/common';
+import { DividerComponent } from '../../UI/divider/divider.component';
 
 @Component({
   standalone: true,
-  selector: 'app-navbar',
-  templateUrl: './navbar.component.html',
-  styleUrls: ['./navbar.component.scss'],
+  selector: 'app-mobile-navbar',
+  templateUrl: './mobile-navbar.component.html',
+  styleUrls: ['./mobile-navbar.component.scss'],
   imports: [
-    NgIf,
     MatIconModule,
+    NgIf,
     DividerComponent,
     NgFor,
-    RouterLinkActive,
     RouterLink,
+    RouterLinkActive,
   ],
 })
-export class NavbarComponent implements OnInit, OnDestroy {
+export class MobileNavbarComponent {
   currentState!: State;
   isAdmin: string | undefined = 'user ';
   navbarUserRoutes: NavbarRoutes[] = userRoutes;
@@ -36,6 +36,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
     : window.matchMedia('(prefers-color-scheme: dark)').matches
     ? 'dark'
     : 'light';
+  openMobileNav: boolean = false;
 
   private stateSubscription: Subscription | undefined;
 
@@ -80,5 +81,10 @@ export class NavbarComponent implements OnInit, OnDestroy {
     document.documentElement.setAttribute('class', this.theme);
 
     this.firestore.setLocalStorage('theme', this.theme);
+  }
+
+  toggleMobileNav(event: Event) {
+    event.stopPropagation();
+    this.openMobileNav = !this.openMobileNav;
   }
 }

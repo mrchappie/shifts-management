@@ -4,7 +4,7 @@
     [secHeading]="'See last, this and next week shifts with ease.'"
   ></app-section-heading>
   <section class="w-full gap-4 center-col">
-    <header class="w-full gap-0 center">
+    <header class="w-full gap-0 center max-sm:flex-col">
       <button
         (click)="setActiveWeek('last')"
         class="flex-1 p-3 font-bold bg-gray-500 center min-w-max"
@@ -27,13 +27,20 @@
         Next week
       </button>
     </header>
-    <main class="w-full gap-4 center-col">
-      <ng-container *ngFor="let shift of shifts">
-        <app-shift-card-rect
-          [shift]="shift"
-          class="w-full"
-        ></app-shift-card-rect>
-      </ng-container>
+    <main class="w-full">
+      <section class="w-full gap-4 center-col max-sm:hidden">
+        <ng-container *ngFor="let shift of shifts">
+          <app-shift-card-rect
+            [shift]="shift"
+            class="w-full"
+          ></app-shift-card-rect>
+        </ng-container>
+      </section>
+      <section class="w-full gap-4 center-col sm:hidden">
+        <ng-container *ngFor="let shift of shifts">
+          <app-shift-card [shift]="shift" class="w-full"></app-shift-card>
+        </ng-container>
+      </section>
     </main>
   </section>
 </section>

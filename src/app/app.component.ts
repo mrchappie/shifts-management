@@ -8,6 +8,7 @@ import { NavbarComponent } from './components/navbar/navbar.component';
 import { NgIf, NgClass, NgFor } from '@angular/common';
 import { ToastService } from './utils/services/toast/toast.service';
 import { ToastComponent } from './components/UI/toast/toast/toast.component';
+import { MobileNavbarComponent } from './components/navbar/mobile-navbar/mobile-navbar.component';
 
 @Component({
   selector: 'app-root',
@@ -20,6 +21,7 @@ import { ToastComponent } from './components/UI/toast/toast/toast.component';
     NgClass,
     RouterOutlet,
     NavbarComponent,
+    MobileNavbarComponent,
     ToastComponent,
   ],
 })

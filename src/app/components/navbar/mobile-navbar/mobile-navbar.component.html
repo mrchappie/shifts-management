@@ -1,0 +1,114 @@
+<nav
+  class="items-stretch justify-start w-full p-4 overflow-hidden xl:p-2 center-col bg-lightBgSecondary dark:bg-darkBgSecondary dark:text-darkTextSecondary shadow-light dark:shadow-dark rounded-xl"
+>
+  <div class="w-full h-[50px] center justify-between">
+    <div class="center">
+      <div
+        class="w-[40px] h-[40px] rounded-[50%] bg-black overflow-hidden flex-shrink-0 center"
+      >
+        <img
+          *ngIf="currentState.currentLoggedFireUser!.profileImage"
+          src="{{ currentState.currentLoggedFireUser?.profileImage }}"
+          alt="{{ currentName.firstName }} profile picture"
+          class="object-fill"
+        />
+        <mat-icon
+          *ngIf="!currentState.currentLoggedFireUser!.profileImage"
+          fontIcon="person"
+        ></mat-icon>
+      </div>
+      <div class="text-lg">
+        <span class="font-bold text-accentColor xl:hidden"
+          >{{ currentName.firstName }}
+          <!-- <mat-icon
+          *ngIf="currentState.emailVerified"
+          fontIcon="check_circle"
+          class="text-baseColor"
+        ></mat-icon> -->
+        </span>
+      </div>
+    </div>
+    <div>
+      <button (click)="toggleMobileNav($event)">
+        <mat-icon fontIcon="menu"></mat-icon>
+      </button>
+    </div>
+  </div>
+  <div
+    *ngIf="openMobileNav"
+    class="absolute p-4 top-0 left-0 z-50 w-[300px] h-full bg-lightBgSecondary dark:bg-darkBgSecondary dark:text-darkTextSecondary shadow-light dark:shadow-dark flex flex-col justify-between"
+  >
+    <div>
+      <div class="justify-between w-full p-2 mb-4 center">
+        <div>
+          <label class="checkbox">
+            <input
+              type="checkbox"
+              (click)="toggleTheme()"
+              [checked]="theme === 'dark'"
+            />
+
+            <div
+              class="checkbox__checkmark bg-lightBgPrimary dark:bg-darkBgPrimary shadow-light dark:shadow-dark"
+            >
+              <div class="light center">
+                <mat-icon fontIcon="light_mode"></mat-icon>
+              </div>
+              <div class="dark center">
+                <mat-icon fontIcon="dark_mode"></mat-icon>
+              </div>
+            </div>
+          </label>
+        </div>
+        <div
+          class="rounded-[50%] bg-lightError dark:bg-darkError text-darkTextPrimary p-1"
+        >
+          <button (click)="toggleMobileNav($event)" class="center">
+            <mat-icon fontIcon="close"></mat-icon>
+          </button>
+        </div>
+      </div>
+      <app-divider />
+      <ul
+        (click)="toggleMobileNav($event)"
+        class="justify-start w-full gap-4 center-col"
+      >
+        <ng-container *ngFor="let route of navbarUserRoutes">
+          <li
+            routerLink="{{ route.path }}"
+            routerLinkActive="activeNavLink"
+            [routerLinkActiveOptions]="{ exact: true }"
+            class="flex w-full gap-4 px-4 py-3 text-lg font-semibold text-left capitalize cursor-pointer hover:text-lightAccent/75"
+          >
+            <div class="center">
+              <mat-icon fontIcon="{{ route.icon }}"></mat-icon>
+            </div>
+            <span>{{ route.name }}</span>
+          </li>
+        </ng-container>
+        <ng-container *ngIf="isAdmin === 'admin'">
+          <app-divider />
+          <li
+            *ngFor="let route of navbarAdminRoutes"
+            routerLink="{{ route.path }}"
+            routerLinkActive="activeNavLink"
+            [routerLinkActiveOptions]="{ exact: true }"
+            class="flex w-full gap-4 px-4 py-3 font-semibold text-left capitalize cursor-pointer text-md hover:text-lightAccent/75"
+          >
+            <div class="center">
+              <mat-icon fontIcon="{{ route.icon }}"></mat-icon>
+            </div>
+            <span>{{ route.name }}</span>
+          </li>
+        </ng-container>
+      </ul>
+    </div>
+    <button
+      class="flex items-end w-full gap-4 px-4 py-3 text-lg font-bold text-left capitalize cursor-pointer hover:text-accentColor/75"
+      (click)="onSubmit()"
+    >
+      <div class="center"><mat-icon fontIcon="logout"></mat-icon></div>
+      <span>Log Out</span>
+    </button>
+  </div>
+</nav>

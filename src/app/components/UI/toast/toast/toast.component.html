@@ -1,7 +1,7 @@
 <div
   #toastEl
   (click)="closeToast($event, index)"
-  class="absolute justify-between gap-4 p-2 w-[400px] center animation-show shadow-light dark:shadow-dark rounded-md text-lightTextPrimary dark:text-darkTextPrimary bg-lightBgPrimary dark:bg-darkBgPrimary"
+  class="absolute justify-between gap-4 p-2 w-[400px] max-sm:w-[200px] center animation-show shadow-light dark:shadow-dark rounded-md text-lightTextPrimary dark:text-darkTextPrimary bg-lightBgPrimary dark:bg-darkBgPrimary"
   [ngClass]="toast.type"
 >
   <div class="gap-6 mx-6 center">
