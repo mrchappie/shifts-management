@@ -23,9 +23,10 @@ import { ValidationService } from './validationService/validation.service';
 import { timeStringToMilliseconds } from 'src/app/utils/functions';
 import { MilisecondsToTimePipe } from 'src/app/utils/pipes/milisecondsToTime/miliseconds-to-time.pipe';
 import { UpdateStatsService } from './updateStatsService/update-stats.service';
-import { getRouteToNavigate, getTodayDate } from './helpers';
+import { getTodayDate } from './helpers';
 import { WeekShiftsComponent } from './week-shifts/week-shifts.component';
 import { ButtonSubmitComponent } from 'src/app/components/UI/button/button-submit/button-submit.component';
+import { defaultStatsObject } from 'src/app/utils/services/statistics/defaultStatsObject';
 
 @Component({
   selector: 'app-handle-shifts',
@@ -163,6 +164,34 @@ export class HandleShiftsComponent implements OnInit {
         value
       );
     });
+
+    // this.firestore.setFirestoreDoc(
+    //   firestoreConfig.firestore.statistics.base,
+    //   [
+    //     firestoreConfig.firestore.statistics.users,
+    //     '2024',
+    //     'po95g2uIWdVoruXf2AQGeKhVTnG3',
+    //   ],
+    //   defaultStatsObject
+    // );
+
+    // this.firestore.setFirestoreDoc(
+    //   firestoreConfig.firestore.statistics.base,
+    //   [firestoreConfig.firestore.statistics.admin, 'year', '2021'],
+    //   defaultStatsObject
+    // );
+
+    // for (let i = 0; i < 10; i++) {
+    //   setTimeout(() => {
+    //     this.generateRandomShifts();
+    //   }, 3000);
+    // }
+  }
+
+  ngOnDestroy(): void {
+    if (this.stateSubscription) {
+      this.stateSubscription.unsubscribe();
+    }
   }
 
   // Helper method to convert milliseconds to Date and format as date string
@@ -184,12 +213,6 @@ export class HandleShiftsComponent implements OnInit {
       .getMinutes()
       .toString()
       .padStart(2, '0')}`;
-  }
-
-  ngOnDestroy(): void {
-    if (this.stateSubscription) {
-      this.stateSubscription.unsubscribe();
-    }
   }
 
   async loadShiftData() {
@@ -340,15 +363,15 @@ export class HandleShiftsComponent implements OnInit {
         );
       }
 
-      this.router
-        .navigate([getRouteToNavigate(this.parent)[0]], {
-          queryParams: {
-            userID: getRouteToNavigate(this.parent, this.userIDParams)[1],
-          },
-        })
-        .then(() => {
-          this.shiftForm.patchValue(this.initialFormValue);
-        });
+      // this.router
+      //   .navigate([getRouteToNavigate(this.parent)[0]], {
+      //     queryParams: {
+      //       userID: getRouteToNavigate(this.parent, this.userIDParams)[1],
+      //     },
+      //   })
+      //   .then(() => {
+      //     this.shiftForm.patchValue(this.initialFormValue);
+      //   });
     } catch (error) {
       this.toast.error(errorMessages.firestore);
     }
@@ -363,4 +386,46 @@ export class HandleShiftsComponent implements OnInit {
     wagePerHour: '',
     shiftRevenue: '',
   };
+
+  // generateRandomShifts() {
+  //   function getRandomArbitrary(min: number, max: number) {
+  //     return Math.floor(Math.random() * (max - min) + min);
+  //   }
+
+  //   this.shiftForm.patchValue({
+  //     shiftID: uuidv4(),
+  //     shiftDate: `2023-${getRandomArbitrary(1, 13)
+  //       .toString()
+  //       .padStart(2, '0')}-${getRandomArbitrary(1, 32)
+  //       .toString()
+  //       .padStart(2, '0')}`,
+  //     startTime: `${getRandomArbitrary(0, 24)
+  //       .toString()
+  //       .padStart(2, '0')}:${getRandomArbitrary(0, 61)
+  //       .toString()
+  //       .padStart(2, '0')}`,
+  //     endTime: `${getRandomArbitrary(0, 24)
+  //       .toString()
+  //       .padStart(2, '0')}:${getRandomArbitrary(0, 61)
+  //       .toString()
+  //       .padStart(2, '0')}`,
+  //     workplace: `${this.currentState.currentLoggedFireUser?.userWorkplaces[
+  //       getRandomArbitrary(
+  //         0,
+  //         this.currentState.currentLoggedFireUser?.userWorkplaces.length
+  //       )
+  //     ].toLowerCase()}`,
+  //     wagePerHour: `${getRandomArbitrary(10, 30)}`,
+  //     shiftRevenue: ``,
+  //   });
+
+  //   console.log(this.shiftForm.value);
+  //   this.calculateRevenue(
+  //     this.shiftForm.get('wagePerHour')?.value,
+  //     this.shiftForm.get('startTime')?.value,
+  //     this.shiftForm.get('endTime')?.value
+  //   );
+
+  //   this.onSubmit();
+  // }
 }

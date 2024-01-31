@@ -109,7 +109,8 @@ export class AuthService {
               ['totalUsers'],
               1,
               'add',
-              'totalUsers'
+              'totalUsers',
+              new Date().getFullYear().toString()
             );
 
             // add user information to state
@@ -232,12 +233,14 @@ export class AuthService {
       );
 
       // decrese total users count
-      this.statsService.updateAdminStatistics(
-        ['totalUsers'],
-        1,
-        'substract',
-        'totalUsers'
-      );
+      // this.statsService.updateAdminStatistics(
+      //   ['totalUsers'],
+      //   1,
+      //   'substract',
+      //   'totalUsers',
+      //   new Date().getFullYear().toString()
+
+      // );
 
       // delete user
       await deleteUser(user);

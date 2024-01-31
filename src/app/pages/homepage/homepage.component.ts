@@ -66,18 +66,36 @@ export class HomepageComponent {
       this.loggedUserID = this.currentState.currentLoggedFireUser!.id;
     });
 
-    // if (this.currentState.updateStats) {
+    const dateFromUser: string[] = this.statsDateForm
+      .get('statsDate')
+      ?.value.split('-');
+
+    this.statsDateForm.get('statsDate')?.valueChanges.subscribe((newValue) => {
+      const [yearFromUser, monthFromUser] = newValue.split('-');
+      const currentYear = new Date().getFullYear().toString();
+      this.updateCharts = false;
+      if (yearFromUser != currentYear) {
+        this.statsService
+          .getStatisticsFromDB([
+            firestoreConfig.firestore.statistics.users,
+            yearFromUser,
+            this.currentState.currentLoggedFireUser!.id,
+          ])
+          .then(() => {
+            this.updateCharts = true;
+          });
+      }
+    });
+
     this.statsService
       .getStatisticsFromDB([
         firestoreConfig.firestore.statistics.users,
-        '2024',
+        dateFromUser[0],
         this.currentState.currentLoggedFireUser!.id,
       ])
       .then(() => {
         this.updateCharts = true;
-        // this.state.setState({ updateStats: true });
       });
-    // }
   }
 
   ngOnDestroy(): void {
