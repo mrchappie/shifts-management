@@ -1,7 +1,7 @@
 .checkbox {
-  display: inline-block;
+  // display: inline-block;
   position: relative;
-  padding-left: 50px;
+  margin-left: -20px;
   cursor: pointer;
   -webkit-user-select: none;
   -moz-user-select: none;
@@ -55,7 +55,7 @@
 // }
 
 .checkbox .checkbox__checkmark {
-  position: absolute;
+  position: relative;
   top: 1px;
   left: 0;
   height: 32px;
