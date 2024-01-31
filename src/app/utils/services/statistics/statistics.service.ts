@@ -48,9 +48,11 @@ export class StatisticsService {
           );
           // return default stats to be displayed
           this.setStatistics(defaultStatsObject as Statistics);
+          // console.log('if', this.statisticsAsValue);
         } else {
           // Process the data when stats are present in DB
           this.setStatistics(data as Statistics);
+          // console.log('else', this.statisticsAsValue);
         }
       });
   }

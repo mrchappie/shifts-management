@@ -86,11 +86,11 @@
     >
       <div
         *ngFor="let avatar of profileAvatars"
-        class="overflow-hidden rounded-md cursor-pointer aspect-square"
+        class="overflow-hidden border-2 rounded-md cursor-pointer aspect-square"
       >
         <img
           (click)="changeProfileAvatar(avatar)"
-          src="{{ avatar }}"
+          src="{{ avatar ?? '' }}"
           alt=""
           class="object-cover"
         />

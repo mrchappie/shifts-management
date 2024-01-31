@@ -38,10 +38,10 @@ export const sortByValue = (chartData: Data) => {
   const labels = sortedData.map((value) => capitalize(value[0])).slice(0, 5);
   const data = sortedData.map((value) => value[1]).slice(0, 5);
 
-  if (Array.isArray(data) && data.length != 0) {
-    return { labels, data };
+  if (Array.isArray(data) && data.length === 0) {
+    return { labels: ['Not set'], data: [0] };
   }
-  return { labels: ['Not set'], data: [0] };
+  return { labels, data };
 };
 
 function capitalize(label: string) {
