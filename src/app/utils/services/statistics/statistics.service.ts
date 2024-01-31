@@ -35,12 +35,22 @@ export class StatisticsService {
             documentPath,
             defaultStatsObject
           );
+
+          // check if the admin has the desired path
+          this.firestore.checkFirestoreAdminDoc(
+            firestoreConfig.firestore.statistics.base,
+            [
+              firestoreConfig.firestore.statistics.admin,
+              'year',
+              documentPath[1],
+            ],
+            defaultStatsObject
+          );
           // return default stats to be displayed
           this.setStatistics(defaultStatsObject as Statistics);
         } else {
           // Process the data when stats are present in DB
           this.setStatistics(data as Statistics);
-          console.log('after date change', this.statisticsAsValue);
         }
       });
   }

@@ -257,10 +257,10 @@ export class ChartGroupComponent {
         title: this.countersHeading[1],
         value: totalShifts,
       });
-      this.countersData.push({
-        title: this.countersHeading[2],
-        value: shiftsThisMonth,
-      });
+      // this.countersData.push({
+      //   title: this.countersHeading[2],
+      //   value: shiftsThisMonth,
+      // });
       this.countersData.push({
         title: this.countersHeading[3],
         subtitle: revenueByMonths.labels[0],

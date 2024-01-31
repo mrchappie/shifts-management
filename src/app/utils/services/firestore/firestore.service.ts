@@ -131,6 +131,25 @@ export class FirestoreService {
     }
   }
 
+  //! CHECK ADMIN DOC
+  async checkFirestoreAdminDoc(
+    collectionPath: string,
+    documentPath: string[],
+    data: object
+  ) {
+    try {
+      const querySnapshot = await getDoc(
+        doc(collection(this.firestore, collectionPath), ...documentPath)
+      );
+
+      if (!querySnapshot.exists()) {
+        this.setFirestoreDoc(collectionPath, documentPath, data);
+      }
+    } catch (error) {
+      this.toast.error(errorMessages.firestore);
+    }
+  }
+
   //! UPDATE DOC
 
   async updateFirestoreDoc(

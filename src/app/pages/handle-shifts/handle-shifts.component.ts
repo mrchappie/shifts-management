@@ -23,7 +23,7 @@ import { ValidationService } from './validationService/validation.service';
 import { timeStringToMilliseconds } from 'src/app/utils/functions';
 import { MilisecondsToTimePipe } from 'src/app/utils/pipes/milisecondsToTime/miliseconds-to-time.pipe';
 import { UpdateStatsService } from './updateStatsService/update-stats.service';
-import { getTodayDate } from './helpers';
+import { getRouteToNavigate, getTodayDate } from './helpers';
 import { WeekShiftsComponent } from './week-shifts/week-shifts.component';
 import { ButtonSubmitComponent } from 'src/app/components/UI/button/button-submit/button-submit.component';
 import { defaultStatsObject } from 'src/app/utils/services/statistics/defaultStatsObject';
@@ -363,15 +363,15 @@ export class HandleShiftsComponent implements OnInit {
         );
       }
 
-      // this.router
-      //   .navigate([getRouteToNavigate(this.parent)[0]], {
-      //     queryParams: {
-      //       userID: getRouteToNavigate(this.parent, this.userIDParams)[1],
-      //     },
-      //   })
-      //   .then(() => {
-      //     this.shiftForm.patchValue(this.initialFormValue);
-      //   });
+      this.router
+        .navigate([getRouteToNavigate(this.parent)[0]], {
+          queryParams: {
+            userID: getRouteToNavigate(this.parent, this.userIDParams)[1],
+          },
+        })
+        .then(() => {
+          this.shiftForm.patchValue(this.initialFormValue);
+        });
     } catch (error) {
       this.toast.error(errorMessages.firestore);
     }
