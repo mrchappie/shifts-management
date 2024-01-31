@@ -2,6 +2,7 @@ const now = new Date();
 const dayOfWeek = now.getDay(); // 0 (Sunday) to 6 (Saturday)
 const currentWeekStartDay = now.getDate() - dayOfWeek + 1;
 const currentWeekEndDay = now.getDate() - dayOfWeek + 7;
+const ONE_DAY_IN_MILI = 24 * 60 * 60 * 1000;
 
 export function getLastWeekDates() {
   const NUM_OF_DAYS_TILL_WEEK_START = 7;

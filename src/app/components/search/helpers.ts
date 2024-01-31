@@ -1,14 +1,16 @@
 export const getMonthStartToEnd = (date: string) => {
-  //   if (!date) return;
-  // console.log(date);
   const startDate = new Date(date);
   const endDate = new Date(
     startDate.getFullYear(),
     startDate.getMonth() + 1,
     0
   );
+  const ONE_DAY_IN_MILI = 24 * 60 * 60 * 1000;
 
-  return { start: startDate.getTime(), end: endDate.getTime() };
+  return {
+    start: startDate.getTime(),
+    end: endDate.getTime() + ONE_DAY_IN_MILI,
+  };
 };
 
 export const defaultFormValues = (parent: string) => {

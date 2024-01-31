@@ -11,20 +11,25 @@ export class UpdateStatsService {
 
   addNewShiftStats(userID: string, newShiftData: Shift) {
     const month = monthToString(new Date(newShiftData.shiftDate).getMonth());
+    const year = new Date(newShiftData.shiftDate).getFullYear().toString();
+    console.log(year);
+
     // update statistics in DB if a new shift is added for user
     this.statsService.updateUserStatistics(
       ['shiftCountByMonth', month],
       1,
       'add',
       'shift',
-      userID
+      userID,
+      year
     );
     this.statsService.updateUserStatistics(
       ['totalShifts'],
       1,
       'add',
       'totalShifts',
-      userID
+      userID,
+      year
     );
     // update shift revenue per year for user
     this.statsService.updateUserStatistics(
@@ -32,7 +37,8 @@ export class UpdateStatsService {
       newShiftData.shiftRevenue,
       'add',
       'revenue',
-      userID
+      userID,
+      year
     );
     // update revenue per month for user
     this.statsService.updateUserStatistics(
@@ -40,15 +46,21 @@ export class UpdateStatsService {
       newShiftData.shiftRevenue,
       'add',
       'earnedRevenue',
-      userID
+      userID,
+      year
     );
     // update worked hours per month for user
     this.statsService.updateUserStatistics(
       ['statsPerMonth', 'workedHoursByShift', month, newShiftData.workplace],
-      newShiftData.shiftRevenue / newShiftData.wagePerHour,
+      Math.round(
+        (newShiftData.shiftRevenue / newShiftData.wagePerHour +
+          Number.EPSILON) *
+          100
+      ) / 100,
       'add',
       'workedHours',
-      userID
+      userID,
+      year
     );
   }
 
@@ -76,14 +88,23 @@ export class UpdateStatsService {
       shiftCount = 0;
       shiftRevenue = newShiftData.shiftRevenue - oldShiftData.shiftRevenue;
       workedHours =
-        newShiftData.shiftRevenue / newShiftData.wagePerHour -
-        oldShiftData.shiftRevenue / oldShiftData.wagePerHour;
+        Math.round(
+          (newShiftData.shiftRevenue / newShiftData.wagePerHour -
+            oldShiftData.shiftRevenue / oldShiftData.wagePerHour +
+            Number.EPSILON) *
+            100
+        ) / 100;
     } else {
       diff = newRevenue;
       month = newMonth;
       shiftCount = 1;
       shiftRevenue = newShiftData.shiftRevenue;
-      workedHours = newShiftData.shiftRevenue / newShiftData.wagePerHour;
+      workedHours =
+        Math.round(
+          (newShiftData.shiftRevenue / newShiftData.wagePerHour +
+            Number.EPSILON) *
+            100
+        ) / 100;
     }
     // console.log(diff, month, shiftCount, shiftRevenue, workedHours);
 
@@ -165,7 +186,11 @@ export class UpdateStatsService {
           newMonth,
           newShiftData.workplace,
         ],
-        oldShiftData.shiftRevenue / oldShiftData.wagePerHour,
+        Math.round(
+          (oldShiftData.shiftRevenue / oldShiftData.wagePerHour +
+            Number.EPSILON) *
+            100
+        ) / 100,
         'add',
         'workedHours',
         userID
@@ -208,7 +233,11 @@ export class UpdateStatsService {
           oldMonth,
           newShiftData.workplace,
         ],
-        oldShiftData.shiftRevenue / oldShiftData.wagePerHour,
+        Math.round(
+          (oldShiftData.shiftRevenue / oldShiftData.wagePerHour +
+            Number.EPSILON) *
+            100
+        ) / 100,
         'subtract',
         'workedHours',
         userID
@@ -218,41 +247,49 @@ export class UpdateStatsService {
 
   deleteShiftStats(userID: string, shiftData: Shift) {
     const month = monthToString(new Date(shiftData.shiftDate).getMonth());
+    const year = new Date(shiftData.shiftDate).getFullYear().toString();
     // substract stats when a shift is deleted
     this.statsService.updateUserStatistics(
       ['shiftCountByMonth', month],
       1,
       'subtract',
       'shift',
-      userID
+      userID,
+      year
     );
     this.statsService.updateUserStatistics(
       ['earnedRevenueByMonth', month],
       shiftData.shiftRevenue,
       'subtract',
       'revenue',
-      userID
+      userID,
+      year
     );
     this.statsService.updateUserStatistics(
       ['totalShifts'],
       1,
       'subtract',
       'totalShifts',
-      userID
+      userID,
+      year
     );
     this.statsService.updateUserStatistics(
       ['statsPerMonth', 'earnedRevenueByShift', month, shiftData.workplace],
       shiftData.shiftRevenue,
       'subtract',
       'earnedRevenue',
-      userID
+      userID,
+      year
     );
     this.statsService.updateUserStatistics(
       ['statsPerMonth', 'workedHoursByShift', month, shiftData.workplace],
-      shiftData.shiftRevenue / shiftData.wagePerHour,
+      Math.round(
+        (shiftData.shiftRevenue / shiftData.wagePerHour + Number.EPSILON) * 100
+      ) / 100,
       'subtract',
       'workedHours',
-      userID
+      userID,
+      year
     );
   }
 }

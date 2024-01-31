@@ -27,8 +27,33 @@ export class StatisticsService {
     await this.firestore
       .getFirestoreDoc(firestoreConfig.firestore.statistics.base, documentPath)
       .then((data) => {
-        this.setStatistics(data as Statistics);
-        // console.log('update');
+        if (Array.isArray(data) && data.length === 0) {
+          // Execute code when there is no stats for the user
+          // Init the stats for this user in DB
+          this.firestore.setFirestoreDoc(
+            firestoreConfig.firestore.statistics.base,
+            documentPath,
+            defaultStatsObject
+          );
+
+          // check if the admin has the desired path
+          this.firestore.checkFirestoreAdminDoc(
+            firestoreConfig.firestore.statistics.base,
+            [
+              firestoreConfig.firestore.statistics.admin,
+              'year',
+              documentPath[1],
+            ],
+            defaultStatsObject
+          );
+          // return default stats to be displayed
+          this.setStatistics(defaultStatsObject as Statistics);
+          // console.log('if', this.statisticsAsValue);
+        } else {
+          // Process the data when stats are present in DB
+          this.setStatistics(data as Statistics);
+          // console.log('else', this.statisticsAsValue);
+        }
       });
   }
 
@@ -39,11 +64,12 @@ export class StatisticsService {
     value: number,
     action: string,
     type: string,
-    userID: string
+    userID: string,
+    year?: string
   ) {
     this.getStatisticsFromDB([
       firestoreConfig.firestore.statistics.users,
-      '2024',
+      year as string,
       userID,
     ]).then(() => {
       //?
@@ -89,11 +115,11 @@ export class StatisticsService {
         // update the user statistics
         this.firestore.updateFirestoreDoc(
           firestoreConfig.firestore.statistics.base,
-          [firestoreConfig.firestore.statistics.users, '2024', userID],
+          [firestoreConfig.firestore.statistics.users, year as string, userID],
           updateObject
         );
         // update statistics for admin dashboard
-        this.updateAdminStatistics(path, value, action, type);
+        this.updateAdminStatistics(path, value, action, type, year as string);
       }
       //?
       //? if a shift or a value is deleted, update the correct statistic
@@ -129,11 +155,11 @@ export class StatisticsService {
         // update the user statistics
         this.firestore.updateFirestoreDoc(
           firestoreConfig.firestore.statistics.base,
-          [firestoreConfig.firestore.statistics.users, '2024', userID],
+          [firestoreConfig.firestore.statistics.users, year as string, userID],
           updateObject
         );
         // update statistics for admin dashboard
-        this.updateAdminStatistics(path, value, action, type);
+        this.updateAdminStatistics(path, value, action, type, year as string);
       }
     });
   }
@@ -142,13 +168,14 @@ export class StatisticsService {
     path: string[],
     value: number,
     action: string,
-    type: string
+    type: string,
+    year: string
   ) {
     // update the admin statistic
     this.getStatisticsFromDB([
       firestoreConfig.firestore.statistics.admin,
       'year',
-      '2024',
+      year,
     ]).then(() => {
       //?
       //? if a shift or a value is added, update the correct statistic
@@ -198,7 +225,7 @@ export class StatisticsService {
         // update the user statistics
         this.firestore.updateFirestoreDoc(
           firestoreConfig.firestore.statistics.base,
-          [firestoreConfig.firestore.statistics.admin, 'year', '2024'],
+          [firestoreConfig.firestore.statistics.admin, 'year', year],
           updateObject
         );
       }
@@ -236,7 +263,7 @@ export class StatisticsService {
         // update the user statistics
         this.firestore.updateFirestoreDoc(
           firestoreConfig.firestore.statistics.base,
-          [firestoreConfig.firestore.statistics.admin, 'year', '2024'],
+          [firestoreConfig.firestore.statistics.admin, 'year', year],
           updateObject
         );
       }

@@ -41,7 +41,7 @@ export class HomepageComponent {
     'Total shifts this year',
     'Total shifts this month',
     'Best month',
-    'Best job',
+    'Best job this month',
   ];
 
   constructor(
@@ -66,18 +66,50 @@ export class HomepageComponent {
       this.loggedUserID = this.currentState.currentLoggedFireUser!.id;
     });
 
-    // if (this.currentState.updateStats) {
+    const dateFromUser: string[] = this.statsDateForm
+      .get('statsDate')
+      ?.value.split('-');
+
+    // init stats
     this.statsService
       .getStatisticsFromDB([
         firestoreConfig.firestore.statistics.users,
-        '2024',
+        dateFromUser[0],
         this.currentState.currentLoggedFireUser!.id,
       ])
       .then(() => {
         this.updateCharts = true;
-        // this.state.setState({ updateStats: true });
       });
-    // }
+
+    // chnage stats on user input
+    this.statsDateForm.get('statsDate')?.valueChanges.subscribe((newValue) => {
+      const [yearFromUser, monthFromUser] = newValue.split('-');
+      const currentYear = new Date().getFullYear().toString();
+
+      // console.log(yearFromUser, currentYear);
+
+      if (yearFromUser != currentYear) {
+        this.statsService
+          .getStatisticsFromDB([
+            firestoreConfig.firestore.statistics.users,
+            yearFromUser,
+            this.currentState.currentLoggedFireUser!.id,
+          ])
+          .then(() => {
+            this.updateCharts = true;
+          });
+      } else {
+        this.statsService
+          .getStatisticsFromDB([
+            firestoreConfig.firestore.statistics.users,
+            currentYear,
+            this.currentState.currentLoggedFireUser!.id,
+          ])
+          .then(() => {
+            this.updateCharts = true;
+          });
+      }
+    });
   }
 
   ngOnDestroy(): void {

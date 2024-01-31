@@ -34,14 +34,14 @@ export class DashboardComponent {
   updateCharts: boolean = false;
 
   protected statsHeading: string[] = [
-    'Total users',
-    'Total shifts',
-    'Total shifts this month',
+    'Total users this year',
+    'Total shifts this year',
     'Best month',
-    'Best Job',
-    // 'Best Worker',
+    'Best job this month',
   ];
 
+  // 'Total shifts this month',
+  // 'Best Worker',
   constructor(
     private fb: FormBuilder,
     private customFN: CustomFnService,
@@ -55,15 +55,35 @@ export class DashboardComponent {
       ],
     });
 
+    const dateFromUser: string[] = this.statsDateForm
+      .get('statsDate')
+      ?.value.split('-');
+
+    this.statsDateForm.get('statsDate')?.valueChanges.subscribe((newValue) => {
+      const [yearFromUser, monthFromUser] = newValue.split('-');
+      const currentYear = new Date().getFullYear().toString();
+      this.updateCharts = false;
+      if (yearFromUser != currentYear) {
+        this.statsService
+          .getStatisticsFromDB([
+            firestoreConfig.firestore.statistics.admin,
+            'year',
+            yearFromUser,
+          ])
+          .then(() => {
+            this.updateCharts = true;
+          });
+      }
+    });
+
     this.statsService
       .getStatisticsFromDB([
         firestoreConfig.firestore.statistics.admin,
         'year',
-        '2024',
+        dateFromUser[0],
       ])
       .then(() => {
         this.updateCharts = true;
-        // this.state.setState({ updateStats: true });
       });
   }
 }

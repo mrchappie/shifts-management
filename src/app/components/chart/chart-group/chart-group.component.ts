@@ -15,9 +15,10 @@ import { monthToString } from 'src/app/utils/functions';
   imports: [ChartComponent, CountCardComponent, NgFor],
 })
 export class ChartGroupComponent {
-  @Input() setUpdateCharts!: boolean;
+  @Input() setUpdateCharts: boolean = false;
   @Input() countersHeading!: string[];
   @Input() parent: string = '';
+  @Input() activeDate: string = '';
 
   statistics!: Statistics;
   countersData: CountersData[] = [];
@@ -30,7 +31,15 @@ export class ChartGroupComponent {
   @ViewChild('pieChart') pieChart!: ChartComponent;
   public pieChartData: ChartData<ChartType, number[], string | string[]> = {
     labels: ['Test'],
-    datasets: [{ ...this.chartBorder, data: [100], label: 'Revenue' }],
+    datasets: [
+      {
+        ...this.chartBorder,
+        data: [100],
+        label: 'Revenue',
+        borderColor: '#2673D0',
+        borderWidth: 1,
+      },
+    ],
   };
 
   public pieChartOptions: ChartConfiguration['options'] = {
@@ -59,6 +68,8 @@ export class ChartGroupComponent {
         ...this.chartBorder,
         data: [20, 25, 14, 18, 22, 30, 15, 14, 18, 22, 30, 10],
         label: 'Revenue',
+        borderColor: '#2673D0',
+        borderWidth: 1,
       },
     ],
   };
@@ -89,6 +100,8 @@ export class ChartGroupComponent {
         ...this.chartBorder,
         data: [20, 25, 14, 18, 22, 30, 15, 14, 18, 22, 30, 10],
         label: 'Shifts',
+        borderColor: '#2673D0',
+        borderWidth: 1,
       },
     ],
   };
@@ -129,6 +142,8 @@ export class ChartGroupComponent {
           ...this.chartBorder,
           data: [20, 25, 14, 18, 22, 30, 10],
           label: 'Worked hours',
+          borderColor: '#2673D0',
+          borderWidth: 1,
         },
       ],
     };
@@ -149,28 +164,29 @@ export class ChartGroupComponent {
   ngOnInit(): void {
     this.statsService.statistics.subscribe((value) => {
       this.statistics = value;
-      // console.log('on_init', this.statistics);
     });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.setUpdateCharts && this.setUpdateCharts === true) {
-      this.updateCharts();
-      this.updateCounters();
+      const currentMonth = monthToString(new Date().getMonth());
+      this.updateCharts(currentMonth);
+      this.updateCounters(currentMonth);
+    }
+    if (changes.activeDate && !changes.activeDate.firstChange) {
+      const month = monthToString(Number(this.activeDate.split('-')[1]) - 1);
+      this.updateCharts(month);
+      this.updateCounters(month);
     }
   }
 
-  updateCharts() {
+  updateCharts(month?: string) {
     //? PIE CHART
     this.pieChartData.labels = sortByValue(
-      this.statistics.statsPerMonth.earnedRevenueByShift[
-        monthToString(new Date().getMonth())
-      ]
+      this.statistics.statsPerMonth.earnedRevenueByShift[month as string]
     ).labels;
     this.pieChartData.datasets[0].data = sortByValue(
-      this.statistics.statsPerMonth.earnedRevenueByShift[
-        monthToString(new Date().getMonth())
-      ]
+      this.statistics.statsPerMonth.earnedRevenueByShift[month as string]
     ).data;
     this.pieChart.updateChart();
 
@@ -194,28 +210,27 @@ export class ChartGroupComponent {
 
     //? POLAR CHART
     this.polarAreaChartData.labels = sortByValue(
-      this.statistics.statsPerMonth.workedHoursByShift.january
+      this.statistics.statsPerMonth.workedHoursByShift[month as string]
     ).labels;
     this.polarAreaChartData.datasets[0].data = sortByValue(
-      this.statistics.statsPerMonth.workedHoursByShift.january
+      this.statistics.statsPerMonth.workedHoursByShift[month as string]
     ).data;
     this.polarArea.updateChart();
+
+    this.setUpdateCharts = false;
   }
 
-  updateCounters() {
+  updateCounters(month?: string) {
     if (this.parent === 'homepage') {
       const totalShifts = this.statistics.totalShifts;
       const shiftsThisMonth =
-        this.statistics.shiftCountByMonth[monthToString(new Date().getMonth())];
+        this.statistics.shiftCountByMonth[month as string];
       const revenueByMonths = sortByValue(this.statistics.earnedRevenueByMonth);
       const revenueByJobs = sortByValue(
-        this.statistics.statsPerMonth.earnedRevenueByShift[
-          monthToString(new Date().getMonth())
-        ]
+        this.statistics.statsPerMonth.earnedRevenueByShift[month as string]
       );
-      // console.log(revenueByMonths);
 
-      // console.log(revenueByJobs);
+      this.countersData = [];
 
       this.countersData.push({
         title: this.countersHeading[0],
@@ -238,20 +253,16 @@ export class ChartGroupComponent {
     } else {
       const totalUsers = this.statistics.totalUsers;
       const totalShifts = this.statistics.totalShifts;
-      const shiftsThisMonth =
-        this.statistics.shiftCountByMonth[monthToString(new Date().getMonth())];
+      // const shiftsThisMonth =
+      //   this.statistics.shiftCountByMonth[month as string];
       const revenueByMonths = sortByValue(this.statistics.earnedRevenueByMonth);
       const revenueByJobs = sortByValue(
-        this.statistics.statsPerMonth.earnedRevenueByShift[
-          monthToString(new Date().getMonth())
-        ]
+        this.statistics.statsPerMonth.earnedRevenueByShift[month as string]
       );
 
       // const bestWorker = 0;
 
-      // console.log(revenueByMonths);
-
-      // console.log(revenueByJobs);
+      this.countersData = [];
 
       this.countersData.push({
         title: this.countersHeading[0],
@@ -261,17 +272,17 @@ export class ChartGroupComponent {
         title: this.countersHeading[1],
         value: totalShifts,
       });
+      // this.countersData.push({
+      //   title: this.countersHeading[2],
+      //   value: shiftsThisMonth,
+      // });
       this.countersData.push({
         title: this.countersHeading[2],
-        value: shiftsThisMonth,
-      });
-      this.countersData.push({
-        title: this.countersHeading[3],
         subtitle: revenueByMonths.labels[0],
         value: revenueByMonths.data[0],
       });
       this.countersData.push({
-        title: this.countersHeading[4],
+        title: this.countersHeading[3],
         subtitle: revenueByJobs.labels[0],
         value: revenueByJobs.data[0],
       });

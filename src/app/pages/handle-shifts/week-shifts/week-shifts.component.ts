@@ -10,13 +10,20 @@ import {
   getNextWeekDates,
 } from './helpers';
 import { FirestoreService } from 'src/app/utils/services/firestore/firestore.service';
+import { ShiftCardComponent } from 'src/app/components/shift-card/shift-card.component';
 
 @Component({
   standalone: true,
   selector: 'app-week-shifts',
   templateUrl: './week-shifts.component.html',
   styleUrls: ['./week-shifts.component.scss'],
-  imports: [ShiftCardRectComponent, SectionHeadingComponent, NgFor, NgClass],
+  imports: [
+    ShiftCardRectComponent,
+    ShiftCardComponent,
+    SectionHeadingComponent,
+    NgFor,
+    NgClass,
+  ],
 })
 export class WeekShiftsComponent {
   @Input() shiftID: string = '';
