@@ -24,7 +24,9 @@ export const successMessages = {
       update: 'Profile updated successfully!',
     },
     users: {
-      delete: 'User deleted successfully!',
+      deleted: 'User deleted successfully!',
+      disabled: 'User disabled successfully!',
+      enabled: 'User enabled successfully!',
     },
   },
   deleteAccount: 'Account deleted successfully!',

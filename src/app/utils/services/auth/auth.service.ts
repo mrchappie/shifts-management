@@ -17,7 +17,7 @@ import { StateService } from '../state/state.service';
 import { FirestoreService } from '../firestore/firestore.service';
 import { firestoreConfig } from 'firebase.config';
 import { Router } from '@angular/router';
-import { State } from '../../Interfaces';
+import { State, UserSettings } from '../../Interfaces';
 import { ToastService } from '../toast/toast.service';
 import { errorMessages, successMessages } from '../../toastMessages';
 import { arrayRemove, arrayUnion } from '@angular/fire/firestore';
@@ -149,6 +149,23 @@ export class AuthService {
         password
       );
 
+      // const credentials = EmailAuthProvider.credential(email, password);
+      // await reauthenticateWithCredential(user, credentials);
+
+      // console.log(credentials);
+
+      // check if user is disabled
+      // const userIsEnabled = (await this.firestore.getFirestoreDoc(
+      //   firestoreConfig.firestore.usersDB,
+      //   [userCredential.user.uid]
+      // )) as UserSettings;
+
+      // if (userIsEnabled.role === 'disabled') {
+      //   this.toast.error('This is account is no longer available!');
+      //   this.logout();
+      //   return;
+      // }
+
       if (userCredential) {
         // add user information to state
         this.state.setState({
@@ -263,15 +280,23 @@ export class AuthService {
       const unsubscribe = onAuthStateChanged(this.auth, async (user) => {
         if (user) {
           // User is signed in
+          const currentLoggedUser = (await this.firestore.getFirestoreDoc(
+            firestoreConfig.firestore.usersDB,
+            [user.uid]
+          )) as UserSettings;
           this.state.setState({
-            currentLoggedFireUser: await this.firestore.getFirestoreDoc(
-              firestoreConfig.firestore.usersDB,
-              [user.uid]
-            ),
+            currentLoggedFireUser: currentLoggedUser,
             emailVerified: user.emailVerified,
             currentUserCred: user,
             isLoggedIn: true,
           });
+
+          // if (currentLoggedUser.role === 'disabled') {
+          //   this.toast.error('This is account is no longer available!');
+          //   this.logout();
+          //   return;
+          // }
+
           resolve(user);
 
           // this.updateFirestoreDoc(firestoreConfig.firestore.usersDB, [user.uid], {

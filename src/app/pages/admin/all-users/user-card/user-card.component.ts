@@ -15,9 +15,17 @@ import { ButtonIconComponent } from 'src/app/components/UI/button/button-icon/bu
 export class UserCardComponent {
   @Input() userInfo?: UserSettings;
   @Input() sortQuery!: string;
-  @Output() openModalEvent = new EventEmitter<string>();
+  @Output() openModalEvent = new EventEmitter<{}>();
 
   openModal(userID: string) {
-    this.openModalEvent.emit(userID);
+    this.openModalEvent.emit({
+      user: this.userInfo,
+      title: `${
+        this.userInfo?.role == 'disabled' ? 'Enable' : 'Disable'
+      } this user?`,
+      message: `Are you sure you want to ${
+        this.userInfo?.role === 'disabled' ? 'enable' : 'disable'
+      } this user?`,
+    });
   }
 }
