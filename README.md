@@ -1,12 +1,21 @@
-# ShiftManagement
+# Shifts Management
+## Login with demo account
+- [Live demo](https://angular-shift-management-by-chappie.netlify.app/) 
+- Email: demo.account@shift.app
+- Password: Demo123!
+![image](https://github.com/mrchappie/shifts-management/assets/37247472/21c0ed43-8ae3-4505-afc6-e2378f5e7f9a)
 
-This project is work in progress, please use it only on Desktop for it to be fully responsive
+
+
+# Info about projects
+
+This project is work in progress.
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 16.2.6.
 
 ## Development server
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+Run `ng serve -open` to open the project on a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
 
 ## Code scaffolding
 
