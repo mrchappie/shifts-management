@@ -132,6 +132,7 @@ export class AuthService {
             );
           });
       }
+      this.router.navigate(['/home']);
       this.toast.success(successMessages.register);
     } catch (error) {
       // console.log(error);
@@ -149,22 +150,17 @@ export class AuthService {
         password
       );
 
-      // const credentials = EmailAuthProvider.credential(email, password);
-      // await reauthenticateWithCredential(user, credentials);
-
-      // console.log(credentials);
-
       // check if user is disabled
-      // const userIsEnabled = (await this.firestore.getFirestoreDoc(
-      //   firestoreConfig.firestore.usersDB,
-      //   [userCredential.user.uid]
-      // )) as UserSettings;
+      const userIsEnabled = (await this.firestore.getFirestoreDoc(
+        firestoreConfig.firestore.usersDB,
+        [userCredential.user.uid]
+      )) as UserSettings;
 
-      // if (userIsEnabled.role === 'disabled') {
-      //   this.toast.error('This is account is no longer available!');
-      //   this.logout();
-      //   return;
-      // }
+      if (userIsEnabled.role === 'disabled') {
+        this.toast.error('This is account is no longer available!');
+        this.logout();
+        return;
+      }
 
       if (userCredential) {
         // add user information to state
@@ -186,6 +182,7 @@ export class AuthService {
         );
 
         this.toast.success(successMessages.login);
+        this.router.navigate(['/home']);
         return userCredential;
       }
     } catch (error) {
@@ -279,23 +276,26 @@ export class AuthService {
     return new Promise(async (resolve) => {
       const unsubscribe = onAuthStateChanged(this.auth, async (user) => {
         if (user) {
-          // User is signed in
           const currentLoggedUser = (await this.firestore.getFirestoreDoc(
             firestoreConfig.firestore.usersDB,
             [user.uid]
           )) as UserSettings;
+
+          // if current logged user was disabled during his session, logout
+          if (currentLoggedUser.role === 'disabled') {
+            this.toast.error('This is account is no longer available!');
+            this.logout();
+            this.router.navigate(['']);
+            return;
+          }
+
+          // update the state with user info
           this.state.setState({
             currentLoggedFireUser: currentLoggedUser,
             emailVerified: user.emailVerified,
             currentUserCred: user,
             isLoggedIn: true,
           });
-
-          // if (currentLoggedUser.role === 'disabled') {
-          //   this.toast.error('This is account is no longer available!');
-          //   this.logout();
-          //   return;
-          // }
 
           resolve(user);
 

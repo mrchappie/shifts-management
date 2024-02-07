@@ -41,7 +41,7 @@
       {{ userInfo?.phoneNumber ? userInfo?.phoneNumber : "Not set" }}</span
     >
   </div>
-  <div class="gap-2 center">
+  <div class="gap-2 center-col">
     <app-button-icon
       [routerLink]="['/admin', 'all-users', 'edit-user']"
       [queryParams]="{ userID: userInfo?.id }"
@@ -53,7 +53,7 @@
       ]"
       [icon]="'edit'"
     ></app-button-icon>
-    <!-- <app-button-icon
+    <app-button-icon
       (click)="openModal(userInfo!.id)"
       [style]="[
         'bg-lightWarning',
@@ -63,6 +63,6 @@
       ]"
       [icon]="userInfo?.role != 'disabled' ? 'person_off' : 'person'"
       [parent]="userInfo?.role != 'disabled' ? 'Disable' : 'Enable'"
-    ></app-button-icon> -->
+    ></app-button-icon>
   </div>
 </div>
