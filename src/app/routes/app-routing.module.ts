@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { isLoggedInGuard } from '../utils/guards/isLoggedIn/is-logged-in.guard';
 import { isNotLoggedInGuard } from '../utils/guards/isNotLoggedIn/is-not-logged-in.guard';
 import { isAdminGuard } from '../utils/guards/isAdmin/is-admin.guard';
+import { isEnabledGuard } from '../utils/guards/isEnabled/is-enabled.guard';
 
 const routes: Routes = [
   // landing page
@@ -41,7 +42,7 @@ const routes: Routes = [
       import('../pages/homepage/homepage.component').then(
         (comp) => comp.HomepageComponent
       ),
-    canActivate: [isLoggedInGuard],
+    canActivate: [isLoggedInGuard, isEnabledGuard],
   },
   {
     path: 'my-shifts',
@@ -49,7 +50,7 @@ const routes: Routes = [
       import('../pages/my-shifts/my-shifts.component').then(
         (comp) => comp.MyShiftsComponent
       ),
-    canActivate: [isLoggedInGuard],
+    canActivate: [isLoggedInGuard, isEnabledGuard],
   },
   {
     path: 'add-shift',
@@ -57,7 +58,7 @@ const routes: Routes = [
       import('../pages/handle-shifts/handle-shifts.component').then(
         (comp) => comp.HandleShiftsComponent
       ),
-    canActivate: [isLoggedInGuard],
+    canActivate: [isLoggedInGuard, isEnabledGuard],
   },
   {
     path: 'my-shifts/edit-shift',
@@ -65,7 +66,7 @@ const routes: Routes = [
       import('../pages/handle-shifts/handle-shifts.component').then(
         (comp) => comp.HandleShiftsComponent
       ),
-    canActivate: [isLoggedInGuard],
+    canActivate: [isLoggedInGuard, isEnabledGuard],
   },
   {
     path: 'profile',
@@ -73,7 +74,7 @@ const routes: Routes = [
       import('../pages/profile/profile.component').then(
         (comp) => comp.ProfileComponent
       ),
-    canActivate: [isLoggedInGuard],
+    canActivate: [isLoggedInGuard, isEnabledGuard],
   },
 
   // admin routes
@@ -83,7 +84,7 @@ const routes: Routes = [
       import('../pages/admin/dashboard/dashboard.component').then(
         (comp) => comp.DashboardComponent
       ),
-    canActivate: [isLoggedInGuard, isAdminGuard],
+    canActivate: [isLoggedInGuard, isEnabledGuard, isAdminGuard],
   },
   {
     path: 'admin/all-shifts',
@@ -91,7 +92,7 @@ const routes: Routes = [
       import('../pages/admin/all-shifts/all-shifts.component').then(
         (comp) => comp.AllShiftsComponent
       ),
-    canActivate: [isLoggedInGuard, isAdminGuard],
+    canActivate: [isLoggedInGuard, isEnabledGuard, isAdminGuard],
   },
   {
     path: 'admin/all-shifts/edit-shift',
@@ -99,7 +100,7 @@ const routes: Routes = [
       import('../pages/handle-shifts/handle-shifts.component').then(
         (comp) => comp.HandleShiftsComponent
       ),
-    canActivate: [isLoggedInGuard, isAdminGuard],
+    canActivate: [isLoggedInGuard, isEnabledGuard, isAdminGuard],
   },
   {
     path: 'admin/all-users',
@@ -107,7 +108,7 @@ const routes: Routes = [
       import('../pages/admin/all-users/all-users.component').then(
         (comp) => comp.AllUsersComponent
       ),
-    canActivate: [isLoggedInGuard, isAdminGuard],
+    canActivate: [isLoggedInGuard, isEnabledGuard, isAdminGuard],
   },
   {
     path: 'admin/all-users/edit-user',
@@ -115,7 +116,7 @@ const routes: Routes = [
       import('../pages/admin/edit-user/edit-user.component').then(
         (comp) => comp.EditUserComponent
       ),
-    canActivate: [isLoggedInGuard, isAdminGuard],
+    canActivate: [isLoggedInGuard, isEnabledGuard, isAdminGuard],
   },
   {
     path: 'admin/all-users/edit-user-shift',
@@ -123,7 +124,7 @@ const routes: Routes = [
       import('../pages/handle-shifts/handle-shifts.component').then(
         (comp) => comp.HandleShiftsComponent
       ),
-    canActivate: [isLoggedInGuard, isAdminGuard],
+    canActivate: [isLoggedInGuard, isEnabledGuard, isAdminGuard],
   },
   {
     path: 'admin/settings',
@@ -131,7 +132,7 @@ const routes: Routes = [
       import('../pages/admin/settings/settings.component').then(
         (comp) => comp.SettingsComponent
       ),
-    canActivate: [isLoggedInGuard, isAdminGuard],
+    canActivate: [isLoggedInGuard, isEnabledGuard, isAdminGuard],
   },
 
   // 404 route

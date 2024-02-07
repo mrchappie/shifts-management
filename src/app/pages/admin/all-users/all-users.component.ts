@@ -43,7 +43,10 @@ export class AllUsersComponent implements OnInit, OnDestroy {
   // component data
   allUsers: UserSettings[] = [];
   showModal: boolean = false;
-  userID: string = '';
+  editedUserInfo!: UserSettings;
+
+  title: string = 'Delete user?';
+  message: string = 'Are you sure you want to delete this user?';
 
   private stateSubscription: Subscription | undefined;
 
@@ -77,19 +80,31 @@ export class AllUsersComponent implements OnInit, OnDestroy {
     );
   }
 
-  toggleModal(event?: string) {
-    this.userID = event as string;
+  toggleModal(event?: any) {
+    this.editedUserInfo = event?.user;
+    this.title = event?.title;
+    this.message = event?.message;
     this.showModal = !this.showModal;
   }
 
   confirmModal(event: Event) {
     event.stopPropagation();
     try {
-      this.firestore.deleteFirestoreDoc(firestoreConfig.firestore.usersDB, [
-        this.userID,
-      ]);
+      this.firestore.updateFirestoreDoc(
+        firestoreConfig.firestore.usersDB,
+        [this.editedUserInfo.id],
+        {
+          role: `${
+            this.editedUserInfo.role === 'disabled' ? 'user' : 'disabled'
+          }`,
+        }
+      );
       this.showModal = !this.showModal;
-      this.toast.success(successMessages.firestore.users.delete);
+      this.toast.success(
+        this.editedUserInfo.role === 'disabled'
+          ? successMessages.firestore.users.enabled
+          : successMessages.firestore.users.disabled
+      );
       setTimeout(() => {
         location.reload();
       }, 500);

@@ -91,7 +91,6 @@ export class LoginComponent implements OnInit {
       this.loginForm.value.email,
       this.loginForm.value.password
     );
-    this.router.navigate(['/home']);
   }
 
   openModal(event: Event) {
