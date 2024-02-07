@@ -1,6 +1,6 @@
 # Shifts Management
 ## Login with demo account
-- [Live demo](https://angular-shift-management-by-chappie.netlify.app/) 
+- [Live demo](https://shift-ease.netlify.app/) 
 - Email: demo.account@shift.app
 - Password: Demo123!
 ![image](https://github.com/mrchappie/shifts-management/assets/37247472/21c0ed43-8ae3-4505-afc6-e2378f5e7f9a)
