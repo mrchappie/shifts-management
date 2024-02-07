@@ -9,7 +9,7 @@
 
 # Info about projects
 
-This project is work in progress.
+This project is work in progress, it was developed during Angular to Database Client Side module of Newtech Academy Frontend Developer course.
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 16.2.6.
 
