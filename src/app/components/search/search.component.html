@@ -7,10 +7,7 @@
   >
     <!-- main row of filters -->
     <div class="flex-wrap gap-6 center">
-      <label
-        *ngIf="parent === 'all-shifts'"
-        class="min-w-max custom-search-label"
-      >
+      <label *ngIf="parent === 'all-shifts'" class="custom-search-label">
         <div class="custom-label-text-r">Select user</div>
         <select
           name="userNames"
@@ -24,7 +21,7 @@
           </option>
         </select>
       </label>
-      <div class="min-w-max custom-search-label center">
+      <div class="custom-search-label center">
         <label class="w-full">
           <input
             type="text"

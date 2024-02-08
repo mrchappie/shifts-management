@@ -1,7 +1,7 @@
 <nav
-  class="items-stretch justify-start w-full h-full p-4 overflow-hidden center-col bg-lightBgSecondary dark:bg-darkBgSecondary dark:text-darkTextSecondary shadow-light dark:shadow-dark rounded-xl"
+  class="items-stretch justify-start w-full h-full p-4 overflow-hidden xl:p-2 center-col bg-lightBgSecondary dark:bg-darkBgSecondary dark:text-darkTextSecondary shadow-light dark:shadow-dark rounded-xl"
 >
-  <div class="items-start p-2 mb-4 center-col">
+  <div class="items-start mb-4 xl:p-4 center-col">
     <div class="center">
       <div
         class="w-[40px] h-[40px] rounded-[50%] bg-black overflow-hidden flex-shrink-0 center"
@@ -18,18 +18,18 @@
         ></mat-icon>
       </div>
       <div class="text-lg">
-        <span class="font-bold text-accentColor"
-          >{{ currentName.firstName
-          }}<mat-icon
+        <span class="font-bold text-accentColor max-xl:hidden"
+          >{{ currentName.firstName }}
+          <!-- <mat-icon
             *ngIf="currentState.emailVerified"
             fontIcon="check_circle"
             class="text-baseColor"
-          ></mat-icon
-        ></span>
+          ></mat-icon> -->
+        </span>
       </div>
     </div>
-    <div>
-      <label class="checkbox">
+    <div class="center">
+      <label class="center checkbox">
         <input
           type="checkbox"
           (click)="toggleTheme()"
@@ -49,42 +49,42 @@
       </label>
     </div>
   </div>
-  <app-divider class="opacity-30" />
+  <app-divider />
   <ul class="items-stretch justify-start w-full h-full gap-4 center-col">
     <ng-container *ngFor="let route of navbarUserRoutes">
       <li
         routerLink="{{ route.path }}"
         routerLinkActive="activeNavLink"
         [routerLinkActiveOptions]="{ exact: true }"
-        class="flex w-full gap-4 px-4 py-3 text-lg font-semibold text-left capitalize cursor-pointer hover:text-lightAccent/75"
+        class="flex w-full gap-4 p-3 text-lg font-semibold text-left capitalize cursor-pointer max-xl:center hover:text-lightAccent/75"
       >
         <div class="center">
           <mat-icon fontIcon="{{ route.icon }}"></mat-icon>
         </div>
-        {{ route.name }}
+        <span class="max-xl:hidden">{{ route.name }}</span>
       </li>
     </ng-container>
     <ng-container *ngIf="isAdmin === 'admin'">
-      <app-divider class="opacity-30" />
+      <app-divider />
       <li
         *ngFor="let route of navbarAdminRoutes"
         routerLink="{{ route.path }}"
         routerLinkActive="activeNavLink"
         [routerLinkActiveOptions]="{ exact: true }"
-        class="flex w-full gap-4 px-4 py-3 font-semibold text-left capitalize cursor-pointer text-md hover:text-lightAccent/75"
+        class="flex w-full gap-4 p-3 font-semibold text-left capitalize cursor-pointer max-xl:center text-md hover:text-lightAccent/75"
       >
         <div class="center">
           <mat-icon fontIcon="{{ route.icon }}"></mat-icon>
         </div>
-        {{ route.name }}
+        <span class="max-xl:hidden">{{ route.name }}</span>
       </li>
     </ng-container>
   </ul>
   <button
-    class="flex w-full gap-4 px-4 py-3 text-lg font-bold text-left capitalize cursor-pointer hover:text-accentColor/75"
+    class="flex w-full gap-4 p-3 text-lg font-bold text-left capitalize cursor-pointer max-xl:center hover:text-accentColor/75"
     (click)="onSubmit()"
   >
     <div class="center"><mat-icon fontIcon="logout"></mat-icon></div>
-    Log Out
+    <span class="max-xl:hidden">Log Out</span>
   </button>
 </nav>

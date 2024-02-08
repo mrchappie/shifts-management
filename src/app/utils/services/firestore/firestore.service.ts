@@ -17,8 +17,8 @@ import {
 import { StateService } from '../state/state.service';
 import { ToastService } from '../toast/toast.service';
 import { firestoreConfig } from 'firebase.config';
-import { CustomFnService } from '../customFn/custom-fn.service';
 import { errorMessages } from '../../toastMessages';
+import { InlineSpinnerService } from '../spinner/inline-spinner.service';
 
 @Injectable({
   providedIn: 'root',
@@ -27,7 +27,8 @@ export class FirestoreService {
   constructor(
     private state: StateService,
     private firestore: Firestore,
-    private toast: ToastService
+    private toast: ToastService,
+    private inlineSpinner: InlineSpinnerService
   ) {}
 
   //! Local Storage
@@ -97,6 +98,8 @@ export class FirestoreService {
   //! GET DOCS BY QUERY
   async getFirestoreDocsByQuery(q: Query) {
     try {
+      this.inlineSpinner.setSpinnerState(true);
+
       const querySnapshot = await getDocs(q);
       const docs: any = [];
 
@@ -110,6 +113,8 @@ export class FirestoreService {
       }
     } catch (error) {
       this.toast.error(errorMessages.firestore);
+    } finally {
+      this.inlineSpinner.setSpinnerState(false);
     }
   }
 
@@ -127,6 +132,25 @@ export class FirestoreService {
       await setDoc(docRef, data);
     } catch (error) {
       // console.log(error);
+      this.toast.error(errorMessages.firestore);
+    }
+  }
+
+  //! CHECK ADMIN DOC
+  async checkFirestoreAdminDoc(
+    collectionPath: string,
+    documentPath: string[],
+    data: object
+  ) {
+    try {
+      const querySnapshot = await getDoc(
+        doc(collection(this.firestore, collectionPath), ...documentPath)
+      );
+
+      if (!querySnapshot.exists()) {
+        this.setFirestoreDoc(collectionPath, documentPath, data);
+      }
+    } catch (error) {
       this.toast.error(errorMessages.firestore);
     }
   }
@@ -239,23 +263,31 @@ export class FirestoreService {
     startDate: number,
     endDate: number
   ) {
-    const docRef = collection(
-      this.firestore,
-      firestoreConfig.firestore.shiftsDB.base,
-      ...[firestoreConfig.firestore.shiftsDB.shifts, userID]
-    );
+    try {
+      this.inlineSpinner.setSpinnerState(true);
 
-    const q = query(
-      docRef,
-      where('shiftDate', '>=', startDate),
-      where('shiftDate', '<=', endDate)
-    );
+      const docRef = collection(
+        this.firestore,
+        firestoreConfig.firestore.shiftsDB.base,
+        ...[firestoreConfig.firestore.shiftsDB.shifts, userID]
+      );
 
-    const shifts = await this.getFirestoreDocsByQuery(q);
+      const q = query(
+        docRef,
+        where('shiftDate', '>=', startDate),
+        where('shiftDate', '<=', endDate)
+      );
 
-    if (shifts) {
-      this.state.setState({ shifts: shifts });
-      return shifts;
+      const shifts = await this.getFirestoreDocsByQuery(q);
+
+      if (shifts) {
+        this.state.setState({ shifts: shifts });
+        return shifts;
+      }
+    } catch (error) {
+      this.toast.error(errorMessages.firestore);
+    } finally {
+      this.inlineSpinner.setSpinnerState(false);
     }
   }
 }

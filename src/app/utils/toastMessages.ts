@@ -1,7 +1,7 @@
 export const errorMessages = {
   register: 'There was an issue on register, please try again!',
   login: 'Invalid credentials, please try again!',
-  logout: '',
+  logout: 'Something went wrong, please try again!',
   firestore: 'Something went wrong, please try again!',
   deleteAccount: 'Something went wrong, please try again!',
 };
@@ -24,7 +24,9 @@ export const successMessages = {
       update: 'Profile updated successfully!',
     },
     users: {
-      delete: 'User deleted successfully!',
+      deleted: 'User deleted successfully!',
+      disabled: 'User disabled successfully!',
+      enabled: 'User enabled successfully!',
     },
   },
   deleteAccount: 'Account deleted successfully!',

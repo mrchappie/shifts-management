@@ -1,5 +1,5 @@
 <div
-  class="gap-4 p-4 rounded-md center-col shadow-light dark:shadow-dark bg-lightBgPrimary dark:bg-darkBgPrimary dark:text-darkTextPrimary"
+  class="gap-4 p-4 rounded-md center-col shadow-light dark:shadow-dark bg-lightBgPrimary dark:bg-darkBgPrimary dark:text-darkTextPrimary min-w-max"
 >
   <div
     class="w-[100px] h-[100px] rounded-[50%] overflow-hidden shadow-light dark:shadow-dark dark:text-darkTextPrimary center"
@@ -41,7 +41,7 @@
       {{ userInfo?.phoneNumber ? userInfo?.phoneNumber : "Not set" }}</span
     >
   </div>
-  <div class="gap-2 center">
+  <div class="gap-2 center-col">
     <app-button-icon
       [routerLink]="['/admin', 'all-users', 'edit-user']"
       [queryParams]="{ userID: userInfo?.id }"
@@ -53,18 +53,16 @@
       ]"
       [icon]="'edit'"
     ></app-button-icon>
-    <!-- <button
-      [routerLink]="['/admin', 'all-users', 'edit-user']"
-      [queryParams]="{ userID: userInfo?.id }"
-      class="gap-1 px-6 py-2 font-bold rounded-md center bg-lightSucces text-darkTextPrimary"
-    >
-      <div class="center"><mat-icon fontIcon="edit"></mat-icon></div>
-    </button> -->
-    <!-- <button
+    <app-button-icon
       (click)="openModal(userInfo!.id)"
-      class="gap-1 px-6 py-2 font-bold rounded-md center bg-lightError text-darkTextPrimary"
-    >
-      <div class="center"><mat-icon fontIcon="delete"></mat-icon></div>
-    </button> -->
+      [style]="[
+        'bg-lightWarning',
+        'hover:bg-lightWarning',
+        'dark:bg-lightWarning',
+        'dark:hover:bg-lightWarning'
+      ]"
+      [icon]="userInfo?.role != 'disabled' ? 'person_off' : 'person'"
+      [parent]="userInfo?.role != 'disabled' ? 'Disable' : 'Enable'"
+    ></app-button-icon>
   </div>
 </div>

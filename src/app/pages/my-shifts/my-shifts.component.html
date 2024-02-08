@@ -5,7 +5,10 @@
       userIDFromURL ? userIDFromURL : currentState.currentLoggedFireUser!.id
     "
   ></app-new-search>
-  <div class="">
+  <!-- inline loading spinner component -->
+  <app-inline-spinner class="z-40 w-full"></app-inline-spinner>
+  <!-- shifts -->
+  <div *ngIf="!toggleSpinner">
     <p *ngIf="myShifts.length === 0" class="text-xl font-semibold text-center">
       For current filters selection there are no shifts, please go to
       <a routerLink="/add-shift" class="underline hover:text-blue-400"

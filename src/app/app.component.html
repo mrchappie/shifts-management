@@ -1,4 +1,6 @@
-<div class="grid w-full h-full grid-cols-12 gap-4 p-4 custom-grid-rows">
+<div
+  class="grid w-full h-full grid-cols-12 gap-4 p-4 custom-grid-rows max-sm:p-2"
+>
   <!-- toasts container -->
   <div class="fixed z-10 items-end gap-4 right-4 top-4 center-col">
     <app-toast
@@ -8,18 +10,25 @@
     ></app-toast>
   </div>
 
+  <!-- loading spinner component -->
+  <app-spinner class="absolute top-0 left-0 z-50 w-full"></app-spinner>
+
   <!-- nav -->
   <app-navbar
     *ngIf="isLoggedIn"
-    class="col-span-2 col-start-1 row-span-2"
+    class="col-span-2 col-start-1 row-span-2 max-xl:col-span-1 max-lg:hidden"
   ></app-navbar>
+  <app-mobile-navbar
+    *ngIf="isLoggedIn"
+    class="col-span-12 col-start-1 row-span-1 xl:col-span-1 lg:hidden"
+  ></app-mobile-navbar>
 
   <!-- main content container -->
   <div
-    class="h-full p-4 overflow-y-scroll rounded-md shadow-light dark:shadow-dark bg-lightBgSecondary dark:bg-darkBgSecondary"
+    class="h-full p-4 overflow-y-scroll rounded-md max-sm:p-2 shadow-light dark:shadow-dark bg-lightBgSecondary dark:bg-darkBgSecondary"
     [ngClass]="
       isLoggedIn
-        ? 'col-start-3 col-span-10 row-span-2 shadow-light dark:shadow-dark rounded-md'
+        ? 'col-start-3 max-lg:col-start-1 max-xl:col-start-2 col-span-12 row-span-2 max-lg:row-span-3 shadow-light dark:shadow-dark rounded-md'
         : 'col-start-1 col-span-12 row-span-3'
     "
   >

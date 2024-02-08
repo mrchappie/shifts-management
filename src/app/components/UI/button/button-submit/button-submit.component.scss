@@ -14,12 +14,12 @@ button {
   width: 100%;
 }
 
-button:hover {
+button:not(:disabled):hover {
   transform: translateY(-3px);
   box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.3);
 }
 
-button:active {
+button:not(:disabled):active {
   transform: scale(0.95);
   box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
 }
@@ -49,10 +49,10 @@ button .svg-wrapper {
   transition: all 0.3s;
 }
 
-button:hover .svg-wrapper {
+button:not(:disabled):hover .svg-wrapper {
   background-color: rgba(255, 255, 255, 0.5);
 }
 
-button:hover svg {
+button:not(:disabled):hover svg {
   transform: rotate(45deg);
 }

@@ -17,12 +17,13 @@ import { StateService } from '../state/state.service';
 import { FirestoreService } from '../firestore/firestore.service';
 import { firestoreConfig } from 'firebase.config';
 import { Router } from '@angular/router';
-import { State } from '../../Interfaces';
+import { State, UserSettings } from '../../Interfaces';
 import { ToastService } from '../toast/toast.service';
 import { errorMessages, successMessages } from '../../toastMessages';
 import { arrayRemove, arrayUnion } from '@angular/fire/firestore';
 import { defaultStatsObject } from '../statistics/defaultStatsObject';
 import { StatisticsService } from '../statistics/statistics.service';
+import { SpinnerService } from '../spinner/spinner.service';
 
 @Injectable({
   providedIn: 'root',
@@ -37,12 +38,14 @@ export class AuthService {
     private firestore: FirestoreService,
     private toast: ToastService,
     private router: Router,
-    private statsService: StatisticsService
+    private statsService: StatisticsService,
+    private spinner: SpinnerService
   ) {}
 
   //! CREATE ACCOUNT
   async register(data: RegisterFormData) {
     try {
+      this.spinner.setSpinnerState(true);
       const { email, password, firstName, lastName, dob, termsAndConditions } =
         data;
 
@@ -109,7 +112,8 @@ export class AuthService {
               ['totalUsers'],
               1,
               'add',
-              'totalUsers'
+              'totalUsers',
+              new Date().getFullYear().toString()
             );
 
             // add user information to state
@@ -131,22 +135,37 @@ export class AuthService {
             );
           });
       }
+      this.router.navigate(['/home']);
       this.toast.success(successMessages.register);
     } catch (error) {
       // console.log(error);
-
       this.toast.error(errorMessages.register);
+    } finally {
+      this.spinner.setSpinnerState(false);
     }
   }
 
   //! LOGIN
   async login(email: string, password: string) {
     try {
+      this.spinner.setSpinnerState(true);
       const userCredential = await signInWithEmailAndPassword(
         this.auth,
         email,
         password
       );
+
+      // check if user is disabled
+      const userIsEnabled = (await this.firestore.getFirestoreDoc(
+        firestoreConfig.firestore.usersDB,
+        [userCredential.user.uid]
+      )) as UserSettings;
+
+      if (userIsEnabled.role === 'disabled') {
+        this.toast.error('This is account is no longer available!');
+        this.logout();
+        return;
+      }
 
       if (userCredential) {
         // add user information to state
@@ -168,23 +187,34 @@ export class AuthService {
         );
 
         this.toast.success(successMessages.login);
+        this.router.navigate(['/home']);
         return userCredential;
       }
     } catch (error) {
       this.toast.error(errorMessages.login);
+    } finally {
+      this.spinner.setSpinnerState(false);
     }
     return null;
   }
 
   //! LOGOUT
   async logout() {
-    await signOut(this.auth);
-    this.state.resetState();
-    this.firestore.clearLocalStorage();
+    try {
+      this.spinner.setSpinnerState(true);
 
-    this.router.navigate(['']);
+      await signOut(this.auth);
+      this.state.resetState();
+      this.firestore.clearLocalStorage();
 
-    return;
+      this.router.navigate(['']);
+
+      return;
+    } catch (error) {
+      this.toast.error(errorMessages.logout);
+    } finally {
+      this.spinner.setSpinnerState(false);
+    }
   }
 
   //! DELETE USER
@@ -195,6 +225,8 @@ export class AuthService {
     lastName: string
   ) {
     try {
+      this.spinner.setSpinnerState(true);
+
       const user = this.auth.currentUser as User;
 
       // get user credentials
@@ -232,12 +264,14 @@ export class AuthService {
       );
 
       // decrese total users count
-      this.statsService.updateAdminStatistics(
-        ['totalUsers'],
-        1,
-        'substract',
-        'totalUsers'
-      );
+      // this.statsService.updateAdminStatistics(
+      //   ['totalUsers'],
+      //   1,
+      //   'substract',
+      //   'totalUsers',
+      //   new Date().getFullYear().toString()
+
+      // );
 
       // delete user
       await deleteUser(user);
@@ -251,24 +285,39 @@ export class AuthService {
       }, 1000);
     } catch (error) {
       this.toast.error(errorMessages.deleteAccount);
+    } finally {
+      this.spinner.setSpinnerState(false);
     }
   }
 
   //! firebase getLoggedUser
   async getUserState(): Promise<User | null> {
     return new Promise(async (resolve) => {
+      this.spinner.setSpinnerState(true);
+
       const unsubscribe = onAuthStateChanged(this.auth, async (user) => {
         if (user) {
-          // User is signed in
+          const currentLoggedUser = (await this.firestore.getFirestoreDoc(
+            firestoreConfig.firestore.usersDB,
+            [user.uid]
+          )) as UserSettings;
+
+          // if current logged user was disabled during his session, logout
+          if (currentLoggedUser.role === 'disabled') {
+            this.toast.error('This is account is no longer available!');
+            this.logout();
+            this.router.navigate(['']);
+            return;
+          }
+
+          // update the state with user info
           this.state.setState({
-            currentLoggedFireUser: await this.firestore.getFirestoreDoc(
-              firestoreConfig.firestore.usersDB,
-              [user.uid]
-            ),
+            currentLoggedFireUser: currentLoggedUser,
             emailVerified: user.emailVerified,
             currentUserCred: user,
             isLoggedIn: true,
           });
+
           resolve(user);
 
           // this.updateFirestoreDoc(firestoreConfig.firestore.usersDB, [user.uid], {
@@ -278,6 +327,9 @@ export class AuthService {
           // User is signed out
           resolve(null);
         }
+
+        this.spinner.setSpinnerState(false);
+
         unsubscribe(); // unsubscribe after the first change
       });
     });

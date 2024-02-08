@@ -11,10 +11,7 @@ export class ShiftsService {
   private shiftsList = new BehaviorSubject<Shift[]>([]);
   private shifts$ = this.shiftsList.asObservable();
 
-  constructor(
-    private state: StateService,
-    private firestore: FirestoreService
-  ) {}
+  constructor(private firestore: FirestoreService) {}
 
   get shifts(): Observable<Shift[]> {
     return this.shifts$;
