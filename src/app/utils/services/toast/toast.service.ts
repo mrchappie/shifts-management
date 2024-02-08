@@ -25,6 +25,7 @@ export class ToastService {
   // show toast
   show(toast: Toast) {
     this.toasts.push(toast);
+    // remove toast after time runs out
     setTimeout(() => {
       this.remove(this.toasts.indexOf(toast));
     }, toast.delay);

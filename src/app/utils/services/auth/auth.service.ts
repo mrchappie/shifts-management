@@ -23,6 +23,7 @@ import { errorMessages, successMessages } from '../../toastMessages';
 import { arrayRemove, arrayUnion } from '@angular/fire/firestore';
 import { defaultStatsObject } from '../statistics/defaultStatsObject';
 import { StatisticsService } from '../statistics/statistics.service';
+import { SpinnerService } from '../spinner/spinner.service';
 
 @Injectable({
   providedIn: 'root',
@@ -37,12 +38,14 @@ export class AuthService {
     private firestore: FirestoreService,
     private toast: ToastService,
     private router: Router,
-    private statsService: StatisticsService
+    private statsService: StatisticsService,
+    private spinner: SpinnerService
   ) {}
 
   //! CREATE ACCOUNT
   async register(data: RegisterFormData) {
     try {
+      this.spinner.setSpinnerState(true);
       const { email, password, firstName, lastName, dob, termsAndConditions } =
         data;
 
@@ -136,14 +139,16 @@ export class AuthService {
       this.toast.success(successMessages.register);
     } catch (error) {
       // console.log(error);
-
       this.toast.error(errorMessages.register);
+    } finally {
+      this.spinner.setSpinnerState(false);
     }
   }
 
   //! LOGIN
   async login(email: string, password: string) {
     try {
+      this.spinner.setSpinnerState(true);
       const userCredential = await signInWithEmailAndPassword(
         this.auth,
         email,
@@ -187,19 +192,29 @@ export class AuthService {
       }
     } catch (error) {
       this.toast.error(errorMessages.login);
+    } finally {
+      this.spinner.setSpinnerState(false);
     }
     return null;
   }
 
   //! LOGOUT
   async logout() {
-    await signOut(this.auth);
-    this.state.resetState();
-    this.firestore.clearLocalStorage();
+    try {
+      this.spinner.setSpinnerState(true);
 
-    this.router.navigate(['']);
+      await signOut(this.auth);
+      this.state.resetState();
+      this.firestore.clearLocalStorage();
 
-    return;
+      this.router.navigate(['']);
+
+      return;
+    } catch (error) {
+      this.toast.error(errorMessages.logout);
+    } finally {
+      this.spinner.setSpinnerState(false);
+    }
   }
 
   //! DELETE USER
@@ -210,6 +225,8 @@ export class AuthService {
     lastName: string
   ) {
     try {
+      this.spinner.setSpinnerState(true);
+
       const user = this.auth.currentUser as User;
 
       // get user credentials
@@ -268,12 +285,16 @@ export class AuthService {
       }, 1000);
     } catch (error) {
       this.toast.error(errorMessages.deleteAccount);
+    } finally {
+      this.spinner.setSpinnerState(false);
     }
   }
 
   //! firebase getLoggedUser
   async getUserState(): Promise<User | null> {
     return new Promise(async (resolve) => {
+      this.spinner.setSpinnerState(true);
+
       const unsubscribe = onAuthStateChanged(this.auth, async (user) => {
         if (user) {
           const currentLoggedUser = (await this.firestore.getFirestoreDoc(
@@ -306,6 +327,9 @@ export class AuthService {
           // User is signed out
           resolve(null);
         }
+
+        this.spinner.setSpinnerState(false);
+
         unsubscribe(); // unsubscribe after the first change
       });
     });
