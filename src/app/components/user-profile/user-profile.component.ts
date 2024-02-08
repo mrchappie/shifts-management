@@ -158,46 +158,50 @@ export class UserProfileComponent {
   // upload profile picture
   async uploadFile(event: Event) {
     // get the current index of profile picture from array of avatars
+    try {
+      const element = event.currentTarget as HTMLInputElement;
+      let fileList: FileList | null = element.files;
+      if (fileList) {
+        // profile photo name will be the user name
+        const photoName =
+          this.userSettings.firstName + '_' + this.userSettings.lastName;
+        // upload the image to firebase storage
+        await this.storage.uploadFile(fileList[0], photoName, [
+          firestoreConfig.storage.profileImages,
+        ]);
+        // get the image url
+        const imageUrl = await this.storage.getUrl([
+          firestoreConfig.storage.profileImages,
+          photoName,
+        ]);
 
-    const element = event.currentTarget as HTMLInputElement;
-    let fileList: FileList | null = element.files;
-    if (fileList) {
-      // profile photo name will be the user name
-      const photoName =
-        this.userSettings.firstName + '_' + this.userSettings.lastName;
-      // upload the image to firebase storage
-      await this.storage.uploadFile(fileList[0], photoName, [
-        firestoreConfig.storage.profileImages,
-      ]);
-      // get the image url
-      const imageUrl = await this.storage.getUrl([
-        firestoreConfig.storage.profileImages,
-        photoName,
-      ]);
-
-      // update de user profile picture in firestore
-      this.firestore.updateFirestoreDoc(
-        firestoreConfig.firestore.usersDB,
-        [this.userIDFromParams],
-        {
-          profileImage: imageUrl,
-        }
-      );
-
-      if (!this.userIDFromParams) {
-        // update de user profile picture in state
-        this.state.setState({
-          currentLoggedFireUser: {
-            ...this.userSettings,
+        // update de user profile picture in firestore
+        this.firestore.updateFirestoreDoc(
+          firestoreConfig.firestore.usersDB,
+          [this.userIDFromParams],
+          {
             profileImage: imageUrl,
-          },
-        });
+          }
+        );
+
+        if (!this.userIDFromParams) {
+          // update de user profile picture in state
+          this.state.setState({
+            currentLoggedFireUser: {
+              ...this.userSettings,
+              profileImage: imageUrl,
+            },
+          });
+        }
+
+        this.profileImage = imageUrl as string;
+
+        // hide modal after a photo upload
+        this.showPhotosModal = false;
       }
-
-      this.profileImage = imageUrl as string;
-
-      // hide modal after a photo upload
-      this.showPhotosModal = false;
+      this.toast.success('Profile picture was updated successfully!');
+    } catch (error) {
+      this.toast.error(errorMessages.firestore);
     }
   }
 
@@ -219,29 +223,36 @@ export class UserProfileComponent {
 
   // change profile avatar
   changeProfileAvatar(avatar: string) {
-    this.firestore.updateFirestoreDoc(
-      firestoreConfig.firestore.usersDB,
-      [this.userIDFromParams],
-      {
-        profileImage: avatar,
-      }
-    );
-
-    // update the state if userID coresponds to userID from existing state
-    // this is made to update in real time the photo from navigation also
-    if (this.userIDFromParams === this.currentState.currentLoggedFireUser?.id) {
-      this.state.setState({
-        currentLoggedFireUser: {
-          ...this.userSettings,
+    try {
+      this.firestore.updateFirestoreDoc(
+        firestoreConfig.firestore.usersDB,
+        [this.userIDFromParams],
+        {
           profileImage: avatar,
-        },
-      });
+        }
+      );
+
+      // update the state if userID coresponds to userID from existing state
+      // this is made to update in real time the photo from navigation also
+      if (
+        this.userIDFromParams === this.currentState.currentLoggedFireUser?.id
+      ) {
+        this.state.setState({
+          currentLoggedFireUser: {
+            ...this.userSettings,
+            profileImage: avatar,
+          },
+        });
+      }
+
+      this.profileImage = avatar as string;
+
+      // hide modal after a photo change
+      this.showPhotosModal = false;
+      this.toast.success('Profile picture was updated successfully!');
+    } catch (error) {
+      this.toast.error(errorMessages.firestore);
     }
-
-    this.profileImage = avatar as string;
-
-    // hide modal after a photo change
-    this.showPhotosModal = false;
   }
 
   // form validation service

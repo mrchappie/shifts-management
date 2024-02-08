@@ -1,7 +1,7 @@
 export const errorMessages = {
   register: 'There was an issue on register, please try again!',
   login: 'Invalid credentials, please try again!',
-  logout: '',
+  logout: 'Something went wrong, please try again!',
   firestore: 'Something went wrong, please try again!',
   deleteAccount: 'Something went wrong, please try again!',
 };

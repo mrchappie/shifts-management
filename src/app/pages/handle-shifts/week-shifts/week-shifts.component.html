@@ -3,7 +3,7 @@
     [heading]="'Click to see weekly shifts'"
     [secHeading]="'See last, this and next week shifts with ease.'"
   ></app-section-heading>
-  <section class="w-full gap-4 center-col">
+  <section class="relative w-full gap-4 center-col">
     <header class="w-full gap-0 center max-sm:flex-col">
       <button
         (click)="setActiveWeek('last')"
@@ -27,7 +27,10 @@
         Next week
       </button>
     </header>
-    <main class="w-full">
+    <!-- inline loading spinner component -->
+    <app-inline-spinner class="z-40 w-full"></app-inline-spinner>
+    <!-- shifts -->
+    <main *ngIf="!toggleSpinner" class="w-full">
       <section class="w-full gap-4 center-col max-sm:hidden">
         <ng-container *ngFor="let shift of shifts">
           <app-shift-card-rect
