@@ -9,7 +9,7 @@ import { NgIf, NgClass, NgFor } from '@angular/common';
 import { ToastService } from './utils/services/toast/toast.service';
 import { ToastComponent } from './components/UI/toast/toast/toast.component';
 import { MobileNavbarComponent } from './components/navbar/mobile-navbar/mobile-navbar.component';
-import { SpinnerComponent } from './components/spinner/spinner.component';
+import { SpinnerComponent } from './components/spinner/page-spinner/page-spinner.component';
 
 @Component({
   selector: 'app-root',

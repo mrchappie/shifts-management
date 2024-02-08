@@ -5,8 +5,8 @@ import { SpinnerService } from 'src/app/utils/services/spinner/spinner.service';
 @Component({
   standalone: true,
   selector: 'app-spinner',
-  templateUrl: './spinner.component.html',
-  styleUrls: ['./spinner.component.scss'],
+  templateUrl: './page-spinner.component.html',
+  styleUrls: ['./page-spinner.component.scss'],
   imports: [NgIf],
 })
 export class SpinnerComponent {

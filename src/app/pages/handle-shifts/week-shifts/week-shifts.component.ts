@@ -1,4 +1,4 @@
-import { NgClass, NgFor } from '@angular/common';
+import { NgClass, NgFor, NgIf } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { SectionHeadingComponent } from 'src/app/components/UI/section-heading/section-heading.component';
 import { ShiftCardRectComponent } from 'src/app/components/shift-card/shift-card-rect/shift-card-rect.component';
@@ -11,6 +11,8 @@ import {
 } from './helpers';
 import { FirestoreService } from 'src/app/utils/services/firestore/firestore.service';
 import { ShiftCardComponent } from 'src/app/components/shift-card/shift-card.component';
+import { InlineSpinnerComponent } from 'src/app/components/spinner/inline-spinner/inline-spinner.component';
+import { InlineSpinnerService } from 'src/app/utils/services/spinner/inline-spinner.service';
 
 @Component({
   standalone: true,
@@ -22,17 +24,27 @@ import { ShiftCardComponent } from 'src/app/components/shift-card/shift-card.com
     ShiftCardComponent,
     SectionHeadingComponent,
     NgFor,
+    NgIf,
     NgClass,
+    InlineSpinnerComponent,
   ],
 })
 export class WeekShiftsComponent {
   @Input() shiftID: string = '';
   shifts: Shift[] = [];
   active: string = 'this';
+  toggleSpinner!: boolean;
 
-  constructor(private firestore: FirestoreService) {}
+  constructor(
+    private firestore: FirestoreService,
+    private inlineSpinner: InlineSpinnerService
+  ) {}
 
   ngOnInit(): void {
+    this.inlineSpinner.spinnerState.subscribe((spinnerState) => {
+      this.toggleSpinner = spinnerState;
+    });
+
     // fetch the shifts for current week
     (async () => {
       this.shifts = await this.firestore.handleGetShiftsByWeek(

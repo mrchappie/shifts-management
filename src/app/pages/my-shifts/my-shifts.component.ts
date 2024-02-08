@@ -16,6 +16,8 @@ import { UpdateStatsService } from '../handle-shifts/updateStatsService/update-s
 import { ShiftCardRectComponent } from 'src/app/components/shift-card/shift-card-rect/shift-card-rect.component';
 import { ShiftsService } from 'src/app/utils/services/shifts/shifts.service';
 import { getMonthStartToEnd } from 'src/app/components/search/helpers';
+import { InlineSpinnerService } from 'src/app/utils/services/spinner/inline-spinner.service';
+import { InlineSpinnerComponent } from 'src/app/components/spinner/inline-spinner/inline-spinner.component';
 
 @Component({
   selector: 'app-my-shifts',
@@ -30,6 +32,7 @@ import { getMonthStartToEnd } from 'src/app/components/search/helpers';
     ShiftCardRectComponent,
     MatIconModule,
     CustomShiftsSortPipe,
+    InlineSpinnerComponent,
   ],
 })
 export class MyShiftsComponent implements OnInit, OnDestroy {
@@ -53,6 +56,7 @@ export class MyShiftsComponent implements OnInit, OnDestroy {
   userID: string = '';
   myShifts: Shift[] = [];
   shiftsCount: number = 0;
+  toggleSpinner!: boolean;
 
   private stateSubscription: Subscription | undefined;
 
@@ -62,10 +66,16 @@ export class MyShiftsComponent implements OnInit, OnDestroy {
     private router: Router,
     private toast: ToastService,
     private updateStats: UpdateStatsService,
-    private shiftsService: ShiftsService
+    private shiftsService: ShiftsService,
+    private inlineSpinner: InlineSpinnerService
   ) {}
 
   ngOnInit(): void {
+    // init inline loading spinner
+    this.inlineSpinner.spinnerState.subscribe((spinnerState) => {
+      this.toggleSpinner = spinnerState;
+    });
+
     this.currentState = this.state.getState();
     this.filters = this.currentState.searchForm;
 

@@ -4,8 +4,8 @@ import { BehaviorSubject, Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root',
 })
-export class SpinnerService {
-  private _spinnerState = new BehaviorSubject<SpinnerState>(true);
+export class InlineSpinnerService {
+  private _spinnerState = new BehaviorSubject<SpinnerState>(false);
   private _spinnerState$ = this._spinnerState.asObservable();
   private _spinnerStateAsValue: SpinnerState = false;
 
