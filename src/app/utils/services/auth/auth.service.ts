@@ -2,12 +2,14 @@ import { Injectable } from '@angular/core';
 import {
   Auth,
   EmailAuthProvider,
+  GoogleAuthProvider,
   User,
   createUserWithEmailAndPassword,
   deleteUser,
   onAuthStateChanged,
   reauthenticateWithCredential,
   signInWithEmailAndPassword,
+  signInWithPopup,
   signOut,
 } from '@angular/fire/auth';
 import { RegisterFormData } from 'src/app/pages/register/register.component';
@@ -62,6 +64,7 @@ export class AuthService {
             firestoreConfig.firestore.usersDB,
             [userCredential.user.uid],
             {
+              ...userProfile,
               firstName,
               lastName,
               email,
@@ -69,7 +72,6 @@ export class AuthService {
               age: calculateAge(dob),
               termsAndConditions,
               id: userCredential.user.uid,
-              ...userProfile,
             }
           )
           .then(() => {
@@ -217,7 +219,7 @@ export class AuthService {
     }
   }
 
-  //! DELETE USER
+  //! DELETE USER AUTH WITH EMAIL AND PASS
   async deleteUserFromFirebase(
     email: string,
     password: string,
@@ -234,6 +236,70 @@ export class AuthService {
 
       // re auth user
       await reauthenticateWithCredential(user, credentials);
+
+      // delete user info from firestore
+      this.firestore.deleteFirestoreDoc(firestoreConfig.firestore.usersDB, [
+        user.uid,
+      ]);
+      //! BUG delete user shifts from firestore
+      // this.firestore.deleteFirestoreDoc(
+      //   firestoreConfig.firestore.shiftsDB.base,
+      //   [firestoreConfig.firestore.shiftsDB.shifts, 'users', user.uid]
+      // );
+      // remove basic user info from shifts BD
+      this.firestore.updateFirestoreDoc(
+        firestoreConfig.firestore.shiftsDB.base,
+        [firestoreConfig.firestore.shiftsDB.usernames],
+        {
+          info: arrayRemove({
+            userID: user.uid,
+            firstName,
+            lastName,
+          }),
+        }
+      );
+
+      // delete statistics
+      this.firestore.deleteFirestoreDoc(
+        firestoreConfig.firestore.statistics.base,
+        [firestoreConfig.firestore.statistics.users, '2024', user.uid]
+      );
+
+      // decrese total users count
+      // this.statsService.updateAdminStatistics(
+      //   ['totalUsers'],
+      //   1,
+      //   'substract',
+      //   'totalUsers',
+      //   new Date().getFullYear().toString()
+
+      // );
+
+      // delete user
+      await deleteUser(user);
+
+      // send succes toast if user was deleted and after 1 second,
+      // logout the user end return in to login page
+      this.toast.success(successMessages.deleteAccount);
+      setTimeout(() => {
+        this.state.resetState();
+        this.router.navigate(['']);
+      }, 1000);
+    } catch (error) {
+      this.toast.error(errorMessages.deleteAccount);
+    } finally {
+      this.spinner.setSpinnerState(false);
+    }
+  }
+
+  //! DELETE USER AUTH WITH GOOGLE
+  async deleteGoogleUserFromFirebase(firstName: string, lastName: string) {
+    try {
+      this.spinner.setSpinnerState(true);
+
+      const user = this.auth.currentUser as User;
+      const authProvider = new GoogleAuthProvider();
+      await signInWithPopup(this.auth, authProvider);
 
       // delete user info from firestore
       this.firestore.deleteFirestoreDoc(firestoreConfig.firestore.usersDB, [
@@ -333,5 +399,92 @@ export class AuthService {
         unsubscribe(); // unsubscribe after the first change
       });
     });
+  }
+
+  //! GOOGLE AUTH
+  async authWithGoogle() {
+    const authProvider = new GoogleAuthProvider();
+    const userCredential = await signInWithPopup(this.auth, authProvider);
+    // const token = GoogleAuthProvider.credentialFromResult(userCredential);
+    console.log(userCredential.user);
+
+    this.firestore
+      .setFirestoreDoc(
+        firestoreConfig.firestore.usersDB,
+        [userCredential.user.uid],
+        {
+          ...userProfile,
+          firstName: userCredential.user.displayName?.split(' ')[0],
+          lastName: userCredential.user.displayName?.split(' ')[1],
+          profileImage: userCredential.user.photoURL,
+          phoneNumber: userCredential.user.phoneNumber,
+          email: userCredential.user.email,
+          emailVerified: true,
+          termsAndConditions: true,
+          id: userCredential.user.uid,
+        }
+      )
+      .then(() => {
+        // set basic user info in shiftsDB
+        this.firestore.updateFirestoreDoc(
+          firestoreConfig.firestore.shiftsDB.base,
+          [firestoreConfig.firestore.shiftsDB.usernames],
+          {
+            info: arrayUnion({
+              userID: userCredential.user.uid,
+              firstName: userCredential.user.displayName?.split(' ')[0],
+              lastName: userCredential.user.displayName?.split(' ')[1],
+            }),
+          }
+        );
+
+        // init statistics
+        this.firestore.setFirestoreDoc(
+          firestoreConfig.firestore.statistics.base,
+          [
+            firestoreConfig.firestore.statistics.users,
+            new Date().getFullYear().toString(),
+            userCredential.user.uid,
+          ],
+          defaultStatsObject
+        );
+
+        //! init statistics for admin test only
+        // this.firestore.setFirestoreDoc(
+        //   firestoreConfig.firestore.statistics.base,
+        //   [
+        //     firestoreConfig.firestore.statistics.admin,
+        //     'year',
+        //     new Date().getFullYear().toString(),
+        //   ],
+        //   defaultStatsObject
+        // );
+
+        this.statsService.updateAdminStatistics(
+          ['totalUsers'],
+          1,
+          'add',
+          'totalUsers',
+          new Date().getFullYear().toString()
+        );
+
+        // add user information to state
+        this.state.setState({
+          currentLoggedFireUser: this.firestore.getFirestoreDoc(
+            firestoreConfig.firestore.usersDB,
+            [userCredential.user.uid]
+          ),
+          currentUserCred: userCredential,
+          isLoggedIn: true,
+          loggedUserID: userCredential.user.uid,
+        });
+        this.currentState = this.state.getState();
+
+        // add user information to localStorage
+        this.firestore.setLocalStorage(
+          'currentLoggedFireUser',
+          this.currentState.currentLoggedFireUser
+        );
+      });
   }
 }

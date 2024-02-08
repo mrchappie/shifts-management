@@ -1,4 +1,7 @@
 export const userProfile = {
+  firstName: '',
+  lastName: '',
+  age: '',
   profileImage: '',
   userName: '',
   phoneNumber: '',

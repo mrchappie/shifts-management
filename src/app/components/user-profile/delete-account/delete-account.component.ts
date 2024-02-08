@@ -73,9 +73,7 @@ export class DeleteAccountComponent implements OnInit {
 
   deleteAccountFn(event: Event) {
     event.stopPropagation();
-    this.auth.deleteUserFromFirebase(
-      this.deleteAccountForm.value.email,
-      this.deleteAccountForm.value.password,
+    this.auth.deleteGoogleUserFromFirebase(
       this.userSettings.firstName,
       this.userSettings.lastName
     );

@@ -39,7 +39,6 @@ export class LoginComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private firestore: FirestoreService,
-    private router: Router,
     private authService: AuthService,
     private changeCred: ChangeCredentialsService,
     private validation: ValidationService
@@ -91,6 +90,12 @@ export class LoginComponent implements OnInit {
       this.loginForm.value.email,
       this.loginForm.value.password
     );
+  }
+
+  async loginWithProvider(provider: string) {
+    if (provider === 'google') {
+      await this.authService.authWithGoogle();
+    }
   }
 
   openModal(event: Event) {

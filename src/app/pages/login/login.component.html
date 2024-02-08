@@ -109,6 +109,7 @@
           <p>Or continue with</p>
           <div class="w-full gap-4 center max-md:flex-col">
             <button
+              (click)="loginWithProvider('google')"
               class="flex-1 px-8 py-2 rounded-lg max-sm:w-full center shadow-light dark:shadow-dark bg-lightBgSecondary dark:bg-darkBgSecondary"
             >
               <img
@@ -118,6 +119,7 @@
               />
             </button>
             <button
+              (click)="loginWithProvider('github')"
               class="flex-1 px-8 py-2 rounded-lg max-sm:w-full center shadow-light dark:shadow-dark bg-lightBgSecondary dark:bg-darkBgSecondary"
             >
               <img
