@@ -10,7 +10,11 @@
     ]"
     [icon]="'delete'"
   ></app-button-icon>
-  <div *ngIf="showModal" (click)="closeModal($event)" class="modal center">
+  <div
+    *ngIf="showModal"
+    (click)="closeModal($event)"
+    class="modal center backdrop-blur-sm"
+  >
     <div class="p-8 m-4 rounded-md bg-lightBgSecondary dark:bg-darkBgSecondary">
       <!-- DELETE ACCOUNT FORM-->
       <form [formGroup]="deleteAccountForm" class="gap-10 center-col">

@@ -55,7 +55,11 @@
           </div>
         </form>
         <!-- RESET PASSWORD -->
-        <div *ngIf="showResetModal" (click)="closeModal($event)" class="modal">
+        <div
+          *ngIf="showResetModal"
+          (click)="closeModal($event)"
+          class="modal backdrop-blur-sm"
+        >
           <div
             class="p-4 rounded-md bg-lightBgSecondary dark:bg-darkBgSecondary center-col max-sm:m-4"
           >
